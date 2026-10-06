@@ -1,46 +1,31 @@
 ---
 import { Image } from 'astro:assets';
 import { testimonials } from '../data/content';
-
-const steps = testimonials.length - 1;
 ---
 
-<section class="wall" aria-labelledby="wall-title" style={`--wall-steps: ${steps}`}>
+<section class="wall" aria-labelledby="wall-title">
   <h2 id="wall-title" class="wall__title">Wall of Love</h2>
 
-  <!--
-    Desktop: the stage is tall and the pin sticks to the screen, so scrolling swaps the cards (see the script).
-    Everywhere else, and without JavaScript, the scroller is a plain swipe/drag carousel.
-  -->
-  <div class="wall__stage">
-    <div class="wall__pin">
-      <div class="wall__scroller" tabindex="0" role="region" aria-label="Testimonials">
-        <ul class="wall__list">
-          {testimonials.map((t) => (
-            <li class:list={['quote', `quote--${t.theme}`, { 'quote--wide': t.wide }]}>
-              <figure class="quote__figure">
-                <blockquote class="quote__text">
-                  {t.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
-                </blockquote>
-                <figcaption class="quote__person">
-                  <Image class="quote__photo" src={t.photo} alt={t.alt} width={96} height={96} widths={[96, 192, 288]} sizes="96px" />
-                  <span class="quote__meta">
-                    <span class="quote__name">{t.name}</span>
-                    <span class="quote__role">{t.role}</span>
-                  </span>
-                </figcaption>
-              </figure>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div class="wall__dots" role="group" aria-label="Choose a testimonial" hidden>
-        {testimonials.map((t, i) => (
-          <button class="wall__dot" type="button" data-index={i} aria-label={`Show the testimonial from ${t.name}`}></button>
-        ))}
-      </div>
-    </div>
+  <!-- A horizontal carousel: the next card peeks in from the right, drag or scroll to see it. -->
+  <div class="wall__scroller" tabindex="0" role="region" aria-label="Testimonials">
+    <ul class="wall__list">
+      {testimonials.map((t) => (
+        <li class:list={['quote', `quote--${t.theme}`, { 'quote--wide': t.wide }]}>
+          <figure class="quote__figure">
+            <blockquote class:list={['quote__text', { 'quote__text--clipped': t.clipped }]}>
+              {t.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+            </blockquote>
+            <figcaption class="quote__person">
+              <Image class="quote__photo" src={t.photo} alt={t.alt} width={96} height={96} widths={[96, 192, 288]} sizes="96px" />
+              <span class="quote__meta">
+                <span class="quote__name">{t.name}</span>
+                <span class="quote__role">{t.role}</span>
+              </span>
+            </figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
   </div>
 </section>
 
@@ -59,8 +44,6 @@ const steps = testimonials.length - 1;
     line-height: var(--lh-display);
     color: var(--color-ink);
   }
-
-  /* ---------- Plain carousel (tablet, phones, no JavaScript) ---------- */
 
   /* The scroller clips the list, so the third card shows only its edge, as in the design. */
   .wall__scroller {
@@ -115,20 +98,13 @@ const steps = testimonials.length - 1;
     justify-content: space-between;
     gap: var(--space-16);
     width: 100%;
-    min-width: 0;
   }
 
   .quote__text {
-    max-height: var(--quote-text-h-small);
-    overflow: hidden;
     font-size: var(--fs-20);
     line-height: var(--lh-20);
     letter-spacing: var(--ls-20);
     color: var(--color-black);
-  }
-
-  .quote--wide .quote__text {
-    max-height: var(--quote-text-h-wide);
   }
 
   /* A blank line between paragraphs, as in the design; "\n" inside one is a plain line break. */
@@ -140,8 +116,10 @@ const steps = testimonials.length - 1;
     margin-top: var(--lh-20);
   }
 
-  /* A quote that does not fit is cut at a whole line and fades out; the script sets data-overflow. */
-  .quote__text[data-overflow] {
+  /* The longest quote is cut at whole lines and fades out, like the clipped card in the design. */
+  .quote__text--clipped {
+    max-height: calc(var(--quote-lines) * var(--lh-20));
+    overflow: hidden;
     -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lh-20)), transparent);
     mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lh-20)), transparent);
   }
@@ -186,20 +164,20 @@ const steps = testimonials.length - 1;
     .quote--wide {
       width: min(var(--quote-wide-w), 88cqw);
     }
-
-    .quote--wide .quote__text {
-      max-height: none;
-    }
   }
 
+  /* Phones: every card is narrow, so every quote is cut at 15 lines and fades, keeping the cards equal. */
   @media (max-width: 640px) {
     .quote,
     .quote--wide {
       width: 85cqw;
     }
 
-    .quote--wide .quote__text {
-      max-height: var(--quote-text-h-small);
+    .quote__text {
+      max-height: calc(var(--quote-lines) * var(--lh-20));
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lh-20)), transparent);
+      mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lh-20)), transparent);
     }
   }
 
@@ -208,268 +186,47 @@ const steps = testimonials.length - 1;
       scroll-behavior: smooth;
     }
   }
-
-  /* ---------- Pinned carousel (desktop; the script adds .wall--stage) ---------- */
-
-  /*
-   * The stage is as tall as the pin plus one scroll step per card change. The pin sticks while you scroll
-   * through it. Nothing above the pin may set overflow or transform, or sticky stops working.
-   * The script writes --a (0..1, how "active" a card is) on each card and --t (px) on the list.
-   */
-  .wall--stage .wall__stage {
-    height: calc(var(--wall-pin-h) + var(--wall-steps) * var(--wall-step));
-  }
-
-  .wall--stage .wall__pin {
-    position: sticky;
-    top: max(var(--header-h), calc((100svh - var(--wall-pin-h)) / 2));
-  }
-
-  .wall--stage .wall__scroller {
-    overflow: hidden;
-    scroll-snap-type: none;
-    cursor: default;
-  }
-
-  .wall--stage .wall__list {
-    transform: translateX(calc(var(--t, 0) * -1px));
-    will-change: transform;
-  }
-
-  .wall--stage .quote,
-  .wall--stage .quote--wide {
-    width: calc(var(--quote-w) + (var(--quote-wide-w) - var(--quote-w)) * var(--a, 0));
-  }
-
-  .wall--stage .quote__text,
-  .wall--stage .quote--wide .quote__text {
-    max-height: calc(var(--quote-text-h-small) + (var(--quote-text-h-wide) - var(--quote-text-h-small)) * var(--a, 0));
-  }
-
-  /* Pagination: a dot per card, the current one stretches into a pill. */
-  .wall__dots {
-    display: flex;
-    align-items: center;
-    gap: var(--space-4);
-    height: var(--wall-dots-h);
-  }
-
-  .wall__dots[hidden] {
-    display: none;
-  }
-
-  .wall__dot {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: var(--space-24);
-    height: var(--space-24);
-    padding: 0;
-    border: 0;
-    background: none;
-    cursor: pointer;
-  }
-
-  .wall__dot::before {
-    content: '';
-    width: var(--space-8);
-    height: var(--space-8);
-    border-radius: var(--radius-pill);
-    background: var(--color-marquee-dot);
-    transition:
-      width 0.3s ease,
-      background-color 0.3s ease;
-  }
-
-  .wall__dot:hover::before {
-    background: var(--color-muted);
-  }
-
-  .wall__dot[aria-current='true']::before {
-    width: var(--space-24);
-    background: var(--color-ink);
-  }
 </style>
 
 <script>
-  const section = document.querySelector<HTMLElement>('.wall');
-  const stage = section?.querySelector<HTMLElement>('.wall__stage');
-  const pin = section?.querySelector<HTMLElement>('.wall__pin');
-  const scroller = section?.querySelector<HTMLElement>('.wall__scroller');
-  const list = section?.querySelector<HTMLElement>('.wall__list');
-  const dotsWrap = section?.querySelector<HTMLElement>('.wall__dots');
+  // Mouse drag to scroll the carousel (touch and trackpads scroll natively).
+  const scroller = document.querySelector<HTMLElement>('.wall__scroller');
 
-  if (section && stage && pin && scroller && list && dotsWrap) {
-    const cards = Array.from(list.querySelectorAll<HTMLElement>('.quote'));
-    const texts = Array.from(list.querySelectorAll<HTMLElement>('.quote__text'));
-    const dots = Array.from(dotsWrap.querySelectorAll<HTMLButtonElement>('.wall__dot'));
-    const steps = cards.length - 1;
+  if (scroller) {
+    let startX = 0;
+    let startLeft = 0;
+    let pointerId: number | null = null;
+    let moved = false;
 
-    // ---------- Cut-off quotes fade out, but only the ones that really overflow ----------
-    const markOverflow = () => {
-      texts.forEach((text) => text.toggleAttribute('data-overflow', text.scrollHeight > text.clientHeight + 1));
-    };
-    markOverflow();
-    document.fonts?.ready.then(markOverflow);
-    let resizeTimer: number | undefined;
-    window.addEventListener('resize', () => {
-      window.clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(markOverflow, 150);
+    scroller.addEventListener('pointerdown', (event) => {
+      if (event.pointerType !== 'mouse' || event.button !== 0) return;
+      pointerId = event.pointerId;
+      startX = event.clientX;
+      startLeft = scroller.scrollLeft;
+      moved = false;
     });
 
-    // ---------- Mouse drag for the plain carousel (touch and trackpads scroll natively) ----------
-    {
-      let startX = 0;
-      let startLeft = 0;
-      let pointerId: number | null = null;
-      let moved = false;
-
-      scroller.addEventListener('pointerdown', (event) => {
-        if (section.classList.contains('wall--stage')) return;
-        if (event.pointerType !== 'mouse' || event.button !== 0) return;
-        pointerId = event.pointerId;
-        startX = event.clientX;
-        startLeft = scroller.scrollLeft;
-        moved = false;
-      });
-
-      scroller.addEventListener('pointermove', (event) => {
-        if (pointerId !== event.pointerId) return;
-        const delta = event.clientX - startX;
-        if (!moved && Math.abs(delta) < 4) return;
-        if (!moved) {
-          moved = true;
-          scroller.setPointerCapture(event.pointerId);
-          scroller.setAttribute('data-dragging', '');
-          scroller.style.scrollBehavior = 'auto';
-        }
-        scroller.scrollLeft = startLeft - delta;
-      });
-
-      const end = (event: PointerEvent) => {
-        if (pointerId !== event.pointerId) return;
-        pointerId = null;
-        scroller.removeAttribute('data-dragging');
-        scroller.style.scrollBehavior = '';
-        if (moved && scroller.hasPointerCapture(event.pointerId)) scroller.releasePointerCapture(event.pointerId);
-      };
-      scroller.addEventListener('pointerup', end);
-      scroller.addEventListener('pointercancel', end);
-    }
-
-    // ---------- Pinned carousel: scrolling swaps the cards ----------
-    const stageQuery = window.matchMedia(
-      '(min-width: 1025px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)',
-    );
-
-    let enabled = false;
-    let position = 0; // animated position, 0..steps (fractional while a card is moving)
-    let target = 0; // the card the scroll position currently selects
-    let frame = 0;
-
-    const token = (name: string) => parseFloat(getComputedStyle(section).getPropertyValue(name));
-    const pinTop = () => parseFloat(getComputedStyle(pin).top) || 0;
-    const stepPx = () => (stage.offsetHeight - pin.offsetHeight) / steps;
-    // Where the page scroll is, in cards: 0 when the pin starts to stick, `steps` when it lets go.
-    const rawPosition = () => Math.min(Math.max((pinTop() - stage.getBoundingClientRect().top) / stepPx(), 0), steps);
-
-    const render = () => {
-      cards.forEach((card, i) => card.style.setProperty('--a', String(Math.max(0, 1 - Math.abs(position - i)))));
-      // Slide the row left only as far as needed to keep the wide card in view.
-      const small = token('--quote-w');
-      const wide = token('--quote-wide-w');
-      const gap = token('--space-10');
-      const shift = Math.max(0, position * (small + gap) + wide - scroller.clientWidth);
-      list.style.setProperty('--t', shift.toFixed(2));
-      const current = Math.round(position);
-      dots.forEach((dot, i) => dot.setAttribute('aria-current', String(i === current)));
-    };
-
-    const tick = () => {
-      frame = 0;
-      const distance = target - position;
-      if (Math.abs(distance) < 0.002) {
-        position = target;
-        render();
-        markOverflow();
-        return;
+    scroller.addEventListener('pointermove', (event) => {
+      if (pointerId !== event.pointerId) return;
+      const delta = event.clientX - startX;
+      if (!moved && Math.abs(delta) < 4) return;
+      if (!moved) {
+        moved = true;
+        scroller.setPointerCapture(event.pointerId);
+        scroller.setAttribute('data-dragging', '');
+        scroller.style.scrollBehavior = 'auto';
       }
-      position += distance * 0.14; // ease out: quick at first, then settles
-      render();
-      frame = requestAnimationFrame(tick);
-    };
-    const kick = () => {
-      if (!frame) frame = requestAnimationFrame(tick);
-    };
+      scroller.scrollLeft = startLeft - delta;
+    });
 
-    const onScroll = () => {
-      const raw = rawPosition();
-      // Switch at the halfway point, with a little hysteresis so it never flickers between two cards.
-      if (Math.abs(raw - target) > 0.6) {
-        target = Math.round(raw);
-        kick();
-      }
+    const end = (event: PointerEvent) => {
+      if (pointerId !== event.pointerId) return;
+      pointerId = null;
+      scroller.removeAttribute('data-dragging');
+      scroller.style.scrollBehavior = '';
+      if (moved && scroller.hasPointerCapture(event.pointerId)) scroller.releasePointerCapture(event.pointerId);
     };
-
-    const goTo = (index: number) => {
-      const clamped = Math.min(Math.max(index, 0), steps);
-      const wanted = pinTop() - clamped * stepPx(); // where the stage top must be for that card
-      window.scrollBy({ top: stage.getBoundingClientRect().top - wanted, behavior: 'smooth' });
-    };
-
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
-        if (target < steps) {
-          event.preventDefault();
-          goTo(target + 1);
-        }
-      } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
-        if (target > 0) {
-          event.preventDefault();
-          goTo(target - 1);
-        }
-      }
-    };
-
-    const onResize = () => {
-      if (!enabled) return;
-      position = target = Math.round(rawPosition());
-      render();
-    };
-
-    const enable = () => {
-      if (enabled) return;
-      enabled = true;
-      section.classList.add('wall--stage');
-      dotsWrap.hidden = false;
-      scroller.scrollLeft = 0;
-      position = target = Math.round(rawPosition());
-      render();
-      markOverflow();
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', onResize);
-      scroller.addEventListener('keydown', onKey);
-    };
-
-    const disable = () => {
-      if (!enabled) return;
-      enabled = false;
-      cancelAnimationFrame(frame);
-      frame = 0;
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onResize);
-      scroller.removeEventListener('keydown', onKey);
-      section.classList.remove('wall--stage');
-      dotsWrap.hidden = true;
-      cards.forEach((card) => card.style.removeProperty('--a'));
-      list.style.removeProperty('--t');
-      markOverflow();
-    };
-
-    dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
-
-    const sync = () => (stageQuery.matches ? enable() : disable());
-    stageQuery.addEventListener('change', sync);
-    sync();
+    scroller.addEventListener('pointerup', end);
+    scroller.addEventListener('pointercancel', end);
   }
 </script>

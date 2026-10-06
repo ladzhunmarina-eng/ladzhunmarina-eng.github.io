@@ -205,11 +205,7 @@
   --quote-card-height: 562px;
   --quote-w: 433px;
   --quote-wide-w: 846px;
-  --quote-text-h-small: 360px; /* 15 lines: how much of a quote a small card shows */
-  --quote-text-h-wide: 393px; /* the wide card's text area in the design */
-  --wall-dots-h: 64px; /* room for the pagination dots under the cards */
-  --wall-pin-h: calc(var(--quote-card-height) + var(--wall-dots-h));
-  --wall-step: 60svh; /* scroll distance per card while the carousel is pinned */
+  --quote-lines: 15; /* the design cuts the longest quote at 15 lines */
   --photo-size: 96px;
 
   /* ---------- Contact card ---------- */
