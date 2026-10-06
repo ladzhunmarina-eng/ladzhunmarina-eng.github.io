@@ -19,7 +19,7 @@ import SocialLinks from './SocialLinks.astro';
   </h1>
   <div class="hero__actions">
     <Button href="#work">View cases</Button>
-    <Button href="#" variant="outline" trail>CV</Button>
+    <Button class="hero__cv" href="#" variant="outline">CV</Button>
     <Button class="hero__contact" href="#contact" variant="outline-strong">Contact me</Button>
   </div>
   <SocialLinks class="hero__rail" direction="column" />
@@ -107,6 +107,10 @@ import SocialLinks from './SocialLinks.astro';
     align-items: center;
     gap: var(--space-14);
     margin-top: var(--space-30);
+  }
+
+  .hero :global(.hero__cv) {
+    min-width: var(--button-width-cv);
   }
 
   /* Contact me is in the header from 860px; below that the hero carries it. */

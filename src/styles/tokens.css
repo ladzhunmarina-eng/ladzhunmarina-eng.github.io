@@ -221,9 +221,9 @@
   --social-gap-row: 12px;
   --social-gap-col: 16px;
   --rail-top: 307px; /* social rail sits 307px from the page top, beside the hero heading */
-  --trail-slot: 20px; /* empty icon slot kept after the CV label, as in the design */
   --header-button-margin: 8px;
   --button-width: 157px;
+  --button-width-cv: 99px;
   --icon-briefcase: 24px;
   --tag-rule-width: 2px;
   --tag-rule-height: 19px;

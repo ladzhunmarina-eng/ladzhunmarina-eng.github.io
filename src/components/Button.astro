@@ -4,14 +4,13 @@ interface Props {
   variant?: 'solid' | 'outline' | 'outline-strong';
   size?: 'md' | 'sm';
   wide?: boolean;
-  trail?: boolean;
   class?: string;
 }
 
-const { href, variant = 'solid', size = 'md', wide = false, trail = false, class: className } = Astro.props;
+const { href, variant = 'solid', size = 'md', wide = false, class: className } = Astro.props;
 ---
 
-<a class:list={['button', `button--${variant}`, `button--${size}`, { 'button--wide': wide, 'button--trail': trail }, className]} href={href}><slot /></a>
+<a class:list={['button', `button--${variant}`, `button--${size}`, { 'button--wide': wide }, className]} href={href}><slot /></a>
 
 <style>
   .button {
@@ -75,12 +74,5 @@ const { href, variant = 'solid', size = 'md', wide = false, trail = false, class
 
   .button--outline-strong:hover {
     border-color: var(--color-black);
-  }
-
-  /* An empty icon slot after the label, as in the design (the CV button is wider than its text). */
-  .button--trail::after {
-    content: '';
-    width: var(--trail-slot);
-    margin-left: var(--space-8);
   }
 </style>
