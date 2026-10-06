@@ -1,12 +1,9 @@
-/*
- * Contact card content.
- * TODO: replace the placeholders with real values before launch.
- */
+/* Contact card content. */
 export const contact = {
   name: 'Marina',
   role: 'Product Designer',
   note: 'Open to product design projects and teams building complex digital products.',
-  email: 'hello@example.com',
-  telegram: '#',
-  whatsapp: '#',
+  email: 'ladzhunmarina@gmail.com',
+  telegram: 'https://t.me/mladzhun',
+  whatsapp: 'https://wa.me/380951084774',
 };
