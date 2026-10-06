@@ -1,35 +1,74 @@
 ---
-import { experience } from '../data/content';
+import { Image } from 'astro:assets';
+import { experience, testimonials } from '../data/content';
 import BriefcaseIcon from '../assets/icons/briefcase.svg';
 ---
 
 <section class="experience" id="experience" aria-labelledby="experience-title">
-  <h2 id="experience-title" class="experience__title">Experience</h2>
-  <div class="experience__roles">
-    {experience.map((role) => (
-      <article class="role">
-        <BriefcaseIcon class="role__icon" aria-hidden="true" />
-        <header class="role__header">
-          <h3 class="role__title">{role.title}</h3>
-          <p class="role__dates">{role.dates}</p>
-        </header>
-        <ul class="role__list">
-          {role.bullets.map((bullet) => <li class="role__item">{bullet}</li>)}
-        </ul>
-        <p class="role__summary">{role.summary}</p>
-      </article>
-    ))}
+  <div class="experience__layout">
+    <div class="experience__main">
+      <h2 id="experience-title" class="experience__title">Experience</h2>
+      <div class="experience__roles">
+        {experience.map((role) => (
+          <article class="role">
+            <BriefcaseIcon class="role__icon" aria-hidden="true" />
+            <header class="role__header">
+              <h3 class="role__title">{role.title}</h3>
+              <p class="role__dates">{role.dates}</p>
+            </header>
+            <ul class="role__list">
+              {role.bullets.map((bullet) => <li class="role__item">{bullet}</li>)}
+            </ul>
+            <p class="role__summary">{role.summary}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+
+    <!--
+      What colleagues say, pinned beside the roles at slight angles. On desktop the column drifts a little
+      faster than the text while you scroll (see the script); everywhere else it simply sits there.
+    -->
+    <div class="experience__notes" aria-label="What colleagues say">
+      <ul class="notes">
+        {testimonials.map((t) => (
+          <li class={`note note--${t.theme}`} style={`--tilt: ${t.tilt}deg${t.width ? `; --w: ${t.width}px` : ''}`}>
+            <figure class="note__figure">
+              <blockquote class="note__text">
+                {t.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+              </blockquote>
+              <figcaption class="note__person">
+                <Image class="note__photo" src={t.photo} alt={t.alt} width={96} height={96} widths={[96, 192, 288]} sizes="96px" />
+                <span class="note__meta">
+                  <span class="note__name">{t.name}</span>
+                  <span class="note__role">{t.role}</span>
+                </span>
+              </figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
+    </div>
   </div>
 </section>
 
 <style>
+  /*
+   * The left column starts at x=146 in the 1440px design: a 1148px block centered on the page. The notes
+   * run on past that block to the right, as in the design, so the section is left-anchored, not centered.
+   */
   .experience {
-    max-width: var(--text-section-max);
-    margin-inline: auto;
-    padding: var(--space-167) var(--gutter) var(--space-303);
-    box-sizing: content-box;
+    padding: var(--space-167) var(--gutter) var(--space-303) max(var(--gutter), calc((100% - 1148px) / 2));
     /* The section starts with a large top padding; anchor so the heading, not the padding, sits under the header. */
     scroll-margin-top: calc(var(--header-h) - var(--space-167));
+  }
+
+  .experience__layout {
+    width: min(100%, calc(var(--experience-col) + var(--experience-gap) + var(--notes-w)));
+    display: grid;
+    grid-template-columns: var(--experience-col) minmax(0, var(--notes-w));
+    column-gap: var(--experience-gap);
+    align-items: start;
   }
 
   .experience__title {
@@ -44,7 +83,7 @@ import BriefcaseIcon from '../assets/icons/briefcase.svg';
   .experience__roles {
     display: flex;
     flex-direction: column;
-    gap: var(--space-44);
+    gap: var(--space-80);
   }
 
   .role {
@@ -64,20 +103,20 @@ import BriefcaseIcon from '../assets/icons/briefcase.svg';
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
-    font-family: var(--font-meta);
-    font-weight: var(--weight-semibold);
     color: var(--color-black);
   }
 
   .role__title {
-    font-size: var(--fs-16);
-    font-weight: var(--weight-semibold);
-    line-height: var(--lh-16-meta);
+    font-size: var(--fs-20);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-20);
+    letter-spacing: var(--ls-20);
   }
 
   .role__dates {
-    font-size: var(--fs-14);
-    line-height: var(--lh-14-24);
+    font-size: var(--fs-20);
+    line-height: var(--lh-20);
+    letter-spacing: var(--ls-20);
   }
 
   .role__list {
@@ -89,8 +128,8 @@ import BriefcaseIcon from '../assets/icons/briefcase.svg';
   .role__item {
     display: flex;
     gap: var(--space-8);
-    font-size: var(--fs-14);
-    line-height: var(--lh-14-18);
+    font-size: var(--fs-20);
+    line-height: var(--lh-20);
     letter-spacing: var(--ls-20);
   }
 
@@ -100,14 +139,175 @@ import BriefcaseIcon from '../assets/icons/briefcase.svg';
     padding-top: var(--space-3);
     font-family: var(--font-meta);
     font-weight: var(--weight-extralight);
+    font-size: var(--fs-14);
     line-height: var(--lh-14-14);
   }
 
   .role__summary {
     margin-top: calc(var(--space-12) - var(--space-16));
-    font-size: var(--fs-12);
+    font-size: var(--fs-20);
     font-weight: var(--weight-medium);
-    line-height: var(--lh-12-18);
+    line-height: var(--lh-20);
     letter-spacing: var(--ls-20);
   }
+
+  /* ---------- Endorsement notes ---------- */
+
+  .experience__notes {
+    padding-top: var(--note-top);
+    /* The script moves this column a little; keep the move from affecting layout. */
+    will-change: transform;
+  }
+
+  .notes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--notes-gap);
+  }
+
+  .note {
+    width: min(var(--w, var(--note-w)), 100%);
+    padding: var(--note-pad);
+    border-radius: var(--radius-card);
+    background: var(--note-bg);
+    rotate: var(--tilt, 0deg);
+    filter: drop-shadow(var(--note-shadow));
+  }
+
+  .note--1 { --note-bg: var(--quote-1-bg); }
+  .note--2 { --note-bg: var(--quote-2-bg); }
+  .note--3 { --note-bg: var(--quote-3-bg); }
+
+  .note__figure {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  .note__text {
+    font-size: var(--fs-14);
+    line-height: var(--lh-display);
+    letter-spacing: var(--ls-20);
+    color: var(--color-black);
+  }
+
+  .note__text p {
+    white-space: pre-line;
+  }
+
+  .note__text p + p {
+    margin-top: 1lh;
+  }
+
+  .note__person {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+  }
+
+  .note__photo {
+    flex: none;
+    width: var(--photo-size);
+    height: var(--photo-size);
+  }
+
+  .note__meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-10);
+    min-width: 0;
+    font-size: var(--fs-20);
+    line-height: var(--lh-20);
+  }
+
+  .note__name {
+    font-weight: var(--weight-semibold);
+    color: var(--color-black);
+  }
+
+  .note__role {
+    letter-spacing: var(--ls-20);
+    color: var(--color-muted);
+  }
+
+  /* ---------- Narrower than 1280px: one column; the notes follow the roles ---------- */
+
+  @media (max-width: 1279px) {
+    .experience__layout {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: var(--space-80);
+    }
+
+    .experience__notes {
+      padding-top: 0;
+    }
+
+    .notes {
+      gap: var(--space-42);
+    }
+
+    .note {
+      margin-inline: auto;
+      rotate: calc(var(--tilt, 0deg) * 0.4); /* a gentler tilt on small screens */
+    }
+  }
+
+  @media (max-width: 640px) {
+    .note {
+      padding: var(--space-24);
+    }
+
+    .note__meta {
+      font-size: var(--fs-16);
+      line-height: var(--lh-16);
+    }
+  }
 </style>
+
+<script>
+  // The notes drift slightly faster than the text, so they feel pinned in front of the page, not printed on it.
+  const section = document.querySelector<HTMLElement>('.experience');
+  const notes = document.querySelector<HTMLElement>('.experience__notes');
+
+  if (section && notes) {
+    const drift = window.matchMedia('(min-width: 1280px) and (prefers-reduced-motion: no-preference)');
+    const token = (name: string) => parseFloat(getComputedStyle(section).getPropertyValue(name));
+    let frame = 0;
+    let enabled = false;
+
+    const update = () => {
+      frame = 0;
+      if (!enabled) return; // a frame scheduled before the effect was switched off must not undo the reset
+      const factor = token('--note-parallax');
+      const limit = token('--note-parallax-max');
+      const rect = section.getBoundingClientRect();
+      // 0 when the middle of the section is at the middle of the screen: the notes sit where they were designed.
+      const away = rect.top + rect.height / 2 - window.innerHeight / 2;
+      const offset = Math.max(-limit, Math.min(limit, away * factor));
+      notes.style.transform = `translateY(${offset.toFixed(1)}px)`;
+    };
+
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    const sync = () => {
+      if (drift.matches && !enabled) {
+        enabled = true;
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
+        update();
+      } else if (!drift.matches && enabled) {
+        enabled = false;
+        cancelAnimationFrame(frame);
+        frame = 0;
+        window.removeEventListener('scroll', onScroll);
+        window.removeEventListener('resize', onScroll);
+        notes.style.removeProperty('transform');
+      }
+    };
+
+    drift.addEventListener('change', sync);
+    sync();
+  }
+</script>

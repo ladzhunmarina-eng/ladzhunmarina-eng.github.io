@@ -84,6 +84,31 @@ export const work = [
 
 export const testimonials = [
   {
+    theme: '1',
+    paragraphs: [
+      'I have had the pleasure of working with Marina for almost 2 years, where she worked as a freelance designer for FlexyBox. We considered outsourcing our UI/UX design to a design company, when we were lucky to get to know Marina. Not once have we regretted that decision. Marina has worked directly with me, our developers and product owners in FlexyBox.',
+      'Marina is not only very competent and talented at creating beautiful UI’s, she is also very knowledgeable about UI/UX and good at communicating her ideas. She is honest and productive, and we have been impressed by the amount of work we got in the hours spent. Usually we ask for an estimate upfront when working with freelancers. With Marina we quickly realized that there was no need.',
+      'In Marina we didn’t just find a trustworthy business partner, we also got the best and most creative designs that matched our high expectations.',
+      'I therefor give Marina my highest recommendation.',
+    ],
+    name: 'Kenneth Lambæk Jensen',
+    role: 'Chief Innovation Officer',
+    photo: photo1,
+    alt: 'Portrait of Kenneth Lambæk Jensen',
+    tilt: 6.6,
+  },
+  {
+    theme: '2',
+    paragraphs: [
+      'I had the opportunity to work with Marina on a SaaS platform in a unique industry. Marina was a fantastic contributor to the team - she brought thoughtful and strategic UX/UI recommendations to a complex product. While the leadership of the product changed several times throughout the lifecycle of the product, Marina maintained an excellent level of work - she is both agile and focused, works quickly and efficiently, and always stands by the integrity of her work',
+    ],
+    name: 'Jen Volmer',
+    role: 'Head of Product',
+    photo: photo2,
+    alt: 'Portrait of Jen Volmer',
+    tilt: -8.8,
+  },
+  {
     theme: '3',
     paragraphs: [
       'I can truly recommend working with Maryna as a very skillful Designer with a lot of expertise around the user experience but also research even in a very complex environments.',
@@ -96,29 +121,8 @@ export const testimonials = [
     role: 'Product Manager',
     photo: photo3,
     alt: 'Portrait of Agata Woźniak',
-  },
-  {
-    theme: '1',
-    paragraphs: [
-      'I have had the pleasure of working with Marina for almost 2 years, where she worked as a freelance designer for FlexyBox. We considered outsourcing our UI/UX design to a design company, when we were lucky to get to know Marina. Not once have we regretted that decision. Marina has worked directly with me, our developers and product owners in FlexyBox.',
-      'Marina is not only very competent and talented at creating beautiful UI’s, she is also very knowledgeable about UI/UX and good at communicating her ideas. She is honest and productive, and we have been impressed by the amount of work we got in the hours spent. Usually we ask for an estimate upfront when working with freelancers. With Marina we quickly realized that there was no need.',
-      'In Marina we didn’t just find a trustworthy business partner, we also got the best and most creative designs that matched our high expectations.',
-      'I therefor give Marina my highest recommendation.',
-    ],
-    name: 'Kenneth Lambæk Jensen',
-    role: 'Chief Innovation Officer',
-    photo: photo1,
-    alt: 'Portrait of Kenneth Lambæk Jensen',
-  },
-  {
-    theme: '2',
-    paragraphs: [
-      'I had the opportunity to work with Marina on a SaaS platform in a unique industry. Marina was a fantastic contributor to the team - she brought thoughtful and strategic UX/UI recommendations to a complex product. While the leadership of the product changed several times throughout the lifecycle of the product, Marina maintained an excellent level of work - she is both agile and focused, works quickly and efficiently, and always stands by the integrity of her work',
-    ],
-    name: 'Jen Volmer',
-    role: 'Head of Product',
-    photo: photo2,
-    alt: 'Portrait of Jen Volmer',
+    tilt: 0,
+    width: 511, // Agata's card is a little narrower in the design
   },
 ];
 
@@ -131,7 +135,7 @@ export const experience = [
       'Owned contractor monetization on Fixly: credit packages, premium options and pricing, treating price as a design element that affects both sides of the marketplace',
       'Ran price A/B tests and fake door tests with ARPU as the primary metric; the pricing test showed the mid-tier package earning the most revenue, not the most expensive one',
       'Designed installment payments for OLX buyers and led discovery with shop owners: in-depth interviews and prototype usability tests in UserZoom, recruited through the platform itself',
-      'Worked within Nexus, the OLX marketplace design system for Ukraine, Poland and Romania: built new scenarios from existing patterns and raised component gaps only where the library genuinely lacked one',
+      'Worked within Nexus, the OLX marketplace design system: built new scenarios from existing patterns and raised component gaps only where the library genuinely lacked one',
       'Moved to a prototype-first process: working prototypes in Lovable or Claude, validation with design critique and dev, then Figma as the handoff source of truth; for web, a Claude Code implementation delivered as a PR',
     ],
     summary:

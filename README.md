@@ -24,8 +24,7 @@ src/
     Hero.astro             two-tone heading, buttons, social icons
     Marquee.astro          the scrolling skills strip
     WorkCard.astro         one Featured Work panel (stacks with CSS sticky on desktop)
-    Testimonials.astro     Wall of Love expanding-card row
-    Experience.astro       roles and bullets
+    Experience.astro       roles, plus the colleague endorsements pinned beside them
     ContactCard.astro      the card that opens from every "Contact" trigger
     Button.astro, SocialLinks.astro, Footer.astro
   data/
@@ -48,7 +47,7 @@ src/
 - **Featured Work** panels are stacked with pure CSS `position: sticky` (no scroll listeners). They only stack when the window is at least 1025px wide and 600px tall; otherwise they are plain cards. Nothing above the panels may set `overflow` or a transform, or sticky silently stops working.
 - **Header:** one translucent, blurred pill. The wordmark and Contact me fade out after 40px of scroll. The current section's link turns yellow.
 - **Contact card:** opens from every `href="#contact"` link, closes with the button, Escape or a click outside.
-- **Wall of Love:** a row of testimonials, one open (wide, full quote) and the rest collapsed. Clicking a card puts it in the open place and sends the previously open card to the end; the arrow keys step through them. Each card holds its quote twice at fixed widths, so text never re-wraps during the animation. On phones it is a swipe carousel with one full card per screen.
+- **Experience:** two columns from 1280px wide: the roles on the left, three endorsement cards on the right at slight angles with a soft shadow. The cards drift about 12% faster than the text while you scroll (a small script, off for `prefers-reduced-motion` and on narrower screens, where the cards simply follow the roles). The carousel that used to be the Wall of Love section is in the git history (commit `59bfb44`).
 - **Motion:** the marquee, the hand wave and the contact card respect `prefers-reduced-motion`.
 - **Fonts** (Bricolage Grotesque, Inter, Gantari) are self-hosted through `@fontsource`.
 

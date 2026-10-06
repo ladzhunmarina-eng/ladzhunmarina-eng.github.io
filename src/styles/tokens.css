@@ -160,9 +160,8 @@
   --work-tab-pad: 40px;
   --fs-tab: var(--fs-24);
   --work-tab-row: 75px;
-  --wall-pad-left: 68px; /* the 1319px block sits at x=68 in the 1440px design */
-  --wall-pad-right: 53px;
-  --text-section-max: 1140px;
+  --experience-col: 576px; /* heading and roles column */
+  --experience-gap: 49px; /* space between the roles and the notes, from Figma */
   --experience-measure: 501px;
 
   /* ---------- Hero avatar (scales with the heading font-size) ---------- */
@@ -202,14 +201,15 @@
   --marquee-speed: 131s; /* one list width (2620px) per loop = 20px per second, like the reference */
 
   /* ---------- Testimonials ---------- */
-  --quote-open-w: 846px; /* expanded card, from Figma */
-  --quote-closed-w: 433px; /* collapsed card, from Figma */
-  --quote-h: 724px; /* one fixed height for every card; Figma's 562px cannot hold Agata's full quote at 846px wide */
-  --quote-collapsed-lines: 23; /* lines of the collapsed copy that fit above the author block */
-  --quote-time: 500ms; /* card width and row slide */
-  --quote-fade: 200ms; /* quote copies fading in and out */
-  --quote-fade-delay: 300ms; /* the incoming copy waits for the second half of the motion */
-  --quote-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  /* Endorsement notes beside the roles (Experience) */
+  --notes-w: 560px; /* the notes column; cards are 533px (Agata's 511px) */
+  --note-w: 533px;
+  --note-top: 226px; /* first note starts this far below the heading, level with the first role */
+  --notes-gap: 100px;
+  --note-pad: 30px;
+  --note-shadow: 2px 4px 8px rgb(0 0 0 / 0.15); /* soft paper shadow, as on the reference */
+  --note-parallax: 0.12; /* notes drift 12% faster than the text while you scroll */
+  --note-parallax-max: 170px; /* never drift further than this from the designed position */
   --photo-size: 96px;
 
   /* ---------- Contact card ---------- */
@@ -270,8 +270,6 @@
 @media (max-width: 1024px) {
   :root {
     --gutter: 40px;
-    --wall-pad-left: var(--gutter);
-    --wall-pad-right: var(--gutter);
     --hero-gutter: 40px;
     --hero-top: 190px;
   }
@@ -281,8 +279,6 @@
 @media (max-width: 640px) {
   :root {
     --gutter: 20px;
-    --wall-pad-left: var(--gutter);
-    --wall-pad-right: var(--gutter);
     --hero-gutter: 20px;
     --hero-top: 124px;
     --hero-avatar-size: 2em;
