@@ -5,17 +5,18 @@ import GithubIcon from '../assets/icons/github.svg';
 
 interface Props {
   class?: string;
+  direction?: 'row' | 'column';
 }
 
-const { class: className } = Astro.props;
+const { class: className, direction = 'row' } = Astro.props;
 const links = [
-  { label: 'Dribbble', href: '#', Icon: DribbbleIcon },
-  { label: 'LinkedIn', href: '#', Icon: LinkedinIcon },
   { label: 'GitHub', href: '#', Icon: GithubIcon },
+  { label: 'LinkedIn', href: '#', Icon: LinkedinIcon },
+  { label: 'Dribbble', href: '#', Icon: DribbbleIcon },
 ];
 ---
 
-<ul class:list={['social', className]} aria-label="Social profiles">
+<ul class:list={['social', `social--${direction}`, className]} aria-label="Social profiles">
   {links.map(({ label, href, Icon }) => (
     <li>
       <a class="social__link" href={href} aria-label={label} rel="me noopener">
@@ -29,7 +30,12 @@ const links = [
   .social {
     display: flex;
     align-items: center;
-    gap: var(--header-group-gap);
+    gap: var(--social-gap-row);
+  }
+
+  .social--column {
+    flex-direction: column;
+    gap: var(--social-gap-col);
   }
 
   .social > li {

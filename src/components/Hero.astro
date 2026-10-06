@@ -19,13 +19,16 @@ import SocialLinks from './SocialLinks.astro';
   </h1>
   <div class="hero__actions">
     <Button href="#work">View cases</Button>
-    <Button href="#" variant="outline">CV</Button>
+    <Button href="#" variant="outline" trail>CV</Button>
+    <Button class="hero__contact" href="#contact" variant="outline-strong">Contact me</Button>
   </div>
+  <SocialLinks class="hero__rail" direction="column" />
   <SocialLinks class="hero__social" />
 </section>
 
 <style>
   .hero {
+    position: relative;
     max-width: var(--page-max);
     margin-inline: auto;
     padding: var(--hero-top) var(--hero-gutter) 0;
@@ -66,20 +69,42 @@ import SocialLinks from './SocialLinks.astro';
 
   .hero__actions {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: var(--space-14);
     margin-top: var(--space-30);
   }
 
-  /* Phones only: the header's icon group is hidden there, so the icons sit under the buttons. */
-  .hero :global(.hero__social) {
+  /* Contact me is in the header from 860px; below that the hero carries it. */
+  .hero :global(.hero__contact) {
+    display: inline-flex;
+  }
+
+  @media (min-width: 860px) {
+    .hero :global(.hero__contact) {
+      display: none;
+    }
+  }
+
+  /* Social icons: a vertical rail beside the heading on desktop, a row under the buttons below that. */
+  .hero :global(.hero__rail) {
     display: none;
+  }
+
+  .hero :global(.hero__social) {
     margin-top: var(--space-16);
   }
 
-  @media (max-width: 640px) {
-    .hero :global(.hero__social) {
+  @media (min-width: 1025px) {
+    .hero :global(.hero__rail) {
+      position: absolute;
+      top: var(--rail-top);
+      right: var(--gutter);
       display: flex;
+    }
+
+    .hero :global(.hero__social) {
+      display: none;
     }
   }
 </style>

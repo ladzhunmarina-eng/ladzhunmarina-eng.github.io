@@ -12,6 +12,8 @@
   --color-marquee-text: #666;
   --color-marquee-dot: #d9d9d9;
   --color-outline: #b3b3b3;
+  --color-outline-strong: #999;
+  --color-logo: #868181;
   --color-icon-muted: #b3b3b3;
   --color-ink-button: #2e2e2e;
   --color-nav-bg: rgb(255 255 255 / 0.75); /* translucent, so the blur behind the pill shows */
@@ -64,6 +66,8 @@
   /* ---------- Typography: families ---------- */
   --font-display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* PolySans Neutral is a paid font and is not bundled. Add its @font-face to use it; until then the next family renders. */
+  --font-logo: 'PolySans Neutral', 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
   --font-meta: 'Gantari', 'Inter', system-ui, sans-serif;
 
   /* ---------- Typography: weights ---------- */
@@ -80,6 +84,7 @@
   --fs-14: 14px;
   --fs-16: 16px;
   --fs-18: 18px;
+  --fs-19: 19px;
   --fs-20: 20px;
   --fs-22: 22px;
   --fs-24: 24px;
@@ -168,9 +173,9 @@
   --nav-height: 77px;
   --header-h: calc(var(--nav-top) + var(--nav-height) + var(--space-12)); /* height of the solid header plate */
   --nav-pad-y: 12px;
-  --nav-pad-x: 24px;
+  --nav-pad-x: 20px;
   --nav-link-pad-y: 17px;
-  --nav-link-pad-x: 30px;
+  --nav-link-pad-x: 24px;
   --nav-blur: 20px;
   --z-nav: 10;
   --z-contact: 101;
@@ -207,9 +212,12 @@
   --button-height: 48px;
   --button-height-sm: 40px;
   --icon-hit: 40px;
-  --header-group-gap: 12px;
+  --social-gap-row: 12px;
+  --social-gap-col: 16px;
+  --rail-top: 307px; /* social rail sits 307px from the page top, beside the hero heading */
+  --trail-slot: 20px; /* empty icon slot kept after the CV label, as in the design */
   --header-button-margin: 8px;
-  --button-width: 173px;
+  --button-width: 157px;
   --icon-briefcase: 24px;
   --tag-rule-width: 2px;
   --tag-rule-height: 19px;
@@ -268,8 +276,8 @@
     --radius-panel: 24px;
     --nav-top: 16px;
     --nav-height: 59px;
-    --nav-pad-x: 12px;
-    --nav-link-pad-x: 18px;
+    --nav-pad-x: 10px;
+    --nav-link-pad-x: 14px;
     --footer-height: 160px;
   }
 }

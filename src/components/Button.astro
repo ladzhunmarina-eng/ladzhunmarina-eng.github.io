@@ -1,16 +1,17 @@
 ---
 interface Props {
   href: string;
-  variant?: 'solid' | 'outline';
+  variant?: 'solid' | 'outline' | 'outline-strong';
   size?: 'md' | 'sm';
   wide?: boolean;
+  trail?: boolean;
   class?: string;
 }
 
-const { href, variant = 'solid', size = 'md', wide = false, class: className } = Astro.props;
+const { href, variant = 'solid', size = 'md', wide = false, trail = false, class: className } = Astro.props;
 ---
 
-<a class:list={['button', `button--${variant}`, `button--${size}`, { 'button--wide': wide }, className]} href={href}><slot /></a>
+<a class:list={['button', `button--${variant}`, `button--${size}`, { 'button--wide': wide, 'button--trail': trail }, className]} href={href}><slot /></a>
 
 <style>
   .button {
@@ -59,5 +60,27 @@ const { href, variant = 'solid', size = 'md', wide = false, class: className } =
 
   .button--outline:hover {
     border-color: var(--color-ink-button);
+  }
+
+  /* The header / mobile Contact me: darker rule and regular 16px black text. */
+  .button--outline-strong {
+    min-width: var(--button-width);
+    padding-inline: var(--space-24);
+    border: 1px solid var(--color-outline-strong);
+    color: var(--color-black);
+    font-size: var(--fs-16);
+    line-height: var(--lh-16);
+    font-weight: var(--weight-regular);
+  }
+
+  .button--outline-strong:hover {
+    border-color: var(--color-black);
+  }
+
+  /* An empty icon slot after the label, as in the design (the CV button is wider than its text). */
+  .button--trail::after {
+    content: '';
+    width: var(--trail-slot);
+    margin-left: var(--space-8);
   }
 </style>
