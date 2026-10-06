@@ -20,7 +20,7 @@ export const marquee = [
   { icon: 'globe', label: 'websites' },
   { icon: 'globe', label: 'research' },
   { icon: 'arrow', label: 'metrics' },
-  { icon: 'grid', label: 'products' },
+  { icon: 'grid', label: 'design systems' },
 ] as const;
 
 /*
