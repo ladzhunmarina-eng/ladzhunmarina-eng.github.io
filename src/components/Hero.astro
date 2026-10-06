@@ -1,0 +1,104 @@
+---
+import { Image } from 'astro:assets';
+import avatar from '../assets/images/avatar.png';
+import LinkedinIcon from '../assets/icons/linkedin.svg';
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <h1 id="hero-title" class="hero__title">
+    Hi, I’m <span class="hero__avatar"><Image
+        src={avatar}
+        alt=""
+        width={278}
+        height={278}
+        widths={[139, 278, 417]}
+        sizes="139px"
+        loading="eager"
+      /></span> Marina <span class="hero__wave" role="img" aria-label="waving hand">👋</span>, practicing product design since 2015, building complex digital products for real business needs.
+  </h1>
+  <div class="hero__actions">
+    <a class="button" href="#contact">Contact me</a>
+    <a class="hero__social" href="https://www.linkedin.com/" aria-label="Marina on LinkedIn" rel="me noopener">
+      <LinkedinIcon aria-hidden="true" />
+    </a>
+  </div>
+</section>
+
+<style>
+  .hero {
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding: var(--hero-top) var(--hero-gutter) 0;
+  }
+
+  .hero__title {
+    max-width: var(--hero-measure);
+    font-family: var(--font-display);
+    font-size: var(--fs-display);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-display);
+    letter-spacing: var(--ls-0);
+    color: var(--color-ink);
+  }
+
+  /* The photo takes the gap in the first line; it rises above the line like in the design. */
+  .hero__avatar {
+    position: relative;
+    display: inline-block;
+    width: var(--hero-avatar-size);
+    height: 0;
+    margin-inline: var(--hero-avatar-gap);
+    vertical-align: baseline;
+  }
+
+  .hero__avatar img {
+    position: absolute;
+    bottom: calc(var(--hero-baseline) + var(--hero-avatar-raise) - var(--hero-avatar-size));
+    left: 0;
+    width: 100%;
+    height: auto;
+  }
+
+  /* The emoji font has taller metrics; keep it from stretching the first line. */
+  .hero__wave {
+    line-height: 0;
+  }
+
+  .hero__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-26);
+    margin-top: var(--space-30);
+  }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--button-width);
+    height: var(--button-height);
+    padding-inline: var(--space-24);
+    border-radius: var(--radius-button);
+    background: var(--color-black);
+    color: var(--color-white);
+    font-size: var(--fs-16);
+    line-height: var(--lh-16);
+    font-weight: var(--weight-regular);
+    transition: background-color 0.15s ease;
+  }
+
+  .button:hover {
+    background: var(--color-button-hover);
+  }
+
+  .hero__social {
+    display: inline-flex;
+    color: var(--color-black);
+    border-radius: var(--radius-focus);
+  }
+
+  .hero__social :global(svg) {
+    width: var(--icon-linkedin);
+    height: var(--icon-linkedin);
+  }
+</style>

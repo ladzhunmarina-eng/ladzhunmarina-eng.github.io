@@ -1,0 +1,210 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  number: string;
+  theme: string;
+  category: string;
+  title: string;
+  href: string;
+  description: string;
+  tags: string[];
+  image: ImageMetadata;
+  alt: string;
+  place: { left: string; top: string; width: string; height: string };
+  id?: string;
+}
+
+const { number, theme, category, title, href, description, tags, image, alt, place, id } = Astro.props;
+const themeVars = {
+  yellow: '1',
+  cream: '2',
+  lilac: '3',
+  mint: '4',
+}[theme];
+---
+
+<article class="work" id={id} style={`--bg: var(--work-${themeVars}-bg); --panel: var(--work-${themeVars}-panel); --accent: var(--work-${themeVars}-accent);`}>
+  <div class="work__tabrow">
+    <div class="work__tab">
+      <p class="work__tab-label">Featured Work {number}</p>
+    </div>
+  </div>
+  <div class="work__body">
+    <div class="work__inner">
+      <div class="work__panel">
+        <Image
+          class="work__image"
+          src={image}
+          alt={alt}
+          widths={[480, 720, 1080, 1440]}
+          sizes="(max-width: 1024px) 100vw, 726px"
+          quality={85}
+          style={`left:${place.left};top:${place.top};width:${place.width};height:${place.height};`}
+        />
+      </div>
+      <div class="work__text">
+        <p class="work__category">{category}</p>
+        <h2 class="work__title"><a class="work__link" href={href}>{title}</a></h2>
+        <p class="work__description">{description}</p>
+        <ul class="work__tags" aria-label="Focus areas">
+          {tags.map((tag) => <li class="work__tag">{tag}</li>)}
+        </ul>
+      </div>
+    </div>
+  </div>
+</article>
+
+<style>
+  .work {
+    width: 100%;
+    max-width: var(--page-max);
+    margin-inline: auto;
+  }
+
+  .work__tabrow {
+    display: flex;
+    height: var(--work-tab-row);
+    padding-left: var(--work-tab-inset);
+  }
+
+  .work__tab {
+    display: flex;
+    align-items: center;
+    width: var(--work-tab-width);
+    padding-inline: var(--space-4) 0;
+    padding-left: calc(var(--space-30) + var(--space-10));
+    border-radius: var(--radius-card) var(--radius-card) 0 0;
+    background: var(--bg);
+  }
+
+  .work__tab-label {
+    font-family: var(--font-display);
+    font-size: var(--fs-24);
+    font-weight: var(--weight-light);
+    line-height: var(--lh-24);
+    letter-spacing: var(--ls-24);
+    color: var(--accent);
+  }
+
+  .work__body {
+    padding: var(--space-57) var(--gutter);
+    background: var(--bg);
+  }
+
+  .work__inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--work-panel-fr) var(--work-text-fr);
+    column-gap: var(--space-59);
+    align-items: end;
+    max-width: var(--work-inner-max);
+  }
+
+  .work__panel {
+    position: relative;
+    aspect-ratio: var(--work-panel-ratio);
+    border-radius: var(--radius-panel);
+    background: var(--panel);
+  }
+
+  .work__panel :global(.work__image) {
+    position: absolute;
+    max-width: none;
+    object-fit: contain;
+    object-position: center bottom;
+  }
+
+  .work__text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    min-width: 0;
+  }
+
+  .work__category {
+    font-size: var(--fs-20);
+    line-height: var(--lh-20);
+    letter-spacing: var(--ls-20);
+    color: var(--color-muted);
+  }
+
+  .work__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-32);
+    font-weight: var(--weight-extrabold);
+    line-height: var(--lh-32);
+    letter-spacing: var(--ls-0);
+    color: var(--color-ink);
+  }
+
+  /* One link covers the whole card, so the card is a single click target. */
+  .work__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-panel);
+  }
+
+  .work__link:focus-visible {
+    outline: none;
+  }
+
+  .work__link:focus-visible::after {
+    outline: var(--focus-width) solid var(--color-focus);
+    outline-offset: var(--focus-offset);
+  }
+
+  .work__description {
+    font-size: var(--fs-20);
+    line-height: var(--lh-20);
+    letter-spacing: var(--ls-20);
+    color: var(--color-black);
+  }
+
+  .work__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8) var(--space-20);
+    padding-top: var(--space-12);
+    color: var(--accent);
+    font-size: var(--fs-16);
+    line-height: var(--lh-16);
+    letter-spacing: var(--ls-16);
+  }
+
+  .work__tag {
+    display: flex;
+    align-items: center;
+    gap: var(--space-20);
+  }
+
+  .work__tag + .work__tag::before {
+    content: '';
+    width: var(--tag-rule-width);
+    height: var(--tag-rule-height);
+    background: var(--accent);
+  }
+
+  @media (max-width: 1024px) {
+    .work__inner {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: var(--space-30);
+      align-items: start;
+    }
+
+    .work__body {
+      padding-block: var(--space-30) var(--space-57);
+    }
+
+    .work__text {
+      max-width: var(--work-text-tablet-max);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .work__tab-label {
+      font-size: var(--fs-24);
+    }
+  }
+</style>

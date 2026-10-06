@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Marquee from '../components/Marquee.astro';
+import WorkCard from '../components/WorkCard.astro';
+import Testimonials from '../components/Testimonials.astro';
+import Experience from '../components/Experience.astro';
+import { work } from '../data/content';
+
+const title = 'Marina — Product Designer';
+const description =
+  'Portfolio of Marina, a product designer since 2015 building complex digital products: marketplaces, service platforms, a baby sleep app and a storm-restoration SaaS.';
+---
+
+<Layout title={title} description={description}>
+  <Hero />
+  <Marquee />
+  <section class="work-list" id="work" aria-label="Featured work">
+    {work.map((item) => <WorkCard {...item} />)}
+  </section>
+  <Testimonials />
+  <Experience />
+</Layout>
+
+<style>
+  .work-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-92);
+    margin-top: var(--space-134);
+    scroll-margin-top: var(--space-80);
+  }
+</style>

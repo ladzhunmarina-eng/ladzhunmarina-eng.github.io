@@ -1,0 +1,85 @@
+---
+import { marquee } from '../data/content';
+---
+
+<section class="marquee" aria-label="Skills and focus areas">
+  <div class="marquee__track">
+    <ul class="marquee__list">
+      {marquee.map((item) => (
+        <li class="marquee__item">
+          <span class="marquee__dot" aria-hidden="true"></span>
+          <span class="marquee__icon" aria-hidden="true">{item.icon}</span>
+          <span class="marquee__label">{item.label}</span>
+        </li>
+      ))}
+    </ul>
+    <ul class="marquee__list" aria-hidden="true">
+      {marquee.map((item) => (
+        <li class="marquee__item">
+          <span class="marquee__dot"></span>
+          <span class="marquee__icon">{item.icon}</span>
+          <span class="marquee__label">{item.label}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .marquee {
+    margin-top: var(--space-56);
+    height: var(--marquee-height);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+
+  .marquee__track {
+    display: flex;
+    flex: none;
+    width: max-content;
+    animation: marquee-scroll var(--marquee-speed) linear infinite;
+  }
+
+  .marquee__list {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--marquee-gap);
+    padding-right: var(--marquee-gap);
+  }
+
+  .marquee__item {
+    display: flex;
+    align-items: center;
+    gap: var(--marquee-gap);
+    color: var(--color-marquee-text);
+    font-size: var(--fs-18);
+    line-height: var(--lh-auto);
+    white-space: nowrap;
+  }
+
+  .marquee__dot {
+    width: var(--marquee-dot);
+    height: var(--marquee-dot);
+    border-radius: 50%;
+    background: var(--color-marquee-dot);
+  }
+
+  .marquee__icon {
+    font-size: var(--fs-16);
+    margin-right: calc(var(--space-8) - var(--marquee-gap));
+  }
+
+  @keyframes marquee-scroll {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee__track {
+      animation: none;
+    }
+  }
+</style>

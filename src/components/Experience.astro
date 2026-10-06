@@ -1,0 +1,111 @@
+---
+import { experience } from '../data/content';
+import BriefcaseIcon from '../assets/icons/briefcase.svg';
+---
+
+<section class="experience" aria-labelledby="experience-title">
+  <h2 id="experience-title" class="experience__title">Experience</h2>
+  <div class="experience__roles">
+    {experience.map((role) => (
+      <article class="role">
+        <BriefcaseIcon class="role__icon" aria-hidden="true" />
+        <header class="role__header">
+          <h3 class="role__title">{role.title}</h3>
+          <p class="role__dates">{role.dates}</p>
+        </header>
+        <ul class="role__list">
+          {role.bullets.map((bullet) => <li class="role__item">{bullet}</li>)}
+        </ul>
+        <p class="role__summary">{role.summary}</p>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .experience {
+    max-width: var(--text-section-max);
+    margin-inline: auto;
+    padding: var(--space-167) var(--gutter) var(--space-303);
+    box-sizing: content-box;
+  }
+
+  .experience__title {
+    margin-bottom: var(--space-20);
+    font-family: var(--font-display);
+    font-size: var(--fs-display);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-display);
+    color: var(--color-ink);
+  }
+
+  .experience__roles {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-44);
+  }
+
+  .role {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    max-width: var(--experience-measure);
+  }
+
+  .role__icon {
+    width: var(--icon-briefcase);
+    height: var(--icon-briefcase);
+    color: var(--color-black);
+  }
+
+  .role__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    font-family: var(--font-meta);
+    font-weight: var(--weight-semibold);
+    color: var(--color-black);
+  }
+
+  .role__title {
+    font-size: var(--fs-16);
+    font-weight: var(--weight-semibold);
+    line-height: var(--lh-16-meta);
+  }
+
+  .role__dates {
+    font-size: var(--fs-14);
+    line-height: var(--lh-14-24);
+  }
+
+  .role__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+  }
+
+  .role__item {
+    display: flex;
+    gap: var(--space-8);
+    font-size: var(--fs-14);
+    line-height: var(--lh-14-18);
+    letter-spacing: var(--ls-20);
+  }
+
+  .role__item::before {
+    content: '•';
+    flex: none;
+    padding-top: var(--space-3);
+    font-family: var(--font-meta);
+    font-weight: var(--weight-extralight);
+    line-height: var(--lh-14-14);
+  }
+
+  .role__summary {
+    margin-top: calc(var(--space-12) - var(--space-16));
+    font-size: var(--fs-12);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-12-18);
+    letter-spacing: var(--ls-20);
+  }
+</style>

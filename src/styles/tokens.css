@@ -1,0 +1,225 @@
+/*
+ * Design tokens, extracted from the Figma "Home" frame (1440px desktop).
+ * Every value used by components lives here. Responsive overrides are at the bottom.
+ */
+:root {
+  /* ---------- Color: base ---------- */
+  --color-page: #fefcf3;
+  --color-ink: #2a2a2a;
+  --color-black: #000;
+  --color-white: #fff;
+  --color-muted: #777;
+  --color-marquee-text: #666;
+  --color-marquee-dot: #d9d9d9;
+  --color-nav-hover: #f5f1e6; /* not in Figma: hover state is a guess */
+  --color-button-hover: #2a2a2a; /* not in Figma: hover state is a guess */
+
+  /* ---------- Color: focus ring (Figma "focus-ring" variant) ---------- */
+  --color-focus: #0034dc;
+  --color-focus-halo: #edf2fe;
+
+  /* ---------- Color: Featured Work themes ---------- */
+  --work-1-bg: #fdd173;
+  --work-1-panel: #ebf0f2;
+  --work-1-accent: #796559;
+  --work-2-bg: #fff2dd;
+  --work-2-panel: #fdd173;
+  --work-2-accent: #c78304;
+  --work-3-bg: #ebe9ff;
+  --work-3-panel: #a8cbd7;
+  --work-3-accent: #3324c8;
+  --work-4-bg: #e6f5f1;
+  --work-4-panel: #fdd173;
+  --work-4-accent: #78938c;
+
+  /* ---------- Color: testimonials ---------- */
+  --quote-1-bg: #f1eac9;
+  --quote-2-bg: #ebe9ff;
+  --quote-3-bg: #dcefff;
+
+  /* ---------- Color: footer ---------- */
+  --color-footer: #000;
+
+  /* ---------- Typography: families ---------- */
+  --font-display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-meta: 'Gantari', 'Inter', system-ui, sans-serif;
+
+  /* ---------- Typography: weights ---------- */
+  --weight-extralight: 200;
+  --weight-light: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-extrabold: 800;
+
+  /* ---------- Typography: sizes ---------- */
+  --fs-12: 12px;
+  --fs-14: 14px;
+  --fs-16: 16px;
+  --fs-18: 18px;
+  --fs-20: 20px;
+  --fs-22: 22px;
+  --fs-24: 24px;
+  --fs-32: 32px;
+  --fs-display: clamp(36px, 4.3056vw, 62px); /* 62px at 1440px */
+
+  /* ---------- Typography: line heights ---------- */
+  --lh-display: 1.2; /* 120% */
+  --lh-12-18: 18px;
+  --lh-14-14: 14px;
+  --lh-14-18: 18px;
+  --lh-14-24: 24px;
+  --lh-16: 19.2px;
+  --lh-16-meta: 19.25px;
+  --lh-20: 24px;
+  --lh-22: 28.8px;
+  --lh-24: 28.8px;
+  --lh-32: 38.4px;
+  --lh-auto: normal;
+
+  /* ---------- Typography: letter spacing ---------- */
+  --ls-0: 0;
+  --ls-16: 0.16px;
+  --ls-20: 0.2px;
+  --ls-24: 0.24px;
+
+  /* ---------- Spacing ---------- */
+  --space-2: 2px;
+  --space-3: 3px;
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-10: 10px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-26: 26px;
+  --space-30: 30px;
+  --space-42: 42px;
+  --space-44: 44px;
+  --space-52: 52px;
+  --space-56: 56px;
+  --space-57: 57px;
+  --space-59: 59px;
+  --space-80: 80px;
+  --space-92: 92px;
+  --space-134: 134px;
+  --space-144: 144px;
+  --space-167: 167px;
+  --space-303: 303px;
+
+  /* ---------- Layout ---------- */
+  --page-max: 1440px;
+  --gutter: 84px;
+  --hero-gutter: 93px;
+  --hero-top: 254px; /* first heading line sits 254px from page top */
+  --hero-measure: 1188px;
+  --work-inner-max: 1196px;
+  --work-panel-fr: 726fr;
+  --work-text-fr: 411fr;
+  --work-panel-ratio: 725.87 / 433;
+  --work-text-tablet-max: 540px;
+  --work-tab-width: 355px;
+  --work-tab-row: 75px;
+  --work-tab-inset: 83px;
+  --wall-max: 1319px;
+  --wall-gutter: 60px;
+  --text-section-max: 1140px;
+  --experience-measure: 501px;
+
+  /* ---------- Hero avatar (scales with the heading font-size) ---------- */
+  --hero-avatar-size: 2.2419em; /* 139 / 62 */
+  --hero-avatar-raise: 1.2903em; /* 80 / 62 */
+  --hero-baseline: 0.9355em; /* baseline offset of the first heading line (58 / 62) */
+  --hero-avatar-gap: 0.27em; /* plus one word space each side, matches Figma x-positions */
+
+  /* ---------- Nav pill ---------- */
+  --nav-top: 30px;
+  --nav-pad-y: 12px;
+  --nav-pad-x: 24px;
+  --nav-link-pad-y: 17px;
+  --nav-link-pad-x: 30px;
+  --nav-blur: 40px;
+  --z-nav: 10;
+
+  /* ---------- Marquee ---------- */
+  --marquee-height: 60px;
+  --marquee-dot: 12px;
+  --marquee-gap: 24px;
+  --marquee-speed: 60s;
+
+  /* ---------- Testimonials ---------- */
+  --quote-card-height: 582px;
+  --quote-lines: 12;
+  --photo-size: 96px;
+
+  /* ---------- Misc sizes ---------- */
+  --button-height: 48px;
+  --button-width: 173px;
+  --icon-linkedin: 32px;
+  --icon-briefcase: 24px;
+  --tag-rule-width: 2px;
+  --tag-rule-height: 19px;
+  --footer-height: 261px;
+
+  /* ---------- Radii ---------- */
+  --radius-focus: 8px;
+  --radius-card: 20px;
+  --radius-photo: 23px;
+  --radius-avatar: 30px;
+  --radius-panel: 40px;
+  --radius-pill: 40px;
+  --radius-button: 68px;
+
+  /* ---------- Focus ---------- */
+  --focus-width: 4px;
+  --focus-offset: 2px;
+}
+
+/* ---------- Responsive overrides (assumed, not in Figma) ---------- */
+
+/* Tablet and below */
+@media (max-width: 1024px) {
+  :root {
+    --gutter: 40px;
+    --wall-gutter: 40px;
+    --hero-gutter: 40px;
+    --hero-top: 190px;
+    --work-tab-inset: 39px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  :root {
+    --gutter: 20px;
+    --wall-gutter: 20px;
+    --hero-gutter: 20px;
+    --hero-top: 124px;
+    --hero-avatar-size: 2em;
+    --hero-avatar-raise: 0.5em;
+    --hero-avatar-gap: 0.12em;
+    --nav-pad-y: 8px;
+    --nav-link-pad-y: 12px;
+    --work-tab-width: 240px;
+    --work-tab-row: 60px;
+    --work-tab-inset: 20px;
+    --space-57: 32px;
+    --space-92: 48px;
+    --space-134: 72px;
+    --space-144: 80px;
+    --space-167: 96px;
+    --space-303: 120px;
+    --fs-24: 20px;
+    --fs-32: 28px;
+    --lh-32: 33.6px;
+    --lh-24: 24px;
+    --radius-panel: 24px;
+    --nav-top: 16px;
+    --nav-pad-x: 12px;
+    --nav-link-pad-x: 18px;
+    --footer-height: 160px;
+  }
+}
