@@ -11,6 +11,9 @@
   --color-muted: #777;
   --color-marquee-text: #666;
   --color-marquee-dot: #d9d9d9;
+  --color-outline: #b3b3b3;
+  --color-icon-muted: #b3b3b3;
+  --color-ink-button: #2e2e2e;
   --color-nav-hover: #f5f1e6; /* not in Figma: hover state is a guess */
   --color-button-hover: #2a2a2a; /* not in Figma: hover state is a guess */
 
@@ -71,6 +74,7 @@
   --lh-12-18: 18px;
   --lh-14-14: 14px;
   --lh-14-18: 18px;
+  --lh-14-20: 20px;
   --lh-14-24: 24px;
   --lh-16: 19.2px;
   --lh-16-meta: 19.25px;
@@ -93,10 +97,10 @@
   --space-8: 8px;
   --space-10: 10px;
   --space-12: 12px;
+  --space-14: 14px;
   --space-16: 16px;
   --space-20: 20px;
   --space-24: 24px;
-  --space-26: 26px;
   --space-30: 30px;
   --space-42: 42px;
   --space-44: 44px;
@@ -163,8 +167,12 @@
 
   /* ---------- Misc sizes ---------- */
   --button-height: 48px;
+  --button-height-sm: 40px;
+  --icon-hit: 40px;
+  --header-group-gap: 12px;
+  --header-group-pad: 32px;
+  --header-button-margin: 8px;
   --button-width: 173px;
-  --icon-linkedin: 32px;
   --icon-briefcase: 24px;
   --tag-rule-width: 2px;
   --tag-rule-height: 19px;
@@ -253,5 +261,12 @@
     --work-panel-h: calc(var(--work-panel-w) / var(--work-panel-aspect));
     /* Every panel body has this height, so a stuck panel is fully covered by the next one. */
     --work-body-h: calc(2 * var(--space-57) + max(var(--work-panel-h), var(--work-text-h-max)));
+  }
+}
+
+/* The header's right group sits beside the centered nav pill; it only fits fully on wide screens. */
+@media (max-width: 1199px) {
+  :root {
+    --header-group-pad: 0px;
   }
 }

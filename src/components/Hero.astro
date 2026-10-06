@@ -1,7 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import avatar from '../assets/images/avatar.png';
-import LinkedinIcon from '../assets/icons/linkedin.svg';
+import Button from './Button.astro';
+import SocialLinks from './SocialLinks.astro';
 ---
 
 <section class="hero" aria-labelledby="hero-title">
@@ -17,11 +18,10 @@ import LinkedinIcon from '../assets/icons/linkedin.svg';
       /></span> Marina <span class="hero__wave" role="img" aria-label="waving hand">👋</span>, practicing product design since 2015, building complex digital products for real business needs.
   </h1>
   <div class="hero__actions">
-    <a class="button" href="#contact">Contact me</a>
-    <a class="hero__social" href="https://www.linkedin.com/" aria-label="Marina on LinkedIn" rel="me noopener">
-      <LinkedinIcon aria-hidden="true" />
-    </a>
+    <Button href="#contact">Contact me</Button>
+    <Button href="#" variant="outline">CV</Button>
   </div>
+  <SocialLinks class="hero__social" />
 </section>
 
 <style>
@@ -67,38 +67,19 @@ import LinkedinIcon from '../assets/icons/linkedin.svg';
   .hero__actions {
     display: flex;
     align-items: center;
-    gap: var(--space-26);
+    gap: var(--space-14);
     margin-top: var(--space-30);
   }
 
-  .button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: var(--button-width);
-    height: var(--button-height);
-    padding-inline: var(--space-24);
-    border-radius: var(--radius-button);
-    background: var(--color-black);
-    color: var(--color-white);
-    font-size: var(--fs-16);
-    line-height: var(--lh-16);
-    font-weight: var(--weight-regular);
-    transition: background-color 0.15s ease;
+  /* Phones only: the header's icon group is hidden there, so the icons sit under the buttons. */
+  .hero :global(.hero__social) {
+    display: none;
+    margin-top: var(--space-16);
   }
 
-  .button:hover {
-    background: var(--color-button-hover);
-  }
-
-  .hero__social {
-    display: inline-flex;
-    color: var(--color-black);
-    border-radius: var(--radius-focus);
-  }
-
-  .hero__social :global(svg) {
-    width: var(--icon-linkedin);
-    height: var(--icon-linkedin);
+  @media (max-width: 640px) {
+    .hero :global(.hero__social) {
+      display: flex;
+    }
   }
 </style>

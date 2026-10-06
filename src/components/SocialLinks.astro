@@ -1,0 +1,57 @@
+---
+import DribbbleIcon from '../assets/icons/dribbble.svg';
+import LinkedinIcon from '../assets/icons/linkedin.svg';
+import GithubIcon from '../assets/icons/github.svg';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+const links = [
+  { label: 'Dribbble', href: '#', Icon: DribbbleIcon },
+  { label: 'LinkedIn', href: '#', Icon: LinkedinIcon },
+  { label: 'GitHub', href: '#', Icon: GithubIcon },
+];
+---
+
+<ul class:list={['social', className]} aria-label="Social profiles">
+  {links.map(({ label, href, Icon }) => (
+    <li>
+      <a class="social__link" href={href} aria-label={label} rel="me noopener">
+        <Icon aria-hidden="true" />
+      </a>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .social {
+    display: flex;
+    align-items: center;
+    gap: var(--header-group-gap);
+  }
+
+  .social > li {
+    display: flex;
+  }
+
+  .social__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--icon-hit);
+    height: var(--icon-hit);
+    color: var(--color-icon-muted);
+    border-radius: var(--radius-focus);
+    transition: color 0.15s ease;
+  }
+
+  .social__link :global(svg) {
+    display: block;
+  }
+
+  .social__link:hover {
+    color: var(--color-ink-button);
+  }
+</style>

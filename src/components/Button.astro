@@ -1,0 +1,58 @@
+---
+interface Props {
+  href: string;
+  variant?: 'solid' | 'outline';
+  size?: 'md' | 'sm';
+  class?: string;
+}
+
+const { href, variant = 'solid', size = 'md', class: className } = Astro.props;
+---
+
+<a class:list={['button', `button--${variant}`, `button--${size}`, className]} href={href}><slot /></a>
+
+<style>
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    border-radius: var(--radius-button);
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .button--md {
+    height: var(--button-height);
+  }
+
+  .button--sm {
+    height: var(--button-height-sm);
+  }
+
+  .button--solid {
+    min-width: var(--button-width);
+    padding-inline: var(--space-24);
+    background: var(--color-black);
+    color: var(--color-white);
+    font-size: var(--fs-16);
+    line-height: var(--lh-16);
+    font-weight: var(--weight-regular);
+  }
+
+  .button--solid:hover {
+    background: var(--color-button-hover);
+  }
+
+  .button--outline {
+    padding-inline: var(--space-24);
+    border: 1px solid var(--color-outline);
+    color: var(--color-ink-button);
+    font-size: var(--fs-14);
+    line-height: var(--lh-14-20);
+    font-weight: var(--weight-medium);
+  }
+
+  .button--outline:hover {
+    border-color: var(--color-ink-button);
+  }
+</style>

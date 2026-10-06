@@ -1,4 +1,7 @@
 ---
+import Button from './Button.astro';
+import SocialLinks from './SocialLinks.astro';
+
 const links = [
   { label: 'About', href: '#' },
   { label: 'Work', href: '#work' },
@@ -7,28 +10,48 @@ const links = [
 ---
 
 <header class="site-header">
-  <nav class="nav" aria-label="Primary">
-    <ul class="nav__list">
-      {links.map((link) => (
-        <li>
-          <a class="nav__link" href={link.href}>{link.label}</a>
-        </li>
-      ))}
-    </ul>
-  </nav>
+  <div class="site-header__inner">
+    <nav class="nav" aria-label="Primary">
+      <ul class="nav__list">
+        {links.map((link) => (
+          <li>
+            <a class="nav__link" href={link.href}>{link.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <div class="site-header__group">
+      <SocialLinks />
+      <Button class="site-header__contact" href="#contact" variant="outline" size="sm">Contact me</Button>
+    </div>
+  </div>
 </header>
 
 <style>
+  /* Full-width fixed bar; the nav pill stays centered, the group sits on the right. */
   .site-header {
     position: fixed;
     top: var(--nav-top);
-    left: 50%;
+    inset-inline: 0;
     z-index: var(--z-nav);
-    transform: translateX(-50%);
-    max-width: calc(100% - 2 * var(--space-8));
+    pointer-events: none;
+  }
+
+  .site-header__inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .site-header__inner > * {
+    pointer-events: auto;
   }
 
   .nav {
+    grid-column: 2;
     background: var(--color-white);
     border-radius: var(--radius-pill);
     padding: var(--nav-pad-y) var(--nav-pad-x);
@@ -56,5 +79,27 @@ const links = [
 
   .nav__link:hover {
     background: var(--color-nav-hover);
+  }
+
+  .site-header__group {
+    grid-column: 3;
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: calc(var(--header-group-gap) + var(--header-button-margin));
+  }
+
+  /* Narrower screens: the group would collide with the centered pill. Keep the icons only. */
+  @media (max-width: 1199px) {
+    .site-header__group :global(.site-header__contact) {
+      display: none;
+    }
+  }
+
+  /* Phones: no room beside the pill. The icons move into the hero (see Hero.astro). */
+  @media (max-width: 640px) {
+    .site-header__group {
+      display: none;
+    }
   }
 </style>
