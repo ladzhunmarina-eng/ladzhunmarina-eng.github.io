@@ -5,36 +5,39 @@ import { testimonials } from '../data/content';
 
 <section class="wall" aria-labelledby="wall-title">
   <h2 id="wall-title" class="wall__title">Wall of Love</h2>
-  <ul class="wall__list">
-    {testimonials.map((t) => (
-      <li class={`quote quote--${t.theme}`}>
-        <figure class="quote__figure">
-          <blockquote class="quote__text">
-            <p>{t.quote}</p>
-          </blockquote>
-          <figcaption class="quote__person">
-            <Image class="quote__photo" src={t.photo} alt={t.alt} width={96} height={96} widths={[96, 192, 288]} sizes="96px" />
-            <span class="quote__meta">
-              <span class="quote__name">{t.name}</span>
-              <span class="quote__role">{t.role}</span>
-            </span>
-          </figcaption>
-        </figure>
-      </li>
-    ))}
-  </ul>
+
+  <!-- A horizontal carousel: the next card peeks in from the right, drag or scroll to see it. -->
+  <div class="wall__scroller" tabindex="0" role="region" aria-label="Testimonials">
+    <ul class="wall__list">
+      {testimonials.map((t) => (
+        <li class:list={['quote', `quote--${t.theme}`, { 'quote--wide': t.wide }]}>
+          <figure class="quote__figure">
+            <blockquote class:list={['quote__text', { 'quote__text--clipped': t.clipped }]}>
+              {t.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+            </blockquote>
+            <figcaption class="quote__person">
+              <Image class="quote__photo" src={t.photo} alt={t.alt} width={96} height={96} widths={[96, 192, 288]} sizes="96px" />
+              <span class="quote__meta">
+                <span class="quote__name">{t.name}</span>
+                <span class="quote__role">{t.role}</span>
+              </span>
+            </figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
+  </div>
 </section>
 
 <style>
   .wall {
-    padding: var(--space-144) var(--wall-gutter) 0;
     max-width: var(--page-max);
     margin-inline: auto;
+    padding: var(--space-144) var(--wall-pad-right) 0 var(--wall-pad-left);
   }
 
   .wall__title {
-    max-width: var(--text-section-max);
-    margin: 0 auto var(--space-42);
+    margin-bottom: var(--space-42);
     font-family: var(--font-display);
     font-size: var(--fs-display);
     font-weight: var(--weight-bold);
@@ -42,20 +45,47 @@ import { testimonials } from '../data/content';
     color: var(--color-ink);
   }
 
+  /* The scroller clips the list, so the third card shows only its edge, as in the design. */
+  .wall__scroller {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    cursor: grab;
+    border-radius: var(--radius-card);
+    container-type: inline-size; /* card widths below are relative to the carousel, not to the growing list */
+  }
+
+  .wall__scroller::-webkit-scrollbar {
+    display: none;
+  }
+
+  .wall__scroller[data-dragging] {
+    cursor: grabbing;
+    scroll-snap-type: none;
+    user-select: none;
+  }
+
   .wall__list {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    display: flex;
     gap: var(--space-10);
-    max-width: var(--wall-max);
-    margin-inline: auto;
+    width: max-content;
+    min-width: 100%;
   }
 
   .quote {
     display: flex;
+    flex: none;
+    width: var(--quote-w);
     min-height: var(--quote-card-height);
     padding: var(--space-30);
     border-radius: var(--radius-card);
     background: var(--quote-bg);
+    scroll-snap-align: start;
+  }
+
+  .quote--wide {
+    width: var(--quote-wide-w);
   }
 
   .quote--1 { --quote-bg: var(--quote-1-bg); }
@@ -66,25 +96,32 @@ import { testimonials } from '../data/content';
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: var(--space-52);
+    gap: var(--space-16);
     width: 100%;
   }
 
-  /* The design fixes the quote area at 12 lines; the full text stays in the DOM. */
   .quote__text {
-    font-family: var(--font-display);
-    font-size: var(--fs-22);
-    font-weight: var(--weight-regular);
-    line-height: var(--lh-22);
+    font-size: var(--fs-20);
+    line-height: var(--lh-20);
+    letter-spacing: var(--ls-20);
     color: var(--color-black);
   }
 
+  /* A blank line between paragraphs, as in the design; "\n" inside one is a plain line break. */
   .quote__text p {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: var(--quote-lines);
-    line-clamp: var(--quote-lines);
+    white-space: pre-line;
+  }
+
+  .quote__text p + p {
+    margin-top: var(--lh-20);
+  }
+
+  /* The longest quote is cut at whole lines and fades out, like the clipped card in the design. */
+  .quote__text--clipped {
+    max-height: calc(var(--quote-lines) * var(--lh-20));
     overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lh-20)), transparent);
+    mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lh-20)), transparent);
   }
 
   .quote__person {
@@ -118,23 +155,78 @@ import { testimonials } from '../data/content';
     color: var(--color-muted);
   }
 
+  /* Tablet and phones: narrower cards so the next one always peeks in. */
   @media (max-width: 1024px) {
-    .wall__list {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .quote {
+      width: min(var(--quote-w), 85cqw);
     }
 
-    .quote:last-child {
-      grid-column: 1 / -1;
+    .quote--wide {
+      width: min(var(--quote-wide-w), 88cqw);
     }
   }
 
+  /* Phones: every card is narrow, so every quote is cut at 15 lines and fades, keeping the cards equal. */
   @media (max-width: 640px) {
-    .wall__list {
-      grid-template-columns: minmax(0, 1fr);
+    .quote,
+    .quote--wide {
+      width: 85cqw;
     }
 
-    .quote {
-      min-height: 0;
+    .quote__text {
+      max-height: calc(var(--quote-lines) * var(--lh-20));
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lh-20)), transparent);
+      mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lh-20)), transparent);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .wall__scroller {
+      scroll-behavior: smooth;
     }
   }
 </style>
+
+<script>
+  // Mouse drag to scroll the carousel (touch and trackpads scroll natively).
+  const scroller = document.querySelector<HTMLElement>('.wall__scroller');
+
+  if (scroller) {
+    let startX = 0;
+    let startLeft = 0;
+    let pointerId: number | null = null;
+    let moved = false;
+
+    scroller.addEventListener('pointerdown', (event) => {
+      if (event.pointerType !== 'mouse' || event.button !== 0) return;
+      pointerId = event.pointerId;
+      startX = event.clientX;
+      startLeft = scroller.scrollLeft;
+      moved = false;
+    });
+
+    scroller.addEventListener('pointermove', (event) => {
+      if (pointerId !== event.pointerId) return;
+      const delta = event.clientX - startX;
+      if (!moved && Math.abs(delta) < 4) return;
+      if (!moved) {
+        moved = true;
+        scroller.setPointerCapture(event.pointerId);
+        scroller.setAttribute('data-dragging', '');
+        scroller.style.scrollBehavior = 'auto';
+      }
+      scroller.scrollLeft = startLeft - delta;
+    });
+
+    const end = (event: PointerEvent) => {
+      if (pointerId !== event.pointerId) return;
+      pointerId = null;
+      scroller.removeAttribute('data-dragging');
+      scroller.style.scrollBehavior = '';
+      if (moved && scroller.hasPointerCapture(event.pointerId)) scroller.releasePointerCapture(event.pointerId);
+    };
+    scroller.addEventListener('pointerup', end);
+    scroller.addEventListener('pointercancel', end);
+  }
+</script>

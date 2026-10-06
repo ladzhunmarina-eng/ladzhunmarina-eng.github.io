@@ -160,8 +160,8 @@
   --work-tab-pad: 40px;
   --fs-tab: var(--fs-24);
   --work-tab-row: 75px;
-  --wall-max: 1319px;
-  --wall-gutter: 60px;
+  --wall-pad-left: 68px; /* the 1319px carousel sits at x=68 in the 1440px design */
+  --wall-pad-right: 53px;
   --text-section-max: 1140px;
   --experience-measure: 501px;
 
@@ -202,8 +202,10 @@
   --marquee-speed: 128s; /* one list width (2562px) per loop = 20px per second, like the reference */
 
   /* ---------- Testimonials ---------- */
-  --quote-card-height: 582px;
-  --quote-lines: 12;
+  --quote-card-height: 562px;
+  --quote-w: 433px;
+  --quote-wide-w: 846px;
+  --quote-lines: 15; /* the design cuts the longest quote at 15 lines */
   --photo-size: 96px;
 
   /* ---------- Contact card ---------- */
@@ -264,7 +266,8 @@
 @media (max-width: 1024px) {
   :root {
     --gutter: 40px;
-    --wall-gutter: 40px;
+    --wall-pad-left: var(--gutter);
+    --wall-pad-right: var(--gutter);
     --hero-gutter: 40px;
     --hero-top: 190px;
   }
@@ -274,7 +277,8 @@
 @media (max-width: 640px) {
   :root {
     --gutter: 20px;
-    --wall-gutter: 20px;
+    --wall-pad-left: var(--gutter);
+    --wall-pad-right: var(--gutter);
     --hero-gutter: 20px;
     --hero-top: 124px;
     --hero-avatar-size: 2em;
