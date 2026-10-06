@@ -7,33 +7,40 @@ import { testimonials } from '../data/content';
   <h2 id="wall-title" class="wall__title">Wall of Love</h2>
 
   <!--
-    Three cards in one row. The open card is wider and shows the whole quote; the other two are narrower
-    and show the start of theirs. Clicking a card opens it. No scrolling.
+    Desktop: a row of cards, exactly one expanded. Every card holds its quote twice: one copy laid out at the
+    collapsed width and one at the expanded width, each with a FIXED width, so the text never re-wraps while the
+    card grows or shrinks (the card only clips them). Phones: no accordion, one full card per screen, swipe.
   -->
-  <ul class="wall__grid" data-open="0">
-    {testimonials.map((t, i) => (
-      <li class:list={['quote', `quote--${t.theme}`, { 'is-open': i === 0 }]}>
-        <figure class="quote__figure">
-          <blockquote class="quote__text">
+  <div class="wall__viewport">
+    <ul class="wall__list" data-open="0">
+      {testimonials.map((t, i) => (
+        <li class:list={['quote', `quote--${t.theme}`, { 'is-open': i === 0 }]}>
+          <p class="quote__copy quote__copy--collapsed" aria-hidden={i === 0 ? 'true' : 'false'}>
+            {t.paragraphs.join(' ')}
+          </p>
+          <blockquote class="quote__copy quote__copy--expanded" aria-hidden={i === 0 ? 'false' : 'true'}>
             {t.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
           </blockquote>
-          <figcaption class="quote__person">
+
+          <div class="quote__person">
             <Image class="quote__photo" src={t.photo} alt={t.alt} width={96} height={96} widths={[96, 192, 288]} sizes="96px" />
             <span class="quote__meta">
               <span class="quote__name">{t.name}</span>
               <span class="quote__role">{t.role}</span>
             </span>
-          </figcaption>
-        </figure>
-        <button
-          class="quote__toggle"
-          type="button"
-          aria-expanded={i === 0 ? 'true' : 'false'}
-          aria-label={`Read the full testimonial from ${t.name}`}
-        ></button>
-      </li>
-    ))}
-  </ul>
+          </div>
+
+          <button
+            class="quote__toggle"
+            type="button"
+            aria-expanded={i === 0 ? 'true' : 'false'}
+            aria-disabled={i === 0 ? 'true' : undefined}
+            aria-label={`Read the testimonial from ${t.name}`}
+          ></button>
+        </li>
+      ))}
+    </ul>
+  </div>
 </section>
 
 <style>
@@ -52,44 +59,38 @@ import { testimonials } from '../data/content';
     color: var(--color-ink);
   }
 
-  /* ---------- Desktop: a row of three, the open card twice as wide ---------- */
+  /* The viewport clips the row, so the next card peeks in from the edge, as in the design. */
+  .wall__viewport {
+    overflow: hidden;
+    container-type: inline-size;
+  }
 
-  .wall__grid {
-    display: grid;
-    grid-template-columns: var(--quote-open-fr) var(--quote-compact-fr) var(--quote-compact-fr);
+  /* ---------- Desktop: horizontal accordion ---------- */
+
+  .wall__list {
+    display: flex;
     gap: var(--space-10);
-    height: var(--wall-h);
-    transition: grid-template-columns var(--quote-time) var(--quote-ease);
-  }
-
-  .wall__grid[data-open='1'] {
-    grid-template-columns: var(--quote-compact-fr) var(--quote-open-fr) var(--quote-compact-fr);
-  }
-
-  .wall__grid[data-open='2'] {
-    grid-template-columns: var(--quote-compact-fr) var(--quote-compact-fr) var(--quote-open-fr);
-  }
-
-  /* The script measures the tallest state with this on, so the row never changes height on a click. */
-  .wall__grid.is-measuring {
-    height: auto;
-    transition: none;
-  }
-
-  .wall__grid.is-measuring .quote__text {
-    transition: none;
+    width: max-content;
+    /* The script sets --t so the expanded card is never cut off; the row slides with the same motion. */
+    transform: translateX(calc(var(--t, 0) * -1px));
+    transition: transform var(--quote-time) var(--quote-ease);
   }
 
   .quote {
     position: relative;
-    display: flex;
-    min-width: 0;
-    min-height: 0;
-    padding: var(--space-30);
+    flex: none;
+    width: var(--quote-closed-w);
+    height: var(--quote-h); /* the same for every card, never animated */
     border-radius: var(--radius-card);
     background: var(--quote-bg);
-    overflow: hidden;
-    transition: background-color 0.2s ease;
+    overflow: hidden; /* clips the two copies while the width changes */
+    transition:
+      width var(--quote-time) var(--quote-ease),
+      background-color 0.2s ease;
+  }
+
+  .quote.is-open {
+    width: var(--quote-open-w);
   }
 
   .quote--1 { --quote-bg: var(--quote-1-bg); }
@@ -100,57 +101,66 @@ import { testimonials } from '../data/content';
     background: color-mix(in srgb, var(--quote-bg), var(--color-ink) 5%);
   }
 
-  .quote__figure {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: var(--space-16);
-    width: 100%;
-    min-width: 0;
-    min-height: 0;
-  }
-
-  .quote__text {
-    flex: 1 1 auto;
-    min-height: 0;
+  /*
+   * Two copies of the quote. Each has a width that does not depend on the card, so its line breaks
+   * are the same at every moment of the animation. Only opacity changes.
+   */
+  .quote__copy {
+    position: absolute;
+    top: var(--space-30);
+    left: var(--space-30);
     font-size: var(--fs-20);
     line-height: var(--lh-20);
     letter-spacing: var(--ls-20);
     color: var(--color-black);
-    transition:
-      font-size var(--quote-time) var(--quote-ease),
-      line-height var(--quote-time) var(--quote-ease);
+    pointer-events: none;
   }
 
-  /* Closed cards: a smaller teaser that fills the card and fades out where the quote goes on. */
-  .quote:not(.is-open) .quote__text {
-    flex: 1 1 0; /* zero basis: a closed card never makes the row taller, it just fills the space */
+  /* Laid out at the collapsed width; clamped to the lines that fit and ended with an ellipsis. */
+  .quote__copy--collapsed {
+    width: calc(var(--quote-closed-w) - 2 * var(--space-30));
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--quote-collapsed-lines);
+    line-clamp: var(--quote-collapsed-lines);
     overflow: hidden;
-    font-size: var(--quote-compact-fs);
-    line-height: var(--quote-compact-lh);
+    opacity: 1;
+    /* Becoming visible again (a card collapsing): wait for the second half of the motion. */
+    transition: opacity var(--quote-fade) ease var(--quote-fade-delay);
   }
 
-  .quote__text[data-overflow] {
-    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 2 * var(--quote-compact-lh)), transparent);
-    mask-image: linear-gradient(to bottom, #000 calc(100% - 2 * var(--quote-compact-lh)), transparent);
+  /* Laid out at the expanded width; always the full quote. */
+  .quote__copy--expanded {
+    width: calc(var(--quote-open-w) - 2 * var(--space-30));
+    opacity: 0;
+    /* Fading out (a card collapsing): quickly, at the start. */
+    transition: opacity var(--quote-fade) ease 0ms;
   }
 
-  /* The open card always shows its whole quote, never a fade. */
-  .quote.is-open .quote__text[data-overflow] {
-    -webkit-mask-image: none;
-    mask-image: none;
+  .quote.is-open .quote__copy--collapsed {
+    opacity: 0;
+    transition-delay: 0ms; /* fade out at once */
   }
 
-  /* A blank line between paragraphs, as in the design; "\n" inside one is a plain line break. */
-  .quote__text p {
+  .quote.is-open .quote__copy--expanded {
+    opacity: 1;
+    transition-delay: var(--quote-fade-delay); /* fade in during the second half */
+  }
+
+  /* A blank line between paragraphs, as in the design. */
+  .quote__copy--expanded p {
     white-space: pre-line;
   }
 
-  .quote__text p + p {
-    margin-top: 1lh;
+  .quote__copy--expanded p + p {
+    margin-top: var(--lh-20);
   }
 
+  /* The author block sits in the bottom left corner in both states. */
   .quote__person {
+    position: absolute;
+    left: var(--space-30);
+    bottom: var(--space-30);
     display: flex;
     align-items: center;
     gap: var(--space-12);
@@ -166,9 +176,9 @@ import { testimonials } from '../data/content';
     display: flex;
     flex-direction: column;
     gap: var(--space-10);
-    min-width: 0;
     font-size: var(--fs-20);
     line-height: var(--lh-20);
+    white-space: nowrap;
   }
 
   .quote__name {
@@ -181,7 +191,7 @@ import { testimonials } from '../data/content';
     color: var(--color-muted);
   }
 
-  /* One invisible button covers each card, so the whole card is the click target. */
+  /* A real button covers each card. Pointer cursor on collapsed cards only. */
   .quote__toggle {
     position: absolute;
     inset: 0;
@@ -202,95 +212,155 @@ import { testimonials } from '../data/content';
     outline-offset: calc(-1 * var(--focus-width));
   }
 
-  /* ---------- Narrower than a laptop: the cards stack and open in place ---------- */
-
-  @media (max-width: 1279px) {
-    .wall__grid,
-    .wall__grid[data-open='0'],
-    .wall__grid[data-open='1'],
-    .wall__grid[data-open='2'] {
-      grid-template-columns: minmax(0, 1fr);
-      height: auto;
-      transition: none;
-    }
-
-    .quote:not(.is-open) .quote__text {
-      flex: none;
-      font-size: var(--fs-20);
-      line-height: var(--lh-20);
-      max-height: calc(var(--quote-compact-lines-narrow) * var(--lh-20));
-    }
-
-    .quote__text[data-overflow] {
-      -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lh-20)), transparent);
-      mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lh-20)), transparent);
+  @media (prefers-reduced-motion: reduce) {
+    .wall__list,
+    .quote,
+    .quote__copy {
+      transition: none !important;
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .wall__grid,
-    .quote__text {
+  /* ---------- Mobile: no accordion, one full card per screen, swipe with scroll snap ---------- */
+
+  @media (max-width: 999px) {
+    .wall__viewport {
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+
+    .wall__viewport::-webkit-scrollbar {
+      display: none;
+    }
+
+    .wall__list {
+      transform: none;
       transition: none;
+    }
+
+    .quote,
+    .quote.is-open {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-16);
+      width: 100cqw; /* one card per screen width */
+      height: auto;
+      padding: var(--space-30);
+      scroll-snap-align: start;
+      transition: none;
+    }
+
+    .quote:not(.is-open):hover {
+      background: var(--quote-bg);
+    }
+
+    .quote__copy {
+      position: static;
+      width: auto;
+    }
+
+    .quote__copy--collapsed {
+      display: none;
+    }
+
+    .quote__copy--expanded {
+      opacity: 1;
+      transition: none;
+    }
+
+    .quote__person {
+      position: static;
+    }
+
+    .quote__meta {
+      white-space: normal;
+    }
+
+    .quote__toggle {
+      display: none;
     }
   }
 </style>
 
 <script>
-  const grid = document.querySelector<HTMLElement>('.wall__grid');
+  const list = document.querySelector<HTMLElement>('.wall__list');
+  const viewport = document.querySelector<HTMLElement>('.wall__viewport');
 
-  if (grid) {
-    const cards = Array.from(grid.querySelectorAll<HTMLElement>('.quote'));
-    const texts = cards.map((card) => card.querySelector<HTMLElement>('.quote__text')!);
+  if (list && viewport) {
+    const cards = Array.from(list.querySelectorAll<HTMLElement>('.quote'));
+    const buttons = cards.map((card) => card.querySelector<HTMLButtonElement>('.quote__toggle')!);
+    const collapsedCopies = cards.map((card) => card.querySelector<HTMLElement>('.quote__copy--collapsed')!);
+    const expandedCopies = cards.map((card) => card.querySelector<HTMLElement>('.quote__copy--expanded')!);
+    const accordion = window.matchMedia('(min-width: 1000px)');
 
-    const setOpen = (index: number) => {
-      grid.dataset.open = String(index);
-      cards.forEach((card, i) => {
-        card.classList.toggle('is-open', i === index);
-        card.querySelector('.quote__toggle')?.setAttribute('aria-expanded', String(i === index));
-      });
+    let open = 0;
+
+    const token = (name: string) => parseFloat(getComputedStyle(list).getPropertyValue(name));
+
+    // Slide the row just enough that the expanded card is fully visible with the next card peeking in
+    // (and never past the row's ends).
+    const slide = () => {
+      if (!accordion.matches) {
+        list.style.removeProperty('--t');
+        return;
+      }
+      const openW = token('--quote-open-w');
+      const closedW = token('--quote-closed-w');
+      const gap = token('--space-10');
+      const peek = open < cards.length - 1 ? gap + token('--quote-peek') : 0; // the next card keeps peeking in
+      const left = open * (closedW + gap);
+      const rowW = openW + (cards.length - 1) * closedW + (cards.length - 1) * gap;
+      const visibleW = viewport.clientWidth;
+      const shift = Math.min(Math.max(left + openW + peek - visibleW, 0), Math.max(rowW - visibleW, 0), left);
+      list.style.setProperty('--t', shift.toFixed(2));
     };
 
-    // A closed card fades out only if its quote really continues.
-    const markOverflow = () => {
-      texts.forEach((text) => text.toggleAttribute('data-overflow', text.scrollHeight > text.clientHeight + 1));
-    };
-
-    // The row keeps one height in every state: the tallest one (the card that needs most room when open).
-    const measure = () => {
-      const current = Number(grid.dataset.open ?? 0);
-      grid.style.removeProperty('--wall-h');
-      grid.classList.add('is-measuring');
-      let tallest = 0;
+    // Only one copy of each quote is exposed to screen readers.
+    const syncAria = () => {
       cards.forEach((_, i) => {
-        setOpen(i);
-        tallest = Math.max(tallest, grid.getBoundingClientRect().height);
+        const showExpanded = !accordion.matches || i === open;
+        expandedCopies[i].setAttribute('aria-hidden', String(!showExpanded));
+        collapsedCopies[i].setAttribute('aria-hidden', String(showExpanded));
       });
-      setOpen(current);
-      grid.classList.remove('is-measuring');
-      grid.style.setProperty('--wall-h', `${Math.ceil(tallest)}px`);
-      markOverflow();
     };
 
-    cards.forEach((card, index) => {
-      card.querySelector('.quote__toggle')?.addEventListener('click', () => {
-        if (grid.dataset.open === String(index)) return;
-        setOpen(index);
-        requestAnimationFrame(markOverflow); // stacked layout has no transition to wait for
+    const select = (index: number, moveFocus = false) => {
+      if (index < 0 || index >= cards.length) return;
+      if (index !== open) {
+        open = index;
+        cards.forEach((card, i) => {
+          card.classList.toggle('is-open', i === open);
+          buttons[i].setAttribute('aria-expanded', String(i === open));
+          if (i === open) buttons[i].setAttribute('aria-disabled', 'true');
+          else buttons[i].removeAttribute('aria-disabled');
+        });
+        syncAria();
+        slide();
+      }
+      if (moveFocus) buttons[index].focus();
+    };
+
+    buttons.forEach((button, i) => {
+      button.addEventListener('click', () => select(i)); // the open card ignores its own click
+      button.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowRight') {
+          event.preventDefault();
+          select(i + 1, true);
+        } else if (event.key === 'ArrowLeft') {
+          event.preventDefault();
+          select(i - 1, true);
+        }
       });
     });
 
-    // Re-check the fades once the widths have settled.
-    grid.addEventListener('transitionend', (event) => {
-      if (event.target === grid) markOverflow();
+    accordion.addEventListener('change', () => {
+      syncAria();
+      slide();
     });
+    window.addEventListener('resize', slide);
 
-    let resizeTimer: number | undefined;
-    window.addEventListener('resize', () => {
-      window.clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(measure, 150);
-    });
-
-    measure();
-    document.fonts?.ready.then(measure);
+    syncAria();
+    slide();
   }
 </script>

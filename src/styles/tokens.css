@@ -202,14 +202,15 @@
   --marquee-speed: 128s; /* one list width (2562px) per loop = 20px per second, like the reference */
 
   /* ---------- Testimonials ---------- */
-  --wall-h: 870px; /* fallback; the script measures the tallest state and sets the real height */
-  --quote-open-fr: 2fr; /* the open card in the row of three */
-  --quote-compact-fr: 1fr; /* each of the other two */
-  --quote-compact-fs: 16px; /* compact cards show a smaller teaser of the quote */
-  --quote-compact-lh: 20px;
-  --quote-compact-lines-narrow: 5; /* lines a closed card shows when the cards are stacked (tablet, phones) */
-  --quote-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --quote-time: 0.5s;
+  --quote-open-w: 846px; /* expanded card, from Figma */
+  --quote-closed-w: 433px; /* collapsed card, from Figma */
+  --quote-peek: 20px; /* how much of the next card always shows at the right edge */
+  --quote-h: 724px; /* one fixed height for every card; Figma's 562px cannot hold Agata's full quote at 846px wide */
+  --quote-collapsed-lines: 23; /* lines of the collapsed copy that fit above the author block */
+  --quote-time: 500ms; /* card width and row slide */
+  --quote-fade: 200ms; /* quote copies fading in and out */
+  --quote-fade-delay: 300ms; /* the incoming copy waits for the second half of the motion */
+  --quote-ease: cubic-bezier(0.4, 0, 0.2, 1);
   --photo-size: 96px;
 
   /* ---------- Contact card ---------- */
