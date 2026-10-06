@@ -202,11 +202,14 @@
   --marquee-speed: 128s; /* one list width (2562px) per loop = 20px per second, like the reference */
 
   /* ---------- Testimonials ---------- */
-  --wall-h: 724px; /* height of the testimonials block on desktop: one wide card, two stacked beside it */
-  --quote-wide-fr: 846fr; /* the wide card, as in the design */
-  --quote-side-fr: 463fr; /* the column of the two compact cards */
-  --quote-compact-lines: 7; /* how many lines a compact card shows before it fades out */
-  --quote-compact-lines-narrow: 5; /* same, on tablet and phones */
+  --wall-h: 870px; /* fallback; the script measures the tallest state and sets the real height */
+  --quote-open-fr: 2fr; /* the open card in the row of three */
+  --quote-compact-fr: 1fr; /* each of the other two */
+  --quote-compact-fs: 16px; /* compact cards show a smaller teaser of the quote */
+  --quote-compact-lh: 20px;
+  --quote-compact-lines-narrow: 5; /* lines a closed card shows when the cards are stacked (tablet, phones) */
+  --quote-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --quote-time: 0.5s;
   --photo-size: 96px;
 
   /* ---------- Contact card ---------- */

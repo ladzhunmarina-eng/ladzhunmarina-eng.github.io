@@ -7,15 +7,12 @@ import { testimonials } from '../data/content';
   <h2 id="wall-title" class="wall__title">Wall of Love</h2>
 
   <!--
-    One testimonial is open (wide, full text); the other two sit beside it, compact, showing the start of the
-    quote. Clicking a compact card opens it and the open one takes its place. No scrolling.
+    Three cards in one row. The open card is wider and shows the whole quote; the other two are narrower
+    and show the start of theirs. Clicking a card opens it. No scrolling.
   -->
-  <ul class="wall__grid">
+  <ul class="wall__grid" data-open="0">
     {testimonials.map((t, i) => (
-      <li
-        class:list={['quote', `quote--${t.theme}`, { 'is-active': i === 0 }]}
-        style={`view-transition-name: quote-${i}`}
-      >
+      <li class:list={['quote', `quote--${t.theme}`, { 'is-open': i === 0 }]}>
         <figure class="quote__figure">
           <blockquote class="quote__text">
             {t.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
@@ -55,14 +52,32 @@ import { testimonials } from '../data/content';
     color: var(--color-ink);
   }
 
-  /* ---------- Desktop: wide card on the left, two compact cards stacked on the right ---------- */
+  /* ---------- Desktop: a row of three, the open card twice as wide ---------- */
 
   .wall__grid {
     display: grid;
-    grid-template-columns: var(--quote-wide-fr) var(--quote-side-fr);
-    grid-template-rows: 1fr 1fr;
+    grid-template-columns: var(--quote-open-fr) var(--quote-compact-fr) var(--quote-compact-fr);
     gap: var(--space-10);
     height: var(--wall-h);
+    transition: grid-template-columns var(--quote-time) var(--quote-ease);
+  }
+
+  .wall__grid[data-open='1'] {
+    grid-template-columns: var(--quote-compact-fr) var(--quote-open-fr) var(--quote-compact-fr);
+  }
+
+  .wall__grid[data-open='2'] {
+    grid-template-columns: var(--quote-compact-fr) var(--quote-compact-fr) var(--quote-open-fr);
+  }
+
+  /* The script measures the tallest state with this on, so the row never changes height on a click. */
+  .wall__grid.is-measuring {
+    height: auto;
+    transition: none;
+  }
+
+  .wall__grid.is-measuring .quote__text {
+    transition: none;
   }
 
   .quote {
@@ -74,20 +89,14 @@ import { testimonials } from '../data/content';
     border-radius: var(--radius-card);
     background: var(--quote-bg);
     overflow: hidden;
-    grid-column: 2;
     transition: background-color 0.2s ease;
-  }
-
-  .quote.is-active {
-    grid-column: 1;
-    grid-row: 1 / span 2;
   }
 
   .quote--1 { --quote-bg: var(--quote-1-bg); }
   .quote--2 { --quote-bg: var(--quote-2-bg); }
   .quote--3 { --quote-bg: var(--quote-3-bg); }
 
-  .quote:not(.is-active):hover {
+  .quote:not(.is-open):hover {
     background: color-mix(in srgb, var(--quote-bg), var(--color-ink) 5%);
   }
 
@@ -102,19 +111,34 @@ import { testimonials } from '../data/content';
   }
 
   .quote__text {
+    flex: 1 1 auto;
     min-height: 0;
     font-size: var(--fs-20);
     line-height: var(--lh-20);
     letter-spacing: var(--ls-20);
     color: var(--color-black);
+    transition:
+      font-size var(--quote-time) var(--quote-ease),
+      line-height var(--quote-time) var(--quote-ease);
   }
 
-  /* Compact: only the first lines, cut at a whole line, fading out where the quote continues. */
-  .quote:not(.is-active) .quote__text {
-    max-height: calc(var(--quote-compact-lines) * var(--lh-20));
+  /* Closed cards: a smaller teaser that fills the card and fades out where the quote goes on. */
+  .quote:not(.is-open) .quote__text {
+    flex: 1 1 0; /* zero basis: a closed card never makes the row taller, it just fills the space */
     overflow: hidden;
-    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lh-20)), transparent);
-    mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lh-20)), transparent);
+    font-size: var(--quote-compact-fs);
+    line-height: var(--quote-compact-lh);
+  }
+
+  .quote__text[data-overflow] {
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 2 * var(--quote-compact-lh)), transparent);
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 2 * var(--quote-compact-lh)), transparent);
+  }
+
+  /* The open card always shows its whole quote, never a fade. */
+  .quote.is-open .quote__text[data-overflow] {
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 
   /* A blank line between paragraphs, as in the design; "\n" inside one is a plain line break. */
@@ -123,7 +147,7 @@ import { testimonials } from '../data/content';
   }
 
   .quote__text p + p {
-    margin-top: var(--lh-20);
+    margin-top: 1lh;
   }
 
   .quote__person {
@@ -169,7 +193,7 @@ import { testimonials } from '../data/content';
     cursor: pointer;
   }
 
-  .quote.is-active .quote__toggle {
+  .quote.is-open .quote__toggle {
     cursor: default;
   }
 
@@ -178,55 +202,35 @@ import { testimonials } from '../data/content';
     outline-offset: calc(-1 * var(--focus-width));
   }
 
-  /* ---------- Tablet and phones: one column, a card opens in place ---------- */
+  /* ---------- Narrower than a laptop: the cards stack and open in place ---------- */
 
-  @media (max-width: 1024px) {
-    .wall__grid {
+  @media (max-width: 1279px) {
+    .wall__grid,
+    .wall__grid[data-open='0'],
+    .wall__grid[data-open='1'],
+    .wall__grid[data-open='2'] {
       grid-template-columns: minmax(0, 1fr);
-      grid-template-rows: none;
       height: auto;
-    }
-
-    .quote,
-    .quote.is-active {
-      grid-column: 1;
-      grid-row: auto;
-    }
-
-    .quote:not(.is-active) .quote__text {
-      max-height: calc(var(--quote-compact-lines-narrow) * var(--lh-20));
-    }
-  }
-
-  /* ---------- The swap animation (View Transitions; browsers without it switch instantly) ---------- */
-
-  /* Only the cards animate, not the whole page. Snapshots keep their natural size and are cropped by the
-     moving box, so text stays crisp while a card grows or shrinks. */
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation: none;
-  }
-
-  ::view-transition-group(*) {
-    animation-duration: 0.5s;
-    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  ::view-transition-old(*),
-  ::view-transition-new(*) {
-    width: 100%;
-    height: 100%;
-    object-fit: none;
-    object-position: left top;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .quote {
       transition: none;
     }
 
-    ::view-transition-group(*) {
-      animation-duration: 0.01s;
+    .quote:not(.is-open) .quote__text {
+      flex: none;
+      font-size: var(--fs-20);
+      line-height: var(--lh-20);
+      max-height: calc(var(--quote-compact-lines-narrow) * var(--lh-20));
+    }
+
+    .quote__text[data-overflow] {
+      -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lh-20)), transparent);
+      mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lh-20)), transparent);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wall__grid,
+    .quote__text {
+      transition: none;
     }
   }
 </style>
@@ -236,24 +240,57 @@ import { testimonials } from '../data/content';
 
   if (grid) {
     const cards = Array.from(grid.querySelectorAll<HTMLElement>('.quote'));
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const texts = cards.map((card) => card.querySelector<HTMLElement>('.quote__text')!);
 
-    const open = (index: number) => {
+    const setOpen = (index: number) => {
+      grid.dataset.open = String(index);
       cards.forEach((card, i) => {
-        card.classList.toggle('is-active', i === index);
+        card.classList.toggle('is-open', i === index);
         card.querySelector('.quote__toggle')?.setAttribute('aria-expanded', String(i === index));
       });
     };
 
-    const select = (index: number) => {
-      if (cards[index].classList.contains('is-active')) return;
-      const doc = document as Document & { startViewTransition?: (update: () => void) => unknown };
-      if (doc.startViewTransition && !reduceMotion.matches) doc.startViewTransition(() => open(index));
-      else open(index);
+    // A closed card fades out only if its quote really continues.
+    const markOverflow = () => {
+      texts.forEach((text) => text.toggleAttribute('data-overflow', text.scrollHeight > text.clientHeight + 1));
+    };
+
+    // The row keeps one height in every state: the tallest one (the card that needs most room when open).
+    const measure = () => {
+      const current = Number(grid.dataset.open ?? 0);
+      grid.style.removeProperty('--wall-h');
+      grid.classList.add('is-measuring');
+      let tallest = 0;
+      cards.forEach((_, i) => {
+        setOpen(i);
+        tallest = Math.max(tallest, grid.getBoundingClientRect().height);
+      });
+      setOpen(current);
+      grid.classList.remove('is-measuring');
+      grid.style.setProperty('--wall-h', `${Math.ceil(tallest)}px`);
+      markOverflow();
     };
 
     cards.forEach((card, index) => {
-      card.querySelector('.quote__toggle')?.addEventListener('click', () => select(index));
+      card.querySelector('.quote__toggle')?.addEventListener('click', () => {
+        if (grid.dataset.open === String(index)) return;
+        setOpen(index);
+        requestAnimationFrame(markOverflow); // stacked layout has no transition to wait for
+      });
     });
+
+    // Re-check the fades once the widths have settled.
+    grid.addEventListener('transitionend', (event) => {
+      if (event.target === grid) markOverflow();
+    });
+
+    let resizeTimer: number | undefined;
+    window.addEventListener('resize', () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(measure, 150);
+    });
+
+    measure();
+    document.fonts?.ready.then(measure);
   }
 </script>
