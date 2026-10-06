@@ -124,6 +124,12 @@ const links = [
     background: color-mix(in srgb, var(--color-nav-chip), var(--color-ink) 7%);
   }
 
+  /* The section in view: its chip turns yellow, and stays yellow on hover. */
+  .nav__link[aria-current],
+  .nav__link[aria-current]:hover {
+    background: var(--color-nav-active);
+  }
+
   .nav__toggle {
     display: none;
     align-items: center;
@@ -248,6 +254,10 @@ const links = [
     color: var(--color-white);
   }
 
+  .menu__link[aria-current] {
+    color: var(--color-nav-active);
+  }
+
   .menu__link:focus-visible,
   .menu__close:focus-visible {
     outline-color: var(--color-white);
@@ -310,5 +320,42 @@ const links = [
     window.matchMedia('(min-width: 641px)').addEventListener('change', (event) => {
       if (event.matches) close(false);
     });
+  }
+
+  // Mark the nav link of the section in view. A band from just under the header to ~45% of the
+  // viewport is the "reading line"; the observed section crossing it is the current one.
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('.nav__link, .menu__link')).filter(
+    (link) => link.hash.length > 1 && document.getElementById(link.hash.slice(1)),
+  );
+  const sections = new Map<string, HTMLElement>();
+  links.forEach((link) => {
+    const id = link.hash.slice(1);
+    sections.set(id, document.getElementById(id) as HTMLElement);
+  });
+
+  const setCurrent = (id: string | null) => {
+    document.querySelectorAll<HTMLAnchorElement>('.nav__link, .menu__link').forEach((link) => {
+      if (id && link.hash === `#${id}`) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+  };
+
+  if (sections.size && 'IntersectionObserver' in window) {
+    const top = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stack-top')) || 120;
+    const visible = new Set<string>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const id = (entry.target as HTMLElement).id;
+          if (entry.isIntersecting) visible.add(id);
+          else visible.delete(id);
+        });
+        // Sections cannot overlap, but if two touch the band, take the one that comes first on the page.
+        const current = [...sections.keys()].find((id) => visible.has(id)) ?? null;
+        setCurrent(current);
+      },
+      { rootMargin: `-${top}px 0px -55% 0px` },
+    );
+    sections.forEach((section) => observer.observe(section));
   }
 </script>
