@@ -44,10 +44,13 @@ import { testimonials } from '../data/content';
 </section>
 
 <style>
+  /*
+   * The heading and the first card line up with the page content (max-width, centered), but the carousel
+   * runs on to the right edge of the window, so the next card bleeds off the screen. No right padding here:
+   * the window edge is what clips it. Percentages are of the page width, so no 100vw and no scrollbar.
+   */
   .wall {
-    max-width: var(--page-max);
-    margin-inline: auto;
-    padding: var(--space-144) var(--wall-pad-right) 0 var(--wall-pad-left);
+    padding: var(--space-144) 0 0 calc(max(0px, (100% - var(--page-max)) / 2) + var(--wall-pad-left));
   }
 
   .wall__title {
@@ -59,7 +62,7 @@ import { testimonials } from '../data/content';
     color: var(--color-ink);
   }
 
-  /* The viewport clips the row, so the next card peeks in from the edge, as in the design. */
+  /* The viewport clips the row at the window edge, so the next card bleeds off the screen. */
   .wall__viewport {
     overflow: hidden;
     container-type: inline-size;
@@ -220,6 +223,11 @@ import { testimonials } from '../data/content';
   /* ---------- Mobile: no accordion, one full card per screen, swipe with scroll snap ---------- */
 
   @media (max-width: 999px) {
+    .wall {
+      padding-right: var(--wall-pad-right);
+      padding-left: var(--wall-pad-left);
+    }
+
     .wall__viewport {
       overflow-x: auto;
       overscroll-behavior-x: contain;

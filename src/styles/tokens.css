@@ -204,7 +204,6 @@
   /* ---------- Testimonials ---------- */
   --quote-open-w: 846px; /* expanded card, from Figma */
   --quote-closed-w: 433px; /* collapsed card, from Figma */
-  --quote-peek: 20px; /* how much of the next card always shows at the right edge */
   --quote-h: 724px; /* one fixed height for every card; Figma's 562px cannot hold Agata's full quote at 846px wide */
   --quote-collapsed-lines: 23; /* lines of the collapsed copy that fit above the author block */
   --quote-time: 500ms; /* card width and row slide */
