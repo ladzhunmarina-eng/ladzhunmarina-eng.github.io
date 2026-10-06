@@ -48,13 +48,18 @@ const links = [
     justify-content: center;
     width: var(--icon-hit);
     height: var(--icon-hit);
+    background: var(--color-icon-bg);
     color: var(--color-icon-muted);
-    border-radius: var(--radius-focus);
+    border-radius: 50%;
     transition: color 0.15s ease;
   }
 
   .social__link :global(svg) {
     display: block;
+  }
+
+  .social__link:focus-visible {
+    border-radius: 50%;
   }
 
   .social__link:hover {

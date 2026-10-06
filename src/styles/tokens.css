@@ -13,11 +13,13 @@
   --color-marquee-dot: #d9d9d9;
   --color-outline: #b3b3b3;
   --color-outline-strong: #999;
-  --color-logo: #868181;
+  --color-wordmark: #b3b3b3;
+  --color-heading-muted: #999898;
+  --color-heading-strong: #000;
+  --color-icon-bg: #f3f0e5;
   --color-icon-muted: #b3b3b3;
   --color-ink-button: #2e2e2e;
   --color-nav-chip: #fff;
-  --color-nav-home: var(--work-1-bg); /* the current-page chip, like the olive one on the reference */
   --color-menu-bg: rgb(0 0 0 / 0.61);
   --color-nav-bg: rgb(255 255 255 / 0.75); /* translucent, so the blur behind the pill shows */
   --color-nav-hover: rgb(42 42 42 / 0.06); /* not in Figma: hover state is a guess */
@@ -69,8 +71,6 @@
   /* ---------- Typography: families ---------- */
   --font-display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  /* PolySans Neutral is a paid font and is not bundled. Add its @font-face to use it; until then the next family renders. */
-  --font-logo: 'PolySans Neutral', 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
   --font-meta: 'Gantari', 'Inter', system-ui, sans-serif;
 
   /* ---------- Typography: weights ---------- */
@@ -87,7 +87,6 @@
   --fs-14: 14px;
   --fs-16: 16px;
   --fs-18: 18px;
-  --fs-19: 19px;
   --fs-20: 20px;
   --fs-22: 22px;
   --fs-24: 24px;
@@ -295,7 +294,7 @@
     --nav-pad-x: 20px;
     --nav-pad-y: 10px;
     --nav-link-pad-x: 24px;
-    --nav-height: 63px;
+    --nav-height: 60px;
     --footer-height: 160px;
   }
 }

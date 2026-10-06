@@ -15,7 +15,7 @@ import SocialLinks from './SocialLinks.astro';
         widths={[139, 278, 417]}
         sizes="139px"
         loading="eager"
-      /></span> Marina <span class="hero__wave" role="img" aria-label="waving hand">👋</span>, practicing product design since 2015, building complex digital products for real business needs.
+      /></span> Marina <span class="hero__wave" role="img" aria-label="waving hand">👋</span>, practicing <span class="hero__strong">product design</span> since 2015, building complex <span class="hero__strong">digital products</span> for real <span class="hero__strong">business needs.</span>
   </h1>
   <div class="hero__actions">
     <Button href="#work">View cases</Button>
@@ -41,7 +41,12 @@ import SocialLinks from './SocialLinks.astro';
     font-weight: var(--weight-bold);
     line-height: var(--lh-display);
     letter-spacing: var(--ls-0);
-    color: var(--color-ink);
+    color: var(--color-heading-muted);
+  }
+
+  /* Two-tone heading: the key phrases are black, the rest is soft grey. */
+  .hero__strong {
+    color: var(--color-heading-strong);
   }
 
   /* The photo takes the gap in the first line; it rises above the line like in the design. */

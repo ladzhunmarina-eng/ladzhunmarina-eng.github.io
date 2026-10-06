@@ -12,11 +12,10 @@ const links = [
 
 <header class="site-header">
   <div class="site-header__inner">
+    <a class="site-header__logo" href="#" aria-label="Portfolio, back to top">Portfolio</a>
     <nav class="nav" aria-label="Primary">
+      <a class="nav__brand" href="#" aria-label="Portfolio, back to top">Portfolio</a>
       <ul class="nav__list">
-        <li>
-          <a class="nav__home" href="#" aria-current="page">Portfolio</a>
-        </li>
         {links.map((link) => (
           <li class="nav__item">
             <a class="nav__link" href={link.href}>{link.label}</a>
@@ -46,9 +45,9 @@ const links = [
 
 <style>
   /*
-   * Same idea as the reference: one fixed, translucent, blurred pill at the top. A "home" chip with
-   * the current-page tint comes first, then white link chips. No plate behind it, so content scrolls
-   * under the blur. Contact me sits on the right; on phones the links collapse into a menu button.
+   * One fixed, translucent, blurred pill at the top with white link chips, like the reference. No plate
+   * behind it, so content scrolls under the blur. The Portfolio wordmark sits on the left and Contact me
+   * on the right; on phones the wordmark moves into the pill and the links collapse into a menu button.
    */
   .site-header {
     position: fixed;
@@ -86,7 +85,29 @@ const links = [
     align-items: center;
   }
 
-  .nav__home,
+  .site-header__logo,
+  .nav__brand {
+    font-size: var(--fs-16);
+    line-height: var(--lh-16);
+    font-weight: var(--weight-regular);
+    color: var(--color-wordmark);
+    transition: color 0.15s ease;
+    pointer-events: auto;
+  }
+
+  .site-header__logo {
+    justify-self: start;
+  }
+
+  .site-header__logo:hover,
+  .nav__brand:hover {
+    color: var(--color-ink);
+  }
+
+  .nav__brand {
+    display: none;
+  }
+
   .nav__link {
     display: block;
     padding: var(--nav-link-pad-y) var(--nav-link-pad-x);
@@ -97,11 +118,6 @@ const links = [
     line-height: var(--lh-16);
     font-weight: var(--weight-regular);
     transition: background-color 0.15s ease;
-  }
-
-  .nav__home {
-    background: var(--color-nav-home);
-    font-family: var(--font-logo);
   }
 
   .nav__link:hover {
@@ -156,8 +172,13 @@ const links = [
       display: none;
     }
 
-    .nav__home {
-      padding: var(--space-12) var(--space-24);
+    .site-header__logo {
+      display: none;
+    }
+
+    .nav__brand {
+      display: block;
+      padding-left: var(--space-4);
     }
 
     .nav__toggle {
