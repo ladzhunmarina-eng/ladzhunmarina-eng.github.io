@@ -26,12 +26,15 @@ const themeVars = {
 
 <article class="work" style={`--i: ${index}; --bg: var(--work-${themeVars}-bg); --panel: var(--work-${themeVars}-panel); --accent: var(--work-${themeVars}-accent);`}>
   <div class="work__tabrow">
-    <div class="work__tab">
-      <p class="work__tab-label">Featured Work {number}</p>
+    <div class="work__container work__container--tabs">
+      <div class="work__tab">
+        <p class="work__tab-label">Featured Work {number}</p>
+      </div>
     </div>
   </div>
   <div class="work__body">
-    <div class="work__inner">
+    <div class="work__container">
+      <div class="work__inner">
       <div class="work__panel">
         <Image
           class="work__image"
@@ -40,6 +43,7 @@ const themeVars = {
           widths={[480, 720, 1080, 1440]}
           sizes="(max-width: 1024px) 100vw, 726px"
           quality={85}
+          loading="eager"
           style={`left:${place.left};top:${place.top};width:${place.width};height:${place.height};`}
         />
       </div>
@@ -51,36 +55,46 @@ const themeVars = {
           {tags.map((tag) => <li class="work__tag">{tag}</li>)}
         </ul>
       </div>
+      </div>
     </div>
   </div>
 </article>
 
 <style>
+  /* The panel itself is full-bleed. Only .work__container constrains the content. */
   .work {
     width: 100%;
-    max-width: var(--page-max);
-    margin-inline: auto;
   }
 
+  .work__container {
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  /* The row stays transparent: the page background shows beside the tab, above the body. */
   .work__tabrow {
-    display: flex;
     height: var(--work-tab-row);
-    padding-left: var(--work-tab-inset);
+  }
+
+  .work__container--tabs {
+    display: flex;
+    height: 100%;
   }
 
   .work__tab {
     display: flex;
     align-items: center;
+    flex: none;
     width: var(--work-tab-width);
-    padding-inline: var(--space-4) 0;
-    padding-left: calc(var(--space-30) + var(--space-10));
+    padding-left: var(--work-tab-pad);
     border-radius: var(--radius-card) var(--radius-card) 0 0;
     background: var(--bg);
   }
 
   .work__tab-label {
     font-family: var(--font-display);
-    font-size: var(--fs-24);
+    font-size: var(--fs-tab);
     font-weight: var(--weight-light);
     line-height: var(--lh-24);
     letter-spacing: var(--ls-24);
@@ -88,7 +102,7 @@ const themeVars = {
   }
 
   .work__body {
-    padding: var(--space-57) var(--gutter);
+    padding-block: var(--space-57);
     background: var(--bg);
   }
 

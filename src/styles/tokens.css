@@ -63,6 +63,7 @@
   --fs-22: 22px;
   --fs-24: 24px;
   --fs-32: 32px;
+  --fs-tab-min: 18px;
   --fs-display: clamp(36px, 4.3056vw, 62px); /* 62px at 1440px */
 
   /* ---------- Typography: line heights ---------- */
@@ -126,8 +127,9 @@
   --stack-top: 120px; /* sticky offset: just below the floating nav pill */
   --work-text-tablet-max: 540px;
   --work-tab-width: 355px;
+  --work-tab-pad: 40px;
+  --fs-tab: var(--fs-24);
   --work-tab-row: 75px;
-  --work-tab-inset: 83px;
   --wall-max: 1319px;
   --wall-gutter: 60px;
   --text-section-max: 1140px;
@@ -191,7 +193,6 @@
     --wall-gutter: 40px;
     --hero-gutter: 40px;
     --hero-top: 190px;
-    --work-tab-inset: 39px;
   }
 }
 
@@ -209,7 +210,6 @@
     --nav-link-pad-y: 12px;
     --work-tab-width: 240px;
     --work-tab-row: 60px;
-    --work-tab-inset: 20px;
     --space-57: 32px;
     --space-92: 48px;
     --space-134: 72px;
@@ -234,8 +234,10 @@
  */
 @media (min-width: 1025px) and (min-height: 600px) {
   :root {
-    --work-tab-inset: 0px;
+    /* Tabs share the content width: 4 tabs always fit in one row, and the label scales down to fit. */
     --work-tab-width: min(355px, 25%);
+    --work-tab-pad: clamp(16px, 2.8vw, 40px);
+    --fs-tab: clamp(var(--fs-tab-min), 1.667vw, var(--fs-24));
     /* Tallest the image panel may be: viewport minus header offset, tab row and body padding. */
     --work-panel-h-cap: clamp(
       var(--work-panel-h-min),
