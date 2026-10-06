@@ -208,6 +208,12 @@
   --contact-tilt: 6deg;
   --contact-fade: 200ms;
 
+  /* ---------- Hero wave (plays once on load) ---------- */
+  --wave-delay: 600ms;
+  --wave-duration: 1600ms;
+  --wave-angle: 12deg;
+  --wave-pivot: 70% 70%; /* near the wrist of the emoji */
+
   /* ---------- Misc sizes ---------- */
   --button-height: 48px;
   --button-height-sm: 40px;

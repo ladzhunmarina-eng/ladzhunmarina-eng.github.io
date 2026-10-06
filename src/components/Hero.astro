@@ -62,9 +62,43 @@ import SocialLinks from './SocialLinks.astro';
     height: auto;
   }
 
-  /* The emoji font has taller metrics; keep it from stretching the first line. */
+  /*
+   * The emoji waves once after the page loads. It is an inline-block so it can rotate, with its own
+   * line-height so the emoji font's taller metrics do not stretch the first line.
+   */
   .hero__wave {
-    line-height: 0;
+    display: inline-block;
+    line-height: 1;
+    transform-origin: var(--wave-pivot);
+    animation: hero-wave var(--wave-duration) ease-in-out var(--wave-delay) 1;
+  }
+
+  @keyframes hero-wave {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    15% {
+      transform: rotate(var(--wave-angle));
+    }
+    30% {
+      transform: rotate(calc(var(--wave-angle) * -0.6));
+    }
+    45% {
+      transform: rotate(var(--wave-angle));
+    }
+    60% {
+      transform: rotate(calc(var(--wave-angle) * -0.4));
+    }
+    75% {
+      transform: rotate(calc(var(--wave-angle) * 0.6));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__wave {
+      animation: none;
+    }
   }
 
   .hero__actions {
