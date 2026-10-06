@@ -6,27 +6,37 @@ import { testimonials } from '../data/content';
 <section class="wall" aria-labelledby="wall-title">
   <h2 id="wall-title" class="wall__title">Wall of Love</h2>
 
-  <!-- A horizontal carousel: the next card peeks in from the right, drag or scroll to see it. -->
-  <div class="wall__scroller" tabindex="0" role="region" aria-label="Testimonials">
-    <ul class="wall__list">
-      {testimonials.map((t) => (
-        <li class:list={['quote', `quote--${t.theme}`, { 'quote--wide': t.wide }]}>
-          <figure class="quote__figure">
-            <blockquote class:list={['quote__text', { 'quote__text--clipped': t.clipped }]}>
-              {t.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
-            </blockquote>
-            <figcaption class="quote__person">
-              <Image class="quote__photo" src={t.photo} alt={t.alt} width={96} height={96} widths={[96, 192, 288]} sizes="96px" />
-              <span class="quote__meta">
-                <span class="quote__name">{t.name}</span>
-                <span class="quote__role">{t.role}</span>
-              </span>
-            </figcaption>
-          </figure>
-        </li>
-      ))}
-    </ul>
-  </div>
+  <!--
+    One testimonial is open (wide, full text); the other two sit beside it, compact, showing the start of the
+    quote. Clicking a compact card opens it and the open one takes its place. No scrolling.
+  -->
+  <ul class="wall__grid">
+    {testimonials.map((t, i) => (
+      <li
+        class:list={['quote', `quote--${t.theme}`, { 'is-active': i === 0 }]}
+        style={`view-transition-name: quote-${i}`}
+      >
+        <figure class="quote__figure">
+          <blockquote class="quote__text">
+            {t.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+          </blockquote>
+          <figcaption class="quote__person">
+            <Image class="quote__photo" src={t.photo} alt={t.alt} width={96} height={96} widths={[96, 192, 288]} sizes="96px" />
+            <span class="quote__meta">
+              <span class="quote__name">{t.name}</span>
+              <span class="quote__role">{t.role}</span>
+            </span>
+          </figcaption>
+        </figure>
+        <button
+          class="quote__toggle"
+          type="button"
+          aria-expanded={i === 0 ? 'true' : 'false'}
+          aria-label={`Read the full testimonial from ${t.name}`}
+        ></button>
+      </li>
+    ))}
+  </ul>
 </section>
 
 <style>
@@ -45,52 +55,41 @@ import { testimonials } from '../data/content';
     color: var(--color-ink);
   }
 
-  /* The scroller clips the list, so the third card shows only its edge, as in the design. */
-  .wall__scroller {
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    cursor: grab;
-    border-radius: var(--radius-card);
-    container-type: inline-size; /* card widths below are relative to the carousel, not to the growing list */
-  }
+  /* ---------- Desktop: wide card on the left, two compact cards stacked on the right ---------- */
 
-  .wall__scroller::-webkit-scrollbar {
-    display: none;
-  }
-
-  .wall__scroller[data-dragging] {
-    cursor: grabbing;
-    scroll-snap-type: none;
-    user-select: none;
-  }
-
-  .wall__list {
-    display: flex;
+  .wall__grid {
+    display: grid;
+    grid-template-columns: var(--quote-wide-fr) var(--quote-side-fr);
+    grid-template-rows: 1fr 1fr;
     gap: var(--space-10);
-    width: max-content;
-    min-width: 100%;
+    height: var(--wall-h);
   }
 
   .quote {
+    position: relative;
     display: flex;
-    flex: none;
-    width: var(--quote-w);
-    min-height: var(--quote-card-height);
+    min-width: 0;
+    min-height: 0;
     padding: var(--space-30);
     border-radius: var(--radius-card);
     background: var(--quote-bg);
-    scroll-snap-align: start;
+    overflow: hidden;
+    grid-column: 2;
+    transition: background-color 0.2s ease;
   }
 
-  .quote--wide {
-    width: var(--quote-wide-w);
+  .quote.is-active {
+    grid-column: 1;
+    grid-row: 1 / span 2;
   }
 
   .quote--1 { --quote-bg: var(--quote-1-bg); }
   .quote--2 { --quote-bg: var(--quote-2-bg); }
   .quote--3 { --quote-bg: var(--quote-3-bg); }
+
+  .quote:not(.is-active):hover {
+    background: color-mix(in srgb, var(--quote-bg), var(--color-ink) 5%);
+  }
 
   .quote__figure {
     display: flex;
@@ -98,13 +97,24 @@ import { testimonials } from '../data/content';
     justify-content: space-between;
     gap: var(--space-16);
     width: 100%;
+    min-width: 0;
+    min-height: 0;
   }
 
   .quote__text {
+    min-height: 0;
     font-size: var(--fs-20);
     line-height: var(--lh-20);
     letter-spacing: var(--ls-20);
     color: var(--color-black);
+  }
+
+  /* Compact: only the first lines, cut at a whole line, fading out where the quote continues. */
+  .quote:not(.is-active) .quote__text {
+    max-height: calc(var(--quote-compact-lines) * var(--lh-20));
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lh-20)), transparent);
+    mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lh-20)), transparent);
   }
 
   /* A blank line between paragraphs, as in the design; "\n" inside one is a plain line break. */
@@ -114,14 +124,6 @@ import { testimonials } from '../data/content';
 
   .quote__text p + p {
     margin-top: var(--lh-20);
-  }
-
-  /* The longest quote is cut at whole lines and fades out, like the clipped card in the design. */
-  .quote__text--clipped {
-    max-height: calc(var(--quote-lines) * var(--lh-20));
-    overflow: hidden;
-    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lh-20)), transparent);
-    mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lh-20)), transparent);
   }
 
   .quote__person {
@@ -155,78 +157,103 @@ import { testimonials } from '../data/content';
     color: var(--color-muted);
   }
 
-  /* Tablet and phones: narrower cards so the next one always peeks in. */
+  /* One invisible button covers each card, so the whole card is the click target. */
+  .quote__toggle {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    padding: 0;
+    border: 0;
+    border-radius: inherit;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .quote.is-active .quote__toggle {
+    cursor: default;
+  }
+
+  .quote__toggle:focus-visible {
+    outline: var(--focus-width) solid var(--color-focus);
+    outline-offset: calc(-1 * var(--focus-width));
+  }
+
+  /* ---------- Tablet and phones: one column, a card opens in place ---------- */
+
   @media (max-width: 1024px) {
-    .quote {
-      width: min(var(--quote-w), 85cqw);
+    .wall__grid {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: none;
+      height: auto;
     }
 
-    .quote--wide {
-      width: min(var(--quote-wide-w), 88cqw);
-    }
-  }
-
-  /* Phones: every card is narrow, so every quote is cut at 15 lines and fades, keeping the cards equal. */
-  @media (max-width: 640px) {
     .quote,
-    .quote--wide {
-      width: 85cqw;
+    .quote.is-active {
+      grid-column: 1;
+      grid-row: auto;
     }
 
-    .quote__text {
-      max-height: calc(var(--quote-lines) * var(--lh-20));
-      overflow: hidden;
-      -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lh-20)), transparent);
-      mask-image: linear-gradient(to bottom, #000 calc(100% - var(--lh-20)), transparent);
+    .quote:not(.is-active) .quote__text {
+      max-height: calc(var(--quote-compact-lines-narrow) * var(--lh-20));
     }
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    .wall__scroller {
-      scroll-behavior: smooth;
+  /* ---------- The swap animation (View Transitions; browsers without it switch instantly) ---------- */
+
+  /* Only the cards animate, not the whole page. Snapshots keep their natural size and are cropped by the
+     moving box, so text stays crisp while a card grows or shrinks. */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+
+  ::view-transition-group(*) {
+    animation-duration: 0.5s;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    width: 100%;
+    height: 100%;
+    object-fit: none;
+    object-position: left top;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .quote {
+      transition: none;
+    }
+
+    ::view-transition-group(*) {
+      animation-duration: 0.01s;
     }
   }
 </style>
 
 <script>
-  // Mouse drag to scroll the carousel (touch and trackpads scroll natively).
-  const scroller = document.querySelector<HTMLElement>('.wall__scroller');
+  const grid = document.querySelector<HTMLElement>('.wall__grid');
 
-  if (scroller) {
-    let startX = 0;
-    let startLeft = 0;
-    let pointerId: number | null = null;
-    let moved = false;
+  if (grid) {
+    const cards = Array.from(grid.querySelectorAll<HTMLElement>('.quote'));
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    scroller.addEventListener('pointerdown', (event) => {
-      if (event.pointerType !== 'mouse' || event.button !== 0) return;
-      pointerId = event.pointerId;
-      startX = event.clientX;
-      startLeft = scroller.scrollLeft;
-      moved = false;
-    });
-
-    scroller.addEventListener('pointermove', (event) => {
-      if (pointerId !== event.pointerId) return;
-      const delta = event.clientX - startX;
-      if (!moved && Math.abs(delta) < 4) return;
-      if (!moved) {
-        moved = true;
-        scroller.setPointerCapture(event.pointerId);
-        scroller.setAttribute('data-dragging', '');
-        scroller.style.scrollBehavior = 'auto';
-      }
-      scroller.scrollLeft = startLeft - delta;
-    });
-
-    const end = (event: PointerEvent) => {
-      if (pointerId !== event.pointerId) return;
-      pointerId = null;
-      scroller.removeAttribute('data-dragging');
-      scroller.style.scrollBehavior = '';
-      if (moved && scroller.hasPointerCapture(event.pointerId)) scroller.releasePointerCapture(event.pointerId);
+    const open = (index: number) => {
+      cards.forEach((card, i) => {
+        card.classList.toggle('is-active', i === index);
+        card.querySelector('.quote__toggle')?.setAttribute('aria-expanded', String(i === index));
+      });
     };
-    scroller.addEventListener('pointerup', end);
-    scroller.addEventListener('pointercancel', end);
+
+    const select = (index: number) => {
+      if (cards[index].classList.contains('is-active')) return;
+      const doc = document as Document & { startViewTransition?: (update: () => void) => unknown };
+      if (doc.startViewTransition && !reduceMotion.matches) doc.startViewTransition(() => open(index));
+      else open(index);
+    };
+
+    cards.forEach((card, index) => {
+      card.querySelector('.quote__toggle')?.addEventListener('click', () => select(index));
+    });
   }
 </script>

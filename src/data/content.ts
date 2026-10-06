@@ -84,7 +84,20 @@ export const work = [
 
 export const testimonials = [
   {
-    wide: true,
+    theme: '3',
+    paragraphs: [
+      'I can truly recommend working with Maryna as a very skillful Designer with a lot of expertise around the user experience but also research even in a very complex environments.',
+      'Maryna is not afraid of any challenge - starting from simple user flows, going through payments topics and ending with complex Legal projects.',
+      'She is very fast in preparing designs and prototyping, open for a discussion and feedback from the whole Team, different stakeholders and also users. She can adapt to the new situations quite quickly, juggling different topics and parts of the flow all together with different tools and advanced AI usage. With all of that, you are able to quickly get the working protypes, support with hypothesis and experiments creation, metrics etc. as Maryna is always open and eager to explore and discuss the topic fully, understanding the whole Business, Product and Tech impact, and not only focus on designs.',
+      "I'm constantly impressed that very often she's able to tackle the topics not only from a design perspective but also act as a true Researcher building hypothesis, users tests using different tools or simply interviewing users live.",
+      'She is always a priceless team member that can bring a lot of positive changes for your Team and Customers.',
+    ],
+    name: 'Agata Woźniak',
+    role: 'Product Manager',
+    photo: photo3,
+    alt: 'Portrait of Agata Woźniak',
+  },
+  {
     theme: '1',
     paragraphs: [
       'I have had the pleasure of working with Marina for almost 2 years, where she worked as a freelance designer for FlexyBox. We considered outsourcing our UI/UX design to a design company, when we were lucky to get to know Marina. Not once have we regretted that decision. Marina has worked directly with me, our developers and product owners in FlexyBox.',
@@ -106,20 +119,6 @@ export const testimonials = [
     role: 'Head of Product',
     photo: photo2,
     alt: 'Portrait of Jen Volmer',
-  },
-  {
-    theme: '3',
-    // The design cuts this one at 15 lines; the full text stays in the page.
-    clipped: true,
-    paragraphs: [
-      'Maryna is not afraid of any challenge - starting from simple user flows, going through payments topics and ending with complex Legal projects.\nShe is very fast in preparing designs and prototyping, open for a discussion and feedback from the whole Team, different stakeholders and also users. She can adapt to the new situations...quite quickly, juggling different topics and parts of the flow all together with different tools and advanced AI usage. With all of that, you are able to quickly get the working protypes, support with hypothesis and experiments creation, metrics etc. as Maryna is always open and eager to explore and discuss the topic fully, understanding the whole Business, Product and Tech impact, and not only focus on designs.',
-      "I'm constantly impressed that very often she's able to tackle the topics not only from a design perspective but also act as a true Researcher building hypothesis, users tests using different tools or simply interviewing users live.",
-      'She is always a priceless team member that can bring a lot of positive changes for your Team and Customers.',
-    ],
-    name: 'Agata Woźniak',
-    role: 'Product Manager',
-    photo: photo3,
-    alt: 'Portrait of Agata Woźniak',
   },
 ];
 
