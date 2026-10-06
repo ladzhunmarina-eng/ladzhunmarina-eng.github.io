@@ -10,7 +10,7 @@ const links = [
 
 <header class="site-header">
   <div class="site-header__inner">
-    <a class="site-header__logo" href="#" aria-label="Marina, back to top">ML</a>
+    <a class="site-header__logo" href="#" aria-label="Portfolio, back to top">Portfolio</a>
     <nav class="nav" aria-label="Primary">
       <ul class="nav__list">
         {links.map((link) => (
@@ -104,8 +104,8 @@ const links = [
     }
   }
 
-  /* No room for the monogram next to the pill on small phones. */
-  @media (max-width: 480px) {
+  /* No room for the wordmark next to the pill on phones and small tablets. */
+  @media (max-width: 680px) {
     .site-header__logo {
       display: none;
     }
