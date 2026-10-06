@@ -166,6 +166,7 @@
   /* ---------- Nav pill ---------- */
   --nav-top: 30px;
   --nav-height: 77px;
+  --header-h: calc(var(--nav-top) + var(--nav-height) + var(--space-12)); /* height of the solid header plate */
   --nav-pad-y: 12px;
   --nav-pad-x: 24px;
   --nav-link-pad-y: 17px;
