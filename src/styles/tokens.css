@@ -41,6 +41,23 @@
   --quote-2-bg: #ebe9ff;
   --quote-3-bg: #dcefff;
 
+  /* ---------- Color: contact card ---------- */
+  --contact-bg: #242424;
+  --contact-row-bg: #2a2828;
+  --contact-fg: #f5f5f5;
+  --contact-fg-strong: #fafafa;
+  --contact-muted: #999;
+  --contact-divider: rgb(51 51 51 / 0.4);
+  --contact-row-hover-bg: #fafafa;
+  --contact-row-hover-fg: #121212;
+  --contact-close-bg: rgb(36 36 36 / 0.95);
+  --contact-close-hover-bg: #2a2828;
+  --contact-ring: #121212;
+  --contact-focus: #ccc;
+  --contact-shadow: 0 2px 8px -2px rgb(0 0 0 / 0.25), 0 10px 40px -8px rgb(0 0 0 / 0.35), 0 24px 60px -16px rgb(0 0 0 / 0.35);
+  --contact-shadow-avatar: 0 2px 14px rgb(0 0 0 / 0.25);
+  --contact-inner-gradient: linear-gradient(145deg, hsl(270 12% 24% / 0.22) 0%, hsl(0 0% 52% / 0.1) 48%, hsl(0 0% 8% / 0.28) 100%);
+
   /* ---------- Color: footer ---------- */
   --color-footer: #000;
 
@@ -148,12 +165,14 @@
 
   /* ---------- Nav pill ---------- */
   --nav-top: 30px;
+  --nav-height: 77px;
   --nav-pad-y: 12px;
   --nav-pad-x: 24px;
   --nav-link-pad-y: 17px;
   --nav-link-pad-x: 30px;
   --nav-blur: 20px;
   --z-nav: 10;
+  --z-contact: 101;
 
   /* ---------- Marquee ---------- */
   --marquee-height: 60px;
@@ -165,6 +184,23 @@
   --quote-card-height: 582px;
   --quote-lines: 12;
   --photo-size: 96px;
+
+  /* ---------- Contact card ---------- */
+  --contact-w: 320px;
+  --contact-edge: 16px;
+  --contact-radius: 24px;
+  --contact-row-radius: 16px;
+  --contact-pad: 24px;
+  --contact-pad-top: 56px;
+  --contact-avatar: 48px;
+  --contact-name: 30px;
+  --contact-role: 12px;
+  --contact-close: 40px;
+  --contact-pivot: -128px; /* the card sways around a point above it, like it hangs from a string */
+  --contact-sway: 0.85deg;
+  --contact-sway-time: 5s;
+  --contact-tilt: 6deg;
+  --contact-fade: 200ms;
 
   /* ---------- Misc sizes ---------- */
   --button-height: 48px;
@@ -231,6 +267,7 @@
     --lh-24: 24px;
     --radius-panel: 24px;
     --nav-top: 16px;
+    --nav-height: 59px;
     --nav-pad-x: 12px;
     --nav-link-pad-x: 18px;
     --footer-height: 160px;
@@ -269,5 +306,22 @@
 @media (max-width: 1199px) {
   :root {
     --header-group-pad: 0px;
+  }
+}
+
+/* Contact card: slightly roomier from small tablets up. */
+@media (min-width: 640px) {
+  :root {
+    --contact-pad: 28px;
+    --contact-pad-top: 64px;
+    --contact-avatar: 56px;
+    --contact-name: 36px;
+    --contact-role: 14px;
+  }
+}
+
+@media (min-width: 1536px) {
+  :root {
+    --contact-edge: 24px;
   }
 }

@@ -1,0 +1,517 @@
+---
+import { Image } from 'astro:assets';
+import avatar from '../assets/images/avatar.png';
+import CloseIcon from '../assets/icons/close.svg';
+import MailIcon from '../assets/icons/mail.svg';
+import TelegramIcon from '../assets/icons/telegram.svg';
+import WhatsappIcon from '../assets/icons/whatsapp.svg';
+import { contact } from '../data/contact';
+---
+
+<div
+  id="contact"
+  class="contact"
+  role="dialog"
+  aria-labelledby="contact-title"
+  aria-describedby="contact-desc"
+  data-state="closed"
+  tabindex="-1"
+  hidden
+>
+  <h2 id="contact-title" class="visually-hidden">Contact {contact.name}</h2>
+  <p id="contact-desc" class="visually-hidden">Copy email or open Telegram and WhatsApp.</p>
+
+  <div class="contact__pop">
+    <div class="contact__sway">
+      <div class="contact__perspective">
+        <div class="contact__tilt">
+          <div class="contact__card">
+            <div class="contact__shell" aria-hidden="true">
+              <div class="contact__inside"></div>
+              <div class="contact__shine"></div>
+              <div class="contact__glare"></div>
+            </div>
+
+            <div class="contact__content">
+              <button class="contact__close" type="button" aria-label="Close" data-contact-close>
+                <CloseIcon aria-hidden="true" />
+              </button>
+
+              <div class="contact__scroll">
+                <div class="contact__head">
+                  <Image class="contact__avatar" src={avatar} alt="" width={112} height={112} widths={[56, 112, 168]} sizes="56px" />
+                  <div class="contact__who">
+                    <p class="contact__name">{contact.name}</p>
+                    <p class="contact__role">{contact.role}</p>
+                  </div>
+                </div>
+
+                <div class="contact__actions">
+                  <button
+                    class="contact__row"
+                    type="button"
+                    data-contact-copy={contact.email}
+                    title="Copy to clipboard"
+                    aria-label={`Copy ${contact.email} to clipboard`}
+                  >
+                    <MailIcon class="contact__icon" aria-hidden="true" />
+                    <span class="contact__label">
+                      <span class="contact__swap">
+                        <span class="contact__swap-copied" aria-live="polite">Copied ✓</span>
+                        <span class="contact__swap-idle">Email</span>
+                      </span>
+                    </span>
+                  </button>
+                  <a class="contact__row" href={contact.telegram} target="_blank" rel="noopener noreferrer">
+                    <TelegramIcon class="contact__icon" aria-hidden="true" />
+                    <span class="contact__label">Telegram</span>
+                  </a>
+                  <a class="contact__row" href={contact.whatsapp} target="_blank" rel="noopener noreferrer">
+                    <WhatsappIcon class="contact__icon" aria-hidden="true" />
+                    <span class="contact__label">WhatsApp</span>
+                  </a>
+                </div>
+
+                <p class="contact__note">{contact.note}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /*
+   * The root is only a positioning frame and never blocks the page; the card itself takes pointer events.
+   * Narrow screens: centered under the header. 1280px and up: pinned to the top right.
+   */
+  .contact {
+    position: fixed;
+    z-index: var(--z-contact);
+    top: calc(var(--nav-top) + var(--nav-height) + var(--space-12));
+    left: 50%;
+    width: max-content;
+    max-width: calc(100vw - var(--space-16));
+    padding: var(--space-12);
+    transform: translateX(-50%);
+    pointer-events: none;
+    outline: none;
+  }
+
+  .contact[hidden] {
+    display: none;
+  }
+
+  @media (min-width: 1280px) {
+    .contact {
+      top: var(--contact-edge);
+      right: var(--contact-edge);
+      left: auto;
+      transform: none;
+    }
+  }
+
+  /* Open and close: fade plus a small scale. */
+  .contact__pop {
+    width: min(var(--contact-w), calc(100vw - var(--space-24)));
+    pointer-events: auto;
+    opacity: 0;
+    transform: scale(0.95);
+    transition:
+      opacity var(--contact-fade) ease,
+      transform var(--contact-fade) ease;
+  }
+
+  .contact[data-state='open'] .contact__pop {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Idle sway around a pivot above the card. */
+  .contact__sway {
+    transform-origin: 50% var(--contact-pivot);
+    animation: contact-sway var(--contact-sway-time) ease-in-out infinite alternate;
+  }
+
+  @keyframes contact-sway {
+    from {
+      transform: rotate(calc(-1 * var(--contact-sway)));
+    }
+    to {
+      transform: rotate(var(--contact-sway));
+    }
+  }
+
+  .contact__perspective {
+    perspective: 1200px;
+  }
+
+  /* Pointer tilt: the script writes --tilt-x / --tilt-y and the pointer position. */
+  .contact__tilt {
+    --tilt-x: 0deg;
+    --tilt-y: 0deg;
+    --pointer-x: 50%;
+    --pointer-y: 50%;
+    transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+    transform-style: preserve-3d;
+    transition: transform 300ms ease-out;
+    will-change: transform;
+  }
+
+  .contact__tilt[data-active] {
+    transition: transform 80ms ease-out;
+  }
+
+  .contact__card {
+    position: relative;
+    border-radius: var(--contact-radius);
+    background: var(--contact-bg);
+    color: var(--contact-fg);
+    box-shadow: var(--contact-shadow);
+  }
+
+  /* Soft depth: a gradient, a shine and a glare that follow the pointer. */
+  .contact__shell {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .contact__inside {
+    position: absolute;
+    inset: 0;
+    background-image: var(--contact-inner-gradient);
+    opacity: 0.52;
+  }
+
+  .contact__shine {
+    position: absolute;
+    inset: 0;
+    mix-blend-mode: soft-light;
+    opacity: 0.35;
+    background:
+      radial-gradient(ellipse 95% 85% at var(--pointer-x) var(--pointer-y), hsl(0 0% 96% / 0.12) 0%, transparent 58%),
+      linear-gradient(118deg, hsl(0 0% 40% / 0.12) 0%, transparent 42%, hsl(270 10% 18% / 0.16) 100%);
+  }
+
+  .contact__glare {
+    position: absolute;
+    inset: 0;
+    mix-blend-mode: overlay;
+    opacity: 0.26;
+    background: radial-gradient(circle at var(--pointer-x) var(--pointer-y), hsl(0 0% 100% / 0.14) 0%, transparent 52%);
+  }
+
+  .contact__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .contact__close {
+    position: absolute;
+    top: var(--space-12);
+    right: var(--space-12);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--contact-close);
+    height: var(--contact-close);
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--contact-close-bg);
+    color: var(--contact-fg-strong);
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+
+  .contact__close:hover {
+    background: var(--contact-close-hover-bg);
+  }
+
+  .contact__close :global(svg) {
+    width: var(--space-20);
+    height: var(--space-20);
+  }
+
+  .contact__scroll {
+    max-height: min(78vh, 576px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--contact-pad-top) var(--contact-pad) var(--contact-pad);
+  }
+
+  .contact__head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-12);
+    text-align: center;
+  }
+
+  .contact__head :global(.contact__avatar) {
+    flex: none;
+    width: var(--contact-avatar);
+    height: var(--contact-avatar);
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top;
+    box-shadow: 0 0 0 2px var(--contact-ring), var(--contact-shadow-avatar);
+  }
+
+  .contact__who {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .contact__name {
+    font-family: var(--font-display);
+    font-size: var(--contact-name);
+    font-weight: var(--weight-bold);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    color: var(--contact-fg-strong);
+  }
+
+  .contact__role {
+    font-size: var(--contact-role);
+    line-height: 1.4;
+    color: var(--contact-muted);
+  }
+
+  @media (min-width: 640px) {
+    .contact__head {
+      flex-direction: row;
+      align-items: flex-start;
+      text-align: left;
+    }
+  }
+
+  .contact__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    margin-top: var(--space-20);
+  }
+
+  .contact__row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    width: 100%;
+    padding: var(--space-12) var(--space-16);
+    border: 0;
+    border-radius: var(--contact-row-radius);
+    background: var(--contact-row-bg);
+    color: var(--contact-fg);
+    font: inherit;
+    font-size: var(--fs-16);
+    line-height: var(--lh-20);
+    text-align: left;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease-out,
+      color 0.2s ease-out;
+  }
+
+  .contact__row:hover {
+    background: var(--contact-row-hover-bg);
+    color: var(--contact-row-hover-fg);
+  }
+
+  .contact__row:focus-visible,
+  .contact__close:focus-visible {
+    outline: 2px solid var(--contact-focus);
+    outline-offset: 2px;
+    border-radius: var(--contact-row-radius);
+  }
+
+  .contact__close:focus-visible {
+    border-radius: 50%;
+  }
+
+  .contact__row :global(.contact__icon) {
+    flex: none;
+    width: var(--space-20);
+    height: var(--space-20);
+    transition: transform 0.2s ease-out;
+  }
+
+  .contact__row:hover :global(.contact__icon) {
+    transform: translateX(var(--space-3));
+  }
+
+  .contact__label {
+    flex: 1;
+    min-width: 0;
+    font-weight: var(--weight-medium);
+  }
+
+  /* "Email" and "Copied ✓" share one cell and crossfade. */
+  .contact__swap {
+    display: grid;
+  }
+
+  .contact__swap > * {
+    grid-area: 1 / 1;
+    transition: opacity 0.2s ease;
+  }
+
+  .contact__swap-copied {
+    opacity: 0;
+  }
+
+  .contact__row[data-copied] .contact__swap-copied {
+    opacity: 1;
+  }
+
+  .contact__row[data-copied] .contact__swap-idle {
+    opacity: 0;
+  }
+
+  .contact__note {
+    margin-top: var(--space-20);
+    padding-top: var(--space-20);
+    border-top: 1px solid var(--contact-divider);
+    font-size: var(--fs-14);
+    line-height: 1.625;
+    text-align: center;
+    text-wrap: balance;
+    color: var(--contact-muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .contact__pop,
+    .contact__tilt,
+    .contact__row,
+    .contact__row :global(.contact__icon) {
+      transition: none;
+    }
+
+    .contact__sway {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const root = document.getElementById('contact') as HTMLElement | null;
+
+  if (root) {
+    const dialog = root;
+    const triggerSelector = 'a[href="#contact"], [data-contact-trigger]';
+    const tilt = dialog.querySelector<HTMLElement>('.contact__tilt');
+    const fadeMs = 200;
+    const copiedMs = 1800;
+    let opener: HTMLElement | null = null;
+    let closeTimer: number | undefined;
+    let copiedTimer: number | undefined;
+
+    const triggers = () => document.querySelectorAll<HTMLElement>(triggerSelector);
+    const isOpen = () => dialog.dataset.state === 'open';
+
+    const sync = () => {
+      const open = isOpen();
+      triggers().forEach((el) => {
+        el.setAttribute('aria-haspopup', 'dialog');
+        el.setAttribute('aria-controls', 'contact');
+        el.setAttribute('aria-expanded', String(open));
+      });
+    };
+
+    const open = (from?: HTMLElement | null) => {
+      window.clearTimeout(closeTimer);
+      opener = from ?? opener;
+      dialog.hidden = false;
+      void dialog.offsetWidth; // let the closed state paint first, so the fade-in runs
+      dialog.dataset.state = 'open';
+      dialog.focus({ preventScroll: true });
+      sync();
+    };
+
+    const close = (returnFocus = true) => {
+      if (!isOpen()) return;
+      dialog.dataset.state = 'closed';
+      sync();
+      closeTimer = window.setTimeout(() => {
+        dialog.hidden = true;
+      }, fadeMs);
+      if (returnFocus) opener?.focus({ preventScroll: true });
+    };
+
+    document.addEventListener('click', (event) => {
+      const target = event.target as Element;
+      const trigger = target.closest<HTMLElement>(triggerSelector);
+      if (trigger) {
+        event.preventDefault();
+        isOpen() ? close() : open(trigger);
+      }
+    });
+
+    // Click outside closes; clicks on a trigger are handled above.
+    document.addEventListener('pointerdown', (event) => {
+      if (!isOpen()) return;
+      const target = event.target as Element;
+      if (target.closest('.contact__pop') || target.closest(triggerSelector)) return;
+      close(false);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && isOpen()) close();
+    });
+
+    dialog.querySelector('[data-contact-close]')?.addEventListener('click', () => close());
+
+    // Copy the email address, then flash "Copied ✓". If the clipboard is blocked, open the mail app instead.
+    dialog.querySelectorAll<HTMLElement>('[data-contact-copy]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const email = button.dataset.contactCopy ?? '';
+        try {
+          await navigator.clipboard.writeText(email);
+        } catch {
+          window.location.href = `mailto:${email}`;
+          return;
+        }
+        button.setAttribute('data-copied', '');
+        window.clearTimeout(copiedTimer);
+        copiedTimer = window.setTimeout(() => button.removeAttribute('data-copied'), copiedMs);
+      });
+    });
+
+    // Pointer tilt, only for a real mouse and only if motion is welcome.
+    const canTilt = window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
+    const card = dialog.querySelector<HTMLElement>('.contact__card');
+    if (card && tilt) {
+      const maxTilt = parseFloat(getComputedStyle(tilt).getPropertyValue('--contact-tilt')) || 6;
+      const reset = () => {
+        tilt.removeAttribute('data-active');
+        tilt.style.setProperty('--tilt-x', '0deg');
+        tilt.style.setProperty('--tilt-y', '0deg');
+        tilt.style.setProperty('--pointer-x', '50%');
+        tilt.style.setProperty('--pointer-y', '50%');
+      };
+      card.addEventListener('pointermove', (event) => {
+        if (!canTilt.matches || event.pointerType !== 'mouse') return;
+        const rect = card.getBoundingClientRect();
+        const px = Math.min(Math.max((event.clientX - rect.left) / rect.width, 0), 1);
+        const py = Math.min(Math.max((event.clientY - rect.top) / rect.height, 0), 1);
+        tilt.setAttribute('data-active', '');
+        tilt.style.setProperty('--tilt-x', `${(0.5 - py) * 2 * maxTilt}deg`);
+        tilt.style.setProperty('--tilt-y', `${(px - 0.5) * 2 * maxTilt}deg`);
+        tilt.style.setProperty('--pointer-x', `${px * 100}%`);
+        tilt.style.setProperty('--pointer-y', `${py * 100}%`);
+      });
+      card.addEventListener('pointerleave', reset);
+    }
+
+    sync();
+    if (location.hash === '#contact') open(null);
+  }
+</script>
