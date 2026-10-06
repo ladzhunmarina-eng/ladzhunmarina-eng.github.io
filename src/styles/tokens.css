@@ -16,6 +16,9 @@
   --color-logo: #868181;
   --color-icon-muted: #b3b3b3;
   --color-ink-button: #2e2e2e;
+  --color-nav-chip: #fff;
+  --color-nav-home: var(--work-1-bg); /* the current-page chip, like the olive one on the reference */
+  --color-menu-bg: rgb(0 0 0 / 0.61);
   --color-nav-bg: rgb(255 255 255 / 0.75); /* translucent, so the blur behind the pill shows */
   --color-nav-hover: rgb(42 42 42 / 0.06); /* not in Figma: hover state is a guess */
   --color-button-hover: #2a2a2a; /* not in Figma: hover state is a guess */
@@ -171,13 +174,22 @@
   /* ---------- Nav pill ---------- */
   --nav-top: 30px;
   --nav-height: 77px;
-  --header-h: calc(var(--nav-top) + var(--nav-height) + var(--space-12)); /* height of the solid header plate */
+  --header-h: calc(var(--nav-top) + var(--nav-height) + var(--space-12)); /* the header area: anchors and the contact card start below it */
   --nav-pad-y: 12px;
   --nav-pad-x: 20px;
   --nav-link-pad-y: 17px;
   --nav-link-pad-x: 24px;
   --nav-blur: 20px;
+  --nav-toggle: 40px;
+  --menu-blur: 5px;
+  --menu-fs: 28px;
+  --menu-lh: 33.6px;
+  --menu-gap: 23px;
+  --menu-close: 36px;
+  --menu-close-inset: 20px;
+  --menu-fade: 200ms;
   --z-nav: 10;
+  --z-menu: 20;
   --z-contact: 101;
 
   /* ---------- Marquee ---------- */
@@ -266,8 +278,6 @@
     --hero-avatar-size: 2em;
     --hero-avatar-raise: 0.5em;
     --hero-avatar-gap: 0.12em;
-    --nav-pad-y: 8px;
-    --nav-link-pad-y: 12px;
     --work-tab-width: 240px;
     --work-tab-row: 60px;
     --space-57: 32px;
@@ -282,9 +292,10 @@
     --lh-24: 24px;
     --radius-panel: 24px;
     --nav-top: 16px;
-    --nav-height: 59px;
-    --nav-pad-x: 10px;
-    --nav-link-pad-x: 14px;
+    --nav-pad-x: 20px;
+    --nav-pad-y: 10px;
+    --nav-link-pad-x: 24px;
+    --nav-height: 63px;
     --footer-height: 160px;
   }
 }

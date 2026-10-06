@@ -1,5 +1,7 @@
 ---
 import Button from './Button.astro';
+import MenuIcon from '../assets/icons/menu.svg';
+import CloseIcon from '../assets/icons/close.svg';
 
 const links = [
   { label: 'About', href: '#' },
@@ -10,32 +12,50 @@ const links = [
 
 <header class="site-header">
   <div class="site-header__inner">
-    <a class="site-header__logo" href="#" aria-label="Portfolio, back to top">Portfolio</a>
     <nav class="nav" aria-label="Primary">
       <ul class="nav__list">
+        <li>
+          <a class="nav__home" href="#" aria-current="page">Portfolio</a>
+        </li>
         {links.map((link) => (
-          <li>
+          <li class="nav__item">
             <a class="nav__link" href={link.href}>{link.label}</a>
           </li>
         ))}
       </ul>
+      <button class="nav__toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu">
+        <MenuIcon aria-hidden="true" />
+      </button>
     </nav>
     <Button class="site-header__contact" href="#contact" variant="outline-strong">Contact me</Button>
   </div>
 </header>
 
+<div id="menu" class="menu" role="dialog" aria-modal="true" aria-label="Menu" hidden data-state="closed">
+  <button class="menu__close" type="button" aria-label="Close menu">
+    <CloseIcon aria-hidden="true" />
+  </button>
+  <ul class="menu__list">
+    <li><a class="menu__link" href="#">Home</a></li>
+    <li><a class="menu__link" href="#">About</a></li>
+    <li><a class="menu__link" href="#work">Cases</a></li>
+    <li><a class="menu__link" href="#experience">Experience</a></li>
+    <li><a class="menu__link" href="#contact">Contact</a></li>
+  </ul>
+</div>
+
 <style>
   /*
-   * Full-width fixed bar with a solid page-colored plate, so scrolling content never shows through.
-   * Three columns: monogram left, nav pill centered, Contact me right.
+   * Same idea as the reference: one fixed, translucent, blurred pill at the top. A "home" chip with
+   * the current-page tint comes first, then white link chips. No plate behind it, so content scrolls
+   * under the blur. Contact me sits on the right; on phones the links collapse into a menu button.
    */
   .site-header {
     position: fixed;
-    top: 0;
+    top: var(--nav-top);
     inset-inline: 0;
     z-index: var(--z-nav);
-    padding-block: var(--nav-top) var(--space-12);
-    background: var(--color-page);
+    pointer-events: none;
   }
 
   .site-header__inner {
@@ -47,26 +67,17 @@ const links = [
     padding-inline: var(--gutter);
   }
 
-  .site-header__logo {
-    justify-self: start;
-    font-family: var(--font-logo);
-    font-size: var(--fs-19);
-    line-height: var(--lh-auto);
-    color: var(--color-logo);
-    transition: color 0.15s ease;
-  }
-
-  .site-header__logo:hover {
-    color: var(--color-ink);
-  }
-
   .nav {
     grid-column: 2;
-    background: var(--color-nav-bg);
-    border-radius: var(--radius-pill);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: var(--nav-pad-y) var(--nav-pad-x);
+    border-radius: var(--radius-pill);
+    background: var(--color-nav-bg);
     -webkit-backdrop-filter: blur(var(--nav-blur));
     backdrop-filter: blur(var(--nav-blur));
+    pointer-events: auto;
   }
 
   .nav__list {
@@ -75,11 +86,12 @@ const links = [
     align-items: center;
   }
 
+  .nav__home,
   .nav__link {
     display: block;
     padding: var(--nav-link-pad-y) var(--nav-link-pad-x);
     border-radius: var(--radius-pill);
-    background: transparent;
+    background: var(--color-nav-chip);
     color: var(--color-black);
     font-size: var(--fs-16);
     line-height: var(--lh-16);
@@ -87,27 +99,195 @@ const links = [
     transition: background-color 0.15s ease;
   }
 
+  .nav__home {
+    background: var(--color-nav-home);
+    font-family: var(--font-logo);
+  }
+
   .nav__link:hover {
-    background: var(--color-nav-hover);
+    background: color-mix(in srgb, var(--color-nav-chip), var(--color-ink) 7%);
+  }
+
+  .nav__toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--nav-toggle);
+    height: var(--nav-toggle);
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--color-page);
+    color: var(--color-black);
+    cursor: pointer;
+  }
+
+  .nav__toggle :global(svg) {
+    width: var(--space-20);
+    height: var(--space-20);
   }
 
   .site-header :global(.site-header__contact) {
     grid-column: 3;
     justify-self: end;
     display: none;
+    background: var(--color-page); /* no plate behind the header, so the button carries its own backing */
+    pointer-events: auto;
   }
 
   /* Wide enough to sit beside the pill. Below this, Contact me lives in the hero instead. */
-  @media (min-width: 860px) {
+  @media (min-width: 940px) {
     .site-header :global(.site-header__contact) {
       display: inline-flex;
     }
   }
 
-  /* No room for the wordmark next to the pill on phones and small tablets. */
-  @media (max-width: 680px) {
-    .site-header__logo {
+  /* Phones: the pill spans the width; links collapse into the menu button. */
+  @media (max-width: 640px) {
+    .site-header__inner {
+      display: block;
+    }
+
+    .nav {
+      width: 100%;
+    }
+
+    .nav__item {
+      display: none;
+    }
+
+    .nav__home {
+      padding: var(--space-12) var(--space-24);
+    }
+
+    .nav__toggle {
+      display: inline-flex;
+    }
+  }
+
+  /* Full-screen menu overlay (phones). */
+  .menu {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-menu);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-menu-bg);
+    -webkit-backdrop-filter: blur(var(--menu-blur));
+    backdrop-filter: blur(var(--menu-blur));
+    opacity: 0;
+    transition: opacity var(--menu-fade) ease;
+  }
+
+  .menu[hidden] {
+    display: none;
+  }
+
+  .menu[data-state='open'] {
+    opacity: 1;
+  }
+
+  .menu__close {
+    position: absolute;
+    top: var(--menu-close-inset);
+    right: var(--menu-close-inset);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--menu-close);
+    height: var(--menu-close);
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--color-white);
+    color: var(--color-black);
+    cursor: pointer;
+  }
+
+  .menu__close :global(svg) {
+    width: var(--space-20);
+    height: var(--space-20);
+  }
+
+  .menu__list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--menu-gap);
+  }
+
+  .menu__link {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--menu-fs);
+    line-height: var(--menu-lh);
+    font-weight: var(--weight-regular);
+    color: var(--color-white);
+  }
+
+  .menu__link:focus-visible,
+  .menu__close:focus-visible {
+    outline-color: var(--color-white);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu {
+      transition: none;
+    }
+  }
+
+  /* The overlay is for phones only; if the window grows while it is open, it must not stay. */
+  @media (min-width: 641px) {
+    .menu {
       display: none;
     }
   }
 </style>
+
+<script>
+  const menu = document.getElementById('menu') as HTMLElement | null;
+  const toggle = document.querySelector<HTMLButtonElement>('.nav__toggle');
+  const closeButton = menu?.querySelector<HTMLButtonElement>('.menu__close');
+
+  if (menu && toggle && closeButton) {
+    const fadeMs = 200;
+    let timer: number | undefined;
+    const isOpen = () => menu.dataset.state === 'open';
+
+    const open = () => {
+      window.clearTimeout(timer);
+      menu.hidden = false;
+      void menu.offsetWidth; // paint the closed state first so the fade runs
+      menu.dataset.state = 'open';
+      toggle.setAttribute('aria-expanded', 'true');
+      document.documentElement.style.overflow = 'hidden';
+      closeButton.focus({ preventScroll: true });
+    };
+
+    const close = (returnFocus = true) => {
+      if (!isOpen()) return;
+      menu.dataset.state = 'closed';
+      toggle.setAttribute('aria-expanded', 'false');
+      document.documentElement.style.overflow = '';
+      timer = window.setTimeout(() => {
+        menu.hidden = true;
+      }, fadeMs);
+      if (returnFocus) toggle.focus({ preventScroll: true });
+    };
+
+    toggle.addEventListener('click', () => (isOpen() ? close() : open()));
+    closeButton.addEventListener('click', () => close());
+    menu.addEventListener('click', (event) => {
+      // Any link closes the menu; the page then scrolls to it, or opens the contact card.
+      if ((event.target as Element).closest('a')) close(false);
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && isOpen()) close();
+    });
+    window.matchMedia('(min-width: 641px)').addEventListener('change', (event) => {
+      if (event.matches) close(false);
+    });
+  }
+</script>
