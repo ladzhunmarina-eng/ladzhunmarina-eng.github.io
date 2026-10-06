@@ -4,8 +4,8 @@ import SocialLinks from './SocialLinks.astro';
 
 const links = [
   { label: 'About', href: '#' },
-  { label: 'Work', href: '#work' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Cases', href: '#work' },
+  { label: 'Experience', href: '#experience' },
 ];
 ---
 
@@ -22,7 +22,7 @@ const links = [
     </nav>
     <div class="site-header__group">
       <SocialLinks />
-      <Button class="site-header__contact" href="#contact" variant="outline" size="sm">Contact me</Button>
+      <Button class="site-header__contact" href="#contact" variant="outline" wide>Contact me</Button>
     </div>
   </div>
 </header>
@@ -90,7 +90,7 @@ const links = [
   }
 
   /* Narrower screens: the group would collide with the centered pill. Keep the icons only. */
-  @media (max-width: 1199px) {
+  @media (max-width: 1359px) {
     .site-header__group :global(.site-header__contact) {
       display: none;
     }

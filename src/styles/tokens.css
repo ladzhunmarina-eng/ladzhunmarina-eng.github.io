@@ -208,7 +208,6 @@
   --button-height-sm: 40px;
   --icon-hit: 40px;
   --header-group-gap: 12px;
-  --header-group-pad: 32px;
   --header-button-margin: 8px;
   --button-width: 173px;
   --icon-briefcase: 24px;
@@ -300,13 +299,6 @@
     --work-panel-h: calc(var(--work-panel-w) / var(--work-panel-aspect));
     /* Every panel body has this height, so a stuck panel is fully covered by the next one. */
     --work-body-h: calc(2 * var(--space-57) + max(var(--work-panel-h), var(--work-text-h-max)));
-  }
-}
-
-/* The header's right group sits beside the centered nav pill; it only fits fully on wide screens. */
-@media (max-width: 1199px) {
-  :root {
-    --header-group-pad: 0px;
   }
 }
 

@@ -3,7 +3,7 @@ import { experience } from '../data/content';
 import BriefcaseIcon from '../assets/icons/briefcase.svg';
 ---
 
-<section class="experience" aria-labelledby="experience-title">
+<section class="experience" id="experience" aria-labelledby="experience-title">
   <h2 id="experience-title" class="experience__title">Experience</h2>
   <div class="experience__roles">
     {experience.map((role) => (
@@ -28,6 +28,8 @@ import BriefcaseIcon from '../assets/icons/briefcase.svg';
     margin-inline: auto;
     padding: var(--space-167) var(--gutter) var(--space-303);
     box-sizing: content-box;
+    /* The section starts with a large top padding; anchor so the heading, not the padding, sits under the header. */
+    scroll-margin-top: calc(var(--header-h) - var(--space-167));
   }
 
   .experience__title {

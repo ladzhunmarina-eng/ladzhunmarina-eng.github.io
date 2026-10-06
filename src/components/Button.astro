@@ -3,13 +3,14 @@ interface Props {
   href: string;
   variant?: 'solid' | 'outline';
   size?: 'md' | 'sm';
+  wide?: boolean;
   class?: string;
 }
 
-const { href, variant = 'solid', size = 'md', class: className } = Astro.props;
+const { href, variant = 'solid', size = 'md', wide = false, class: className } = Astro.props;
 ---
 
-<a class:list={['button', `button--${variant}`, `button--${size}`, className]} href={href}><slot /></a>
+<a class:list={['button', `button--${variant}`, `button--${size}`, { 'button--wide': wide }, className]} href={href}><slot /></a>
 
 <style>
   .button {
@@ -27,6 +28,10 @@ const { href, variant = 'solid', size = 'md', class: className } = Astro.props;
 
   .button--sm {
     height: var(--button-height-sm);
+  }
+
+  .button--wide {
+    min-width: var(--button-width);
   }
 
   .button--solid {
