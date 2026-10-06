@@ -54,7 +54,7 @@ src/
 
 ## Still to fill in
 
-- Real links for GitHub, LinkedIn and Dribbble (`src/components/SocialLinks.astro`).
+- Real links for GitHub and LinkedIn (`src/components/SocialLinks.astro`; Dribbble is set).
 - The CV file or link (the CV button in `src/components/Hero.astro`).
 - Case study URLs (each case in `src/data/content.ts` points to `#`) and an About section.
 - A real favicon and a social preview image.
