@@ -14,7 +14,8 @@
   --color-outline: #b3b3b3;
   --color-icon-muted: #b3b3b3;
   --color-ink-button: #2e2e2e;
-  --color-nav-hover: #f5f1e6; /* not in Figma: hover state is a guess */
+  --color-nav-bg: rgb(255 255 255 / 0.75); /* translucent, so the blur behind the pill shows */
+  --color-nav-hover: rgb(42 42 42 / 0.06); /* not in Figma: hover state is a guess */
   --color-button-hover: #2a2a2a; /* not in Figma: hover state is a guess */
 
   /* ---------- Color: focus ring (Figma "focus-ring" variant) ---------- */
@@ -151,7 +152,7 @@
   --nav-pad-x: 24px;
   --nav-link-pad-y: 17px;
   --nav-link-pad-x: 30px;
-  --nav-blur: 40px;
+  --nav-blur: 20px;
   --z-nav: 10;
 
   /* ---------- Marquee ---------- */
