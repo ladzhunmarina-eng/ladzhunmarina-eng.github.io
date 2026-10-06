@@ -97,6 +97,9 @@ const links = [
 
   .site-header__logo {
     justify-self: start;
+    transition:
+      opacity var(--header-fade) ease,
+      color 0.15s ease;
   }
 
   .site-header__logo:hover,
@@ -154,6 +157,27 @@ const links = [
     justify-self: end;
     display: none;
     background: var(--color-page); /* no plate behind the header, so the button carries its own backing */
+    pointer-events: auto;
+    transition:
+      opacity var(--header-fade) ease,
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease;
+  }
+
+  /*
+   * Once the page is scrolled, only the pill stays. The wordmark and Contact me fade out and stop taking
+   * clicks, but they stay in the tab order and fade back in when keyboard focus reaches them.
+   */
+  .site-header[data-scrolled] .site-header__logo,
+  .site-header[data-scrolled] :global(.site-header__contact) {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .site-header[data-scrolled] .site-header__logo:focus-visible,
+  .site-header[data-scrolled] :global(.site-header__contact:focus-visible) {
+    opacity: 1;
     pointer-events: auto;
   }
 
@@ -264,7 +288,9 @@ const links = [
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .menu {
+    .menu,
+    .site-header__logo,
+    .site-header :global(.site-header__contact) {
       transition: none;
     }
   }
@@ -357,5 +383,19 @@ const links = [
       { rootMargin: `-${top}px 0px -55% 0px` },
     );
     sections.forEach((section) => observer.observe(section));
+  }
+
+  // Fade the wordmark and Contact me out once the page is scrolled. A sentinel at the very top of the
+  // page tells us when it has left the viewport, so no scroll listener is needed.
+  const header = document.querySelector<HTMLElement>('.site-header');
+  if (header && 'IntersectionObserver' in window) {
+    const distance = getComputedStyle(document.documentElement).getPropertyValue('--header-hide-after').trim() || '40px';
+    const sentinel = document.createElement('div');
+    sentinel.setAttribute('aria-hidden', 'true');
+    sentinel.style.cssText = `position:absolute;top:0;left:0;width:1px;height:${distance};pointer-events:none;visibility:hidden`;
+    document.body.prepend(sentinel);
+    new IntersectionObserver(([entry]) => {
+      header.toggleAttribute('data-scrolled', !entry.isIntersecting);
+    }).observe(sentinel);
   }
 </script>

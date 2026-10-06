@@ -180,6 +180,8 @@
   --nav-link-pad-y: 17px;
   --nav-link-pad-x: 24px;
   --nav-blur: 20px;
+  --header-fade: 200ms;
+  --header-hide-after: 40px; /* scroll distance after which the wordmark and Contact me fade out */
   --nav-toggle: 40px;
   --menu-blur: 5px;
   --menu-fs: 28px;
