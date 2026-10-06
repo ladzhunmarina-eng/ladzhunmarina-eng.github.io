@@ -1,27 +1,44 @@
 ---
 import { marquee } from '../data/content';
+import GridIcon from '../assets/icons/marquee/grid.svg';
+import PenIcon from '../assets/icons/marquee/pen.svg';
+import GlobeIcon from '../assets/icons/marquee/globe.svg';
+import ArrowIcon from '../assets/icons/marquee/arrow.svg';
+import SparkleIcon from '../assets/icons/marquee/sparkle.svg';
+import SocialIcon from '../assets/icons/marquee/social.svg';
+
+const icons = {
+  grid: GridIcon,
+  pen: PenIcon,
+  globe: GlobeIcon,
+  arrow: ArrowIcon,
+  sparkle: SparkleIcon,
+  social: SocialIcon,
+};
+
+// The list is repeated so the loop never shows a gap, even on very wide screens.
+const copies = [0, 1, 2];
 ---
 
 <section class="marquee" aria-label="Skills and focus areas">
   <div class="marquee__track">
-    <ul class="marquee__list">
-      {marquee.map((item) => (
-        <li class="marquee__item">
-          <span class="marquee__dot" aria-hidden="true"></span>
-          <span class="marquee__icon" aria-hidden="true">{item.icon}</span>
-          <span class="marquee__label">{item.label}</span>
-        </li>
-      ))}
-    </ul>
-    <ul class="marquee__list" aria-hidden="true">
-      {marquee.map((item) => (
-        <li class="marquee__item">
-          <span class="marquee__dot"></span>
-          <span class="marquee__icon">{item.icon}</span>
-          <span class="marquee__label">{item.label}</span>
-        </li>
-      ))}
-    </ul>
+    {copies.map((copy) => {
+      const hidden = copy > 0;
+      return (
+        <ul class="marquee__list" aria-hidden={hidden ? 'true' : undefined}>
+          {marquee.map((item) => {
+            const Icon = icons[item.icon];
+            return (
+              <li class="marquee__item">
+                <span class="marquee__dot" aria-hidden="true" />
+                <Icon class="marquee__icon" aria-hidden="true" />
+                <span class="marquee__label">{item.label}</span>
+              </li>
+            );
+          })}
+        </ul>
+      );
+    })}
   </div>
 </section>
 
@@ -34,6 +51,7 @@ import { marquee } from '../data/content';
     align-items: center;
   }
 
+  /* Slow, steady, linear: one list width per loop, to the left. */
   .marquee__track {
     display: flex;
     flex: none;
@@ -67,13 +85,19 @@ import { marquee } from '../data/content';
   }
 
   .marquee__icon {
-    font-size: var(--fs-16);
+    flex: none;
+    width: var(--marquee-icon);
+    height: var(--marquee-icon);
     margin-right: calc(var(--space-8) - var(--marquee-gap));
+  }
+
+  .marquee__label {
+    display: block;
   }
 
   @keyframes marquee-scroll {
     to {
-      transform: translateX(-50%);
+      transform: translateX(calc(-100% / 3));
     }
   }
 

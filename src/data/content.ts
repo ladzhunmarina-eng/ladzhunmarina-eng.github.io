@@ -7,21 +7,21 @@ import photo2 from '../assets/images/t2.png';
 import photo3 from '../assets/images/t3.png';
 
 export const marquee = [
-  { icon: '⊞', label: 'product thinking' },
-  { icon: '✎', label: 'illustrations' },
-  { icon: '⊕', label: 'research' },
-  { icon: '✦', label: 'hypothesis' },
-  { icon: '↗', label: 'metrics' },
-  { icon: '⊞', label: 'A/B testings' },
-  { icon: '✎', label: 'discovery' },
-  { icon: '✦', label: 'ai-driven workflow' },
-  { icon: '⊞', label: 'design systems' },
-  { icon: '✎', label: 'illustrations' },
-  { icon: '⊕', label: 'websites' },
-  { icon: '✦', label: 'social media' },
-  { icon: '↗', label: 'marketing' },
-  { icon: '⊞', label: 'products' },
-];
+  { icon: 'grid', label: 'product thinking' },
+  { icon: 'pen', label: 'illustrations' },
+  { icon: 'globe', label: 'research' },
+  { icon: 'sparkle', label: 'hypothesis' },
+  { icon: 'arrow', label: 'metrics' },
+  { icon: 'grid', label: 'A/B testings' },
+  { icon: 'pen', label: 'discovery' },
+  { icon: 'sparkle', label: 'ai-driven workflow' },
+  { icon: 'grid', label: 'design systems' },
+  { icon: 'pen', label: 'illustrations' },
+  { icon: 'globe', label: 'websites' },
+  { icon: 'social', label: 'social media' },
+  { icon: 'arrow', label: 'marketing' },
+  { icon: 'grid', label: 'products' },
+] as const;
 
 /*
  * Image placement is measured from Figma, as a share of the 726x433 panel:
