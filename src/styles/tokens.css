@@ -197,7 +197,7 @@
   --marquee-dot: 12px;
   --marquee-gap: 24px;
   --marquee-icon: 20px;
-  --marquee-speed: 130s; /* one list width (2594px) per loop = 20px per second, like the reference */
+  --marquee-speed: 128s; /* one list width (2562px) per loop = 20px per second, like the reference */
 
   /* ---------- Testimonials ---------- */
   --quote-card-height: 582px;

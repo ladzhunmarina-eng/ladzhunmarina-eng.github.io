@@ -18,7 +18,7 @@ export const marquee = [
   { icon: 'grid', label: 'design systems' },
   { icon: 'pen', label: 'illustrations' },
   { icon: 'globe', label: 'websites' },
-  { icon: 'social', label: 'social media' },
+  { icon: 'globe', label: 'research' },
   { icon: 'arrow', label: 'metrics' },
   { icon: 'grid', label: 'products' },
 ] as const;
