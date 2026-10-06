@@ -13,7 +13,7 @@ export const marquee = [
   { icon: 'sparkle', label: 'hypothesis' },
   { icon: 'arrow', label: 'metrics' },
   { icon: 'grid', label: 'A/B testings' },
-  { icon: 'pen', label: 'discovery' },
+  { icon: 'search', label: 'discovery' },
   { icon: 'sparkle', label: 'ai-driven workflow' },
   { icon: 'grid', label: 'design systems' },
   { icon: 'pen', label: 'illustrations' },
