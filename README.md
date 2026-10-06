@@ -24,7 +24,7 @@ src/
     Hero.astro             two-tone heading, buttons, social icons
     Marquee.astro          the scrolling skills strip
     WorkCard.astro         one Featured Work panel (stacks with CSS sticky on desktop)
-    Testimonials.astro     Wall of Love carousel
+    Testimonials.astro     Wall of Love expanding-card row
     Experience.astro       roles and bullets
     ContactCard.astro      the card that opens from every "Contact" trigger
     Button.astro, SocialLinks.astro, Footer.astro
@@ -48,7 +48,7 @@ src/
 - **Featured Work** panels are stacked with pure CSS `position: sticky` (no scroll listeners). They only stack when the window is at least 1025px wide and 600px tall; otherwise they are plain cards. Nothing above the panels may set `overflow` or a transform, or sticky silently stops working.
 - **Header:** one translucent, blurred pill. The wordmark and Contact me fade out after 40px of scroll. The current section's link turns yellow.
 - **Contact card:** opens from every `href="#contact"` link, closes with the button, Escape or a click outside.
-- **Wall of Love:** a swipe / drag / arrow-key carousel with scroll-snap.
+- **Wall of Love:** a row of testimonials, one open (wide, full quote) and the rest collapsed. Clicking a card puts it in the open place and sends the previously open card to the end; the arrow keys step through them. Each card holds its quote twice at fixed widths, so text never re-wraps during the animation. On phones it is a swipe carousel with one full card per screen.
 - **Motion:** the marquee, the hand wave and the contact card respect `prefers-reduced-motion`.
 - **Fonts** (Bricolage Grotesque, Inter, Gantari) are self-hosted through `@fontsource`.
 

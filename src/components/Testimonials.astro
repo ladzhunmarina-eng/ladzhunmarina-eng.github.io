@@ -67,13 +67,11 @@ import { testimonials } from '../data/content';
 
   /* ---------- Desktop: horizontal accordion ---------- */
 
+  /* The open card is always first (leftmost); the next card peeks in from the right edge. */
   .wall__list {
     display: flex;
     gap: var(--space-10);
     width: max-content;
-    /* The script sets --t so the expanded card is never cut off; the row slides with the same motion. */
-    transform: translateX(calc(var(--t, 0) * -1px));
-    transition: transform var(--quote-time) var(--quote-ease);
   }
 
   .quote {
@@ -213,7 +211,6 @@ import { testimonials } from '../data/content';
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .wall__list,
     .quote,
     .quote__copy {
       transition: none !important;
@@ -232,11 +229,6 @@ import { testimonials } from '../data/content';
 
     .wall__viewport::-webkit-scrollbar {
       display: none;
-    }
-
-    .wall__list {
-      transform: none;
-      transition: none;
     }
 
     .quote,
@@ -285,82 +277,107 @@ import { testimonials } from '../data/content';
 
 <script>
   const list = document.querySelector<HTMLElement>('.wall__list');
-  const viewport = document.querySelector<HTMLElement>('.wall__viewport');
 
-  if (list && viewport) {
-    const cards = Array.from(list.querySelectorAll<HTMLElement>('.quote'));
-    const buttons = cards.map((card) => card.querySelector<HTMLButtonElement>('.quote__toggle')!);
-    const collapsedCopies = cards.map((card) => card.querySelector<HTMLElement>('.quote__copy--collapsed')!);
-    const expandedCopies = cards.map((card) => card.querySelector<HTMLElement>('.quote__copy--expanded')!);
+  if (list) {
     const accordion = window.matchMedia('(min-width: 1000px)');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const cardsNow = () => Array.from(list.querySelectorAll<HTMLElement>(':scope > .quote'));
+    const buttonOf = (card: HTMLElement) => card.querySelector<HTMLButtonElement>('.quote__toggle')!;
+    const durationMs = () => parseFloat(getComputedStyle(list).getPropertyValue('--quote-time')) || 500;
+    const easing = () => getComputedStyle(list).getPropertyValue('--quote-ease').trim() || 'cubic-bezier(0.4, 0, 0.2, 1)';
 
-    let open = 0;
-
-    const token = (name: string) => parseFloat(getComputedStyle(list).getPropertyValue(name));
-
-    // Slide the row just enough that the expanded card is fully visible with the next card peeking in
-    // (and never past the row's ends).
-    const slide = () => {
-      if (!accordion.matches) {
-        list.style.removeProperty('--t');
-        return;
-      }
-      const openW = token('--quote-open-w');
-      const closedW = token('--quote-closed-w');
-      const gap = token('--space-10');
-      const peek = open < cards.length - 1 ? gap + token('--quote-peek') : 0; // the next card keeps peeking in
-      const left = open * (closedW + gap);
-      const rowW = openW + (cards.length - 1) * closedW + (cards.length - 1) * gap;
-      const visibleW = viewport.clientWidth;
-      const shift = Math.min(Math.max(left + openW + peek - visibleW, 0), Math.max(rowW - visibleW, 0), left);
-      list.style.setProperty('--t', shift.toFixed(2));
-    };
-
-    // Only one copy of each quote is exposed to screen readers.
-    const syncAria = () => {
-      cards.forEach((_, i) => {
-        const showExpanded = !accordion.matches || i === open;
-        expandedCopies[i].setAttribute('aria-hidden', String(!showExpanded));
-        collapsedCopies[i].setAttribute('aria-hidden', String(showExpanded));
+    // Only one copy of each quote is exposed to screen readers: the expanded one on the open card
+    // (always the first card), the collapsed one elsewhere. On phones every card shows its full text.
+    const syncState = () => {
+      cardsNow().forEach((card, i) => {
+        const isOpen = i === 0;
+        card.classList.toggle('is-open', isOpen);
+        const showExpanded = !accordion.matches || isOpen;
+        card.querySelector('.quote__copy--expanded')!.setAttribute('aria-hidden', String(!showExpanded));
+        card.querySelector('.quote__copy--collapsed')!.setAttribute('aria-hidden', String(showExpanded));
+        const button = buttonOf(card);
+        button.setAttribute('aria-expanded', String(isOpen));
+        if (isOpen) button.setAttribute('aria-disabled', 'true');
+        else button.removeAttribute('aria-disabled');
       });
     };
 
-    const select = (index: number, moveFocus = false) => {
-      if (index < 0 || index >= cards.length) return;
-      if (index !== open) {
-        open = index;
-        cards.forEach((card, i) => {
-          card.classList.toggle('is-open', i === open);
-          buttons[i].setAttribute('aria-expanded', String(i === open));
-          if (i === open) buttons[i].setAttribute('aria-disabled', 'true');
-          else buttons[i].removeAttribute('aria-disabled');
+    /*
+     * Put the cards in a new order, animating every card from where it is to where it goes.
+     * Widths change through the CSS transition (is-open toggles); the position change is a FLIP:
+     * measure, reorder, then animate each card's offset back to zero with the same duration and easing.
+     * Both are linear in the same eased progress, so each card's left edge moves in one straight motion.
+     */
+    const reorder = (ordered: HTMLElement[], focusCard?: HTMLElement) => {
+      const before = cardsNow();
+      if (ordered.every((card, i) => card === before[i])) return;
+
+      const animate = accordion.matches && !reduceMotion.matches;
+      const oldFirst = before[0];
+      const starts = new Map(before.map((card) => [card, card.getBoundingClientRect().left]));
+      before.forEach((card) => card.getAnimations().forEach((animation) => animation.cancel()));
+
+      list.append(...ordered); // the DOM order is the reading and tab order, so it follows the visual order
+
+      // Where each card sits right now, with its OLD width, in the new order. Measuring forces a style
+      // recalculation, so the width transition that starts next begins from the old width (a moved element
+      // would otherwise skip the transition).
+      const offsets = new Map(ordered.map((card) => [card, (starts.get(card) ?? 0) - card.getBoundingClientRect().left]));
+
+      syncState(); // is-open moves to the new first card, so the widths start to transition
+
+      if (animate) {
+        const duration = durationMs();
+        const ease = easing();
+        const opening = ordered[0];
+        ordered.forEach((card) => {
+          const dx = offsets.get(card) ?? 0;
+          if (Math.abs(dx) < 0.5) return;
+          // The card going to the end slides under the others; the opening card stays on top.
+          card.style.zIndex = card === opening ? '3' : card === oldFirst ? '1' : '2';
+          card
+            .animate([{ transform: `translateX(${dx}px)` }, { transform: 'translateX(0)' }], { duration, easing: ease })
+            .finished.then(() => card.style.removeProperty('z-index'))
+            .catch(() => card.style.removeProperty('z-index'));
         });
-        syncAria();
-        slide();
       }
-      if (moveFocus) buttons[index].focus();
+
+      focusCard?.querySelector<HTMLButtonElement>('.quote__toggle')?.focus({ preventScroll: true });
     };
 
-    buttons.forEach((button, i) => {
-      button.addEventListener('click', () => select(i)); // the open card ignores its own click
+    // Click: the card takes the open place; the card that was open goes to the end; the rest keep their order.
+    const bringToFront = (card: HTMLElement, moveFocus = false) => {
+      const cards = cardsNow();
+      if (card === cards[0]) return; // the open card ignores its own click
+      const first = cards[0];
+      reorder([card, ...cards.filter((c) => c !== card && c !== first), first], moveFocus ? card : undefined);
+    };
+
+    // Arrow keys: next card (same as clicking the second one), previous card (the last one comes back to the front).
+    const next = () => {
+      const cards = cardsNow();
+      bringToFront(cards[1], true);
+    };
+    const previous = () => {
+      const cards = cardsNow();
+      reorder([cards[cards.length - 1], ...cards.slice(0, -1)], cards[cards.length - 1]);
+    };
+
+    cardsNow().forEach((card) => {
+      const button = buttonOf(card);
+      button.addEventListener('click', () => bringToFront(card));
       button.addEventListener('keydown', (event) => {
         if (event.key === 'ArrowRight') {
           event.preventDefault();
-          select(i + 1, true);
+          next();
         } else if (event.key === 'ArrowLeft') {
           event.preventDefault();
-          select(i - 1, true);
+          previous();
         }
       });
     });
 
-    accordion.addEventListener('change', () => {
-      syncAria();
-      slide();
-    });
-    window.addEventListener('resize', slide);
-
-    syncAria();
-    slide();
+    accordion.addEventListener('change', syncState);
+    syncState();
   }
 </script>
