@@ -12,10 +12,10 @@ interface Props {
   image: ImageMetadata;
   alt: string;
   place: { left: string; top: string; width: string; height: string };
-  id?: string;
+  index: number;
 }
 
-const { number, theme, category, title, href, description, tags, image, alt, place, id } = Astro.props;
+const { number, theme, category, title, href, description, tags, image, alt, place, index } = Astro.props;
 const themeVars = {
   yellow: '1',
   cream: '2',
@@ -24,7 +24,7 @@ const themeVars = {
 }[theme];
 ---
 
-<article class="work" id={id} style={`--bg: var(--work-${themeVars}-bg); --panel: var(--work-${themeVars}-panel); --accent: var(--work-${themeVars}-accent);`}>
+<article class="work" style={`--i: ${index}; --bg: var(--work-${themeVars}-bg); --panel: var(--work-${themeVars}-panel); --accent: var(--work-${themeVars}-accent);`}>
   <div class="work__tabrow">
     <div class="work__tab">
       <p class="work__tab-label">Featured Work {number}</p>
@@ -95,7 +95,7 @@ const themeVars = {
   .work__inner {
     position: relative;
     display: grid;
-    grid-template-columns: var(--work-panel-fr) var(--work-text-fr);
+    grid-template-columns: minmax(0, 1fr) var(--work-text-col);
     column-gap: var(--space-59);
     align-items: end;
     max-width: var(--work-inner-max);
@@ -103,7 +103,7 @@ const themeVars = {
 
   .work__panel {
     position: relative;
-    aspect-ratio: var(--work-panel-ratio);
+    aspect-ratio: var(--work-panel-aspect);
     border-radius: var(--radius-panel);
     background: var(--panel);
   }
@@ -186,6 +186,31 @@ const themeVars = {
     background: var(--accent);
   }
 
+  /*
+   * Stacking panels. Pure CSS sticky: every panel shares one top offset, later panels paint
+   * above earlier ones, and tab N is shifted right by N tab widths so earlier tabs stay visible.
+   * Nothing above .work may set overflow or transform, or sticky silently stops working.
+   */
+  @media (min-width: 1025px) and (min-height: 600px) {
+    .work {
+      position: sticky;
+      top: var(--stack-top);
+      z-index: calc(var(--i) + 1);
+    }
+
+    .work__tab {
+      margin-left: calc(var(--i) * var(--work-tab-width));
+    }
+
+    .work__body {
+      min-height: var(--work-body-h);
+    }
+
+    .work__panel {
+      width: var(--work-panel-w);
+    }
+  }
+
   @media (max-width: 1024px) {
     .work__inner {
       grid-template-columns: minmax(0, 1fr);
@@ -202,9 +227,14 @@ const themeVars = {
     }
   }
 
+  /* Tags wrap on narrow screens; a rule at the start of a wrapped line looks broken, so drop the rules. */
   @media (max-width: 640px) {
-    .work__tab-label {
-      font-size: var(--fs-24);
+    .work__tags {
+      column-gap: var(--space-16);
+    }
+
+    .work__tag + .work__tag::before {
+      display: none;
     }
   }
 </style>

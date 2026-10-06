@@ -16,7 +16,7 @@ const description =
   <Hero />
   <Marquee />
   <section class="work-list" id="work" aria-label="Featured work">
-    {work.map((item) => <WorkCard {...item} />)}
+    {work.map((item, index) => <WorkCard {...item} index={index} />)}
   </section>
   <Testimonials />
   <Experience />
@@ -29,5 +29,12 @@ const description =
     gap: var(--space-92);
     margin-top: var(--space-134);
     scroll-margin-top: var(--space-80);
+  }
+
+  /* Stacked panels touch: the next one slides over the previous one. */
+  @media (min-width: 1025px) and (min-height: 600px) {
+    .work-list {
+      gap: 0;
+    }
   }
 </style>

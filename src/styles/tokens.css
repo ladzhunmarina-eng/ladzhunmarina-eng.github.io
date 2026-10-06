@@ -117,9 +117,13 @@
   --hero-top: 254px; /* first heading line sits 254px from page top */
   --hero-measure: 1188px;
   --work-inner-max: 1196px;
-  --work-panel-fr: 726fr;
-  --work-text-fr: 411fr;
-  --work-panel-ratio: 725.87 / 433;
+  --work-panel-w-max: 726px;
+  --work-text-col: 411px;
+  --work-text-h-max: 280px; /* just above the tallest text column (card 03, 276px) */
+  --work-panel-aspect: 1.6764; /* 725.87 / 433 */
+  --work-panel-h-max: 433px;
+  --work-panel-h-min: 180px;
+  --stack-top: 120px; /* sticky offset: just below the floating nav pill */
   --work-text-tablet-max: 540px;
   --work-tab-width: 355px;
   --work-tab-row: 75px;
@@ -221,5 +225,31 @@
     --nav-pad-x: 12px;
     --nav-link-pad-x: 18px;
     --footer-height: 160px;
+  }
+}
+
+/*
+ * Stacking "folder tab" panels: desktop only, and only when the viewport is tall
+ * enough for a full panel under the header. Everywhere else the cards stack plainly.
+ */
+@media (min-width: 1025px) and (min-height: 600px) {
+  :root {
+    --work-tab-inset: 0px;
+    --work-tab-width: min(355px, 25%);
+    /* Tallest the image panel may be: viewport minus header offset, tab row and body padding. */
+    --work-panel-h-cap: clamp(
+      var(--work-panel-h-min),
+      calc(100svh - var(--stack-top) - var(--work-tab-row) - 2 * var(--space-57)),
+      var(--work-panel-h-max)
+    );
+    /* Panel width is limited by the layout column and by that height cap. */
+    --work-panel-w: min(
+      var(--work-panel-w-max),
+      calc(min(100vw, var(--page-max)) - 2 * var(--gutter) - var(--space-59) - var(--work-text-col)),
+      calc(var(--work-panel-h-cap) * var(--work-panel-aspect))
+    );
+    --work-panel-h: calc(var(--work-panel-w) / var(--work-panel-aspect));
+    /* Every panel body has this height, so a stuck panel is fully covered by the next one. */
+    --work-body-h: calc(2 * var(--space-57) + max(var(--work-panel-h), var(--work-text-h-max)));
   }
 }
