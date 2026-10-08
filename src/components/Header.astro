@@ -152,6 +152,10 @@ const links = [
     height: var(--space-20);
   }
 
+  .site-header :global(.site-header__contact:hover) {
+    background: var(--color-black); /* beats the backing colour below */
+  }
+
   .site-header :global(.site-header__contact) {
     grid-column: 3;
     justify-self: end;
