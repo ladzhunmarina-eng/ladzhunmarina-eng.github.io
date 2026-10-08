@@ -29,7 +29,7 @@ export const olxCase = {
       { label: 'Timeline', value: '2026' },
       { label: 'Status', value: 'Live for 100% of traffic' },
     ],
-    focus: ['Marketplace', 'Flatter & Web', 'AI assisted'],
+    focus: ['Marketplace', 'Mobile & Web', 'AI assisted'],
   },
 
   metrics: [
