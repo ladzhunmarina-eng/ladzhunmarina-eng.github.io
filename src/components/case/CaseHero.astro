@@ -21,11 +21,11 @@ const { hero } = Astro.props;
 
 <header class="hero">
   <div class="hero__text">
+    <h1 class="hero__title">{hero.title}</h1>
+    <p class="hero__lead">{hero.lead}</p>
     <ul class="hero__pills" aria-label="Focus">
       {hero.focus.map((item) => <li class="hero__pill">{item}</li>)}
     </ul>
-    <h1 class="hero__title">{hero.title}</h1>
-    <p class="hero__lead">{hero.lead}</p>
   </div>
 
   <div class="hero__aside">
@@ -86,16 +86,16 @@ const { hero } = Astro.props;
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-8);
+    margin-top: var(--space-4);
   }
 
-  /* The same soft chip as the tools in the process section. */
   .hero__pill {
     padding: var(--space-4) var(--space-14);
     border-radius: var(--radius-pill);
-    background: var(--color-icon-bg);
+    background: var(--case-pill-bg);
     font-size: var(--fs-14);
     line-height: var(--lh-14-20);
-    color: var(--color-ink-button);
+    color: var(--case-pill-fg);
   }
 
   /* A frosted-glass folder: the "At a glance" tab sits on the top-left of the card, flush with it. */
