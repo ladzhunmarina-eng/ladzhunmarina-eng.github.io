@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import CaseBack from '../../components/case/CaseBack.astro';
 import CaseHero from '../../components/case/CaseHero.astro';
 import MetricStrip from '../../components/case/MetricStrip.astro';
 import CaseNav from '../../components/case/CaseNav.astro';
@@ -49,7 +50,10 @@ const card = work.find((item) => item.href === `/work/${study.slug}`);
 <Layout title={study.seo.title} description={study.seo.description} current="work">
   <article class="case" data-case-palette={palette}>
     <div class="case__container case__top">
-      <CaseHero hero={study.hero} />
+      <div class="case__intro">
+        <CaseBack />
+        <CaseHero hero={study.hero} />
+      </div>
       {card ? <CaseCover src={card.image} alt={card.alt} /> : <ImageSlot label="Cover image" ratio="1272 / 670" />}
       <MetricStrip metrics={study.metrics} />
     </div>
@@ -175,7 +179,13 @@ const card = work.find((item) => item.href === `/work/${study.slug}`);
     display: flex;
     flex-direction: column;
     gap: var(--space-56);
-    padding-top: calc(var(--header-h) + var(--space-56));
+    padding-top: calc(var(--header-h) + var(--space-8)); /* the back link sits in the space above the hero */
+  }
+
+  .case__intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
   }
 
   .case__main {

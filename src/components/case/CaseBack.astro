@@ -1,0 +1,46 @@
+---
+import ArrowLeftIcon from '../../assets/icons/arrow-left.svg';
+---
+
+<a class="back" href="/#work">
+  <ArrowLeftIcon aria-hidden="true" />
+  Back to projects
+</a>
+
+<style>
+  .back {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: var(--space-12);
+    font-size: var(--fs-16);
+    line-height: var(--lh-20);
+    color: var(--case-accent);
+    transition: color 0.15s ease;
+  }
+
+  .back :global(svg) {
+    width: var(--space-20);
+    height: var(--space-20);
+    transition: transform 0.2s ease-out;
+  }
+
+  .back:hover {
+    color: var(--color-ink);
+  }
+
+  .back:hover :global(svg) {
+    transform: translateX(calc(-1 * var(--space-4)));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .back,
+    .back :global(svg) {
+      transition: none;
+    }
+
+    .back:hover :global(svg) {
+      transform: none;
+    }
+  }
+</style>
