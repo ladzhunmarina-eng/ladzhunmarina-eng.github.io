@@ -18,7 +18,7 @@ export const olxCase = {
   },
 
   hero: {
-    tags: ['C2C marketplace', 'Ukraine', 'Web · iOS · Android', 'A/B testing', 'User testing', 'UM UX Light Score'],
+    tags: ['C2C marketplace', 'Ukraine', 'Web · iOS · Android', 'A/B testing', 'User testing', 'UM UX Light Score', 'Survey'],
     eyebrow: 'OLX · Purchase & delivery',
     title: 'Turning a silent Favorites into a real basket.',
     lead:
