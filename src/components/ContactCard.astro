@@ -1,6 +1,4 @@
 ---
-import { Image } from 'astro:assets';
-import avatar from '../assets/images/avatar.png';
 import CloseIcon from '../assets/icons/close.svg';
 import MailIcon from '../assets/icons/mail.svg';
 import TelegramIcon from '../assets/icons/telegram.svg';
@@ -18,9 +16,6 @@ import { contact } from '../data/contact';
   tabindex="-1"
   hidden
 >
-  <h2 id="contact-title" class="visually-hidden">Contact {contact.name}</h2>
-  <p id="contact-desc" class="visually-hidden">Copy email or open Telegram and WhatsApp.</p>
-
   <div class="contact__pop">
     <div class="contact__sway">
       <div class="contact__perspective">
@@ -33,11 +28,8 @@ import { contact } from '../data/contact';
 
               <div class="contact__scroll">
                 <div class="contact__head">
-                  <Image class="contact__avatar" src={avatar} alt="" width={112} height={112} widths={[56, 112, 168]} sizes="56px" />
-                  <div class="contact__who">
-                    <p class="contact__name">{contact.name}</p>
-                    <p class="contact__role">{contact.role}</p>
-                  </div>
+                  <h2 id="contact-title" class="contact__title">{contact.title}</h2>
+                  <p id="contact-desc" class="contact__lead">{contact.lead}</p>
                 </div>
 
                 <div class="contact__actions">
@@ -65,8 +57,6 @@ import { contact } from '../data/contact';
                     <span class="contact__label">WhatsApp</span>
                   </a>
                 </div>
-
-                <p class="contact__note">{contact.note}</p>
               </div>
             </div>
           </div>
@@ -207,61 +197,37 @@ import { contact } from '../data/contact';
   .contact__head {
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: var(--space-12);
-    text-align: center;
   }
 
-  .contact__head :global(.contact__avatar) {
-    flex: none;
-    width: var(--contact-avatar);
-    height: var(--contact-avatar);
-    /* The photo carries its own rounded corners, as on the home page. */
-  }
-
-  .contact__who {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    min-width: 0;
-  }
-
-  .contact__name {
+  .contact__title {
     font-family: var(--font-display);
-    font-size: var(--contact-name);
-    font-weight: var(--weight-bold);
+    font-size: var(--contact-title);
+    font-weight: var(--weight-extrabold);
     line-height: 1.1;
     letter-spacing: -0.025em;
     color: var(--contact-fg-strong);
   }
 
-  .contact__role {
-    font-size: var(--contact-role);
-    line-height: 1.4;
+  .contact__lead {
+    font-size: var(--contact-lead);
+    line-height: 1.45;
     color: var(--contact-muted);
-  }
-
-  @media (min-width: 640px) {
-    .contact__head {
-      flex-direction: row;
-      align-items: flex-start;
-      text-align: left;
-    }
   }
 
   .contact__actions {
     display: flex;
     flex-direction: column;
     gap: var(--space-12);
-    margin-top: var(--space-20);
+    margin-top: var(--space-24);
   }
 
   .contact__row {
     display: flex;
     align-items: center;
-    gap: var(--space-12);
+    gap: var(--space-16);
     width: 100%;
-    padding: var(--space-12) var(--space-16);
+    padding: var(--space-16) 22px;
     border: 0;
     border-radius: var(--contact-row-radius);
     background: var(--contact-row-bg);
@@ -294,8 +260,8 @@ import { contact } from '../data/contact';
 
   .contact__row :global(.contact__icon) {
     flex: none;
-    width: var(--space-20);
-    height: var(--space-20);
+    width: var(--contact-icon);
+    height: var(--contact-icon);
     transition: transform 0.2s ease-out;
   }
 
@@ -329,17 +295,6 @@ import { contact } from '../data/contact';
 
   .contact__row[data-copied] .contact__swap-idle {
     opacity: 0;
-  }
-
-  .contact__note {
-    margin-top: var(--space-20);
-    padding-top: var(--space-20);
-    border-top: 1px solid var(--contact-divider);
-    font-size: var(--fs-14);
-    line-height: 1.625;
-    text-align: center;
-    text-wrap: balance;
-    color: var(--contact-muted);
   }
 
   @media (prefers-reduced-motion: reduce) {

@@ -208,15 +208,15 @@
   --font-card: 'Poppins', 'Inter', system-ui, sans-serif;
 
   /* ---------- Contact card ---------- */
-  --contact-w: 320px;
+  --contact-w: 352px;
   --contact-edge: 16px;
   --contact-radius: 24px;
   --contact-row-radius: 16px;
   --contact-pad: 24px;
   --contact-pad-top: 56px;
-  --contact-avatar: 48px;
-  --contact-name: 30px;
-  --contact-role: 12px;
+  --contact-title: 34px;
+  --contact-lead: 15px;
+  --contact-icon: 18px;
   --contact-close: 40px;
   --contact-pivot: -128px; /* the card sways around a point above it, like it hangs from a string */
   --contact-sway: 0.85deg;
@@ -334,9 +334,8 @@
   :root {
     --contact-pad: 28px;
     --contact-pad-top: 64px;
-    --contact-avatar: 56px;
-    --contact-name: 36px;
-    --contact-role: 14px;
+    --contact-title: 38px;
+    --contact-lead: 16px;
   }
 }
 
