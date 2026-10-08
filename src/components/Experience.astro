@@ -4,10 +4,12 @@ import { experience, education } from '../data/content';
 import BriefcaseIcon from '../assets/icons/briefcase.svg';
 import GraduationIcon from '../assets/icons/graduation.svg';
 import CertificateIcon from '../assets/icons/certificate.svg';
+import CertificateLowerIcon from '../assets/icons/certificate-lower.svg';
 import SparkleIcon from '../assets/icons/sparkle.svg';
 import ArrowGhost from '../assets/icons/arrow-up-ghost.svg';
 
-const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
+// The second certificate icon sits 1px lower in the design than the first.
+const icons = { graduation: GraduationIcon, certificate: CertificateIcon, 'certificate-lower': CertificateLowerIcon };
 ---
 
 <div class="resume" id="experience">
@@ -16,7 +18,7 @@ const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
     <div class="column__items column__items--roles">
       {experience.map((role) => (
         <article class="item">
-          <BriefcaseIcon class="item__icon" aria-hidden="true" />
+          <BriefcaseIcon class="item__icon item__icon--job" aria-hidden="true" />
           <header class="item__header">
             <h3 class="item__title">{role.title}</h3>
             <p class="item__dates item__dates--small">{role.dates}</p>
@@ -109,7 +111,10 @@ const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
   .item__icon {
     width: var(--icon-briefcase);
     height: var(--icon-briefcase);
-  }
+    }
+
+  /* The briefcase is #292d32 in the design; the education icons are black. */
+  .item__icon--job { color: #292d32; }
 
   .item__header {
     display: flex;
@@ -226,6 +231,8 @@ const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
   }
 
   @media (max-width: 1023px) {
+    .column__title { min-height: 0; }
+
     .resume {
       grid-template-columns: minmax(0, 1fr);
       row-gap: var(--space-80);
