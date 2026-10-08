@@ -52,6 +52,7 @@ export const work = [
     image: card2,
     alt: 'Analytics dashboard of a service marketplace for professionals, next to a mobile profile screen.',
     place: { left: '14.27%', top: '15.94%', width: '75.50%', height: '84.06%' },
+    bleed: true, // the screenshot runs off the bottom of the panel
   },
   {
     number: '03',
@@ -78,6 +79,7 @@ export const work = [
     image: card4,
     alt: 'Storm event dashboard with a timeline, summary gauges and rosters, and a small card showing an empty fleet state.',
     place: { left: '17.63%', top: '14.55%', width: '64.77%', height: '85.43%' },
+    bleed: true,
   },
 ];
 

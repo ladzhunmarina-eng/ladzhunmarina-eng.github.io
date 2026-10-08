@@ -13,10 +13,11 @@ interface Props {
   image: ImageMetadata;
   alt: string;
   place: { left: string; top: string; width: string; height: string };
+  bleed?: boolean;
   index: number;
 }
 
-const { number, theme, category, title, href, description, tags, image, alt, place, index } = Astro.props;
+const { number, theme, category, title, href, description, tags, image, alt, place, bleed = false, index } = Astro.props;
 const themeVars = {
   yellow: '1',
   cream: '2',
@@ -36,7 +37,7 @@ const themeVars = {
   <div class="work__body">
     <div class="work__container">
       <div class="work__inner">
-      <div class="work__panel">
+      <div class:list={['work__panel', { 'work__panel--bleed': bleed }]}>
         <Image
           class="work__image"
           src={image}
@@ -136,6 +137,15 @@ const themeVars = {
     /* Default: the screens sit at 91% (371 / 409 in the design), a touch higher; hover brings them to full size. */
     transform: translateY(-1.3%) scale(0.907);
     transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  /*
+   * Screenshots that run off the bottom of the panel stay glued to its bottom edge as they shrink and grow,
+   * so the default state never shows their cut-off edge floating above the panel's bottom.
+   */
+  .work__panel--bleed :global(.work__image) {
+    transform: scale(0.907);
+    transform-origin: 50% 100%;
   }
 
   .work__text {
