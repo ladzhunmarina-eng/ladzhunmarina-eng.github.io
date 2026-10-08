@@ -109,8 +109,8 @@ export const experience = [
       'Started People Excellence, an internal tool for building competency models',
       'Led a team of three designers from kick-off through delivery',
     ],
-    // The design repeats the Rebbix summary under this role (a copy-paste placeholder), so none is shown yet.
-    summary: '',
+    summary:
+      "Took Overhaul's logistics platform from a blank page to a suite for shippers, fleets and truck drivers, led a team of three designers, and started an internal competency tool on the side.",
   },
 ];
 
@@ -119,20 +119,23 @@ export const education = [
     icon: 'graduation',
     name: 'Lviv National Academy of Arts',
     dates: 'Jul 2009 — Oct 2014',
+    datesSize: 'small',
     bullet: 'Graphic design Master degree',
   },
   {
     icon: 'certificate',
     name: 'Projector Institute',
     dates: 'Nov 2020 · Expired Dec 2020',
+    datesSize: 'large', // as in the design: this entry's dates are set larger than the other two
     bullet: 'UX Research',
-    card: { theme: 'blue', logo: projectorLogo, logoWidth: 103, kind: '🎓 Certificate', title: 'UX Research Course', year: '2020' },
+    card: { theme: 'blue', logo: projectorLogo, logoWidth: 103, logoHeight: 47, kind: '🎓 Certificate', title: 'UX Research Course', year: '2020' },
   },
   {
     icon: 'certificate',
     name: 'Robot_dreams',
     dates: 'Nov 2020 · Expired Dec 2020',
+    datesSize: 'small',
     bullet: 'Hypothesis',
-    card: { theme: 'cream', logo: robotDreamsLogo, logoWidth: 59, kind: '📚 Course', title: 'Product Hypothesis', year: '2025' },
+    card: { theme: 'cream', logo: robotDreamsLogo, logoWidth: 59, logoHeight: 33, kind: '📚 Course', title: 'Product Hypothesis', year: '2025' },
   },
 ];

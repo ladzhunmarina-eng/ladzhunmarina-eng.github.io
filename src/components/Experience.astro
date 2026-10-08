@@ -19,7 +19,7 @@ const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
           <BriefcaseIcon class="item__icon" aria-hidden="true" />
           <header class="item__header">
             <h3 class="item__title">{role.title}</h3>
-            <p class="item__dates item__dates--role">{role.dates}</p>
+            <p class="item__dates item__dates--small">{role.dates}</p>
           </header>
           <ul class="role__list">
             {role.bullets.map((bullet) => <li>{bullet}</li>)}
@@ -31,7 +31,7 @@ const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
   </section>
 
   <section class="column" aria-labelledby="education-title">
-    <h2 id="education-title" class="column__title">Education</h2>
+    <h2 id="education-title" class="column__title column__title--education">Education</h2>
     <div class="column__items column__items--education">
       {education.map((entry) => {
         const Icon = icons[entry.icon as keyof typeof icons];
@@ -40,7 +40,7 @@ const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
             <Icon class="item__icon" aria-hidden="true" />
             <header class="item__header">
               <h3 class="item__title">{entry.name}</h3>
-              <p class="item__dates">{entry.dates}</p>
+              <p class={`item__dates ${entry.datesSize === 'small' ? 'item__dates--small' : ''}`}>{entry.dates}</p>
             </header>
             <ul class="study__list">
               <li>{entry.bullet}</li>
@@ -49,7 +49,7 @@ const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
               // The card repeats what the entry above already says, so it is decoration for screen readers.
               <div class={`cert cert--${entry.card.theme}`} aria-hidden="true">
                 {entry.card.theme === 'blue' ? <ArrowGhost class="cert__ghost" /> : <SparkleIcon class="cert__spark" />}
-                <Image class="cert__logo" src={entry.card.logo} alt="" width={entry.card.logoWidth} widths={[entry.card.logoWidth, entry.card.logoWidth * 2, entry.card.logoWidth * 3]} sizes={`${entry.card.logoWidth}px`} />
+                <Image class="cert__logo" src={entry.card.logo} alt="" width={entry.card.logoWidth} height={entry.card.logoHeight} widths={[entry.card.logoWidth, entry.card.logoWidth * 2, entry.card.logoWidth * 3]} sizes={`${entry.card.logoWidth}px`} />
                 <p class="cert__kind">{entry.card.kind}</p>
                 <p class="cert__title">{entry.card.title}</p>
                 <p class="cert__year">{entry.card.year}</p>
@@ -79,6 +79,7 @@ const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
   }
 
   .column__title {
+    min-height: 95px; /* the heading's text box in the design is taller than its line */
     margin-bottom: var(--space-24);
     font-family: var(--font-display);
     font-size: var(--fs-display);
@@ -86,6 +87,9 @@ const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
     line-height: var(--lh-display);
     color: var(--color-ink);
   }
+
+  /* The Education heading sits 4px closer to its first entry than the Experience heading does, in the design. */
+  .column__title--education { margin-bottom: var(--space-20); }
 
   .column__items {
     display: flex;
@@ -126,8 +130,8 @@ const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
     letter-spacing: var(--ls-20);
   }
 
-  /* Dates under a job are smaller and medium weight in the design */
-  .item__dates--role {
+  /* Smaller, medium-weight dates, as set in the design */
+  .item__dates--small {
     font-size: var(--fs-16);
     font-weight: var(--weight-medium);
     line-height: var(--lh-20);
@@ -135,8 +139,8 @@ const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
 
   /* ---------- Experience ---------- */
 
-  .role__list {
-    max-width: var(--experience-list);
+  .role__list,
+  .study__list {
     padding-left: var(--space-24);
     list-style: disc;
     font-size: var(--fs-16);
@@ -144,9 +148,12 @@ const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
     letter-spacing: var(--ls-20);
   }
 
+  .role__list { max-width: 576px; }
+  .study__list { max-width: 487px; }
+
   .role__summary {
-    max-width: var(--experience-summary);
-    margin-top: var(--space-20); /* with the 16px item gap: the 36px between list and summary in the design */
+    max-width: 584px;
+    margin-top: var(--space-8); /* with the 16px item gap: the 24px between list and summary in the design */
     font-size: var(--fs-16);
     font-weight: var(--weight-semibold);
     line-height: var(--lh-20);
@@ -154,25 +161,6 @@ const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
   }
 
   /* ---------- Education ---------- */
-
-  .study__list li {
-    display: flex;
-    gap: var(--space-8);
-    max-width: 501px;
-    font-size: var(--fs-16);
-    line-height: var(--lh-20);
-    letter-spacing: var(--ls-20);
-  }
-
-  .study__list li::before {
-    content: '•';
-    flex: none;
-    padding-top: var(--space-3);
-    font-family: var(--font-meta);
-    font-weight: var(--weight-extralight);
-    font-size: var(--fs-14);
-    line-height: var(--lh-14-14);
-  }
 
   .cert {
     position: relative;
@@ -187,8 +175,9 @@ const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
     overflow: hidden;
   }
 
-  .cert--blue { --cert-bg: var(--cert-blue-bg); }
-  .cert--cream { --cert-bg: var(--cert-cream-bg); }
+  /* The two cards are set at slightly different sizes in the design (18.69px and 17.75px). */
+  .cert--blue { --cert-bg: var(--cert-blue-bg); --cert-fs: 18.69px; }
+  .cert--cream { --cert-bg: var(--cert-cream-bg); --cert-fs: 17.75px; }
 
   .cert__logo {
     display: block;
@@ -196,11 +185,12 @@ const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
   }
 
   .cert--cream .cert__logo { margin-top: 1px; }
+  .cert--cream .cert__year { margin-top: 1px; margin-left: 1px; }
 
   .cert__kind,
   .cert__title,
   .cert__year {
-    font-size: 18.7px;
+    font-size: var(--cert-fs);
     line-height: 27px;
   }
 
