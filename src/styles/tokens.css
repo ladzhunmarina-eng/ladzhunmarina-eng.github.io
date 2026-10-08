@@ -11,7 +11,7 @@
   --color-white: #fff;
   --color-muted: #777;
   --color-marquee-text: #666;
-  --color-marquee-dot: #f3f0e5;
+  --color-marquee-chip: #f3f0e5; /* the pill behind each word */
   --color-outline: #b3b3b3;
   --color-outline-strong: #999;
   --color-wordmark: #b3b3b3;
@@ -227,10 +227,11 @@
 
   /* ---------- Marquee ---------- */
   --marquee-height: 60px;
-  --marquee-dot: 12px;
-  --marquee-gap: 24px;
+  --marquee-gap: 12px; /* between the pills */
+  --marquee-chip-pad-x: 18px;
+  --marquee-chip-pad-y: 10px;
   --marquee-icon: 20px;
-  --marquee-speed: 131s; /* one list width (2620px) per loop = 20px per second, like the reference */
+  --marquee-speed: 123s; /* one list width (2452px) per loop = 20px per second, like the reference */
 
   /* ---------- Education certificate cards ---------- */
   --cert-w: 324px;
