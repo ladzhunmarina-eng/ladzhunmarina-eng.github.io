@@ -9,7 +9,6 @@ interface Props {
   title: string;
   href: string;
   description: string;
-  tags: string[];
   image: ImageMetadata;
   alt: string;
   place: { left: string; top: string; width: string; height: string };
@@ -17,7 +16,7 @@ interface Props {
   index: number;
 }
 
-const { number, theme, category, title, href, description, tags, image, alt, place, bleed = false, index } = Astro.props;
+const { number, theme, category, title, href, description, image, alt, place, bleed = false, index } = Astro.props;
 const themeVars = {
   yellow: '1',
   cream: '2',
@@ -58,9 +57,6 @@ const themeVars = {
           View case
           <ArrowIcon />
         </p>
-        <ul class="work__tags" aria-label="Focus areas">
-          {tags.map((tag) => <li class="work__tag">{tag}</li>)}
-        </ul>
       </div>
       </div>
     </div>
@@ -118,7 +114,7 @@ const themeVars = {
     display: grid;
     grid-template-columns: minmax(0, 1fr) var(--work-text-col);
     column-gap: var(--space-59);
-    align-items: end;
+    align-items: center;
     max-width: var(--work-inner-max);
   }
 
@@ -246,35 +242,10 @@ const themeVars = {
   }
 
   .work__description {
-    font-size: var(--fs-20);
+    font-size: var(--fs-16);
     line-height: var(--lh-20);
     letter-spacing: var(--ls-20);
     color: var(--color-black);
-  }
-
-  .work__tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-8) var(--space-20);
-    margin-top: var(--space-10); /* with the 18px gap: 28px below the button */
-    padding-top: var(--space-12);
-    color: var(--accent);
-    font-size: var(--fs-16);
-    line-height: var(--lh-16);
-    letter-spacing: var(--ls-16);
-  }
-
-  .work__tag {
-    display: flex;
-    align-items: center;
-    gap: var(--space-20);
-  }
-
-  .work__tag + .work__tag::before {
-    content: '';
-    width: var(--tag-rule-width);
-    height: var(--tag-rule-height);
-    background: var(--accent);
   }
 
   /*
@@ -315,17 +286,6 @@ const themeVars = {
 
     .work__text {
       max-width: var(--work-text-tablet-max);
-    }
-  }
-
-  /* Tags wrap on narrow screens; a rule at the start of a wrapped line looks broken, so drop the rules. */
-  @media (max-width: 640px) {
-    .work__tags {
-      column-gap: var(--space-16);
-    }
-
-    .work__tag + .work__tag::before {
-      display: none;
     }
   }
 </style>

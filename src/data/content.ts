@@ -35,7 +35,6 @@ export const work = [
     href: '#',
     description:
       'Global classifieds marketplace connecting buyers and sellers of secondhand goods, part of OLX Group (Prosus), operating across Ukraine, Poland, Romania, Portugal, and Bulgaria.',
-    tags: ['A/B tests', 'Research', 'User testing'],
     image: card1,
     alt: 'Two screens of the OLX app: a basket with two items ready for checkout, and an empty basket with favourites below.',
     place: { left: '20.06%', top: '0%', width: '61.44%', height: '100%' },
@@ -48,7 +47,6 @@ export const work = [
     href: '#',
     description:
       'Designed a platform connecting clients with professionals across 400+ services, with intuitive interfaces for requests, discovery, and communication.',
-    tags: ['Fake-door tests', 'Research', 'Monetisation'],
     image: card2,
     alt: 'Analytics dashboard of a service marketplace for professionals, next to a mobile profile screen.',
     place: { left: '14.27%', top: '15.94%', width: '75.50%', height: '84.06%' },
@@ -62,7 +60,6 @@ export const work = [
     href: '#',
     description:
       'A mobile app for tracking baby sleep that connects parents with sleep experts, offering routine analysis, record keeping, and easy communication to improve sleep quality.',
-    tags: ['Surveys', 'Research', 'User testing'],
     image: card3,
     alt: 'Baby Sleep Expert app: a sign-up screen for parents and consultants, and a baby profile with a sleep diary.',
     place: { left: '25.21%', top: '0%', width: '53.45%', height: '100%' },
@@ -75,7 +72,6 @@ export const work = [
     href: '#',
     description:
       'A digital platform that helps U.S. utility and emergency teams restore power after storms by improving coordination, resource allocation, and communication.',
-    tags: ['Web', 'User Roles', 'Discovery'],
     image: card4,
     alt: 'Storm event dashboard with a timeline, summary gauges and rosters, and a small card showing an empty fleet state.',
     place: { left: '17.63%', top: '14.55%', width: '64.77%', height: '85.43%' },
