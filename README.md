@@ -45,7 +45,7 @@ src/
 
 ## Design notes
 
-- **Featured Work** cards say they are clickable twice: a "View case" label with a round arrow is always visible (touch screens have no hover), and on hover or keyboard focus the screens rise, the title underlines and the arrow fills with the card's accent colour. The whole card is one link.
+- **Featured Work** cards follow the design's Default and Hover states: a white "View case ↗" pill under the description (always visible, so touch screens get it) and the screens at 91% size. On hover or keyboard focus the pill turns black and the screens grow to full size. The whole card is one link.
 - **Featured Work** panels are stacked with pure CSS `position: sticky` (no scroll listeners). They only stack when the window is at least 1025px wide and 600px tall; otherwise they are plain cards. Nothing above the panels may set `overflow` or a transform, or sticky silently stops working.
 - **Header:** one translucent, blurred pill. The wordmark and Contact me fade out after 40px of scroll. The current section's link turns yellow.
 - **Contact card:** opens from every `href="#contact"` link, closes with the button, Escape or a click outside.

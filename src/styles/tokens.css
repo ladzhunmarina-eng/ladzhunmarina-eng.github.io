@@ -156,8 +156,7 @@
   --work-inner-max: 1196px;
   --work-panel-w-max: 726px;
   --work-text-col: 411px;
-  --work-text-h-max: 360px; /* just above the tallest text column (card 03: 276px at 1440, 344px at 1100, with the 60px "View case" row) */
-  --work-go-size: 40px; /* the round arrow of "View case" */
+  --work-text-h-max: 400px; /* just above the tallest text column (card 03: 382px, with the "View case" pill) */
   --work-panel-aspect: 1.6764; /* 725.87 / 433 */
   --work-panel-h-max: 433px;
   --work-panel-h-min: 180px;
