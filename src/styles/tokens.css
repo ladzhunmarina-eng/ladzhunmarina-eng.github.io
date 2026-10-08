@@ -258,6 +258,9 @@
   --footer-pill-h: 50px;
   --footer-pill-icon: 18px;
   --footer-up-size: 56px; /* back-to-top button */
+  --drop-from: -2.2em; /* where the letters of "Hi!" start falling from */
+  --drop-time: 1.15s;
+  --drop-stagger: 0.14s;
 
   /* ---------- Radii ---------- */
   --radius-focus: 8px;

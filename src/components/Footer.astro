@@ -27,7 +27,12 @@ const social = [
   </a>
 
   <div class="footer__top">
-    <h2 class="footer__title">Say <span class="footer__accent">Hi!</span></h2>
+    <h2 class="footer__title" aria-label="Say Hi!">
+      <span class="footer__say" aria-hidden="true">Say</span>
+      <span class="footer__accent" aria-hidden="true">
+        {['H', 'i', '!'].map((letter, i) => <span class="footer__letter" style={`--i: ${i}`}>{letter}</span>)}
+      </span>
+    </h2>
 
     <ul class="footer__reach">
       {reach.map(({ label, href, Icon, external }) => (
@@ -70,6 +75,7 @@ const social = [
 <style>
   .site-footer {
     position: relative;
+    overflow: hidden; /* the letters fall in from above the black, not from over the page */
     display: flex;
     flex-direction: column;
     gap: var(--footer-gap);
@@ -127,6 +133,78 @@ const social = [
   .footer__accent {
     font-weight: var(--weight-extrabold);
     color: var(--color-footer-accent);
+  }
+
+  /*
+   * "Hi!" drops in letter by letter when the footer scrolls into view: each letter falls from above,
+   * lands squashed, bounces twice and settles, and "Say" gets a little knock from the first landing.
+   * Hovering or focusing the heading drops them again. The script sets data-drop; without it
+   * (or with reduced motion) the words just sit there.
+   */
+  .footer__letter {
+    display: inline-block;
+    transform-origin: 50% 100%;
+  }
+
+  .footer__say {
+    display: inline-block;
+  }
+
+  .footer__title[data-drop='ready'] .footer__letter {
+    opacity: 0;
+    transform: translateY(var(--drop-from));
+  }
+
+  .footer__title[data-drop='go'] .footer__letter {
+    animation: letter-drop var(--drop-time) both;
+    animation-delay: calc(var(--i) * var(--drop-stagger));
+  }
+
+  .footer__title[data-drop='go'] .footer__say {
+    animation: say-knock 0.5s ease-out both;
+    animation-delay: calc(var(--drop-time) * 0.4);
+  }
+
+  @keyframes letter-drop {
+    0% {
+      opacity: 1;
+      transform: translateY(var(--drop-from)) rotate(calc((var(--i) - 1) * 14deg));
+      animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.5);
+    }
+    42% {
+      opacity: 1;
+      transform: translateY(0) rotate(0) scale(1.14, 0.8);
+      animation-timing-function: cubic-bezier(0.1, 0.5, 0.4, 1);
+    }
+    58% {
+      transform: translateY(-0.28em) rotate(calc((1 - var(--i)) * 4deg)) scale(0.96, 1.06);
+      animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.5);
+    }
+    72% {
+      transform: translateY(0) rotate(0) scale(1.06, 0.92);
+      animation-timing-function: cubic-bezier(0.1, 0.5, 0.4, 1);
+    }
+    84% {
+      transform: translateY(-0.08em) scale(0.99, 1.02);
+      animation-timing-function: ease-in;
+    }
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes say-knock {
+    0%,
+    100% {
+      transform: none;
+    }
+    30% {
+      transform: translateY(0.04em) rotate(-1.2deg);
+    }
+    65% {
+      transform: translateY(-0.015em) rotate(0.5deg);
+    }
   }
 
   .footer__reach {
@@ -220,6 +298,43 @@ const social = [
 </style>
 
 <script>
+  // "Hi!" drops in when the footer comes into view, and again whenever the heading is hovered or focused.
+  const title = document.querySelector<HTMLElement>('.footer__title');
+  if (title && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const letters = title.querySelectorAll('.footer__letter');
+    const last = letters[letters.length - 1];
+    let playing = false;
+
+    const drop = () => {
+      if (playing) return;
+      playing = true;
+      title.dataset.drop = 'ready';
+      void title.offsetWidth; // restart the animation from the top
+      title.dataset.drop = 'go';
+    };
+
+    last?.addEventListener('animationend', () => (playing = false));
+    title.dataset.drop = 'ready';
+
+    if ('IntersectionObserver' in window) {
+      const seen = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            seen.disconnect();
+            drop();
+          }
+        },
+        { threshold: 0.6 },
+      );
+      seen.observe(title);
+    } else {
+      title.dataset.drop = 'go';
+    }
+
+    title.addEventListener('pointerenter', drop);
+    title.addEventListener('click', drop);
+  }
+
   // The link scrolls to the top (smooth, see global.css). Once it gets there, move keyboard focus up too,
   // so the next Tab starts from the top of the page and not from the footer.
   document.querySelector<HTMLAnchorElement>('.footer__top-link')?.addEventListener('click', () => {
