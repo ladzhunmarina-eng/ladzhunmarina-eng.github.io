@@ -24,7 +24,6 @@
   --color-menu-bg: rgb(0 0 0 / 0.61);
   --color-nav-bg: rgb(255 255 255 / 0.75); /* translucent, so the blur behind the pill shows */
   --color-nav-hover: rgb(42 42 42 / 0.06); /* not in Figma: hover state is a guess */
-  --color-button-hover: #2a2a2a; /* not in Figma: hover state is a guess */
 
   /* ---------- Color: focus ring (Figma "focus-ring" variant) ---------- */
   --color-focus: #0034dc;

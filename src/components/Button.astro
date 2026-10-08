@@ -45,7 +45,8 @@ const { href, variant = 'solid', size = 'md', wide = false, class: className } =
   }
 
   .button--solid:hover {
-    background: var(--color-button-hover);
+    background: var(--color-nav-active);
+    color: var(--color-black);
   }
 
   .button--outline {
@@ -58,7 +59,8 @@ const { href, variant = 'solid', size = 'md', wide = false, class: className } =
   }
 
   .button--outline:hover {
-    border-color: var(--color-ink-button);
+    border-color: var(--color-nav-active);
+    background: var(--color-nav-active);
   }
 
   /* The header / mobile Contact me: darker rule and regular 16px black text. */
@@ -73,6 +75,7 @@ const { href, variant = 'solid', size = 'md', wide = false, class: className } =
   }
 
   .button--outline-strong:hover {
-    border-color: var(--color-black);
+    border-color: var(--color-nav-active);
+    background: var(--color-nav-active);
   }
 </style>
