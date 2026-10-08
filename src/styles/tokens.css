@@ -104,6 +104,7 @@
   --fs-12: 12px;
   --fs-14: 14px;
   --fs-16: 16px;
+  --fs-17: 17px; /* the "At a glance" tab */
   --fs-18: 18px;
   --fs-20: 20px;
   --fs-22: 22px;
@@ -248,9 +249,11 @@
   --case-nav-dot-gap: 11px;
   --case-gap: 64px; /* between that column and the content */
   --case-measure: 720px; /* the widest a paragraph or title runs */
-  --case-meta-w: 473px; /* the Role / Team / Timeline card in the hero */
+  --case-meta-w: 471px; /* the "At a glance" card in the hero */
+  --case-tab-w: 187px; /* its tab ... */
+  --case-tab-h: 48px;
+  --case-hero-h: 392px; /* the height of the hero block, before the cover */
   --case-hero-gap: 35px; /* between the hero text and that card */
-  --case-hero-pad-bottom: 55px; /* extra room under the hero block, before the cover */
   --case-cover-ratio: 1272 / 670; /* the cover image panel */
   --case-section-gap: 120px; /* between sections */
   --case-card-pad: 24px;
@@ -263,6 +266,7 @@
   --radius-glass: 24px; /* the hero card */
   --radius-glass-inner: 16px; /* the card inside it */
   --case-glass-blur: 50px;
+  --case-glass-blur-inner: 4px;
 
   /* ---------- Contact card ---------- */
   --contact-w: 352px;

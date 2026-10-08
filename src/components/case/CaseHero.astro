@@ -30,7 +30,9 @@ const { hero } = Astro.props;
     </ul>
   </div>
 
-  <div class="hero__card">
+  <div class="hero__aside">
+    <p class="hero__tab">At a glance</p>
+    <div class="hero__card">
     <dl class="hero__meta">
       {hero.meta.map((item) => (
         <div class="hero__cell">
@@ -46,6 +48,7 @@ const { hero } = Astro.props;
         {hero.tags.map((tag) => <li class="hero__chip">{tag}</li>)}
       </ul>
     </div>
+    </div>
   </div>
 </header>
 
@@ -55,7 +58,7 @@ const { hero } = Astro.props;
     grid-template-columns: minmax(0, 1fr) var(--case-meta-w);
     gap: var(--space-32) var(--case-hero-gap);
     align-items: start;
-    padding-bottom: var(--case-hero-pad-bottom);
+    min-height: var(--case-hero-h);
   }
 
   .hero__text {
@@ -106,24 +109,45 @@ const { hero } = Astro.props;
     color: var(--case-pill-fg);
   }
 
-  /* The card: frosted glass, a lighter card inside it with the four facts, then the focus areas. */
+  /* A frosted-glass folder: the "At a glance" tab sits on the top-left of the card, flush with it. */
+  .hero__aside {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero__tab {
+    box-sizing: border-box;
+    width: var(--case-tab-w);
+    height: var(--case-tab-h);
+    padding: var(--space-20);
+    border-radius: var(--radius-glass) var(--radius-glass) 0 0;
+    background: var(--case-glass);
+    backdrop-filter: blur(var(--case-glass-blur));
+    font-size: var(--fs-17);
+    line-height: var(--lh-14-20);
+    color: var(--case-accent);
+  }
+
   .hero__card {
     display: flex;
     flex-direction: column;
     gap: var(--space-20);
+    align-self: stretch;
     padding: var(--space-20);
-    border-radius: var(--radius-glass);
+    border-radius: 0 var(--radius-glass) var(--radius-glass) var(--radius-glass);
     background: var(--case-glass);
     backdrop-filter: blur(var(--case-glass-blur));
   }
 
+  /* The four facts: a lighter card, cells with 1px lines between them (right and bottom edges, as designed). */
   .hero__meta {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1px;
     overflow: hidden;
     border-radius: var(--radius-glass-inner);
-    background: var(--case-divider); /* shows through the 1px gaps as the dividing lines */
+    background: var(--case-glass-inner);
+    backdrop-filter: blur(var(--case-glass-blur-inner));
   }
 
   .hero__cell {
@@ -132,6 +156,27 @@ const { hero } = Astro.props;
     gap: var(--space-4);
     padding: var(--space-16);
     background: var(--case-glass-cell);
+  }
+
+  /* The lines sit inside the 80px cells, as in the design, so the cell loses a pixel of padding to its line. */
+  .hero__cell:nth-child(1) {
+    padding-bottom: calc(var(--space-16) - 1px);
+    border-right: 1px solid var(--case-divider);
+    border-bottom: 1px solid var(--case-divider);
+  }
+
+  .hero__cell:nth-child(2) {
+    padding-bottom: calc(var(--space-16) - 1px);
+    border-bottom: 1px solid var(--case-divider);
+  }
+
+  .hero__cell:nth-child(3) {
+    border-right: 1px solid var(--case-divider);
+    border-bottom: 1px solid transparent; /* the design's card is a pixel taller than its two rows */
+  }
+
+  .hero__cell:nth-child(4) {
+    border-bottom: 1px solid transparent;
   }
 
   .hero__meta dt {
@@ -178,13 +223,26 @@ const { hero } = Astro.props;
   @media (max-width: 1023px) {
     .hero {
       grid-template-columns: minmax(0, 1fr);
-      padding-bottom: 0;
+      min-height: 0;
     }
   }
 
   @media (max-width: 480px) {
     .hero__meta {
       grid-template-columns: minmax(0, 1fr);
+    }
+
+    .hero__cell:nth-child(n) {
+      border-right: 0;
+      border-bottom: 1px solid var(--case-divider);
+    }
+
+    .hero__cell:last-child {
+      border-bottom: 0;
+    }
+
+    .hero__cell:nth-child(3) {
+      border-bottom: 1px solid var(--case-divider);
     }
   }
 </style>
