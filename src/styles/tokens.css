@@ -58,10 +58,8 @@
   --contact-row-hover-fg: #121212;
   --contact-close-bg: rgb(36 36 36 / 0.95);
   --contact-close-hover-bg: #2a2828;
-  --contact-ring: #121212;
   --contact-focus: #ccc;
   --contact-shadow: 0 2px 8px -2px rgb(0 0 0 / 0.25), 0 10px 40px -8px rgb(0 0 0 / 0.35), 0 24px 60px -16px rgb(0 0 0 / 0.35);
-  --contact-shadow-avatar: 0 2px 14px rgb(0 0 0 / 0.25);
 
   /* ---------- Color: footer ---------- */
   --color-footer: #000;
