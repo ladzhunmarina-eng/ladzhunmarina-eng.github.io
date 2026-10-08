@@ -214,7 +214,7 @@
   --contact-w: 352px;
   --contact-edge: 16px;
   --contact-radius: 24px;
-  --contact-row-radius: 16px;
+  --contact-row-radius: var(--radius-button); /* fully rounded, like the buttons */
   --contact-pad: 24px;
   --contact-pad-top: 56px;
   --contact-title: 34px;
