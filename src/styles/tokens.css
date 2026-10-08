@@ -437,8 +437,6 @@
   --case-variant-b: var(--color-black);
   --case-variant-c: var(--color-black);
   --case-variant-text: var(--color-white);
-  --case-pill-bg: var(--case-bg); /* the dark chips under the lead */
-  --case-pill-fg: var(--case-on-bg);
   --case-chip-text: var(--color-ink); /* the small chips in the hero card */
   --case-glass: rgb(255 255 255 / 0.4); /* the hero card, its inner card, cells and chips */
   --case-glass-inner: rgb(255 255 255 / 0.5);
@@ -482,8 +480,6 @@
   --case-variant-b: var(--olx-variant-b);
   --case-variant-c: var(--olx-variant-c);
   --case-variant-text: var(--olx-ink);
-  --case-pill-bg: var(--olx-ink);
-  --case-pill-fg: var(--color-white);
   --case-chip-text: #2c565c;
   --case-divider: var(--olx-tint);
   /* Inside an OLX case, the shared "ink" and tint are OLX's own. */
