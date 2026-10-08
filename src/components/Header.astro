@@ -167,7 +167,7 @@ const links = [
     grid-column: 3;
     justify-self: end;
     display: none;
-    background: var(--color-page); /* no plate behind the header, so the button carries its own backing */
+    background: var(--header-backing, var(--color-page)); /* no plate behind the header, so the button carries its own backing */
     pointer-events: auto;
     transition:
       opacity var(--header-fade) ease,

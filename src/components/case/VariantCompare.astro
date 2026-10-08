@@ -20,7 +20,7 @@ const { variants, metrics = [], verify = false } = Astro.props;
 
 <ul class="variants">
   {variants.map((variant) => (
-    <li class:list={['variant', { 'variant--leader': variant.leader }]}>
+    <li class:list={['variant', { 'variant--leader': variant.leader }]} style={`--mark: var(--case-variant-${variant.id.toLowerCase()}, var(--case-variant-a))`}>
       <div class="variant__head">
         <p class="variant__id" aria-hidden="true">{variant.id}</p>
         <p class="variant__name">{variant.name}{verify && <Verify />}</p>
@@ -76,10 +76,10 @@ const { variants, metrics = [], verify = false } = Astro.props;
     width: var(--space-32);
     height: var(--space-32);
     border-radius: 50%;
-    background: var(--color-black);
+    background: var(--mark, var(--case-variant-a));
     font-family: var(--font-display);
     font-weight: var(--weight-bold);
-    color: var(--color-white);
+    color: var(--case-variant-text);
   }
 
   .variant__name {

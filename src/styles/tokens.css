@@ -47,6 +47,18 @@
   /* ---------- Color: case study pages ---------- */
   --case-line: rgb(42 42 42 / 0.12); /* hairlines on cards, from --color-ink */
 
+  /* OLX brand colours, taken from the OLX case on marynaladzhun.figma.site */
+  --olx-page: #ebf0f2; /* the page */
+  --olx-ink: #002f34; /* headings and dark text: OLX deep teal */
+  --olx-teal: #0b4147; /* bars, the strongest mid tone */
+  --olx-accent-text: #3d6d73; /* small labels on white and the page */
+  --olx-cyan: #23e5db; /* the OLX highlight */
+  --olx-tint: #d6e2e7; /* tracks, chips, placeholders, summary cards */
+  --olx-line: rgb(0 47 52 / 0.12);
+  --olx-variant-a: #ffdcad; /* A/B/C in the tests */
+  --olx-variant-b: #c7e0ff;
+  --olx-variant-c: #b282d2;
+
   /* ---------- Color: education certificate cards ---------- */
   --cert-blue-bg: #e0f2fe;
   --cert-cream-bg: #f4f3ed;
@@ -390,4 +402,69 @@
   :root {
     --contact-edge: 24px;
   }
+}
+
+/*
+ * Case study palettes. A case page picks one with data-case-palette on its <article>: the case's `theme`
+ * (work-1 ... work-4, the same colours as its Featured Work card), or a brand palette like `olx`.
+ * Every palette defines the same set of --case-* variables, which is all the components in
+ * src/components/case/ read.
+ */
+[data-case-palette] {
+  --case-page: var(--color-page); /* the page behind the cards */
+  --case-track: var(--color-icon-bg); /* empty part of a bar or scale */
+  --case-bar: var(--case-bg); /* filled part of a bar */
+  --case-strip-bg: var(--case-bg); /* the metric strip */
+  --case-strip-fg: var(--color-ink);
+  --case-strip-value: var(--color-black);
+  --case-on-bg: var(--color-black); /* text on --case-bg */
+  --case-variant-a: var(--color-black); /* the round A / B / C marks */
+  --case-variant-b: var(--color-black);
+  --case-variant-c: var(--color-black);
+  --case-variant-text: var(--color-white);
+}
+
+[data-case-palette='work-1'] {
+  --case-bg: var(--work-1-bg);
+  --case-accent: var(--work-1-accent);
+}
+
+[data-case-palette='work-2'] {
+  --case-bg: var(--work-2-bg);
+  --case-accent: var(--work-2-accent);
+}
+
+[data-case-palette='work-3'] {
+  --case-bg: var(--work-3-bg);
+  --case-accent: var(--work-3-accent);
+}
+
+[data-case-palette='work-4'] {
+  --case-bg: var(--work-4-bg);
+  --case-accent: var(--work-4-accent);
+}
+
+[data-case-palette='olx'] {
+  --case-bg: var(--olx-cyan);
+  --case-accent: var(--olx-accent-text);
+  --case-page: var(--olx-page);
+  --case-line: var(--olx-line);
+  --case-track: var(--olx-page);
+  --case-bar: var(--olx-teal);
+  --case-strip-bg: var(--olx-ink);
+  --case-strip-fg: var(--color-white);
+  --case-strip-value: var(--olx-cyan);
+  --case-on-bg: var(--olx-ink);
+  --case-variant-a: var(--olx-variant-a);
+  --case-variant-b: var(--olx-variant-b);
+  --case-variant-c: var(--olx-variant-c);
+  --case-variant-text: var(--olx-ink);
+  /* Inside an OLX case, the shared "ink" and tint are OLX's own. */
+  --color-ink: var(--olx-ink);
+  --color-icon-bg: var(--olx-tint);
+}
+
+/* The header's Contact me carries its own backing; on a branded case page it matches that page. */
+:root:has([data-case-palette='olx']) {
+  --header-backing: var(--olx-page);
 }

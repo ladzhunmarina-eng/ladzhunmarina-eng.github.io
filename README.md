@@ -66,7 +66,7 @@ src/
 ## Case study pages
 
 - **Add a case:** write `src/data/cases/<slug>.ts` in the shape of `olx.ts`, add it to `src/data/cases/index.ts`, and point its Featured Work card (`href` in `content.ts`) at `/work/<slug>`. The page, the sticky navigation and the static path are generated.
-- **Accent colour:** the case's `theme` (`yellow`, `cream`, `lilac`, `mint`) selects the matching `--work-N-*` tokens, the same ones its Featured Work card uses.
+- **Colours:** each case page picks a palette with `data-case-palette` (see the bottom of `tokens.css`). By default it is the case's `theme` (`yellow`, `cream`, `lilac`, `mint`), the same `--work-N-*` colours its Featured Work card uses. A case with its own brand can have a brand palette instead: the OLX case uses OLX's colours (deep teal, cyan, grey-blue page, `--olx-*` tokens) via `brandPalettes` in `src/pages/work/[slug].astro`.
 - **Draft markers:** any item with `verify: true` shows a small dashed "verify" badge while you run `npm run dev`. Production builds (`npm run build`) never contain it, but they do show the draft wording itself, so confirm those values (or switch to their `fallback` text) before publishing.
 - **Images:** screenshots are labelled placeholders (`ImageSlot`). Replace one with an `<Image>` when the file exists.
 - **Navigation:** the left column ("On this page") is sticky from 1024px wide and marks the section being read, like the header's active link. Below 1024px it stacks above the content as chips.

@@ -28,9 +28,11 @@ export function getStaticPaths() {
 
 const { study } = Astro.props;
 
-// The case's accent is its theme, the same --work-N-* set the Featured Work card uses.
+// A case with its own brand colours uses that palette (OLX does); otherwise the accent is the case's theme,
+// the same --work-N-* set its Featured Work card uses. Palettes live in tokens.css.
+const brandPalettes: Record<string, string> = { olx: 'olx' };
 const themeIndex = { yellow: '1', cream: '2', lilac: '3', mint: '4' }[study.theme];
-const accent = `--case-bg: var(--work-${themeIndex}-bg); --case-panel: var(--work-${themeIndex}-panel); --case-accent: var(--work-${themeIndex}-accent);`;
+const palette = brandPalettes[study.slug] ?? `work-${themeIndex}`;
 
 // Fields that may be a plain string or { text, verify } (draft wording flagged for checking).
 const textOf = (value: string | { text: string }) => (typeof value === 'string' ? value : value.text);
@@ -40,7 +42,7 @@ const { basket, delivery } = study;
 ---
 
 <Layout title={study.seo.title} description={study.seo.description} current="work">
-  <article class="case" style={accent}>
+  <article class="case" data-case-palette={palette}>
     <div class="case__container case__top">
       <CaseHero hero={study.hero} />
       <ImageSlot label="Cover: the basket on mobile and web" ratio="21 / 9" />
@@ -154,6 +156,10 @@ const { basket, delivery } = study;
 </Layout>
 
 <style>
+  .case {
+    background: var(--case-page);
+  }
+
   .case__container {
     max-width: var(--page-max);
     margin-inline: auto;

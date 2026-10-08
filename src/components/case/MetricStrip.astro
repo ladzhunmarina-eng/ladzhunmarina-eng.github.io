@@ -22,7 +22,7 @@ const { metrics } = Astro.props;
     gap: var(--space-24) var(--space-32);
     padding: var(--space-32);
     border-radius: var(--radius-panel);
-    background: var(--case-bg);
+    background: var(--case-strip-bg);
   }
 
   .strip__item {
@@ -36,12 +36,12 @@ const { metrics } = Astro.props;
     font-size: var(--fs-case-stat);
     font-weight: var(--weight-extrabold);
     line-height: var(--lh-display);
-    color: var(--color-black);
+    color: var(--case-strip-value);
   }
 
   .strip__label {
     font-size: var(--fs-14);
     line-height: var(--lh-14-20);
-    color: var(--color-ink);
+    color: var(--case-strip-fg);
   }
 </style>
