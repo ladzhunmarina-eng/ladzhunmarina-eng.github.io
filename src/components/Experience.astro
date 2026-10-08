@@ -51,7 +51,7 @@ const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
               // The card repeats what the entry above already says, so it is decoration for screen readers.
               <div class={`cert cert--${entry.card.theme}`} aria-hidden="true">
                 {entry.card.theme === 'blue' ? <ArrowGhost class="cert__ghost" /> : <SparkleIcon class="cert__spark" />}
-                <Image class="cert__logo" src={entry.card.logo} alt="" width={entry.card.logoWidth} height={entry.card.logoHeight} widths={[entry.card.logoWidth, entry.card.logoWidth * 2, entry.card.logoWidth * 3]} sizes={`${entry.card.logoWidth}px`} />
+                <Image class="cert__logo" src={entry.card.logo} alt="" width={entry.card.logoWidth} height={entry.card.logoHeight} fit="fill" widths={[entry.card.logoWidth, entry.card.logoWidth * 2, entry.card.logoWidth * 3]} sizes={`${entry.card.logoWidth}px`} />
                 <p class="cert__kind">{entry.card.kind}</p>
                 <p class="cert__title">{entry.card.title}</p>
                 <p class="cert__year">{entry.card.year}</p>
