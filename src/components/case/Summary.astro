@@ -1,0 +1,62 @@
+---
+interface Props {
+  summary: { objective: string; challenge: string; solution: string };
+}
+
+const { summary } = Astro.props;
+const rows = [
+  { label: 'Objective', text: summary.objective },
+  { label: 'Challenge', text: summary.challenge },
+  { label: 'Solution', text: summary.solution },
+];
+---
+
+<dl class="summary">
+  {rows.map((row) => (
+    <div class="summary__card">
+      <dt>{row.label}</dt>
+      <dd>{row.text}</dd>
+    </div>
+  ))}
+</dl>
+
+<style>
+  .summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--case-card-min-wide), 1fr));
+    gap: var(--space-16);
+  }
+
+  .summary__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding: var(--case-card-pad);
+    border-radius: var(--radius-card);
+    background: var(--color-icon-bg);
+  }
+
+  .summary__card:last-child {
+    background: var(--case-bg);
+  }
+
+  .summary dt {
+    font-size: var(--fs-12);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-12-18);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--case-accent);
+  }
+
+  .summary__card:last-child dt {
+    color: var(--color-black);
+  }
+
+  .summary dd {
+    margin: 0;
+    font-size: var(--fs-16);
+    line-height: var(--lh-body);
+    color: var(--color-ink);
+  }
+</style>

@@ -1,0 +1,130 @@
+---
+interface Props {
+  items: readonly { id: string; label: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<nav class="case-nav" aria-label="On this page">
+  <p class="case-nav__title">On this page</p>
+  <ol class="case-nav__list">
+    {items.map((item) => (
+      <li>
+        <a class="case-nav__link" href={`#${item.id}`}>{item.label}</a>
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<style>
+  /* Sticky beside the content on wide screens; stacked above it, as wrapping chips, below 1024px. */
+  .case-nav {
+    position: sticky;
+    top: calc(var(--header-h) + var(--space-24));
+    align-self: start;
+  }
+
+  .case-nav__title {
+    margin-bottom: var(--space-12);
+    padding-inline: var(--space-16);
+    font-size: var(--fs-12);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-12-18);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .case-nav__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .case-nav__link {
+    display: block;
+    padding: var(--space-8) var(--space-16);
+    border-radius: var(--radius-pill);
+    font-size: var(--fs-16);
+    line-height: var(--lh-16);
+    color: var(--color-ink);
+    transition: background-color 0.15s ease;
+  }
+
+  .case-nav__link:hover {
+    background: var(--color-nav-hover);
+  }
+
+  /* The current section: same chip as the header's active link. */
+  .case-nav__link[aria-current],
+  .case-nav__link[aria-current]:hover {
+    background: var(--case-bg);
+    color: var(--color-black);
+  }
+
+  @media (max-width: 1023px) {
+    .case-nav {
+      position: static;
+    }
+
+    .case-nav__list {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: var(--space-8);
+    }
+
+    .case-nav__link {
+      padding: var(--space-8) var(--space-16);
+      background: var(--color-white);
+      box-shadow: 0 0 0 1px var(--case-line);
+    }
+
+    .case-nav__title {
+      padding-inline: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .case-nav__link {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // Mark the nav link of the section in view, the same way the header does: a band from just under the
+  // header to ~45% of the viewport is the "reading line", and the section crossing it is the current one
+  // (when two do, the later one: its heading has reached the line).
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('.case-nav__link'));
+  const sections = new Map<string, HTMLElement>();
+  links.forEach((link) => {
+    const section = document.getElementById(link.hash.slice(1));
+    if (section) sections.set(link.hash.slice(1), section);
+  });
+
+  const setCurrent = (id: string | null) => {
+    links.forEach((link) => {
+      if (id && link.hash === `#${id}`) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+  };
+
+  if (sections.size && 'IntersectionObserver' in window) {
+    const top = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stack-top')) || 120;
+    const visible = new Set<string>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const id = (entry.target as HTMLElement).id;
+          if (entry.isIntersecting) visible.add(id);
+          else visible.delete(id);
+        });
+        // Sections here are long, so the one furthest down the page that has reached the reading line wins.
+        setCurrent([...sections.keys()].filter((id) => visible.has(id)).pop() ?? null);
+      },
+      { rootMargin: `-${top}px 0px -55% 0px` },
+    );
+    sections.forEach((section) => observer.observe(section));
+  }
+</script>

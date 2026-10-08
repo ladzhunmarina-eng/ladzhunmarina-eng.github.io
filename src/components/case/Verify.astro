@@ -1,0 +1,26 @@
+---
+/* A draft marker for content flagged `verify: true`. Visible in `astro dev` only; production builds drop it. */
+const show = import.meta.env.DEV;
+---
+
+{show && <span class="verify" title="Draft: confirm this before publishing">verify</span>}
+
+<style>
+  .verify {
+    display: inline-block;
+    margin-left: var(--space-8);
+    padding: var(--space-2) var(--space-8);
+    border: 1px dashed var(--color-focus);
+    border-radius: var(--radius-pill);
+    background: var(--color-focus-halo);
+    color: var(--color-focus);
+    font-family: var(--font-body);
+    font-size: var(--fs-12);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-12-18);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+</style>

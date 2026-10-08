@@ -1,0 +1,76 @@
+---
+interface Props {
+  items: readonly { title: string; text: string }[];
+  next?: string;
+}
+
+const { items, next } = Astro.props;
+---
+
+<div class="learnings">
+  <ol class="learnings__list">
+    {items.map((item, index) => (
+      <li class="learning">
+        <p class="learning__number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</p>
+        <h3 class="learning__title">{item.title}</h3>
+        <p class="learning__text">{item.text}</p>
+      </li>
+    ))}
+  </ol>
+  {next && <p class="learnings__next">{next}</p>}
+</div>
+
+<style>
+  .learnings {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  .learnings__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--case-card-min-wide), 1fr));
+    gap: var(--space-16);
+  }
+
+  .learning {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding: var(--case-card-pad);
+    border: 1px solid var(--case-line);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+  }
+
+  .learning__number {
+    font-family: var(--font-display);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--ls-eyebrow);
+    color: var(--case-accent);
+  }
+
+  .learning__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-20);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-display);
+    color: var(--color-ink);
+  }
+
+  .learning__text {
+    font-size: var(--fs-16);
+    line-height: var(--lh-body);
+  }
+
+  .learnings__next {
+    padding: var(--space-20) var(--space-24);
+    border-radius: var(--radius-card);
+    background: var(--case-bg);
+    font-size: var(--fs-18);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-body);
+    color: var(--color-black);
+  }
+</style>

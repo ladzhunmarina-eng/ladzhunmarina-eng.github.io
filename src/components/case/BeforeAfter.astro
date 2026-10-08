@@ -1,0 +1,65 @@
+---
+import ImageSlot from './ImageSlot.astro';
+
+interface Props {
+  before: { label: string; text: string };
+  after: { label: string; text: string };
+  beforeSlot?: string;
+  afterSlot?: string;
+}
+
+const { before, after, beforeSlot, afterSlot } = Astro.props;
+const sides = [
+  { ...before, slot: beforeSlot, kind: 'before' },
+  { ...after, slot: afterSlot, kind: 'after' },
+];
+---
+
+<div class="ba">
+  {sides.map((side) => (
+    <section class:list={['ba__side', `ba__side--${side.kind}`]}>
+      <h4 class="ba__label">{side.label}</h4>
+      <p class="ba__text">{side.text}</p>
+      {side.slot && <ImageSlot label={side.slot} ratio="4 / 3" />}
+    </section>
+  ))}
+</div>
+
+<style>
+  .ba {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--case-card-min-wide), 1fr));
+    gap: var(--space-16);
+  }
+
+  .ba__side {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    padding: var(--case-card-pad);
+    border-radius: var(--radius-card);
+    background: var(--color-icon-bg);
+  }
+
+  .ba__side--after {
+    background: var(--case-bg);
+  }
+
+  .ba__label {
+    font-size: var(--fs-12);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--case-accent);
+  }
+
+  .ba__side--after .ba__label {
+    color: var(--color-black);
+  }
+
+  .ba__text {
+    font-size: var(--fs-16);
+    line-height: var(--lh-body);
+    color: var(--color-ink);
+  }
+</style>

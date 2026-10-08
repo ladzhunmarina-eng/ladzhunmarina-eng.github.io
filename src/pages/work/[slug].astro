@@ -1,0 +1,222 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CaseHero from '../../components/case/CaseHero.astro';
+import MetricStrip from '../../components/case/MetricStrip.astro';
+import CaseNav from '../../components/case/CaseNav.astro';
+import Section from '../../components/case/Section.astro';
+import SubSection from '../../components/case/SubSection.astro';
+import StatGrid from '../../components/case/StatGrid.astro';
+import SegmentCards from '../../components/case/SegmentCards.astro';
+import ProcessTimeline from '../../components/case/ProcessTimeline.astro';
+import Summary from '../../components/case/Summary.astro';
+import SurveyBars from '../../components/case/SurveyBars.astro';
+import HypothesisBlock from '../../components/case/HypothesisBlock.astro';
+import VariantCompare from '../../components/case/VariantCompare.astro';
+import UmuxCard from '../../components/case/UmuxCard.astro';
+import PainPoints from '../../components/case/PainPoints.astro';
+import DecisionList from '../../components/case/DecisionList.astro';
+import BeforeAfter from '../../components/case/BeforeAfter.astro';
+import ImpactColumns from '../../components/case/ImpactColumns.astro';
+import LearningCards from '../../components/case/LearningCards.astro';
+import ImageSlot from '../../components/case/ImageSlot.astro';
+import Verify from '../../components/case/Verify.astro';
+import { cases } from '../../data/cases';
+
+export function getStaticPaths() {
+  return cases.map((study) => ({ params: { slug: study.slug }, props: { study } }));
+}
+
+const { study } = Astro.props;
+
+// The case's accent is its theme, the same --work-N-* set the Featured Work card uses.
+const themeIndex = { yellow: '1', cream: '2', lilac: '3', mint: '4' }[study.theme];
+const accent = `--case-bg: var(--work-${themeIndex}-bg); --case-panel: var(--work-${themeIndex}-panel); --case-accent: var(--work-${themeIndex}-accent);`;
+
+// Fields that may be a plain string or { text, verify } (draft wording flagged for checking).
+const textOf = (value: string | { text: string }) => (typeof value === 'string' ? value : value.text);
+const needsVerify = (value: unknown) => typeof value === 'object' && value !== null && 'verify' in value && !!(value as { verify?: boolean }).verify;
+
+const { basket, delivery } = study;
+---
+
+<Layout title={study.seo.title} description={study.seo.description} current="work">
+  <article class="case" style={accent}>
+    <div class="case__container case__top">
+      <CaseHero hero={study.hero} />
+      <ImageSlot label="Cover: the basket on mobile and web" ratio="21 / 9" />
+      <MetricStrip metrics={study.metrics} />
+    </div>
+
+    <div class="case__container case__main">
+      <CaseNav items={study.nav} />
+
+      <div class="case__sections">
+        <Section id="context" eyebrow={study.context.eyebrow} title={study.context.title}>
+          {study.context.body.map((paragraph) => <p>{paragraph}</p>)}
+        </Section>
+
+        <Section id="problem" eyebrow={study.problem.eyebrow} title={study.problem.title} lead={study.problem.lead}>
+          <StatGrid stats={study.problem.stats} />
+          <SegmentCards segments={study.problem.segments} />
+          <ImageSlot label="Favorites list with items from one seller" />
+        </Section>
+
+        <Section id="role" eyebrow={study.role.eyebrow} title={study.role.title} verify={study.role.verify}>
+          <ul class="bullets">
+            {study.role.bullets.map((bullet) => <li>{bullet}</li>)}
+          </ul>
+        </Section>
+
+        <Section id="process" eyebrow={study.process.eyebrow} title={study.process.title}>
+          <ProcessTimeline phases={study.process.phases} tools={study.process.tools} />
+        </Section>
+
+        <Section id="basket" eyebrow={basket.eyebrow} title={basket.title}>
+          <Summary summary={basket.summary} />
+
+          <SubSection title={basket.survey.title}>
+            <SurveyBars question={basket.survey.question} groups={basket.survey.groups} insight={basket.survey.insight} />
+          </SubSection>
+
+          <SubSection title="The hypothesis">
+            <HypothesisBlock hypothesis={basket.hypothesis} />
+          </SubSection>
+
+          <SubSection title={basket.buttonTest.title} lead={basket.buttonTest.lead}>
+            <p class="note">{textOf(basket.buttonTest.method)}{needsVerify(basket.buttonTest.method) && <Verify />}</p>
+            <p class="note">{textOf(basket.buttonTest.metricNote)}{needsVerify(basket.buttonTest.metricNote) && <Verify />}</p>
+            <VariantCompare
+              variants={basket.buttonTest.variants}
+              metrics={[
+                { key: 'checkout', label: 'Checkout rate' },
+                { key: 'bundle', label: 'Bundle rate' },
+              ]}
+            />
+            <p class="callout">{basket.buttonTest.readout}</p>
+          </SubSection>
+
+          <SubSection title={basket.usability.title}>
+            <p class="note">{textOf(basket.usability.method)}{needsVerify(basket.usability.method) && <Verify />}</p>
+            <UmuxCard umux={basket.usability.umux} />
+            <PainPoints points={basket.usability.painPoints} />
+            <p class="callout">{basket.usability.followUp}</p>
+          </SubSection>
+
+          <SubSection title={basket.decisions.title} verify={basket.decisions.verify}>
+            <DecisionList items={basket.decisions.items} />
+          </SubSection>
+
+          <SubSection title={basket.entryTest.title} lead={basket.entryTest.lead} verify={basket.entryTest.verify}>
+            <VariantCompare variants={basket.entryTest.variants} />
+            <ImageSlot label="The three entry points: tab, tab with basket inside, floating button" />
+          </SubSection>
+
+          <SubSection title={basket.screens.title}>
+            <ImageSlot label="Basket screens" ratio="16 / 10" />
+            <p class="note">{basket.screens.caption}</p>
+          </SubSection>
+
+          <SubSection title="Status">
+            <p class="callout">{basket.status}</p>
+          </SubSection>
+        </Section>
+
+        <Section id="delivery" eyebrow={delivery.eyebrow} title={delivery.title}>
+          <Summary summary={delivery.summary} />
+
+          <SubSection title={delivery.seller.title} lead={delivery.seller.text}>
+            <StatGrid stats={delivery.seller.stats} />
+            <ImageSlot label="Seller settings: free delivery and carriers" />
+          </SubSection>
+
+          <SubSection title={delivery.buyer.title}>
+            <BeforeAfter
+              before={delivery.buyer.before}
+              after={delivery.buyer.after}
+              beforeSlot="Carrier picker before"
+              afterSlot="Carrier picker after, free option first"
+            />
+            <StatGrid stats={delivery.buyer.results} />
+            <p class="note">{delivery.buyer.resultNote}</p>
+          </SubSection>
+        </Section>
+
+        <Section id="impact" eyebrow={study.impact.eyebrow} title={study.impact.title}>
+          <ImpactColumns columns={study.impact.columns} method={study.impact.method} />
+        </Section>
+
+        <Section id="learnings" eyebrow={study.learnings.eyebrow} title={study.learnings.title}>
+          <LearningCards items={study.learnings.items} next={study.next.text} />
+        </Section>
+      </div>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .case__container {
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .case__top {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-56);
+    padding-top: calc(var(--header-h) + var(--space-56));
+  }
+
+  .case__main {
+    display: grid;
+    grid-template-columns: var(--case-nav-w) minmax(0, 1fr);
+    gap: var(--case-gap);
+    padding-block: var(--case-section-gap) var(--space-144);
+  }
+
+  .case__sections {
+    display: flex;
+    flex-direction: column;
+    gap: var(--case-section-gap);
+    min-width: 0;
+  }
+
+  .bullets {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    max-width: var(--case-measure);
+    padding-left: var(--space-24);
+    list-style: disc;
+    font-size: var(--fs-18);
+    line-height: var(--lh-body);
+  }
+
+  .note {
+    max-width: var(--case-measure);
+    font-size: var(--fs-14);
+    line-height: var(--lh-14-20);
+    color: var(--color-muted);
+  }
+
+  .callout {
+    max-width: var(--case-measure);
+    padding: var(--space-16) var(--space-20);
+    border-left: 4px solid var(--case-bg);
+    font-size: var(--fs-18);
+    line-height: var(--lh-body);
+    color: var(--color-ink);
+  }
+
+  @media (max-width: 1023px) {
+    .case__main {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-32);
+      padding-block: var(--space-56) var(--space-92);
+    }
+
+    .case__sections {
+      gap: var(--space-80);
+    }
+  }
+</style>

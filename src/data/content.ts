@@ -32,7 +32,7 @@ export const work = [
     theme: 'yellow',
     category: 'C2C marketplace',
     title: 'OLX marketplace',
-    href: '#',
+    href: '/work/olx',
     description:
       'Global classifieds marketplace connecting buyers and sellers of secondhand goods, part of OLX Group (Prosus), operating across Ukraine, Poland, Romania, Portugal, and Bulgaria.',
     image: card1,

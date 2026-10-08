@@ -1,0 +1,49 @@
+---
+interface Props {
+  points: readonly { title: string; quote: string }[];
+}
+
+const { points } = Astro.props;
+---
+
+<ul class="points">
+  {points.map((point) => (
+    <li class="point">
+      <h4 class="point__title">{point.title}</h4>
+      <blockquote class="point__quote">“{point.quote}”</blockquote>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .points {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--case-card-min-wide), 1fr));
+    gap: var(--space-16);
+  }
+
+  .point {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    padding: var(--case-card-pad);
+    border-radius: var(--radius-card);
+    background: var(--color-icon-bg);
+  }
+
+  .point__title {
+    font-size: var(--fs-18);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-body);
+    color: var(--color-ink);
+  }
+
+  .point__quote {
+    padding-left: var(--space-16);
+    border-left: 3px solid var(--case-bg);
+    font-size: var(--fs-16);
+    font-style: italic;
+    line-height: var(--lh-body);
+    color: var(--color-ink);
+  }
+</style>

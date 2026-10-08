@@ -3,22 +3,29 @@ import Button from './Button.astro';
 import MenuIcon from '../assets/icons/menu.svg';
 import CloseIcon from '../assets/icons/close.svg';
 
+interface Props {
+  current?: 'work';
+}
+
+const { current } = Astro.props;
+
+// Rooted at "/" so the links work from the case study pages too; on the home page they scroll in place.
 const links = [
-  { label: 'About', href: '#' },
-  { label: 'Cases', href: '#work' },
-  { label: 'Experience', href: '#experience' },
+  { label: 'About', href: '/#' },
+  { label: 'Cases', href: '/#work', id: 'work' },
+  { label: 'Experience', href: '/#experience' },
 ];
 ---
 
 <header class="site-header">
   <div class="site-header__inner">
-    <a class="site-header__logo" href="#" aria-label="Portfolio, back to top">Portfolio</a>
+    <a class="site-header__logo" href="/#" aria-label="Portfolio, back to top">Portfolio</a>
     <nav class="nav" aria-label="Primary">
-      <a class="nav__brand" href="#" aria-label="Portfolio, back to top">Portfolio</a>
+      <a class="nav__brand" href="/#" aria-label="Portfolio, back to top">Portfolio</a>
       <ul class="nav__list">
         {links.map((link) => (
           <li class="nav__item">
-            <a class="nav__link" href={link.href}>{link.label}</a>
+            <a class="nav__link" href={link.href} aria-current={link.id && link.id === current ? 'page' : undefined}>{link.label}</a>
           </li>
         ))}
       </ul>
@@ -35,10 +42,10 @@ const links = [
     <CloseIcon aria-hidden="true" />
   </button>
   <ul class="menu__list">
-    <li><a class="menu__link" href="#">Home</a></li>
-    <li><a class="menu__link" href="#">About</a></li>
-    <li><a class="menu__link" href="#work">Cases</a></li>
-    <li><a class="menu__link" href="#experience">Experience</a></li>
+    <li><a class="menu__link" href="/#">Home</a></li>
+    <li><a class="menu__link" href="/#">About</a></li>
+    <li><a class="menu__link" href="/#work" aria-current={current === 'work' ? 'page' : undefined}>Cases</a></li>
+    <li><a class="menu__link" href="/#experience">Experience</a></li>
     <li><a class="menu__link" href="#contact">Contact</a></li>
   </ul>
 </div>

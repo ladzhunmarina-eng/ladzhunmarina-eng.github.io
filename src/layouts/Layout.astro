@@ -23,9 +23,11 @@ import ContactCard from '../components/ContactCard.astro';
 interface Props {
   title: string;
   description: string;
+  /** The header link to mark as the current page, e.g. 'work' on a case study. */
+  current?: 'work';
 }
 
-const { title, description } = Astro.props;
+const { title, description, current } = Astro.props;
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 ---
 
@@ -45,7 +47,7 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : un
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <Header />
+    <Header current={current} />
     <main id="main">
       <slot />
     </main>

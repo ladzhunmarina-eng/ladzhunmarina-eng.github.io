@@ -1,0 +1,69 @@
+---
+import Verify from './Verify.astro';
+
+interface Stat {
+  value: string;
+  label: string;
+  verify?: boolean;
+  note?: string | { text: string; verify?: boolean };
+}
+interface Props {
+  stats: readonly Stat[];
+}
+
+const { stats } = Astro.props;
+const noteText = (note: Stat['note']) => (typeof note === 'string' ? note : note?.text);
+const noteVerify = (note: Stat['note']) => typeof note === 'object' && !!note?.verify;
+---
+
+<ul class="stats">
+  {stats.map((stat) => (
+    <li class="stat">
+      <p class="stat__value">{stat.value}</p>
+      <p class="stat__label">{stat.label}{stat.verify && <Verify />}</p>
+      {stat.note && (
+        <p class="stat__note">
+          {noteText(stat.note)}
+          {noteVerify(stat.note) && <Verify />}
+        </p>
+      )}
+    </li>
+  ))}
+</ul>
+
+<style>
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--case-card-min), 1fr));
+    gap: var(--space-16);
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding: var(--case-card-pad);
+    border: 1px solid var(--case-line);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+  }
+
+  .stat__value {
+    font-family: var(--font-display);
+    font-size: var(--fs-case-stat);
+    font-weight: var(--weight-extrabold);
+    line-height: var(--lh-display);
+    color: var(--color-ink);
+  }
+
+  .stat__label {
+    font-size: var(--fs-16);
+    line-height: var(--lh-body);
+  }
+
+  .stat__note {
+    font-size: var(--fs-14);
+    line-height: var(--lh-14-20);
+    color: var(--color-muted);
+  }
+</style>

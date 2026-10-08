@@ -18,6 +18,7 @@ npm run preview  # serve the built site locally
 ```
 src/
   pages/index.astro        the homepage; assembles the sections
+  pages/work/[slug].astro  a case study page (/work/olx), rendered from src/data/cases/<slug>.ts
   layouts/Layout.astro     <head>, header, footer, contact card; reused by future pages
   components/
     Header.astro           floating nav pill, wordmark, Contact me, phone menu
@@ -26,10 +27,17 @@ src/
     WorkCard.astro         one Featured Work panel (stacks with CSS sticky on desktop)
     Experience.astro       Experience and Education columns
     ContactCard.astro      the card that opens from every "Contact" trigger
+    case/                  the building blocks of a case study page:
+                             CaseHero, MetricStrip, CaseNav (sticky "On this page"), Section, SubSection,
+                             StatGrid, SegmentCards, ProcessTimeline, Summary, SurveyBars, HypothesisBlock,
+                             VariantCompare, UmuxCard, PainPoints, DecisionList, BeforeAfter, ImpactColumns,
+                             LearningCards, plus ImageSlot (labelled placeholder) and Verify (dev-only badge)
     Button.astro, SocialLinks.astro
     Footer.astro           "Say Hi!", contact pills, copyright and social buttons
   data/
-    content.ts             work cases, testimonials, experience, marquee labels
+    content.ts             Featured Work cards, experience, education, marquee labels
+    cases/olx.ts           the OLX case study text (content only, no layout)
+    cases/index.ts         the list of case studies the site builds pages for
     contact.ts             email, Telegram, WhatsApp shown in the contact card
   styles/
     tokens.css             every colour, size, spacing, radius and breakpoint override
@@ -39,7 +47,8 @@ src/
 
 ## Editing content
 
-- **Work cases, testimonials, experience, marquee words:** `src/data/content.ts`.
+- **Featured Work cards, experience, education, marquee words:** `src/data/content.ts`.
+- **A case study's text:** `src/data/cases/<slug>.ts`. The page layout is the same for every case.
 - **Contact details:** `src/data/contact.ts` (the email is what the "Email" row copies).
 - **Colours, type scale, spacing, radii:** `src/styles/tokens.css`. Components use these tokens, not hard-coded values.
 
@@ -54,11 +63,19 @@ src/
 - **Motion:** the marquee, the hand wave and the contact card respect `prefers-reduced-motion`.
 - **Fonts** (Bricolage Grotesque, Inter, Gantari) are self-hosted through `@fontsource`.
 
+## Case study pages
+
+- **Add a case:** write `src/data/cases/<slug>.ts` in the shape of `olx.ts`, add it to `src/data/cases/index.ts`, and point its Featured Work card (`href` in `content.ts`) at `/work/<slug>`. The page, the sticky navigation and the static path are generated.
+- **Accent colour:** the case's `theme` (`yellow`, `cream`, `lilac`, `mint`) selects the matching `--work-N-*` tokens, the same ones its Featured Work card uses.
+- **Draft markers:** any item with `verify: true` shows a small dashed "verify" badge while you run `npm run dev`. Production builds (`npm run build`) never contain it, but they do show the draft wording itself, so confirm those values (or switch to their `fallback` text) before publishing.
+- **Images:** screenshots are labelled placeholders (`ImageSlot`). Replace one with an `<Image>` when the file exists.
+- **Navigation:** the left column ("On this page") is sticky from 1024px wide and marks the section being read, like the header's active link. Below 1024px it stacks above the content as chips.
+
 ## Still to fill in
 
 - A real GitHub link (`src/components/SocialLinks.astro`; Dribbble and LinkedIn are set).
 - The CV file or link (the CV button in `src/components/Hero.astro`).
-- Case study URLs (each case in `src/data/content.ts` points to `#`) and an About section.
+- Case study pages for the other three cases (they still point to `#` in `src/data/content.ts`) and an About section.
 - A real favicon and a social preview image.
 
 ## Deploy

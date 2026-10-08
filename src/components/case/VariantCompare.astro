@@ -1,0 +1,147 @@
+---
+import Verify from './Verify.astro';
+
+interface Variant {
+  id: string;
+  name: string;
+  label?: string;
+  leader?: boolean;
+  [key: string]: unknown;
+}
+interface Props {
+  variants: readonly Variant[];
+  /** Which fields of each variant to show as numbers, e.g. [{ key: 'bundle', label: 'Bundle rate' }]. */
+  metrics?: readonly { key: string; label: string }[];
+  verify?: boolean;
+}
+
+const { variants, metrics = [], verify = false } = Astro.props;
+---
+
+<ul class="variants">
+  {variants.map((variant) => (
+    <li class:list={['variant', { 'variant--leader': variant.leader }]}>
+      <div class="variant__head">
+        <p class="variant__id" aria-hidden="true">{variant.id}</p>
+        <p class="variant__name">{variant.name}{verify && <Verify />}</p>
+        {variant.leader && <p class="variant__badge">Leader</p>}
+      </div>
+      {variant.label && <p class="variant__label">“{variant.label}”</p>}
+      {metrics.length > 0 && (
+        <dl class="variant__metrics">
+          {metrics.map((metric) => (
+            <div class="variant__metric">
+              <dt>{metric.label}</dt>
+              <dd>{String(variant[metric.key])}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+    </li>
+  ))}
+</ul>
+
+<style>
+  .variants {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--case-card-min), 1fr));
+    gap: var(--space-16);
+  }
+
+  .variant {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    padding: var(--case-card-pad);
+    border: 1px solid var(--case-line);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+  }
+
+  .variant--leader {
+    border-color: transparent;
+    background: var(--case-bg);
+  }
+
+  .variant__head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+  }
+
+  .variant__id {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--space-32);
+    height: var(--space-32);
+    border-radius: 50%;
+    background: var(--color-black);
+    font-family: var(--font-display);
+    font-weight: var(--weight-bold);
+    color: var(--color-white);
+  }
+
+  .variant__name {
+    font-size: var(--fs-16);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-body);
+    color: var(--color-ink);
+  }
+
+  .variant__badge {
+    margin-left: auto;
+    padding: var(--space-2) var(--space-10);
+    border-radius: var(--radius-pill);
+    background: var(--color-black);
+    font-size: var(--fs-12);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-12-18);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--color-white);
+  }
+
+  .variant__label {
+    font-size: var(--fs-18);
+    line-height: var(--lh-body);
+    color: var(--color-ink);
+  }
+
+  .variant__metrics {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    margin-top: var(--space-4);
+    padding-top: var(--space-12);
+    border-top: 1px solid var(--case-line);
+  }
+
+  .variant--leader .variant__metrics {
+    border-top-color: rgb(0 0 0 / 0.15);
+  }
+
+  .variant__metric {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-12);
+  }
+
+  .variant__metric dt {
+    font-size: var(--fs-14);
+    color: var(--color-muted);
+  }
+
+  .variant--leader .variant__metric dt {
+    color: var(--color-ink);
+  }
+
+  .variant__metric dd {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--fs-20);
+    font-weight: var(--weight-bold);
+    color: var(--color-ink);
+  }
+</style>

@@ -1,0 +1,46 @@
+---
+/* A labelled placeholder where a screenshot goes. Swap the whole component for <Image> when the file exists. */
+interface Props {
+  label: string;
+  ratio?: string;
+}
+
+const { label, ratio = '16 / 9' } = Astro.props;
+---
+
+<figure class="slot" style={`--ratio: ${ratio}`}>
+  <div class="slot__box" role="img" aria-label={`Image placeholder: ${label}`}>
+    <span class="slot__tag">Image</span>
+    <span class="slot__label">{label}</span>
+  </div>
+</figure>
+
+<style>
+  .slot__box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-8);
+    aspect-ratio: var(--ratio);
+    border: 1px dashed var(--color-outline-strong);
+    border-radius: var(--radius-card);
+    background: var(--color-icon-bg);
+    color: var(--color-muted);
+    text-align: center;
+    padding: var(--space-16);
+  }
+
+  .slot__tag {
+    font-size: var(--fs-12);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--case-accent);
+  }
+
+  .slot__label {
+    font-size: var(--fs-14);
+    line-height: var(--lh-14-20);
+  }
+</style>

@@ -1,0 +1,94 @@
+---
+interface Props {
+  umux: { score: number; threshold: number; verdict: string };
+}
+
+const { umux } = Astro.props;
+---
+
+<div class="umux" style={`--score: ${umux.score}%; --threshold: ${umux.threshold}%`}>
+  <div class="umux__top">
+    <p class="umux__score">{umux.score}</p>
+    <div class="umux__text">
+      <p class="umux__name">UMUX-Lite</p>
+      <p class="umux__verdict">{umux.verdict}</p>
+    </div>
+  </div>
+  <div class="umux__scale" role="img" aria-label={`Score ${umux.score} out of 100; the threshold is ${umux.threshold}`}>
+    <span class="umux__fill"></span>
+    <span class="umux__mark"></span>
+  </div>
+  <p class="umux__legend">Threshold {umux.threshold}</p>
+</div>
+
+<style>
+  .umux {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    max-width: var(--case-umux-w);
+    padding: var(--case-card-pad);
+    border: 1px solid var(--case-line);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+  }
+
+  .umux__top {
+    display: flex;
+    align-items: center;
+    gap: var(--space-20);
+  }
+
+  .umux__score {
+    font-family: var(--font-display);
+    font-size: var(--fs-case-score);
+    font-weight: var(--weight-extrabold);
+    line-height: 1;
+    color: var(--color-ink);
+  }
+
+  .umux__name {
+    font-size: var(--fs-14);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--case-accent);
+  }
+
+  .umux__verdict {
+    font-size: var(--fs-20);
+    line-height: var(--lh-20);
+    color: var(--color-ink);
+  }
+
+  .umux__scale {
+    position: relative;
+    height: var(--case-bar-h-lg);
+    border-radius: var(--radius-pill);
+    background: var(--color-icon-bg);
+  }
+
+  .umux__fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: var(--score);
+    border-radius: var(--radius-pill);
+    background: var(--case-bg);
+  }
+
+  .umux__mark {
+    position: absolute;
+    top: calc(-1 * var(--space-4));
+    bottom: calc(-1 * var(--space-4));
+    left: var(--threshold);
+    width: 2px;
+    background: var(--color-black);
+  }
+
+  .umux__legend {
+    padding-left: calc(var(--threshold) - var(--space-24));
+    font-size: var(--fs-12);
+    line-height: var(--lh-12-18);
+    color: var(--color-muted);
+  }
+</style>

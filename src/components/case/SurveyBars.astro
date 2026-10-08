@@ -1,0 +1,147 @@
+---
+interface Props {
+  question: string;
+  groups: readonly { name: string; n: number; rows: readonly (readonly [string, number])[]; note: string }[];
+  insight: string;
+}
+
+const { question, groups, insight } = Astro.props;
+---
+
+<div class="survey">
+  <p class="survey__question">“{question}”</p>
+
+  <div class="survey__groups">
+    {groups.map((group) => (
+      <section class="group" aria-label={`${group.name}, n = ${group.n}`}>
+        <header class="group__head">
+          <h4 class="group__name">{group.name}</h4>
+          <p class="group__n">n = {group.n}</p>
+        </header>
+        <ul class="group__rows">
+          {group.rows.map(([label, pct]) => (
+            <li class="bar" style={`--pct: ${pct}%`}>
+              <span class="bar__label">{label}</span>
+              <span class="bar__track" aria-hidden="true"><span class="bar__fill"></span></span>
+              <span class="bar__value">{pct}%</span>
+            </li>
+          ))}
+        </ul>
+        <p class="group__note">{group.note}</p>
+      </section>
+    ))}
+  </div>
+
+  <p class="survey__insight">{insight}</p>
+</div>
+
+<style>
+  .survey {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-20);
+  }
+
+  .survey__question {
+    max-width: var(--case-measure);
+    font-size: var(--fs-16);
+    font-style: italic;
+    line-height: var(--lh-body);
+    color: var(--color-muted);
+  }
+
+  .survey__groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--case-card-min-wide), 1fr));
+    gap: var(--space-16);
+  }
+
+  .group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    padding: var(--case-card-pad);
+    border: 1px solid var(--case-line);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+  }
+
+  .group__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-12);
+  }
+
+  .group__name {
+    font-family: var(--font-display);
+    font-size: var(--fs-20);
+    font-weight: var(--weight-bold);
+    color: var(--color-ink);
+  }
+
+  .group__n {
+    font-size: var(--fs-14);
+    color: var(--color-muted);
+  }
+
+  .group__rows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+  }
+
+  .bar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'label value'
+      'track track';
+    gap: var(--space-4) var(--space-12);
+    font-size: var(--fs-14);
+    line-height: var(--lh-14-20);
+  }
+
+  .bar__label {
+    grid-area: label;
+  }
+
+  .bar__value {
+    grid-area: value;
+    font-weight: var(--weight-medium);
+  }
+
+  .bar__track {
+    grid-area: track;
+    height: var(--case-bar-h);
+    border-radius: var(--radius-pill);
+    background: var(--color-icon-bg);
+    overflow: hidden;
+  }
+
+  .bar__fill {
+    display: block;
+    width: var(--pct);
+    height: 100%;
+    border-radius: var(--radius-pill);
+    background: var(--case-bg);
+  }
+
+  .group__note {
+    padding-top: var(--space-12);
+    border-top: 1px solid var(--case-line);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-14-20);
+    color: var(--case-accent);
+  }
+
+  .survey__insight {
+    max-width: var(--case-measure);
+    padding: var(--space-16) var(--space-20);
+    border-left: 4px solid var(--case-bg);
+    font-size: var(--fs-18);
+    line-height: var(--lh-body);
+    color: var(--color-ink);
+  }
+</style>
