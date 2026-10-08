@@ -204,10 +204,10 @@
   --marquee-speed: 131s; /* one list width (2620px) per loop = 20px per second, like the reference */
 
   /* ---------- Education certificate cards ---------- */
-  --cert-w: 416px;
-  --cert-h: 291px;
-  --cert-pad-x: 74px; /* logo and text start this far from the card's left edge */
-  --cert-radius: 30px;
+  --cert-w: 324px;
+  --cert-h: 215px;
+  --cert-pad-x: 58px; /* logo and text start this far from the card's left edge */
+  --cert-radius: 23px;
   --font-card: 'Poppins', 'Inter', system-ui, sans-serif;
 
   /* ---------- Contact card ---------- */

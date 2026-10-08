@@ -124,15 +124,15 @@ export const education = [
   {
     icon: 'certificate',
     name: 'Projector Institute',
-    dates: 'Issued Nov 2020 · Expired Dec 2020',
+    dates: 'Nov 2020 · Expired Dec 2020',
     bullet: 'UX Research',
-    card: { theme: 'blue', logo: projectorLogo, logoWidth: 132, kind: '🎓 Certificate', title: 'UX Research Course', year: '2020' },
+    card: { theme: 'blue', logo: projectorLogo, logoWidth: 103, kind: '🎓 Certificate', title: 'UX Research Course', year: '2020' },
   },
   {
     icon: 'certificate',
     name: 'Robot_dreams',
-    dates: 'Issued Nov 2020 · Expired Dec 2020',
+    dates: 'Nov 2020 · Expired Dec 2020',
     bullet: 'Hypothesis',
-    card: { theme: 'cream', logo: robotDreamsLogo, logoWidth: 75, kind: '📚 Course', title: 'Product Hypothesis', year: '2025' },
+    card: { theme: 'cream', logo: robotDreamsLogo, logoWidth: 59, kind: '📚 Course', title: 'Product Hypothesis', year: '2025' },
   },
 ];
