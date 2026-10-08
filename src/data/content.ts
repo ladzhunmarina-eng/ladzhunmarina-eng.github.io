@@ -118,24 +118,25 @@ export const education = [
   {
     icon: 'graduation',
     name: 'Lviv National Academy of Arts',
-    dates: 'Jul 2009 — Oct 2014',
-    datesSize: 'small',
+    dates: 'Jul 2009 - Oct 2014',
     bullet: 'Graphic design Master degree',
+  },
+  {
+    icon: 'graduation',
+    name: 'LITS / Lviv IT School',
+    dates: 'Apr 2015 - Jun 2015',
+    bullet: 'UI/UX Design',
   },
   {
     icon: 'certificate',
     name: 'Projector Institute',
-    dates: 'Nov 2020 · Expired Dec 2020',
-    datesSize: 'large', // as in the design: this entry's dates are set larger than the other two
-    bullet: 'UX Research',
+    dates: '2020',
     card: { theme: 'blue', logo: projectorLogo, logoWidth: 103, logoHeight: 47, kind: '🎓 Certificate', title: 'UX Research Course', year: '2020' },
   },
   {
     icon: 'certificate',
     name: 'Robot_dreams',
-    dates: 'Nov 2020 · Expired Dec 2020',
-    datesSize: 'small',
-    bullet: 'Hypothesis',
+    dates: '2025',
     card: { theme: 'cream', logo: robotDreamsLogo, logoWidth: 59, logoHeight: 33, kind: '📚 Course', title: 'Product Hypothesis', year: '2025' },
   },
 ];

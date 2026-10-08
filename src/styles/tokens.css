@@ -7,6 +7,7 @@
   --color-page: #fefcf3;
   --color-ink: #2a2a2a;
   --color-black: #000;
+  --color-dates: #999; /* dates under roles and schools */
   --color-white: #fff;
   --color-muted: #777;
   --color-marquee-text: #666;
@@ -202,7 +203,7 @@
   /* ---------- Education certificate cards ---------- */
   --cert-w: 324px;
   --cert-h: 215px;
-  --cert-pad-x: 58px; /* logo and text start this far from the card's left edge */
+  --cert-pad-x: 38px; /* logo and text start this far from the card's left edge */
   --cert-radius: 23px;
   --font-card: 'Poppins', 'Inter', system-ui, sans-serif;
 
