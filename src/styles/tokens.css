@@ -253,6 +253,7 @@
   --case-tab-w: 187px; /* its tab ... */
   --case-tab-h: 48px;
   --case-hero-h: 392px; /* the height of the hero block, before the cover */
+  --case-top-shift: 88px; /* the back link and hero sit this much lower: 20% of that block's 440px height */
   --case-hero-gap: 35px; /* between the hero text and that card */
   --case-cover-ratio: 1272 / 670; /* the cover image panel */
   --case-section-gap: 120px; /* between sections */

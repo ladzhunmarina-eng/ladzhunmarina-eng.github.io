@@ -179,7 +179,8 @@ const card = work.find((item) => item.href === `/work/${study.slug}`);
     display: flex;
     flex-direction: column;
     gap: var(--space-56);
-    padding-top: calc(var(--header-h) + var(--space-8)); /* the back link sits in the space above the hero */
+    /* The back link sits in the space above the hero; the whole block is lowered by --case-top-shift. */
+    padding-top: calc(var(--header-h) + var(--space-8) + var(--case-top-shift));
   }
 
   .case__intro {
