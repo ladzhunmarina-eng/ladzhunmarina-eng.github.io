@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import ArrowIcon from '../assets/icons/arrow-up-right.svg';
 
 interface Props {
   number: string;
@@ -54,6 +55,11 @@ const themeVars = {
         <ul class="work__tags" aria-label="Focus areas">
           {tags.map((tag) => <li class="work__tag">{tag}</li>)}
         </ul>
+        <!-- The whole card is one link (see .work__link); this just says so, and lights up with the card. -->
+        <p class="work__go" aria-hidden="true">
+          <span class="work__go-label">View case</span>
+          <span class="work__go-arrow"><ArrowIcon /></span>
+        </p>
       </div>
       </div>
     </div>
@@ -127,6 +133,7 @@ const themeVars = {
     max-width: none;
     object-fit: contain;
     object-position: center bottom;
+    transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
 
   .work__text {
@@ -167,6 +174,78 @@ const themeVars = {
   .work__link:focus-visible::after {
     outline: var(--focus-width) solid var(--color-focus);
     outline-offset: var(--focus-offset);
+  }
+
+  /* ---------- "This is clickable" ---------- */
+
+  /* A call to action that is always visible (touch screens have no hover): label plus a round arrow. */
+  .work__go {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    margin-top: var(--space-20);
+    color: var(--accent);
+    font-size: var(--fs-16);
+    line-height: var(--lh-16);
+    font-weight: var(--weight-medium);
+  }
+
+  .work__go-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--work-go-size);
+    height: var(--work-go-size);
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    transition:
+      background-color 0.25s ease-out,
+      color 0.25s ease-out,
+      transform 0.25s ease-out;
+  }
+
+  .work__go-arrow :global(svg) {
+    width: var(--space-20);
+    height: var(--space-20);
+    transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  /* On hover (or keyboard focus) the card answers: the screens rise, the title underlines, the arrow fills. */
+  .work__inner:hover .work__panel :global(.work__image),
+  .work__inner:has(.work__link:focus-visible) .work__panel :global(.work__image) {
+    transform: translateY(calc(-1 * var(--space-8))) scale(1.015);
+  }
+
+  .work__inner:hover .work__link,
+  .work__inner:has(.work__link:focus-visible) .work__link {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+  }
+
+  .work__inner:hover .work__go-arrow,
+  .work__inner:has(.work__link:focus-visible) .work__go-arrow {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  .work__inner:hover .work__go-arrow :global(svg),
+  .work__inner:has(.work__link:focus-visible) .work__go-arrow :global(svg) {
+    transform: translate(2px, -2px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .work__panel :global(.work__image),
+    .work__go-arrow :global(svg) {
+      transition: none;
+    }
+
+    .work__inner:hover .work__panel :global(.work__image),
+    .work__inner:has(.work__link:focus-visible) .work__panel :global(.work__image),
+    .work__inner:hover .work__go-arrow :global(svg),
+    .work__inner:has(.work__link:focus-visible) .work__go-arrow :global(svg) {
+      transform: none;
+    }
   }
 
   .work__description {
