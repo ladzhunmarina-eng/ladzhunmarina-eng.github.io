@@ -241,7 +241,7 @@
   --button-width: 157px;
   --button-width-cv: 99px;
   --icon-briefcase: 24px;
-  --tag-rule-width: 2px;
+  --tag-rule-width: 1px; /* the design has 2px; set to 1px on request */
   --tag-rule-height: 19px;
   --footer-height: 261px;
 
