@@ -5,6 +5,7 @@ import WhatsappIcon from '../assets/icons/whatsapp.svg';
 import GithubIcon from '../assets/icons/github.svg';
 import LinkedinIcon from '../assets/icons/linkedin.svg';
 import DribbbleIcon from '../assets/icons/dribbble.svg';
+import ArrowUpIcon from '../assets/icons/arrow-up.svg';
 import { contact } from '../data/contact';
 
 const reach = [
@@ -21,6 +22,10 @@ const social = [
 ---
 
 <footer class="site-footer">
+  <a class="footer__top-link" href="#" aria-label="Back to top">
+    <ArrowUpIcon aria-hidden="true" />
+  </a>
+
   <div class="footer__top">
     <h2 class="footer__title">Say <span class="footer__accent">Hi!</span></h2>
 
@@ -64,12 +69,43 @@ const social = [
 
 <style>
   .site-footer {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: var(--footer-gap);
     padding: var(--footer-pad-top) var(--gutter) var(--footer-pad-bottom);
     background: var(--color-footer);
     color: var(--color-footer-text);
+  }
+
+  /* Back to top: in the corner beside the heading, so it is right there when the page ends. */
+  .footer__top-link {
+    position: absolute;
+    top: var(--footer-pad-top);
+    right: var(--gutter);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--footer-up-size);
+    height: var(--footer-up-size);
+    border-radius: 50%;
+    background: var(--color-footer-accent);
+    color: var(--color-black);
+    transition: background-color 0.2s ease-out;
+  }
+
+  .footer__top-link :global(svg) {
+    width: var(--space-24);
+    height: var(--space-24);
+    transition: transform 0.2s ease-out;
+  }
+
+  .footer__top-link:hover {
+    background: var(--color-footer-text);
+  }
+
+  .footer__top-link:hover :global(svg) {
+    transform: translateY(calc(-1 * var(--space-3)));
   }
 
   .footer__top {
@@ -169,9 +205,32 @@ const social = [
   }
 
   @media (max-width: 640px) {
+    /* No room beside the heading on phones: the button joins the column, centred, at the end. */
+    .footer__top-link {
+      position: static;
+      order: 1;
+      align-self: center;
+    }
+
     .footer__bar {
       flex-direction: column-reverse;
       text-align: center;
     }
   }
 </style>
+
+<script>
+  // The link scrolls to the top (smooth, see global.css). Once it gets there, move keyboard focus up too,
+  // so the next Tab starts from the top of the page and not from the footer.
+  document.querySelector<HTMLAnchorElement>('.footer__top-link')?.addEventListener('click', () => {
+    const started = performance.now();
+    const settle = () => {
+      if (window.scrollY <= 1 || performance.now() - started > 2000) {
+        document.querySelector<HTMLElement>('.nav__brand')?.focus({ preventScroll: true });
+      } else {
+        requestAnimationFrame(settle);
+      }
+    };
+    requestAnimationFrame(settle);
+  });
+</script>

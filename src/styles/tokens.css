@@ -257,6 +257,7 @@
   --footer-pill-w: 282px;
   --footer-pill-h: 50px;
   --footer-pill-icon: 18px;
+  --footer-up-size: 56px; /* back-to-top button */
 
   /* ---------- Radii ---------- */
   --radius-focus: 8px;
