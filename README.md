@@ -26,7 +26,8 @@ src/
     WorkCard.astro         one Featured Work panel (stacks with CSS sticky on desktop)
     Experience.astro       Experience and Education columns
     ContactCard.astro      the card that opens from every "Contact" trigger
-    Button.astro, SocialLinks.astro, Footer.astro
+    Button.astro, SocialLinks.astro
+    Footer.astro           looping "LET'S talk!" strip, CV button, contact and social icons
   data/
     content.ts             work cases, testimonials, experience, marquee labels
     contact.ts             email, Telegram, WhatsApp shown in the contact card
@@ -48,6 +49,7 @@ src/
 - **Header:** one translucent, blurred pill. The wordmark and Contact me fade out after 40px of scroll. The current section's link turns yellow.
 - **Contact card:** opens from every `href="#contact"` link, closes with the button, Escape or a click outside.
 - **Experience and Education:** two 576px columns from 1024px wide (stacked below): the roles on the left; the degree and two certificates, each with its coloured card, on the right. Content lives in `experience` and `education` in `src/data/content.ts`. The endorsement notes and the Wall of Love carousel are in git history (commits `9452a91` and `59bfb44`).
+- **Footer:** black, with a big "LET'S talk!" strip that loops to the left (36s per loop, `--footer-marquee-time`), then the CV button, mail/GitHub/LinkedIn/Dribbble icons and the wordmark. The mail icon opens the contact card.
 - **Motion:** the marquee, the hand wave and the contact card respect `prefers-reduced-motion`.
 - **Fonts** (Bricolage Grotesque, Inter, Gantari) are self-hosted through `@fontsource`.
 

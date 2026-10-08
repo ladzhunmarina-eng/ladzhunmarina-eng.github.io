@@ -1,8 +1,168 @@
-<footer class="site-footer"></footer>
+---
+import Button from './Button.astro';
+import MailIcon from '../assets/icons/mail.svg';
+import GithubIcon from '../assets/icons/github.svg';
+import LinkedinIcon from '../assets/icons/linkedin.svg';
+import DribbbleIcon from '../assets/icons/dribbble-tight.svg';
+
+const links = [
+  { label: 'Email me', href: '#contact', Icon: MailIcon },
+  { label: 'GitHub', href: '#', Icon: GithubIcon },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/marina-ladzhun-876068101/', Icon: LinkedinIcon },
+  { label: 'Dribbble', href: 'https://dribbble.com/Maryyyy', Icon: DribbbleIcon },
+];
+
+// Each list holds enough phrases to be wider than any screen; two lists make the loop seamless.
+const phrases = [0, 1, 2, 3];
+const lists = [0, 1];
+---
+
+<footer class="site-footer">
+  <p class="visually-hidden">Let’s talk</p>
+  <div class="footer__marquee" aria-hidden="true">
+    <div class="footer__track">
+      {lists.map(() => (
+        <div class="footer__list">
+          {phrases.map(() => (
+            <span class="footer__phrase">LET’S <em class="footer__accent">talk!</em></span>
+          ))}
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="footer__bar">
+    <Button class="footer__cv" href="#" variant="outline-light">CV</Button>
+
+    <ul class="footer__social" aria-label="Contact and social profiles">
+      {links.map(({ label, href, Icon }) => (
+        <li>
+          <a
+            class="footer__link"
+            href={href}
+            aria-label={label}
+            rel={href.startsWith('http') ? 'me noopener noreferrer' : undefined}
+            target={href.startsWith('http') ? '_blank' : undefined}
+          >
+            <Icon aria-hidden="true" />
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <a class="footer__brand" href="#" aria-label="Portfolio, back to top">Portfolio</a>
+  </div>
+</footer>
 
 <style>
   .site-footer {
-    min-height: var(--footer-height);
+    display: flex;
+    flex-direction: column;
+    gap: var(--footer-gap);
+    padding: var(--footer-pad-top) 0 var(--footer-pad-bottom);
     background: var(--color-footer);
+    color: var(--color-footer-text);
+    overflow: hidden;
+  }
+
+  /* ---------- Marquee: "LET'S talk!" loops to the left ---------- */
+
+  .footer__marquee {
+    overflow: hidden;
+  }
+
+  .footer__track {
+    display: flex;
+    width: max-content;
+    animation: footer-scroll var(--footer-marquee-time) linear infinite;
+  }
+
+  .footer__list {
+    display: flex;
+    flex: none;
+    gap: 0.4em;
+    padding-right: 0.4em;
+    font-family: var(--font-display);
+    font-size: var(--footer-marquee-size);
+    font-weight: var(--weight-light);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+
+  .footer__accent {
+    font-style: normal;
+    font-weight: var(--weight-extrabold);
+    color: var(--color-footer-accent);
+  }
+
+  @keyframes footer-scroll {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* ---------- Bottom bar ---------- */
+
+  .footer__bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-24) var(--space-42);
+    padding-inline: var(--gutter);
+  }
+
+  .footer__bar :global(.footer__cv) {
+    min-width: 99px;
+  }
+
+  .footer__social {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .footer__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--icon-hit);
+    height: var(--icon-hit);
+    color: var(--color-footer-text);
+    transition: color 0.15s ease;
+  }
+
+  .footer__link :global(svg) {
+    width: var(--footer-icon);
+    height: var(--footer-icon);
+  }
+
+  .footer__link:hover {
+    color: var(--color-footer-accent);
+  }
+
+  .footer__brand {
+    margin-left: auto;
+    font-size: var(--fs-16);
+    line-height: var(--lh-16);
+    color: var(--color-footer-muted);
+    transition: color 0.15s ease;
+  }
+
+  .footer__brand:hover {
+    color: var(--color-footer-text);
+  }
+
+  @media (max-width: 640px) {
+    .footer__brand {
+      margin-left: 0;
+      width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .footer__track {
+      animation: none;
+    }
   }
 </style>

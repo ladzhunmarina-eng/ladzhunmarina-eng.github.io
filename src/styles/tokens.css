@@ -64,6 +64,9 @@
 
   /* ---------- Color: footer ---------- */
   --color-footer: #000;
+  --color-footer-text: #fefcf3; /* the page colour, on black */
+  --color-footer-muted: #999;
+  --color-footer-accent: #fdd173; /* the yellow of the nav chip */
 
   /* ---------- Typography: families ---------- */
   --font-display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
@@ -243,7 +246,12 @@
   --icon-briefcase: 24px;
   --tag-rule-width: 1px; /* the design has 2px; set to 1px on request */
   --tag-rule-height: 19px;
-  --footer-height: 261px;
+  --footer-pad-top: 56px;
+  --footer-pad-bottom: 48px;
+  --footer-gap: 48px;
+  --footer-marquee-size: clamp(64px, 8.4vw, 120px);
+  --footer-marquee-time: 36s; /* one list width per loop */
+  --footer-icon: 24px;
 
   /* ---------- Radii ---------- */
   --radius-focus: 8px;
@@ -297,7 +305,9 @@
     --nav-pad-y: 10px;
     --nav-link-pad-x: 24px;
     --nav-height: 60px;
-    --footer-height: 160px;
+    --footer-pad-top: 40px;
+    --footer-pad-bottom: 32px;
+    --footer-gap: 32px;
   }
 }
 
