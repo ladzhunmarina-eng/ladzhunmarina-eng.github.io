@@ -2,9 +2,8 @@ import card1 from '../assets/images/card1.png';
 import card2 from '../assets/images/card2.png';
 import card3 from '../assets/images/card3.png';
 import card4 from '../assets/images/card4.png';
-import photo1 from '../assets/images/t1.png';
-import photo2 from '../assets/images/t2.png';
-import photo3 from '../assets/images/t3.png';
+import projectorLogo from '../assets/images/projector-logo.png';
+import robotDreamsLogo from '../assets/images/robot-dreams-logo.png';
 
 export const marquee = [
   { icon: 'grid', label: 'product thinking' },
@@ -82,77 +81,58 @@ export const work = [
   },
 ];
 
-export const testimonials = [
-  {
-    theme: '1',
-    paragraphs: [
-      'I have had the pleasure of working with Marina for almost 2 years, where she worked as a freelance designer for FlexyBox. We considered outsourcing our UI/UX design to a design company, when we were lucky to get to know Marina. Not once have we regretted that decision. Marina has worked directly with me, our developers and product owners in FlexyBox.',
-      'Marina is not only very competent and talented at creating beautiful UI’s, she is also very knowledgeable about UI/UX and good at communicating her ideas. She is honest and productive, and we have been impressed by the amount of work we got in the hours spent. Usually we ask for an estimate upfront when working with freelancers. With Marina we quickly realized that there was no need.',
-      'In Marina we didn’t just find a trustworthy business partner, we also got the best and most creative designs that matched our high expectations.',
-      'I therefor give Marina my highest recommendation.',
-    ],
-    name: 'Kenneth Lambæk Jensen',
-    role: 'Chief Innovation Officer',
-    photo: photo1,
-    alt: 'Portrait of Kenneth Lambæk Jensen',
-    tilt: 6.6,
-  },
-  {
-    theme: '2',
-    paragraphs: [
-      'I had the opportunity to work with Marina on a SaaS platform in a unique industry. Marina was a fantastic contributor to the team - she brought thoughtful and strategic UX/UI recommendations to a complex product. While the leadership of the product changed several times throughout the lifecycle of the product, Marina maintained an excellent level of work - she is both agile and focused, works quickly and efficiently, and always stands by the integrity of her work',
-    ],
-    name: 'Jen Volmer',
-    role: 'Head of Product',
-    photo: photo2,
-    alt: 'Portrait of Jen Volmer',
-    tilt: -8.8,
-  },
-  {
-    theme: '3',
-    paragraphs: [
-      'I can truly recommend working with Maryna as a very skillful Designer with a lot of expertise around the user experience but also research even in a very complex environments.',
-      'Maryna is not afraid of any challenge - starting from simple user flows, going through payments topics and ending with complex Legal projects.',
-      'She is very fast in preparing designs and prototyping, open for a discussion and feedback from the whole Team, different stakeholders and also users. She can adapt to the new situations quite quickly, juggling different topics and parts of the flow all together with different tools and advanced AI usage. With all of that, you are able to quickly get the working protypes, support with hypothesis and experiments creation, metrics etc. as Maryna is always open and eager to explore and discuss the topic fully, understanding the whole Business, Product and Tech impact, and not only focus on designs.',
-      "I'm constantly impressed that very often she's able to tackle the topics not only from a design perspective but also act as a true Researcher building hypothesis, users tests using different tools or simply interviewing users live.",
-      'She is always a priceless team member that can bring a lot of positive changes for your Team and Customers.',
-    ],
-    name: 'Agata Woźniak',
-    role: 'Product Manager',
-    photo: photo3,
-    alt: 'Portrait of Agata Woźniak',
-    tilt: 0,
-    width: 511, // Agata's card is a little narrower in the design
-  },
-];
-
 export const experience = [
   {
     title: 'Product designer at Rebbix, OLX Group contractor',
     dates: 'Jul 2021 — Oct 2026',
     bullets: [
-      'Designed both sides of Fixly, OLX Group\'s home services marketplace in Poland: the client flow (job posting, contractor selection, reviews, payment) and the contractor-facing B2B side, on Web, iOS and Android',
-      'Owned contractor monetization on Fixly: credit packages, premium options and pricing, treating price as a design element that affects both sides of the marketplace',
-      'Ran price A/B tests and fake door tests with ARPU as the primary metric; the pricing test showed the mid-tier package earning the most revenue, not the most expensive one',
-      'Designed installment payments for OLX buyers and led discovery with shop owners: in-depth interviews and prototype usability tests in UserZoom, recruited through the platform itself',
-      'Worked within Nexus, the OLX marketplace design system: built new scenarios from existing patterns and raised component gaps only where the library genuinely lacked one',
-      'Moved to a prototype-first process: working prototypes in Lovable or Claude, validation with design critique and dev, then Figma as the handoff source of truth; for web, a Claude Code implementation delivered as a PR',
+      'Designed both sides of Fixly, a home services marketplace in Poland',
+      'Owned contractor monetization: credit packages and pricing',
+      'Ran price A/B and fake door tests with ARPU as the primary metric',
+      'Designed installment payments for OLX buyers',
+      'Led discovery with shop owners: interviews and usability tests',
+      'Shipped on Web, iOS and Android within the Nexus design system',
+      'Adopted a prototype-first process with Lovable and Claude',
     ],
     summary:
-      'Embedded in OLX Group products as a contractor, covering the full marketplace loop: demand-side flows, supply-side monetization with pricing experiments measured on revenue, and multi-market delivery on Web, iOS, Android and Flutter inside a shared design system.',
+      'Covered the full marketplace loop inside OLX Group, from client flows to contractor monetization, with pricing tests showing the mid-tier package out-earned the most expensive one.',
   },
   {
     title: 'SoftServe',
     dates: 'May 2016 - Jan 2021',
     bullets: [
-      'Started the Overhaul engagement from scratch: designed the first version of a real-time supply chain visibility platform for Overhaul, a US logistics visibility and risk management company',
-      'Designed the core product as a map-first single-page web app carrying a high density of live shipment data, prioritising what an operator needs to see first over showing everything at once',
-      'Extended the platform into fleet management sub-products as the client\'s scope grew',
-      'Designed a mobile app for long-haul truck drivers to accept loads: the driver-facing side of the same visibility platform',
-      'Started an internal product for People Excellence, SoftServe\'s People team: a competency design system for building and maintaining competency models across roles and levels',
-      'Led a team of three designers on that project as design lead, from kick-off through delivery',
+      "Designed Overhaul's real-time supply chain visibility platform from scratch",
+      'Built the core product as a map-first web app for live shipment data',
+      'Prioritized what an operator needs to see first over showing everything',
+      "Extended the platform into fleet management as the client's scope grew",
+      'Designed a mobile app for long-haul truck drivers to accept loads',
+      'Started People Excellence, an internal tool for building competency models',
+      'Led a team of three designers from kick-off through delivery',
     ],
-    summary:
-      'Real-time operations design end to end for Overhaul: a map-first platform for the people managing shipments, fleet management on top of it, and a mobile app for the drivers on the road, all from the first screen onward. Also started and led an internal People Excellence product with a team of three designers.',
+    // The design repeats the Rebbix summary under this role (a copy-paste placeholder), so none is shown yet.
+    summary: '',
+  },
+];
+
+export const education = [
+  {
+    icon: 'graduation',
+    name: 'Lviv National Academy of Arts',
+    dates: 'Jul 2009 — Oct 2014',
+    bullet: 'Graphic design Master degree',
+  },
+  {
+    icon: 'certificate',
+    name: 'Projector Institute',
+    dates: 'Issued Nov 2020 · Expired Dec 2020',
+    bullet: 'UX Research',
+    card: { theme: 'blue', logo: projectorLogo, logoWidth: 132, kind: '🎓 Certificate', title: 'UX Research Course', year: '2020' },
+  },
+  {
+    icon: 'certificate',
+    name: 'Robot_dreams',
+    dates: 'Issued Nov 2020 · Expired Dec 2020',
+    bullet: 'Hypothesis',
+    card: { theme: 'cream', logo: robotDreamsLogo, logoWidth: 75, kind: '📚 Course', title: 'Product Hypothesis', year: '2025' },
   },
 ];

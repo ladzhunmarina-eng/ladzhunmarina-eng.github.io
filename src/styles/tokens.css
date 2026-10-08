@@ -44,10 +44,9 @@
   --work-4-panel: #fdd173;
   --work-4-accent: #78938c;
 
-  /* ---------- Color: testimonials ---------- */
-  --quote-1-bg: #f1eac9;
-  --quote-2-bg: #ebe9ff;
-  --quote-3-bg: #dcefff;
+  /* ---------- Color: education certificate cards ---------- */
+  --cert-blue-bg: #e0f2fe;
+  --cert-cream-bg: #f4f3ed;
 
   /* ---------- Color: contact card ---------- */
   --contact-bg: #242424;
@@ -128,12 +127,15 @@
   --space-20: 20px;
   --space-24: 24px;
   --space-30: 30px;
+  --space-32: 32px;
+  --space-36: 36px;
   --space-42: 42px;
   --space-44: 44px;
   --space-52: 52px;
   --space-56: 56px;
   --space-57: 57px;
   --space-59: 59px;
+  --space-64: 64px;
   --space-80: 80px;
   --space-92: 92px;
   --space-134: 134px;
@@ -160,9 +162,10 @@
   --work-tab-pad: 40px;
   --fs-tab: var(--fs-24);
   --work-tab-row: 75px;
-  --experience-col: 576px; /* heading and roles column */
-  --experience-gap: 49px; /* space between the roles and the notes, from Figma */
-  --experience-measure: 501px;
+  --experience-col: 576px; /* Experience and Education columns */
+  --experience-gap: 88px; /* space between the two columns, from Figma */
+  --experience-list: 487px; /* bullet list measure */
+  --experience-summary: 497px; /* closing summary measure */
 
   /* ---------- Hero avatar (scales with the heading font-size) ---------- */
   --hero-avatar-size: 2.2419em; /* 139 / 62 */
@@ -200,17 +203,12 @@
   --marquee-icon: 20px;
   --marquee-speed: 131s; /* one list width (2620px) per loop = 20px per second, like the reference */
 
-  /* ---------- Testimonials ---------- */
-  /* Endorsement notes beside the roles (Experience) */
-  --notes-w: 560px; /* the notes column; cards are 533px (Agata's 511px) */
-  --note-w: 533px;
-  --note-top: 226px; /* first note starts this far below the heading, level with the first role */
-  --notes-gap: 100px;
-  --note-pad: 30px;
-  --note-shadow: 2px 4px 8px rgb(0 0 0 / 0.15); /* soft paper shadow, as on the reference */
-  --note-parallax: 0.12; /* notes drift 12% faster than the text while you scroll */
-  --note-parallax-max: 170px; /* never drift further than this from the designed position */
-  --photo-size: 96px;
+  /* ---------- Education certificate cards ---------- */
+  --cert-w: 416px;
+  --cert-h: 291px;
+  --cert-pad-x: 74px; /* logo and text start this far from the card's left edge */
+  --cert-radius: 30px;
+  --font-card: 'Poppins', 'Inter', system-ui, sans-serif;
 
   /* ---------- Contact card ---------- */
   --contact-w: 320px;

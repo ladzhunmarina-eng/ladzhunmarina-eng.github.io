@@ -1,78 +1,85 @@
 ---
 import { Image } from 'astro:assets';
-import { experience, testimonials } from '../data/content';
+import { experience, education } from '../data/content';
 import BriefcaseIcon from '../assets/icons/briefcase.svg';
+import GraduationIcon from '../assets/icons/graduation.svg';
+import CertificateIcon from '../assets/icons/certificate.svg';
+import SparkleIcon from '../assets/icons/sparkle.svg';
+import ArrowGhost from '../assets/icons/arrow-up-ghost.svg';
+
+const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
 ---
 
-<section class="experience" id="experience" aria-labelledby="experience-title">
-  <div class="experience__layout">
-    <div class="experience__main">
-      <h2 id="experience-title" class="experience__title">Experience</h2>
-      <div class="experience__roles">
-        {experience.map((role) => (
-          <article class="role">
-            <BriefcaseIcon class="role__icon" aria-hidden="true" />
-            <header class="role__header">
-              <h3 class="role__title">{role.title}</h3>
-              <p class="role__dates">{role.dates}</p>
-            </header>
-            <ul class="role__list">
-              {role.bullets.map((bullet) => <li class="role__item">{bullet}</li>)}
-            </ul>
-            <p class="role__summary">{role.summary}</p>
-          </article>
-        ))}
-      </div>
+<div class="resume" id="experience">
+  <section class="column" aria-labelledby="experience-title">
+    <h2 id="experience-title" class="column__title">Experience</h2>
+    <div class="column__items column__items--roles">
+      {experience.map((role) => (
+        <article class="item">
+          <BriefcaseIcon class="item__icon" aria-hidden="true" />
+          <header class="item__header">
+            <h3 class="item__title">{role.title}</h3>
+            <p class="item__dates item__dates--role">{role.dates}</p>
+          </header>
+          <ul class="role__list">
+            {role.bullets.map((bullet) => <li>{bullet}</li>)}
+          </ul>
+          {role.summary && <p class="role__summary">{role.summary}</p>}
+        </article>
+      ))}
     </div>
+  </section>
 
-    <!--
-      What colleagues say, pinned beside the roles at slight angles. On desktop the column drifts a little
-      faster than the text while you scroll (see the script); everywhere else it simply sits there.
-    -->
-    <div class="experience__notes" aria-label="What colleagues say">
-      <ul class="notes">
-        {testimonials.map((t) => (
-          <li class={`note note--${t.theme}`} style={`--tilt: ${t.tilt}deg${t.width ? `; --w: ${t.width}px` : ''}`}>
-            <figure class="note__figure">
-              <blockquote class="note__text">
-                {t.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
-              </blockquote>
-              <figcaption class="note__person">
-                <Image class="note__photo" src={t.photo} alt={t.alt} width={96} height={96} widths={[96, 192, 288]} sizes="96px" />
-                <span class="note__meta">
-                  <span class="note__name">{t.name}</span>
-                  <span class="note__role">{t.role}</span>
-                </span>
-              </figcaption>
-            </figure>
-          </li>
-        ))}
-      </ul>
+  <section class="column" aria-labelledby="education-title">
+    <h2 id="education-title" class="column__title">Education</h2>
+    <div class="column__items column__items--education">
+      {education.map((entry) => {
+        const Icon = icons[entry.icon as keyof typeof icons];
+        return (
+          <article class="item">
+            <Icon class="item__icon" aria-hidden="true" />
+            <header class="item__header">
+              <h3 class="item__title">{entry.name}</h3>
+              <p class="item__dates">{entry.dates}</p>
+            </header>
+            <ul class="study__list">
+              <li>{entry.bullet}</li>
+            </ul>
+            {entry.card && (
+              // The card repeats what the entry above already says, so it is decoration for screen readers.
+              <div class={`cert cert--${entry.card.theme}`} aria-hidden="true">
+                {entry.card.theme === 'blue' ? <ArrowGhost class="cert__ghost" /> : <SparkleIcon class="cert__spark" />}
+                <Image class="cert__logo" src={entry.card.logo} alt="" width={entry.card.logoWidth} widths={[entry.card.logoWidth, entry.card.logoWidth * 2, entry.card.logoWidth * 3]} sizes={`${entry.card.logoWidth}px`} />
+                <p class="cert__kind">{entry.card.kind}</p>
+                <p class="cert__title">{entry.card.title}</p>
+                <p class="cert__year">{entry.card.year}</p>
+              </div>
+            )}
+          </article>
+        );
+      })}
     </div>
-  </div>
-</section>
+  </section>
+</div>
 
 <style>
   /*
-   * The left column starts at x=146 in the 1440px design: a 1148px block centered on the page. The notes
-   * run on past that block to the right, as in the design, so the section is left-anchored, not centered.
+   * The left column starts at x=146 in the 1440px design: a 1148px block centered on the page.
+   * Education sits in a second 576px column and runs on past that block, as in the design.
    */
-  .experience {
-    padding: var(--space-167) var(--gutter) var(--space-303) max(var(--gutter), calc((100% - 1148px) / 2));
+  .resume {
+    --resume-gap: var(--experience-gap);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, var(--experience-col)));
+    column-gap: var(--resume-gap);
+    align-items: start;
+    padding: var(--space-167) min(var(--gutter), 54px) var(--space-303) max(var(--gutter), calc((100% - 1148px) / 2));
     /* The section starts with a large top padding; anchor so the heading, not the padding, sits under the header. */
     scroll-margin-top: calc(var(--header-h) - var(--space-167));
   }
 
-  .experience__layout {
-    width: min(100%, calc(var(--experience-col) + var(--experience-gap) + var(--notes-w)));
-    display: grid;
-    grid-template-columns: var(--experience-col) minmax(0, var(--notes-w));
-    column-gap: var(--experience-gap);
-    align-items: start;
-  }
-
-  .experience__title {
-    margin-bottom: var(--space-20);
+  .column__title {
+    margin-bottom: var(--space-24);
     font-family: var(--font-display);
     font-size: var(--fs-display);
     font-weight: var(--weight-bold);
@@ -80,60 +87,84 @@ import BriefcaseIcon from '../assets/icons/briefcase.svg';
     color: var(--color-ink);
   }
 
-  .experience__roles {
+  .column__items {
     display: flex;
     flex-direction: column;
-    gap: var(--space-80);
   }
 
-  .role {
+  .column__items--roles { gap: var(--space-64); }
+  .column__items--education { gap: var(--space-32); }
+
+  .item {
     display: flex;
     flex-direction: column;
     gap: var(--space-16);
-    max-width: var(--experience-measure);
-  }
-
-  .role__icon {
-    width: var(--icon-briefcase);
-    height: var(--icon-briefcase);
     color: var(--color-black);
   }
 
-  .role__header {
+  .item__icon {
+    width: var(--icon-briefcase);
+    height: var(--icon-briefcase);
+  }
+
+  .item__header {
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
-    color: var(--color-black);
   }
 
-  .role__title {
+  .item__title {
     font-size: var(--fs-20);
     font-weight: var(--weight-medium);
     line-height: var(--lh-20);
     letter-spacing: var(--ls-20);
   }
 
-  .role__dates {
+  .item__dates {
     font-size: var(--fs-20);
     line-height: var(--lh-20);
     letter-spacing: var(--ls-20);
   }
+
+  /* Dates under a job are smaller and medium weight in the design */
+  .item__dates--role {
+    font-size: var(--fs-16);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-20);
+  }
+
+  /* ---------- Experience ---------- */
 
   .role__list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-12);
-  }
-
-  .role__item {
-    display: flex;
-    gap: var(--space-8);
-    font-size: var(--fs-20);
+    max-width: var(--experience-list);
+    padding-left: var(--space-24);
+    list-style: disc;
+    font-size: var(--fs-16);
     line-height: var(--lh-20);
     letter-spacing: var(--ls-20);
   }
 
-  .role__item::before {
+  .role__summary {
+    max-width: var(--experience-summary);
+    margin-top: var(--space-20); /* with the 16px item gap: the 36px between list and summary in the design */
+    font-size: var(--fs-16);
+    font-weight: var(--weight-semibold);
+    line-height: var(--lh-20);
+    letter-spacing: var(--ls-20);
+  }
+
+  /* ---------- Education ---------- */
+
+  .study__list li {
+    display: flex;
+    gap: var(--space-8);
+    max-width: 501px;
+    font-size: var(--fs-16);
+    line-height: var(--lh-20);
+    letter-spacing: var(--ls-20);
+  }
+
+  .study__list li::before {
     content: '•';
     flex: none;
     padding-top: var(--space-3);
@@ -143,171 +174,77 @@ import BriefcaseIcon from '../assets/icons/briefcase.svg';
     line-height: var(--lh-14-14);
   }
 
-  .role__summary {
-    margin-top: calc(var(--space-12) - var(--space-16));
-    font-size: var(--fs-20);
-    font-weight: var(--weight-medium);
-    line-height: var(--lh-20);
-    letter-spacing: var(--ls-20);
-  }
-
-  /* ---------- Endorsement notes ---------- */
-
-  .experience__notes {
-    padding-top: var(--note-top);
-    /* The script moves this column a little; keep the move from affecting layout. */
-    will-change: transform;
-  }
-
-  .notes {
-    display: flex;
-    flex-direction: column;
-    gap: var(--notes-gap);
-  }
-
-  .note {
-    width: min(var(--w, var(--note-w)), 100%);
-    padding: var(--note-pad);
-    border-radius: var(--radius-card);
-    background: var(--note-bg);
-    rotate: var(--tilt, 0deg);
-    filter: drop-shadow(var(--note-shadow));
-  }
-
-  .note--1 { --note-bg: var(--quote-1-bg); }
-  .note--2 { --note-bg: var(--quote-2-bg); }
-  .note--3 { --note-bg: var(--quote-3-bg); }
-
-  .note__figure {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-24);
-  }
-
-  .note__text {
-    font-size: var(--fs-14);
-    line-height: var(--lh-display);
-    letter-spacing: var(--ls-20);
+  .cert {
+    position: relative;
+    width: min(var(--cert-w), 100%);
+    height: var(--cert-h);
+    margin-top: var(--space-8); /* with the 16px item gap: the 24px between the entry and its card */
+    padding: var(--space-30) 0 0 min(var(--cert-pad-x), 18%);
+    border-radius: var(--cert-radius);
+    background: var(--cert-bg);
+    font-family: var(--font-card);
     color: var(--color-black);
+    overflow: hidden;
   }
 
-  .note__text p {
-    white-space: pre-line;
+  .cert--blue { --cert-bg: var(--cert-blue-bg); }
+  .cert--cream { --cert-bg: var(--cert-cream-bg); }
+
+  .cert__logo {
+    display: block;
+    height: auto;
   }
 
-  .note__text p + p {
-    margin-top: 1lh;
+  .cert--cream .cert__logo { margin-top: var(--space-3); }
+
+  .cert__kind,
+  .cert__title,
+  .cert__year {
+    font-size: var(--fs-24);
+    line-height: 36px;
   }
 
-  .note__person {
-    display: flex;
-    align-items: center;
-    gap: var(--space-12);
-  }
-
-  .note__photo {
-    flex: none;
-    width: var(--photo-size);
-    height: var(--photo-size);
-  }
-
-  .note__meta {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-10);
-    min-width: 0;
-    font-size: var(--fs-20);
-    line-height: var(--lh-20);
-  }
-
-  .note__name {
+  /* Offsets measured from the design: the kind label starts 120px from the top of both cards. */
+  .cert__kind {
+    margin-top: var(--space-30);
     font-weight: var(--weight-semibold);
-    color: var(--color-black);
   }
 
-  .note__role {
-    letter-spacing: var(--ls-20);
-    color: var(--color-muted);
+  .cert--cream .cert__kind { margin-top: 42px; }
+
+  .cert__title { margin-top: 27px; }
+  .cert--cream .cert__title { margin-top: var(--space-24); }
+
+  .cert__year {
+    margin-top: var(--space-3);
+    color: rgb(0 0 0 / 0.3);
   }
 
-  /* ---------- Narrower than 1280px: one column; the notes follow the roles ---------- */
+  .cert__ghost,
+  .cert__spark {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .cert__ghost { top: 81px; right: 80px; }
+  .cert__spark { top: 54px; right: 53px; width: 38px; height: 38px; }
+
+  /* ---------- Narrower screens ---------- */
 
   @media (max-width: 1279px) {
-    .experience__layout {
+    .resume { --resume-gap: var(--space-44); }
+  }
+
+  @media (max-width: 1023px) {
+    .resume {
       grid-template-columns: minmax(0, 1fr);
       row-gap: var(--space-80);
-    }
-
-    .experience__notes {
-      padding-top: 0;
-    }
-
-    .notes {
-      gap: var(--space-42);
-    }
-
-    .note {
-      margin-inline: auto;
-      rotate: calc(var(--tilt, 0deg) * 0.4); /* a gentler tilt on small screens */
     }
   }
 
   @media (max-width: 640px) {
-    .note {
-      padding: var(--space-24);
-    }
-
-    .note__meta {
-      font-size: var(--fs-16);
-      line-height: var(--lh-16);
-    }
+    .cert { --cert-h: 272px; }
+    .cert__ghost { right: 40px; }
+    .cert__spark { right: 28px; }
   }
 </style>
-
-<script>
-  // The notes drift slightly faster than the text, so they feel pinned in front of the page, not printed on it.
-  const section = document.querySelector<HTMLElement>('.experience');
-  const notes = document.querySelector<HTMLElement>('.experience__notes');
-
-  if (section && notes) {
-    const drift = window.matchMedia('(min-width: 1280px) and (prefers-reduced-motion: no-preference)');
-    const token = (name: string) => parseFloat(getComputedStyle(section).getPropertyValue(name));
-    let frame = 0;
-    let enabled = false;
-
-    const update = () => {
-      frame = 0;
-      if (!enabled) return; // a frame scheduled before the effect was switched off must not undo the reset
-      const factor = token('--note-parallax');
-      const limit = token('--note-parallax-max');
-      const rect = section.getBoundingClientRect();
-      // 0 when the middle of the section is at the middle of the screen: the notes sit where they were designed.
-      const away = rect.top + rect.height / 2 - window.innerHeight / 2;
-      const offset = Math.max(-limit, Math.min(limit, away * factor));
-      notes.style.transform = `translateY(${offset.toFixed(1)}px)`;
-    };
-
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(update);
-    };
-
-    const sync = () => {
-      if (drift.matches && !enabled) {
-        enabled = true;
-        window.addEventListener('scroll', onScroll, { passive: true });
-        window.addEventListener('resize', onScroll);
-        update();
-      } else if (!drift.matches && enabled) {
-        enabled = false;
-        cancelAnimationFrame(frame);
-        frame = 0;
-        window.removeEventListener('scroll', onScroll);
-        window.removeEventListener('resize', onScroll);
-        notes.style.removeProperty('transform');
-      }
-    };
-
-    drift.addEventListener('change', sync);
-    sync();
-  }
-</script>
