@@ -241,6 +241,11 @@
 
   /* ---------- Case study pages ---------- */
   --case-nav-w: 200px; /* the sticky "On this page" column */
+  --case-nav-pad-x: 18px; /* text inset of its links and title */
+  --case-nav-pad-y: 9px; /* a link is 37-38px tall, 42-43px apart */
+  --case-nav-gap: 5px;
+  --case-nav-dot: 8px; /* the dot before the current link */
+  --case-nav-dot-gap: 11px;
   --case-gap: 64px; /* between that column and the content */
   --case-measure: 720px; /* the widest a paragraph or title runs */
   --case-meta-w: 473px; /* the Role / Team / Timeline card in the hero */

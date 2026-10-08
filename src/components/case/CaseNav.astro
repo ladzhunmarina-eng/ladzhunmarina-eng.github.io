@@ -27,7 +27,7 @@ const { items } = Astro.props;
 
   .case-nav__title {
     margin-bottom: var(--space-12);
-    padding-inline: var(--space-16);
+    padding-inline: var(--case-nav-pad-x);
     font-size: var(--fs-12);
     font-weight: var(--weight-medium);
     line-height: var(--lh-12-18);
@@ -39,12 +39,13 @@ const { items } = Astro.props;
   .case-nav__list {
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--case-nav-gap);
   }
 
   .case-nav__link {
-    display: block;
-    padding: var(--space-8) var(--space-16);
+    display: flex;
+    align-items: center;
+    padding: var(--case-nav-pad-y) var(--case-nav-pad-x);
     border-radius: var(--radius-pill);
     font-size: var(--fs-16);
     line-height: var(--lh-16);
@@ -56,11 +57,21 @@ const { items } = Astro.props;
     background: var(--color-nav-hover);
   }
 
-  /* The current section: same chip as the header's active link. */
+  /* The current section: a soft pill with a dot in front; the other links start where the dot does. */
   .case-nav__link[aria-current],
   .case-nav__link[aria-current]:hover {
-    background: var(--case-bg);
-    color: var(--case-on-bg);
+    background: var(--color-icon-bg);
+    color: var(--color-ink);
+  }
+
+  .case-nav__link[aria-current]::before {
+    content: '';
+    flex: none;
+    width: var(--case-nav-dot);
+    height: var(--case-nav-dot);
+    margin-right: var(--case-nav-dot-gap);
+    border-radius: 50%;
+    background: currentColor;
   }
 
   @media (max-width: 1023px) {
@@ -75,9 +86,12 @@ const { items } = Astro.props;
     }
 
     .case-nav__link {
-      padding: var(--space-8) var(--space-16);
       background: var(--color-white);
       box-shadow: 0 0 0 1px var(--case-line);
+    }
+
+    .case-nav__link[aria-current] {
+      background: var(--color-icon-bg);
     }
 
     .case-nav__title {
