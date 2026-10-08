@@ -131,7 +131,7 @@ export const education = [
     card: { theme: 'blue', logo: projectorLogo, logoWidth: 103, logoHeight: 47, kind: '🎓 Certificate', title: 'UX Research Course', year: '2020' },
   },
   {
-    icon: 'certificate-lower',
+    icon: 'certificate',
     name: 'Robot_dreams',
     dates: 'Nov 2020 · Expired Dec 2020',
     datesSize: 'small',
