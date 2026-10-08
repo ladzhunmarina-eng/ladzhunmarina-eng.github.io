@@ -26,12 +26,6 @@ import { contact } from '../data/contact';
       <div class="contact__perspective">
         <div class="contact__tilt">
           <div class="contact__card">
-            <div class="contact__shell" aria-hidden="true">
-              <div class="contact__inside"></div>
-              <div class="contact__shine"></div>
-              <div class="contact__glare"></div>
-            </div>
-
             <div class="contact__content">
               <button class="contact__close" type="button" aria-label="Close" data-contact-close>
                 <CloseIcon aria-hidden="true" />
@@ -152,8 +146,6 @@ import { contact } from '../data/contact';
   .contact__tilt {
     --tilt-x: 0deg;
     --tilt-y: 0deg;
-    --pointer-x: 50%;
-    --pointer-y: 50%;
     transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
     transform-style: preserve-3d;
     transition: transform 300ms ease-out;
@@ -170,40 +162,6 @@ import { contact } from '../data/contact';
     background: var(--contact-bg);
     color: var(--contact-fg);
     box-shadow: var(--contact-shadow);
-  }
-
-  /* Soft depth: a gradient, a shine and a glare that follow the pointer. */
-  .contact__shell {
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    overflow: hidden;
-    pointer-events: none;
-  }
-
-  .contact__inside {
-    position: absolute;
-    inset: 0;
-    background-image: var(--contact-inner-gradient);
-    opacity: 0.52;
-  }
-
-  .contact__shine {
-    position: absolute;
-    inset: 0;
-    mix-blend-mode: soft-light;
-    opacity: 0.35;
-    background:
-      radial-gradient(ellipse 95% 85% at var(--pointer-x) var(--pointer-y), hsl(0 0% 96% / 0.12) 0%, transparent 58%),
-      linear-gradient(118deg, hsl(0 0% 40% / 0.12) 0%, transparent 42%, hsl(270 10% 18% / 0.16) 100%);
-  }
-
-  .contact__glare {
-    position: absolute;
-    inset: 0;
-    mix-blend-mode: overlay;
-    opacity: 0.26;
-    background: radial-gradient(circle at var(--pointer-x) var(--pointer-y), hsl(0 0% 100% / 0.14) 0%, transparent 52%);
   }
 
   .contact__content {
@@ -494,8 +452,6 @@ import { contact } from '../data/contact';
         tilt.removeAttribute('data-active');
         tilt.style.setProperty('--tilt-x', '0deg');
         tilt.style.setProperty('--tilt-y', '0deg');
-        tilt.style.setProperty('--pointer-x', '50%');
-        tilt.style.setProperty('--pointer-y', '50%');
       };
       card.addEventListener('pointermove', (event) => {
         if (!canTilt.matches || event.pointerType !== 'mouse') return;
@@ -505,8 +461,6 @@ import { contact } from '../data/contact';
         tilt.setAttribute('data-active', '');
         tilt.style.setProperty('--tilt-x', `${(0.5 - py) * 2 * maxTilt}deg`);
         tilt.style.setProperty('--tilt-y', `${(px - 0.5) * 2 * maxTilt}deg`);
-        tilt.style.setProperty('--pointer-x', `${px * 100}%`);
-        tilt.style.setProperty('--pointer-y', `${py * 100}%`);
       });
       card.addEventListener('pointerleave', reset);
     }

@@ -54,7 +54,7 @@
   --contact-fg-strong: #fafafa;
   --contact-muted: #999;
   --contact-divider: rgb(51 51 51 / 0.4);
-  --contact-row-hover-bg: #fafafa;
+  --contact-row-hover-bg: #fefcf3;
   --contact-row-hover-fg: #121212;
   --contact-close-bg: rgb(36 36 36 / 0.95);
   --contact-close-hover-bg: #2a2828;
@@ -62,7 +62,6 @@
   --contact-focus: #ccc;
   --contact-shadow: 0 2px 8px -2px rgb(0 0 0 / 0.25), 0 10px 40px -8px rgb(0 0 0 / 0.35), 0 24px 60px -16px rgb(0 0 0 / 0.35);
   --contact-shadow-avatar: 0 2px 14px rgb(0 0 0 / 0.25);
-  --contact-inner-gradient: linear-gradient(145deg, hsl(270 12% 24% / 0.22) 0%, hsl(0 0% 52% / 0.1) 48%, hsl(0 0% 8% / 0.28) 100%);
 
   /* ---------- Color: footer ---------- */
   --color-footer: #000;
