@@ -1,47 +1,57 @@
 ---
-import Button from './Button.astro';
 import MailIcon from '../assets/icons/mail.svg';
+import TelegramIcon from '../assets/icons/telegram.svg';
+import WhatsappIcon from '../assets/icons/whatsapp.svg';
 import GithubIcon from '../assets/icons/github.svg';
 import LinkedinIcon from '../assets/icons/linkedin.svg';
-import DribbbleIcon from '../assets/icons/dribbble-tight.svg';
+import DribbbleIcon from '../assets/icons/dribbble.svg';
+import { contact } from '../data/contact';
 
-const links = [
-  { label: 'Email me', href: '#contact', Icon: MailIcon },
+const reach = [
+  { label: 'Email', href: `mailto:${contact.email}`, Icon: MailIcon, external: false },
+  { label: 'Telegram', href: contact.telegram, Icon: TelegramIcon, external: true },
+  { label: 'WhatsApp', href: contact.whatsapp, Icon: WhatsappIcon, external: true },
+];
+
+const social = [
   { label: 'GitHub', href: '#', Icon: GithubIcon },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/marina-ladzhun-876068101/', Icon: LinkedinIcon },
   { label: 'Dribbble', href: 'https://dribbble.com/Maryyyy', Icon: DribbbleIcon },
 ];
-
-// Each list holds enough phrases to be wider than any screen; two lists make the loop seamless.
-const phrases = [0, 1, 2, 3];
-const lists = [0, 1];
 ---
 
 <footer class="site-footer">
-  <p class="visually-hidden">Let’s talk</p>
-  <div class="footer__marquee" aria-hidden="true">
-    <div class="footer__track">
-      {lists.map(() => (
-        <div class="footer__list">
-          {phrases.map(() => (
-            <span class="footer__phrase">LET’S <em class="footer__accent">talk!</em></span>
-          ))}
-        </div>
+  <div class="footer__top">
+    <h2 class="footer__title">Say <span class="footer__accent">Hi!</span></h2>
+
+    <ul class="footer__reach">
+      {reach.map(({ label, href, Icon, external }) => (
+        <li>
+          <a
+            class="footer__pill"
+            href={href}
+            target={external ? '_blank' : undefined}
+            rel={external ? 'noopener noreferrer' : undefined}
+          >
+            <Icon aria-hidden="true" />
+            {label}
+          </a>
+        </li>
       ))}
-    </div>
+    </ul>
   </div>
 
   <div class="footer__bar">
-    <Button class="footer__cv" href="#" variant="outline-light">CV</Button>
+    <p class="footer__copy">Copyright @maryna.ladzhun. All Rights Reserved</p>
 
-    <ul class="footer__social" aria-label="Contact and social profiles">
-      {links.map(({ label, href, Icon }) => (
+    <ul class="footer__social" aria-label="Social profiles">
+      {social.map(({ label, href, Icon }) => (
         <li>
           <a
-            class="footer__link"
+            class="footer__circle"
             href={href}
             aria-label={label}
-            rel={href.startsWith('http') ? 'me noopener noreferrer' : undefined}
+            rel="me noopener noreferrer"
             target={href.startsWith('http') ? '_blank' : undefined}
           >
             <Icon aria-hidden="true" />
@@ -49,8 +59,6 @@ const lists = [0, 1];
         </li>
       ))}
     </ul>
-
-    <a class="footer__brand" href="#" aria-label="Portfolio, back to top">Portfolio</a>
   </div>
 </footer>
 
@@ -59,110 +67,111 @@ const lists = [0, 1];
     display: flex;
     flex-direction: column;
     gap: var(--footer-gap);
-    padding: var(--footer-pad-top) 0 var(--footer-pad-bottom);
+    padding: var(--footer-pad-top) var(--gutter) var(--footer-pad-bottom);
     background: var(--color-footer);
     color: var(--color-footer-text);
-    overflow: hidden;
   }
 
-  /* ---------- Marquee: "LET'S talk!" loops to the left ---------- */
-
-  .footer__marquee {
-    overflow: hidden;
-  }
-
-  .footer__track {
+  .footer__top {
     display: flex;
-    width: max-content;
-    animation: footer-scroll var(--footer-marquee-time) linear infinite;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--footer-gap);
   }
 
-  .footer__list {
-    display: flex;
-    flex: none;
-    gap: 0.4em;
-    padding-right: 0.4em;
+  .footer__title {
     font-family: var(--font-display);
-    font-size: var(--footer-marquee-size);
+    font-size: var(--footer-title-size);
     font-weight: var(--weight-light);
     line-height: 1.1;
     letter-spacing: -0.02em;
-    white-space: nowrap;
+    color: var(--color-footer-text);
   }
 
   .footer__accent {
-    font-style: normal;
     font-weight: var(--weight-extrabold);
     color: var(--color-footer-accent);
   }
 
-  @keyframes footer-scroll {
-    to {
-      transform: translateX(-50%);
-    }
+  .footer__reach {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    width: min(100%, var(--footer-pill-w));
   }
 
-  /* ---------- Bottom bar ---------- */
+  .footer__pill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-10);
+    height: var(--footer-pill-h);
+    border-radius: var(--radius-button);
+    background: var(--color-footer-surface);
+    color: var(--color-footer-pill-text);
+    font-family: var(--font-card);
+    font-size: var(--fs-18);
+    font-weight: var(--weight-medium);
+    transition:
+      background-color 0.2s ease-out,
+      color 0.2s ease-out;
+  }
+
+  .footer__pill :global(svg) {
+    flex: none;
+    width: var(--footer-pill-icon);
+    height: var(--footer-pill-icon);
+  }
+
+  .footer__pill:hover {
+    background: var(--color-footer-text);
+    color: var(--color-footer-surface);
+  }
 
   .footer__bar {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     flex-wrap: wrap;
-    gap: var(--space-24) var(--space-42);
-    padding-inline: var(--gutter);
+    gap: var(--space-24);
   }
 
-  .footer__bar :global(.footer__cv) {
-    min-width: 99px;
+  .footer__copy {
+    font-size: var(--fs-16);
+    line-height: 1.2;
+    color: var(--color-footer-muted);
   }
 
   .footer__social {
     display: flex;
     align-items: center;
-    gap: var(--space-8);
+    gap: var(--space-18);
   }
 
-  .footer__link {
+  .footer__social > li {
+    display: flex;
+  }
+
+  .footer__circle {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: var(--icon-hit);
     height: var(--icon-hit);
-    color: var(--color-footer-text);
+    border-radius: 50%;
+    background: var(--color-footer-circle);
+    color: var(--color-icon-muted);
     transition: color 0.15s ease;
   }
 
-  .footer__link :global(svg) {
-    width: var(--footer-icon);
-    height: var(--footer-icon);
-  }
-
-  .footer__link:hover {
-    color: var(--color-footer-accent);
-  }
-
-  .footer__brand {
-    margin-left: auto;
-    font-size: var(--fs-16);
-    line-height: var(--lh-16);
-    color: var(--color-footer-muted);
-    transition: color 0.15s ease;
-  }
-
-  .footer__brand:hover {
+  .footer__circle:hover {
     color: var(--color-footer-text);
   }
 
   @media (max-width: 640px) {
-    .footer__brand {
-      margin-left: 0;
-      width: 100%;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .footer__track {
-      animation: none;
+    .footer__bar {
+      flex-direction: column-reverse;
+      text-align: center;
     }
   }
 </style>
