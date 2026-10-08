@@ -1,0 +1,48 @@
+---
+import { Image } from 'astro:assets';
+
+/* The case's big image panel: the project's screens, centred on a tinted card, as on the Featured Work panel. */
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+}
+
+const { src, alt } = Astro.props;
+---
+
+<div class="cover">
+  <Image class="cover__image" src={src} alt={alt} widths={[720, 1080, 1440]} sizes="(max-width: 1023px) 100vw, 604px" quality={85} loading="eager" />
+</div>
+
+<style>
+  .cover {
+    position: relative;
+    aspect-ratio: var(--case-cover-ratio);
+    border-radius: var(--radius-card);
+    background: var(--color-icon-bg);
+  }
+
+  /* 604 x 569 inside the 1272 x 670 panel, from the design. */
+  .cover :global(.cover__image) {
+    position: absolute;
+    top: 7.6%;
+    left: 26.3%;
+    width: 47.5%;
+    height: 84.9%;
+    max-width: none;
+    object-fit: contain;
+  }
+
+  @media (max-width: 1023px) {
+    .cover {
+      aspect-ratio: 4 / 3;
+    }
+
+    .cover :global(.cover__image) {
+      top: 6%;
+      left: 10%;
+      width: 80%;
+      height: 88%;
+    }
+  }
+</style>

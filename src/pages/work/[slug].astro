@@ -18,9 +18,11 @@ import DecisionList from '../../components/case/DecisionList.astro';
 import BeforeAfter from '../../components/case/BeforeAfter.astro';
 import ImpactColumns from '../../components/case/ImpactColumns.astro';
 import LearningCards from '../../components/case/LearningCards.astro';
+import CaseCover from '../../components/case/CaseCover.astro';
 import ImageSlot from '../../components/case/ImageSlot.astro';
 import Verify from '../../components/case/Verify.astro';
 import { cases } from '../../data/cases';
+import { work } from '../../data/content';
 
 export function getStaticPaths() {
   return cases.map((study) => ({ params: { slug: study.slug }, props: { study } }));
@@ -39,13 +41,16 @@ const textOf = (value: string | { text: string }) => (typeof value === 'string' 
 const needsVerify = (value: unknown) => typeof value === 'object' && value !== null && 'verify' in value && !!(value as { verify?: boolean }).verify;
 
 const { basket, delivery } = study;
+
+// The cover reuses the screens of the case's Featured Work card.
+const card = work.find((item) => item.href === `/work/${study.slug}`);
 ---
 
 <Layout title={study.seo.title} description={study.seo.description} current="work">
   <article class="case" data-case-palette={palette}>
     <div class="case__container case__top">
       <CaseHero hero={study.hero} />
-      <ImageSlot label="Cover: the basket on mobile and web" ratio="21 / 9" />
+      {card ? <CaseCover src={card.image} alt={card.alt} /> : <ImageSlot label="Cover image" ratio="1272 / 670" />}
       <MetricStrip metrics={study.metrics} />
     </div>
 

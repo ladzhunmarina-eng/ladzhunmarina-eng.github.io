@@ -243,7 +243,10 @@
   --case-nav-w: 200px; /* the sticky "On this page" column */
   --case-gap: 64px; /* between that column and the content */
   --case-measure: 720px; /* the widest a paragraph or title runs */
-  --case-meta-w: 340px; /* the Role / Team / Timeline card in the hero */
+  --case-meta-w: 473px; /* the Role / Team / Timeline card in the hero */
+  --case-hero-gap: 35px; /* between the hero text and that card */
+  --case-hero-pad-bottom: 55px; /* extra room under the hero block, before the cover */
+  --case-cover-ratio: 1272 / 670; /* the cover image panel */
   --case-section-gap: 120px; /* between sections */
   --case-card-pad: 24px;
   --case-card-min: 200px; /* the narrowest a card in a grid gets before the grid wraps */
@@ -252,6 +255,9 @@
   --case-bar-h: 8px; /* survey bars */
   --case-bar-h-lg: 14px; /* the UMUX-Lite scale */
   --case-umux-w: 420px;
+  --radius-glass: 24px; /* the hero card */
+  --radius-glass-inner: 16px; /* the card inside it */
+  --case-glass-blur: 50px;
 
   /* ---------- Contact card ---------- */
   --contact-w: 352px;
@@ -422,6 +428,13 @@
   --case-variant-b: var(--color-black);
   --case-variant-c: var(--color-black);
   --case-variant-text: var(--color-white);
+  --case-pill-bg: var(--case-bg); /* the dark chips under the lead */
+  --case-pill-fg: var(--case-on-bg);
+  --case-chip-text: var(--color-ink); /* the small chips in the hero card */
+  --case-glass: rgb(255 255 255 / 0.4); /* the hero card, its inner card, cells and chips */
+  --case-glass-inner: rgb(255 255 255 / 0.5);
+  --case-glass-cell: rgb(255 255 255 / 0.6);
+  --case-glass-chip: rgb(255 255 255 / 0.65);
 }
 
 [data-case-palette='work-1'] {
@@ -459,6 +472,9 @@
   --case-variant-b: var(--olx-variant-b);
   --case-variant-c: var(--olx-variant-c);
   --case-variant-text: var(--olx-ink);
+  --case-pill-bg: var(--olx-ink);
+  --case-pill-fg: var(--color-white);
+  --case-chip-text: #2c565c;
   /* Inside an OLX case, the shared "ink" and tint are OLX's own. */
   --color-ink: var(--olx-ink);
   --color-icon-bg: var(--olx-tint);

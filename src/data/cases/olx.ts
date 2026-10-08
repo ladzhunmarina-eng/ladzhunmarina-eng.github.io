@@ -18,25 +18,25 @@ export const olxCase = {
   },
 
   hero: {
-    tags: ['C2C marketplace', 'Ukraine', 'Web · iOS · Android', 'A/B testing'],
+    tags: ['C2C marketplace', 'Ukraine', 'Web · iOS · Android', 'A/B testing', 'User testing', 'UM UX Light Score'],
     eyebrow: 'OLX · Purchase & delivery',
-    title: 'Turning a silent Favorites workaround into a real basket.',
+    title: 'Turning a silent Favorites into a real basket.',
     lead:
       'Two linked initiatives on the OLX goods marketplace: a per-seller basket that makes bundling visible, and free delivery that sellers switch on in a few taps.',
     meta: [
-      { label: 'Role', value: 'Product Designer, end-to-end', verify: true },
-      { label: 'Team', value: 'PM, data analyst, web & mobile engineers', verify: true },
-      { label: 'Timeline', value: '2026, ~5 months', verify: true },
-      { label: 'Status', value: 'Basket live on 50% of web traffic' },
+      { label: 'Role', value: 'Product Designer' },
+      { label: 'Team', value: 'PM, Engineers' },
+      { label: 'Timeline', value: '2026' },
+      { label: 'Status', value: 'Live for 100% of traffic' },
     ],
-    focus: ['Discovery', 'Hypothesis', 'A/B/C testing', 'Usability testing', 'Checkout'],
+    focus: ['Marketplace', 'Hypothesis', 'Checkout', 'UA'],
   },
 
   metrics: [
     { value: '+13.7%', label: 'bundle rate in the button test (directional)' },
     { value: '80', label: 'UMUX-Lite score, above the 70 threshold' },
     { value: '8.4% → 13.1%', label: 'orders with free delivery' },
-    { value: '50%', label: 'of web traffic on the new basket' },
+    { value: '100%', label: 'of traffic on the new basket' },
   ],
 
   nav: [
