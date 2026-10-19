@@ -58,6 +58,20 @@
   --olx-variant-a: #ffdcad; /* A/B/C in the tests */
   --olx-variant-b: #c7e0ff;
   --olx-variant-c: #b282d2;
+  --olx-process-bar: #ddf1ef; /* the bars of the process chart */
+  --olx-grid: rgb(0 47 52 / 0.08); /* its grid lines */
+  --olx-ink-soft: #1a3340; /* body text inside the test cards */
+  --olx-note-text: #262626; /* quotes inside them */
+  --olx-label: #808080; /* small uppercase labels and meta lines */
+  --olx-hairline: #e0e0e0; /* dividers inside the test cards */
+  --olx-person-1: #1c9ea6; /* participants P1, P2, P3 */
+  --olx-person-2: #704ade;
+  --olx-person-3: #d9731a;
+  --olx-note-bg: #f2fcfc; /* a quote on a participant card */
+  --olx-rating-bg: #e0f7f7; /* the overall rating box */
+  --olx-rating-text: #338085;
+  --olx-friction: #d93333; /* the dot of a critical friction point */
+  --olx-pain: #ed4d4d; /* the dot of a pain point on the dark cards */
 
   /* ---------- Color: education certificate cards ---------- */
   --cert-blue-bg: #e0f2fe;
@@ -110,6 +124,7 @@
   --fs-22: 22px;
   --fs-24: 24px;
   --fs-32: 32px;
+  --fs-56: 56px; /* the big scores on the Maze cards */
   --fs-tab-min: 18px;
   --fs-display: clamp(36px, 4.3056vw, 62px); /* 62px at 1440px */
   --fs-case-title: clamp(34px, 3.8889vw, 56px); /* case study title: 56px at 1440px */
@@ -156,6 +171,7 @@
   --space-18: 18px;
   --space-20: 20px;
   --space-24: 24px;
+  --space-28: 28px;
   --space-30: 30px;
   --space-32: 32px;
   --space-36: 36px;
@@ -263,7 +279,17 @@
   --case-label-w: 96px; /* the label column in If/Because/Then and Chose/Over/Why rows */
   --case-bar-h: 8px; /* survey bars */
   --case-bar-h-lg: 14px; /* the UMUX-Lite scale */
-  --case-umux-w: 420px;
+  --case-bar-pill-h: 36px; /* a bar in the process chart ... */
+  --case-bar-pitch: 44px; /* ... and the distance between two of them */
+  --case-chart-pad: 25px;
+  --case-person-w: 520px; /* a participant card in the moderated test */
+  --case-person-gap: 48px;
+  --case-person-pad: 27px;
+  --case-fade-w: 153px; /* the fade on the right edge of the scrolling participants */
+  --case-maze-img-w: 604px; /* the Maze screenshot; the dark cards take the rest */
+  --case-maze-gap: 24px;
+  --case-maze-logo-w: 112px;
+  --case-entry-ratio: 1008 / 645; /* the entry-point test panel */
   --radius-glass: 24px; /* the hero card */
   --radius-glass-inner: 16px; /* the card inside it */
   --case-glass-blur: 50px;
@@ -320,6 +346,7 @@
   /* ---------- Radii ---------- */
   --radius-focus: 8px;
   --radius-card: 20px;
+  --radius-person: 12px; /* the participant cards */
   --radius-photo: 23px;
   --radius-avatar: 30px;
   --radius-panel: 40px;
@@ -443,6 +470,26 @@
   --case-glass-inner: rgb(255 255 255 / 0.5);
   --case-glass-cell: rgb(255 255 255 / 0.6);
   --case-glass-chip: rgb(255 255 255 / 0.65);
+  --case-button-ghost: rgb(12 55 69 / 0.07); /* the button mock-ups in the A/B/C test */
+  --case-process-bar: var(--color-icon-bg); /* the process chart */
+  --case-grid: var(--case-line);
+  --case-ink-soft: var(--color-ink); /* the test cards */
+  --case-note-text: var(--color-ink);
+  --case-label: var(--color-muted);
+  --case-hairline: var(--case-line);
+  --case-person-1: var(--case-accent);
+  --case-person-2: var(--case-accent);
+  --case-person-3: var(--case-accent);
+  --case-note-bg: var(--color-icon-bg);
+  --case-note-bar: var(--case-accent);
+  --case-rating-bg: var(--color-icon-bg);
+  --case-rating: var(--case-accent);
+  --case-rating-text: var(--case-accent);
+  --case-friction: var(--color-black);
+  --case-dark: var(--color-ink); /* the dark result cards */
+  --case-dark-fg: var(--case-bg);
+  --case-dark-chip: rgb(255 255 255 / 0.15);
+  --case-pain: var(--color-black);
   --case-divider: var(--case-line); /* the lines between the four facts in the hero card */
 }
 
@@ -483,6 +530,24 @@
   --case-variant-text: var(--olx-ink);
   --case-chip-text: #2c565c;
   --case-divider: var(--olx-tint);
+  --case-process-bar: var(--olx-process-bar);
+  --case-grid: var(--olx-grid);
+  --case-ink-soft: var(--olx-ink-soft);
+  --case-note-text: var(--olx-note-text);
+  --case-label: var(--olx-label);
+  --case-hairline: var(--olx-hairline);
+  --case-person-1: var(--olx-person-1);
+  --case-person-2: var(--olx-person-2);
+  --case-person-3: var(--olx-person-3);
+  --case-note-bg: var(--olx-note-bg);
+  --case-note-bar: var(--olx-person-1);
+  --case-rating-bg: var(--olx-rating-bg);
+  --case-rating: var(--olx-person-1);
+  --case-rating-text: var(--olx-rating-text);
+  --case-friction: var(--olx-friction);
+  --case-dark: var(--olx-teal);
+  --case-dark-fg: var(--olx-cyan);
+  --case-pain: var(--olx-pain);
   /* Inside an OLX case, the shared "ink" and tint are OLX's own. */
   --color-ink: var(--olx-ink);
   --color-icon-bg: var(--olx-tint);

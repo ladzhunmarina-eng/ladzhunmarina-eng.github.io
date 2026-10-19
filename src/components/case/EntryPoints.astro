@@ -1,0 +1,142 @@
+---
+import { Image } from 'astro:assets';
+import shotA from '../../assets/images/olx-entry-a.png';
+import shotB from '../../assets/images/olx-entry-b.png';
+import shotC from '../../assets/images/olx-entry-c.png';
+
+interface Props {
+  variants: readonly { id: string; name: string; alt: string }[];
+}
+
+const { variants } = Astro.props;
+const shots: Record<string, ImageMetadata> = { A: shotA, B: shotB, C: shotC };
+---
+
+<!--
+  Three phones on a tinted panel, each under a label card, with a hand pointing at where the basket lives.
+  Everything is positioned as a share of the panel, so it scales as one picture.
+-->
+<div class="entry">
+  <div class="entry__stage">
+    {variants.map((variant) => (
+      <figure class={`entry__variant entry__variant--${variant.id.toLowerCase()}`} style={`--mark: var(--case-variant-${variant.id.toLowerCase()})`}>
+        <figcaption class="entry__label">
+          <span class="entry__mark" aria-hidden="true">{variant.id}</span>
+          <span class="entry__name">{variant.name}</span>
+        </figcaption>
+        <Image class="entry__shot" src={shots[variant.id]} alt={variant.alt} widths={[223, 446]} sizes="(max-width: 1023px) 28vw, 223px" quality={85} />
+      </figure>
+    ))}
+    <span class="entry__hand entry__hand--a" aria-hidden="true">☝️</span>
+    <span class="entry__hand entry__hand--b" aria-hidden="true">☝️</span>
+    <span class="entry__hand entry__hand--c" aria-hidden="true">☝️</span>
+  </div>
+</div>
+
+<style>
+  .entry {
+    container-type: inline-size;
+    position: relative;
+    aspect-ratio: var(--case-entry-ratio);
+    border-radius: var(--radius-card);
+    background: var(--color-icon-bg);
+  }
+
+  /* The 788 x 598 picture, centred (110px from the left, 23px from the top, of 1008 x 645) */
+  .entry__stage {
+    position: absolute;
+    top: 3.5659%;
+    left: 10.9127%;
+    width: 78.1746%;
+    height: 92.7132%;
+  }
+
+  .entry__variant {
+    position: absolute;
+    top: 0;
+    width: 28.3%; /* 223 / 788 */
+    height: 100%;
+    margin: 0;
+  }
+
+  .entry__variant--a {
+    left: 0;
+  }
+
+  .entry__variant--b {
+    left: 32.36%; /* 255 / 788 */
+  }
+
+  .entry__variant--c {
+    left: 64.72%; /* 510 / 788 */
+  }
+
+  .entry__label {
+    position: absolute;
+    inset: 0 0 auto 0;
+    display: flex;
+    align-items: center;
+    gap: 0.9em;
+    height: 11.7%; /* 70 / 598 */
+    padding-inline: 7.6%;
+    border-radius: 1.36cqw;
+    background: var(--color-white);
+    font-size: clamp(8px, 1.09cqw, 12px);
+    font-weight: var(--weight-medium);
+    line-height: 1.25;
+    color: var(--color-ink);
+  }
+
+  .entry__mark {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+    background: var(--mark);
+    font-weight: var(--weight-bold);
+    color: var(--case-variant-text);
+  }
+
+  .entry__variant--c .entry__mark {
+    opacity: 0.5;
+  }
+
+  .entry__shot {
+    position: absolute;
+    top: 14.2%; /* 85 / 598 */
+    left: 0;
+    width: 100%;
+    height: 80.6%; /* 482 / 598 */
+    object-fit: cover;
+    object-position: top;
+  }
+
+  .entry__variant--c .entry__shot {
+    top: 13.7%; /* 82 / 598 */
+  }
+
+  .entry__hand {
+    position: absolute;
+    font-size: 4.07cqw; /* 41px of 1008 */
+    line-height: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  .entry__hand--a {
+    left: 8.6%; /* 67.5 / 788 */
+    top: 96.5%; /* 577 / 598 */
+  }
+
+  .entry__hand--b {
+    left: 54.4%; /* 429 / 788 */
+    top: 16.9%; /* 101 / 598 */
+  }
+
+  .entry__hand--c {
+    left: 93.2%; /* 734.5 / 788 */
+    top: 86.6%; /* 518 / 598 */
+  }
+</style>

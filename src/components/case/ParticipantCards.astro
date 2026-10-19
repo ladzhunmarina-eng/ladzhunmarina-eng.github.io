@@ -1,0 +1,343 @@
+---
+interface Participant {
+  id: string;
+  name: string;
+  meta: string;
+  quotes: readonly string[];
+  behavioursLabel: string;
+  behaviours: readonly string[];
+  insights: readonly string[];
+}
+interface Pattern {
+  label: string;
+  items: readonly string[];
+}
+interface Props {
+  participants: readonly Participant[];
+  patterns: {
+    recurring: Pattern;
+    friction: Pattern;
+    implications: Pattern;
+    rating: { label: string; score: string; outOf: string; detail: string };
+  };
+}
+
+const { participants, patterns } = Astro.props;
+const columns = [
+  { ...patterns.recurring, tone: 'recurring' },
+  { ...patterns.friction, tone: 'friction' },
+  { ...patterns.implications, tone: 'implications' },
+];
+---
+
+<!-- The findings are wider than the column, so they scroll sideways; the fade at the right edge says so. -->
+<div class="people" role="region" aria-label="Moderated test findings, scrolls sideways" tabindex="0">
+  <div class="people__track">
+    <ul class="people__row">
+      {participants.map((person, index) => (
+        <li class="person" style={`--who: var(--case-person-${index + 1})`}>
+          <header class="person__head">
+            <p class="person__avatar" aria-hidden="true">{person.id}</p>
+            <div>
+              <h4 class="person__name">{person.name}</h4>
+              <p class="person__meta">{person.meta}</p>
+            </div>
+          </header>
+
+          <div class="person__block person__block--quotes">
+            <p class="label">Key quotes</p>
+            {person.quotes.map((quote) => <blockquote class="quote">“{quote}”</blockquote>)}
+          </div>
+
+          <div class="person__block">
+            <p class="label">{person.behavioursLabel}</p>
+            <ul class="points">
+              {person.behaviours.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+
+          <div class="person__block">
+            <p class="label">Insights</p>
+            <ul class="points points--insight">
+              {person.insights.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+        </li>
+      ))}
+    </ul>
+
+    <section class="patterns" aria-label="Patterns across participants">
+      <div class="patterns__columns">
+        {columns.map((column) => (
+          <div class={`patterns__column patterns__column--${column.tone}`}>
+            <p class="label">{column.label}</p>
+            <ul class="points">
+              {column.items.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <div class="rating">
+        <p class="label">{patterns.rating.label}</p>
+        <p class="rating__box">
+          <span class="rating__score">{patterns.rating.score}</span>
+          <span class="rating__out">{patterns.rating.outOf}</span>
+          <span class="rating__detail">{patterns.rating.detail}</span>
+        </p>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+  // The fade on the right edge goes once the end is reached.
+  document.querySelectorAll<HTMLElement>('.people').forEach((people) => {
+    const sync = () => {
+      const atEnd = people.scrollLeft + people.clientWidth >= people.scrollWidth - 2;
+      people.toggleAttribute('data-end', atEnd);
+    };
+    people.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    sync();
+  });
+</script>
+
+<style>
+  .people {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    /* the right edge fades into the page while there is more to see */
+    mask-image: linear-gradient(to right, #000 calc(100% - var(--case-fade-w)), transparent);
+  }
+
+  .people[data-end] {
+    mask-image: none;
+  }
+
+  .people__track {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-32);
+    width: max-content;
+    min-width: 100%;
+    padding-bottom: var(--space-4);
+  }
+
+  .people__row {
+    display: flex;
+    gap: var(--case-person-gap);
+  }
+
+  /* ---------- A participant ---------- */
+
+  .person {
+    display: flex;
+    flex-direction: column;
+    flex: none;
+    width: var(--case-person-w);
+    padding: var(--case-person-pad);
+    border: 1px solid var(--case-hairline);
+    border-radius: var(--radius-person);
+    background: var(--color-white);
+  }
+
+  .person__head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    padding-bottom: var(--space-20);
+    border-bottom: 1px solid var(--case-hairline);
+  }
+
+  .person__avatar {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--who);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-bold);
+    color: var(--color-white);
+  }
+
+  .person__name {
+    font-size: 15px;
+    font-weight: var(--weight-semibold);
+    line-height: var(--space-20);
+    color: var(--case-ink-soft);
+  }
+
+  .person__meta {
+    font-size: var(--fs-12);
+    line-height: var(--lh-12-18);
+    color: var(--case-label);
+  }
+
+  .person__block {
+    display: flex;
+    flex-direction: column;
+    padding-block: var(--space-16);
+    border-bottom: 1px solid var(--case-hairline);
+  }
+
+  .person__block:last-child {
+    padding-top: 6px;
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .label {
+    font-size: 10px;
+    font-weight: var(--weight-medium);
+    line-height: var(--space-20);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--case-label);
+  }
+
+  .quote {
+    position: relative;
+    margin: 0;
+    padding: 6px var(--space-12);
+    border-radius: 6px;
+    background: var(--case-note-bg);
+    font-size: 13px;
+    line-height: var(--space-20);
+    color: var(--case-note-text);
+  }
+
+  .quote::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 3px;
+    border-radius: 2px;
+    background: var(--case-note-bar);
+  }
+
+  .person__block--quotes {
+    padding-top: var(--space-20);
+  }
+
+  .quote + .quote {
+    margin-top: var(--space-12);
+  }
+
+  .points {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    font-size: 13px;
+    line-height: var(--space-20);
+    color: var(--case-ink-soft);
+  }
+
+  .points li {
+    position: relative;
+    padding-left: 14px;
+  }
+
+  .points li::before {
+    content: '';
+    position: absolute;
+    top: 7px;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--dot, var(--case-person-2));
+  }
+
+  .points--insight {
+    --dot: var(--case-person-3);
+  }
+
+  /* ---------- Patterns across the three ---------- */
+
+  .patterns {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-20);
+    padding: var(--space-28) var(--space-28);
+    border: 1px solid var(--case-hairline);
+    border-radius: var(--radius-person);
+    background: var(--color-white);
+  }
+
+  .patterns__columns {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .patterns__column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding-inline: var(--space-28);
+    border-left: 1px solid var(--case-hairline);
+  }
+
+  .patterns__column:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .patterns__column:last-child {
+    padding-right: 0;
+  }
+
+  .patterns__column--friction {
+    --dot: var(--case-friction);
+  }
+
+  .patterns__column--implications {
+    --dot: var(--case-rating);
+  }
+
+  .rating {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+  }
+
+  .rating__box {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-8);
+    width: min(100%, 487px);
+    padding: var(--space-14) var(--space-16);
+    border-radius: var(--space-8);
+    background: var(--case-rating-bg);
+  }
+
+  .rating__score {
+    font-family: var(--font-display);
+    font-size: var(--fs-32);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-32);
+    color: var(--case-rating);
+  }
+
+  .rating__out {
+    font-size: 13px;
+    color: var(--case-label);
+  }
+
+  .rating__detail {
+    margin-left: var(--space-12);
+    font-size: var(--fs-12);
+    line-height: var(--lh-12-18);
+    color: var(--case-rating-text);
+  }
+
+  @media (max-width: 640px) {
+    .person {
+      width: min(var(--case-person-w), 86vw);
+    }
+  }
+</style>

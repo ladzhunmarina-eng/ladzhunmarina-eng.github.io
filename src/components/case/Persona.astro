@@ -1,0 +1,93 @@
+---
+interface Props {
+  persona: {
+    eyebrow: string;
+    name: string;
+    text: string;
+    points: readonly string[];
+    quote: string;
+  };
+}
+
+const { persona } = Astro.props;
+---
+
+<section class="persona" aria-label={persona.name}>
+  <div class="persona__who">
+    <p class="persona__eyebrow">{persona.eyebrow}</p>
+    <h3 class="persona__name">{persona.name}</h3>
+    <p class="persona__text">{persona.text}</p>
+    <ul class="persona__points">
+      {persona.points.map((point) => <li>{point}</li>)}
+    </ul>
+  </div>
+  <blockquote class="persona__quote">{persona.quote}</blockquote>
+</section>
+
+<style>
+  .persona {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-32);
+    align-items: center;
+    padding: var(--case-card-pad);
+    border: 1px solid var(--case-line);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+  }
+
+  .persona__who {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .persona__eyebrow {
+    font-size: var(--fs-12);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-12-18);
+    letter-spacing: var(--ls-eyebrow);
+    color: var(--case-accent);
+  }
+
+  .persona__name {
+    font-family: var(--font-display);
+    font-size: var(--fs-24);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-24);
+    color: var(--color-ink);
+  }
+
+  .persona__text {
+    font-size: var(--fs-16);
+    line-height: var(--lh-body);
+    color: var(--color-ink);
+  }
+
+  .persona__points {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    font-size: 15px;
+    line-height: var(--lh-14-20);
+    color: var(--case-accent);
+  }
+
+  .persona__points li::before {
+    content: '•';
+    margin-right: var(--space-8);
+  }
+
+  .persona__quote {
+    font-size: var(--fs-18);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-body);
+    color: var(--color-ink);
+  }
+
+  @media (max-width: 760px) {
+    .persona {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

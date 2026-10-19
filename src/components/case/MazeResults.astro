@@ -1,0 +1,241 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  image: ImageMetadata;
+  imageAlt: string;
+  umux: { score: number; label: string; verdict: string; threshold: number; thresholdLabel: string; scale: readonly string[] };
+  responses: { count: number; label: string; countries: readonly string[] };
+  painPoints: { title: string; items: readonly { title: string; quote: string }[] };
+}
+
+const { image, imageAlt, umux, responses, painPoints } = Astro.props;
+---
+
+<div class="maze">
+  <div class="maze__shot">
+    <Image class="maze__image" src={image} alt={imageAlt} widths={[604, 1208]} sizes="(max-width: 1023px) 100vw, 604px" quality={85} />
+  </div>
+
+  <div class="maze__cards">
+    <section class="card" aria-label={umux.label}>
+      <p class="score">
+        <span class="score__value">{umux.score}</span>
+        <span class="score__label">{umux.label}</span>
+      </p>
+      <div class="gauge" role="img" aria-label={`Score ${umux.score} out of 100; the threshold is ${umux.threshold}`}>
+        <span class="gauge__fill" style={`width: ${umux.score}%`}></span>
+      </div>
+      <p class="verdict">
+        <span class="verdict__good">{umux.verdict}</span>
+        <span class="verdict__threshold">{umux.thresholdLabel}</span>
+      </p>
+      <ul class="scale" aria-hidden="true">
+        {umux.scale.map((step) => <li>{step}</li>)}
+      </ul>
+    </section>
+
+    <section class="card card--responses" aria-label="Responses">
+      <p class="count">
+        <span class="score__value">{responses.count}</span>
+        <span class="score__label">{responses.label}</span>
+      </p>
+      <ul class="countries">
+        {responses.countries.map((country) => <li class="chip">{country}</li>)}
+      </ul>
+    </section>
+
+    <section class="card" aria-label={painPoints.title}>
+      <h4 class="pains__title">{painPoints.title}</h4>
+      <ul class="pains">
+        {painPoints.items.map((pain) => (
+          <li class="pain">
+            <p class="pain__title">{pain.title}</p>
+            <p class="pain__quote">“{pain.quote}”</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </div>
+</div>
+
+<style>
+  .maze {
+    display: grid;
+    grid-template-columns: var(--case-maze-img-w) minmax(0, 1fr);
+    gap: var(--case-maze-gap);
+    align-items: stretch;
+  }
+
+  .maze__shot {
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    background: var(--color-icon-bg);
+  }
+
+  .maze__shot :global(.maze__image) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  .maze__cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    padding: var(--space-24);
+    border-radius: var(--radius-card);
+    background: var(--case-dark);
+    color: var(--case-dark-fg);
+  }
+
+  .score,
+  .count {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-12);
+  }
+
+  .score__value {
+    font-family: var(--font-display);
+    font-size: var(--fs-56);
+    font-weight: var(--weight-bold);
+    line-height: 1.05;
+  }
+
+  .score__label {
+    font-size: var(--fs-18);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-24);
+  }
+
+  /* "36 / Responses" stacks, with the countries beside it */
+  .card--responses {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-20);
+  }
+
+  .count {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .countries {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+  }
+
+  .chip {
+    padding: var(--space-4) var(--space-12);
+    border-radius: var(--radius-pill);
+    background: var(--case-dark-chip);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-14-20);
+    color: rgb(255 255 255 / 0.9);
+  }
+
+  .gauge {
+    position: relative;
+    height: var(--case-bar-h);
+    border-radius: var(--radius-pill);
+    background: var(--case-dark-chip);
+  }
+
+  .gauge__fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    border-radius: var(--radius-pill);
+    background: var(--case-dark-fg);
+  }
+
+  .verdict {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-12);
+    font-size: var(--fs-14);
+    line-height: var(--lh-14-20);
+  }
+
+  .verdict__good {
+    font-weight: var(--weight-medium);
+  }
+
+  .verdict__threshold,
+  .scale {
+    opacity: 0.6;
+  }
+
+  .scale {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--space-4);
+    font-size: 13px;
+    line-height: var(--lh-12-18);
+  }
+
+  .pains__title {
+    font-size: var(--fs-16);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-20);
+  }
+
+  .pains {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .pain {
+    position: relative;
+    padding-left: var(--space-18);
+  }
+
+  .pain::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--case-pain);
+  }
+
+  .pain__title {
+    font-size: var(--fs-14);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-14-20);
+  }
+
+  .pain__quote {
+    margin-top: var(--space-4);
+    font-size: 13px;
+    font-style: italic;
+    line-height: var(--lh-14-20);
+    opacity: 0.65;
+  }
+
+  @media (max-width: 1023px) {
+    .maze {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .card--responses {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

@@ -28,15 +28,15 @@ src/
     Experience.astro       Experience and Education columns
     ContactCard.astro      the card that opens from every "Contact" trigger
     case/                  the building blocks of a case study page:
-                             CaseHero, MetricStrip, CaseNav (sticky "On this page"), Section, SubSection,
-                             StatGrid, SegmentCards, ProcessTimeline, Summary, SurveyBars, HypothesisBlock,
-                             VariantCompare, UmuxCard, PainPoints, DecisionList, BeforeAfter, ImpactColumns,
-                             LearningCards, plus ImageSlot (labelled placeholder) and Verify (dev-only badge)
+                             CaseBack, CaseHero, CaseCover, MetricStrip, CaseNav (sticky "On this page"),
+                             Section, SubSection, StatGrid, CasePhoto, Persona, ProcessChart (Gantt), SurveyBars,
+                             VariantCompare, ParticipantCards (scrolls sideways), MazeResults, EntryPoints,
+                             BeforeAfter, LearningCards, plus ImageSlot (labelled placeholder) and Verify (dev-only badge)
     Button.astro, SocialLinks.astro
     Footer.astro           "Say Hi!", contact pills, copyright and social buttons
   data/
     content.ts             Featured Work cards, experience, education, marquee labels
-    cases/olx.ts           the OLX case study text (content only, no layout)
+    cases/olx.ts           the OLX case study text (the short version from the Figma; content only, no layout)
     cases/index.ts         the list of case studies the site builds pages for
     contact.ts             email, Telegram, WhatsApp shown in the contact card
   styles/

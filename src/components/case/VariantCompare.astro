@@ -1,10 +1,12 @@
 ---
 import Verify from './Verify.astro';
+import CartIcon from '../../assets/icons/cart.svg';
 
 interface Variant {
   id: string;
   name: string;
   label?: string;
+  icon?: string;
   leader?: boolean;
   [key: string]: unknown;
 }
@@ -20,13 +22,18 @@ const { variants, metrics = [], verify = false } = Astro.props;
 
 <ul class="variants">
   {variants.map((variant) => (
-    <li class:list={['variant', { 'variant--leader': variant.leader }]} style={`--mark: var(--case-variant-${variant.id.toLowerCase()}, var(--case-variant-a))`}>
+    <li class="variant" style={`--mark: var(--case-variant-${variant.id.toLowerCase()}, var(--case-variant-a))`}>
       <div class="variant__head">
         <p class="variant__id" aria-hidden="true">{variant.id}</p>
         <p class="variant__name">{variant.name}{verify && <Verify />}</p>
         {variant.leader && <p class="variant__badge">Leader</p>}
       </div>
-      {variant.label && <p class="variant__label">“{variant.label}”</p>}
+      {variant.label && (
+        <p class="variant__button">
+          {variant.icon === 'cart' && <CartIcon aria-hidden="true" />}
+          {variant.label}
+        </p>
+      )}
       {metrics.length > 0 && (
         <dl class="variant__metrics">
           {metrics.map((metric) => (
@@ -58,11 +65,6 @@ const { variants, metrics = [], verify = false } = Astro.props;
     background: var(--color-white);
   }
 
-  .variant--leader {
-    border-color: transparent;
-    background: var(--case-bg);
-  }
-
   .variant__head {
     display: flex;
     align-items: center;
@@ -76,49 +78,56 @@ const { variants, metrics = [], verify = false } = Astro.props;
     width: var(--space-32);
     height: var(--space-32);
     border-radius: 50%;
-    background: var(--mark, var(--case-variant-a));
-    font-family: var(--font-display);
+    background: var(--mark);
+    font-size: var(--fs-16);
     font-weight: var(--weight-bold);
+    line-height: var(--lh-16);
     color: var(--case-variant-text);
   }
 
   .variant__name {
     font-size: var(--fs-16);
     font-weight: var(--weight-medium);
-    line-height: var(--lh-body);
+    line-height: var(--space-24);
     color: var(--color-ink);
   }
 
+  /* "Leader" is a cyan badge, not a recoloured card. */
   .variant__badge {
     margin-left: auto;
     padding: var(--space-2) var(--space-10);
     border-radius: var(--radius-pill);
-    background: var(--color-black);
-    font-size: var(--fs-12);
+    background: var(--case-bg);
+    font-size: var(--fs-14);
     font-weight: var(--weight-medium);
-    line-height: var(--lh-12-18);
-    letter-spacing: var(--ls-eyebrow);
-    text-transform: uppercase;
-    color: var(--color-white);
+    line-height: var(--lh-14-20);
+    color: var(--case-on-bg);
   }
 
-  .variant__label {
-    font-size: var(--fs-18);
-    line-height: var(--lh-body);
+  /* The button as it looked in that variant */
+  .variant__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-8);
+    height: var(--button-height);
+    border-radius: var(--space-8);
+    background: var(--case-button-ghost);
+    font-size: var(--fs-16);
+    line-height: var(--lh-16);
     color: var(--color-ink);
+  }
+
+  .variant__button :global(svg) {
+    width: var(--space-24);
+    height: var(--space-24);
   }
 
   .variant__metrics {
     display: flex;
     flex-direction: column;
     gap: var(--space-8);
-    margin-top: var(--space-4);
-    padding-top: var(--space-12);
-    border-top: 1px solid var(--case-line);
-  }
-
-  .variant--leader .variant__metrics {
-    border-top-color: rgb(0 0 0 / 0.15);
+    padding: var(--space-16) 0 15px;
   }
 
   .variant__metric {
@@ -130,11 +139,8 @@ const { variants, metrics = [], verify = false } = Astro.props;
 
   .variant__metric dt {
     font-size: var(--fs-14);
+    line-height: var(--lh-14-20);
     color: var(--color-muted);
-  }
-
-  .variant--leader .variant__metric dt {
-    color: var(--color-ink);
   }
 
   .variant__metric dd {
@@ -142,6 +148,12 @@ const { variants, metrics = [], verify = false } = Astro.props;
     font-family: var(--font-display);
     font-size: var(--fs-20);
     font-weight: var(--weight-bold);
+    line-height: 1.05;
+    color: var(--color-ink);
+  }
+
+  /* The leader's labels are in ink, not grey */
+  .variant:has(.variant__badge) .variant__metric dt {
     color: var(--color-ink);
   }
 </style>

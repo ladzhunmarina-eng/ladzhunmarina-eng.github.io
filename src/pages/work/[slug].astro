@@ -7,21 +7,21 @@ import CaseNav from '../../components/case/CaseNav.astro';
 import Section from '../../components/case/Section.astro';
 import SubSection from '../../components/case/SubSection.astro';
 import StatGrid from '../../components/case/StatGrid.astro';
-import SegmentCards from '../../components/case/SegmentCards.astro';
-import ProcessTimeline from '../../components/case/ProcessTimeline.astro';
-import Summary from '../../components/case/Summary.astro';
+import Persona from '../../components/case/Persona.astro';
+import ProcessChart from '../../components/case/ProcessChart.astro';
 import SurveyBars from '../../components/case/SurveyBars.astro';
-import HypothesisBlock from '../../components/case/HypothesisBlock.astro';
 import VariantCompare from '../../components/case/VariantCompare.astro';
-import UmuxCard from '../../components/case/UmuxCard.astro';
-import PainPoints from '../../components/case/PainPoints.astro';
-import DecisionList from '../../components/case/DecisionList.astro';
+import ParticipantCards from '../../components/case/ParticipantCards.astro';
+import MazeResults from '../../components/case/MazeResults.astro';
+import EntryPoints from '../../components/case/EntryPoints.astro';
 import BeforeAfter from '../../components/case/BeforeAfter.astro';
-import ImpactColumns from '../../components/case/ImpactColumns.astro';
 import LearningCards from '../../components/case/LearningCards.astro';
 import CaseCover from '../../components/case/CaseCover.astro';
+import CasePhoto from '../../components/case/CasePhoto.astro';
 import ImageSlot from '../../components/case/ImageSlot.astro';
-import Verify from '../../components/case/Verify.astro';
+import MazeLogo from '../../assets/icons/maze.svg';
+import problemPhoto from '../../assets/images/olx-problem.jpg';
+import mazeShot from '../../assets/images/olx-maze.png';
 import { cases } from '../../data/cases';
 import { work } from '../../data/content';
 
@@ -36,10 +36,6 @@ const { study } = Astro.props;
 const brandPalettes: Record<string, string> = { olx: 'olx' };
 const themeIndex = { yellow: '1', cream: '2', lilac: '3', mint: '4' }[study.theme];
 const palette = brandPalettes[study.slug] ?? `work-${themeIndex}`;
-
-// Fields that may be a plain string or { text, verify } (draft wording flagged for checking).
-const textOf = (value: string | { text: string }) => (typeof value === 'string' ? value : value.text);
-const needsVerify = (value: unknown) => typeof value === 'object' && value !== null && 'verify' in value && !!(value as { verify?: boolean }).verify;
 
 const { basket, delivery } = study;
 
@@ -62,40 +58,28 @@ const card = work.find((item) => item.href === `/work/${study.slug}`);
       <CaseNav items={study.nav} />
 
       <div class="case__sections">
-        <Section id="context" eyebrow={study.context.eyebrow} title={study.context.title}>
-          {study.context.body.map((paragraph) => <p>{paragraph}</p>)}
-        </Section>
-
         <Section id="problem" eyebrow={study.problem.eyebrow} title={study.problem.title} lead={study.problem.lead}>
           <StatGrid stats={study.problem.stats} />
-          <SegmentCards segments={study.problem.segments} />
-          <ImageSlot label="Favorites list with items from one seller" />
+          <CasePhoto src={problemPhoto} alt={study.problem.photoAlt} />
+          <Persona persona={study.problem.persona} />
         </Section>
 
-        <Section id="role" eyebrow={study.role.eyebrow} title={study.role.title} verify={study.role.verify}>
+        <Section id="role" eyebrow={study.role.eyebrow} title={study.role.title}>
           <ul class="bullets">
             {study.role.bullets.map((bullet) => <li>{bullet}</li>)}
           </ul>
         </Section>
 
         <Section id="process" eyebrow={study.process.eyebrow} title={study.process.title}>
-          <ProcessTimeline phases={study.process.phases} tools={study.process.tools} />
+          <ProcessChart phases={study.process.phases} bars={study.process.bars} />
         </Section>
 
         <Section id="basket" eyebrow={basket.eyebrow} title={basket.title}>
-          <Summary summary={basket.summary} />
-
           <SubSection title={basket.survey.title}>
             <SurveyBars question={basket.survey.question} groups={basket.survey.groups} insight={basket.survey.insight} />
           </SubSection>
 
-          <SubSection title="The hypothesis">
-            <HypothesisBlock hypothesis={basket.hypothesis} />
-          </SubSection>
-
           <SubSection title={basket.buttonTest.title} lead={basket.buttonTest.lead}>
-            <p class="note">{textOf(basket.buttonTest.method)}{needsVerify(basket.buttonTest.method) && <Verify />}</p>
-            <p class="note">{textOf(basket.buttonTest.metricNote)}{needsVerify(basket.buttonTest.metricNote) && <Verify />}</p>
             <VariantCompare
               variants={basket.buttonTest.variants}
               metrics={[
@@ -103,41 +87,39 @@ const card = work.find((item) => item.href === `/work/${study.slug}`);
                 { key: 'bundle', label: 'Bundle rate' },
               ]}
             />
-            <p class="callout">{basket.buttonTest.readout}</p>
+          </SubSection>
+
+          <SubSection title={basket.moderatedTest.title} lead={basket.moderatedTest.method}>
+            <ParticipantCards participants={basket.moderatedTest.participants} patterns={basket.moderatedTest.patterns} />
           </SubSection>
 
           <SubSection title={basket.usability.title}>
-            <p class="note">{textOf(basket.usability.method)}{needsVerify(basket.usability.method) && <Verify />}</p>
-            <UmuxCard umux={basket.usability.umux} />
-            <PainPoints points={basket.usability.painPoints} />
+            <MazeLogo slot="aside" class="maze-logo" role="img" aria-label="Maze" />
+            <p class="note">{basket.usability.method}</p>
+            <MazeResults
+              image={mazeShot}
+              imageAlt={basket.usability.imageAlt}
+              umux={basket.usability.umux}
+              responses={basket.usability.responses}
+              painPoints={basket.usability.painPoints}
+            />
             <p class="callout">{basket.usability.followUp}</p>
           </SubSection>
 
-          <SubSection title={basket.decisions.title} verify={basket.decisions.verify}>
-            <DecisionList items={basket.decisions.items} />
-          </SubSection>
-
-          <SubSection title={basket.entryTest.title} lead={basket.entryTest.lead} verify={basket.entryTest.verify}>
-            <VariantCompare variants={basket.entryTest.variants} />
-            <ImageSlot label="The three entry points: tab, tab with basket inside, floating button" />
+          <SubSection title={basket.entryTest.title} lead={basket.entryTest.lead}>
+            <EntryPoints variants={basket.entryTest.variants} />
           </SubSection>
 
           <SubSection title={basket.screens.title}>
-            <ImageSlot label="Basket screens" ratio="16 / 10" />
+            <ImageSlot label="Basket screens" ratio="1008 / 630" />
             <p class="note">{basket.screens.caption}</p>
-          </SubSection>
-
-          <SubSection title="Status">
-            <p class="callout">{basket.status}</p>
           </SubSection>
         </Section>
 
         <Section id="delivery" eyebrow={delivery.eyebrow} title={delivery.title}>
-          <Summary summary={delivery.summary} />
-
           <SubSection title={delivery.seller.title} lead={delivery.seller.text}>
             <StatGrid stats={delivery.seller.stats} />
-            <ImageSlot label="Seller settings: free delivery and carriers" />
+            <ImageSlot label="Seller settings: free delivery and carriers" ratio="1008 / 567" />
           </SubSection>
 
           <SubSection title={delivery.buyer.title}>
@@ -150,10 +132,6 @@ const card = work.find((item) => item.href === `/work/${study.slug}`);
             <StatGrid stats={delivery.buyer.results} />
             <p class="note">{delivery.buyer.resultNote}</p>
           </SubSection>
-        </Section>
-
-        <Section id="impact" eyebrow={study.impact.eyebrow} title={study.impact.title}>
-          <ImpactColumns columns={study.impact.columns} method={study.impact.method} />
         </Section>
 
         <Section id="learnings" eyebrow={study.learnings.eyebrow} title={study.learnings.title}>
@@ -219,6 +197,13 @@ const card = work.find((item) => item.href === `/work/${study.slug}`);
     font-size: var(--fs-14);
     line-height: var(--lh-14-20);
     color: var(--color-muted);
+  }
+
+  .maze-logo {
+    flex: none;
+    width: var(--case-maze-logo-w);
+    height: auto;
+    color: var(--color-black);
   }
 
   .callout {

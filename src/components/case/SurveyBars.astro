@@ -66,22 +66,26 @@ const { question, groups, insight } = Astro.props;
     background: var(--color-white);
   }
 
+  /* The name sits 52px from the card's top edge, as designed: 27px of room above it, 25px below. */
   .group__head {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     gap: var(--space-12);
+    padding-block: 27px 25px;
   }
 
   .group__name {
     font-family: var(--font-display);
     font-size: var(--fs-20);
     font-weight: var(--weight-bold);
+    line-height: var(--lh-20);
     color: var(--color-ink);
   }
 
   .group__n {
     font-size: var(--fs-14);
+    line-height: var(--lh-14-20);
     color: var(--color-muted);
   }
 
@@ -100,6 +104,7 @@ const { question, groups, insight } = Astro.props;
     gap: var(--space-4) var(--space-12);
     font-size: var(--fs-14);
     line-height: var(--lh-14-20);
+    color: var(--color-black);
   }
 
   .bar__label {
