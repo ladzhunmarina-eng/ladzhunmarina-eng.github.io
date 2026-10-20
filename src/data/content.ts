@@ -178,3 +178,16 @@ export const reviews = {
     },
   ],
 };
+
+/* "Design stack and craft": the tools, in rows that get wider from top to bottom. */
+export const stack = {
+  title: 'Design stack and craft',
+  lead: 'The tools I research, design, prototype and ship with.',
+  rows: [
+    ['Figma'],
+    ['Rive', 'Lovable'],
+    ['Maze', 'Enterpret'],
+    ['NotebookLM', 'GitHub'],
+    ['Codex', 'Claude Code', 'Azure DevOps'],
+  ],
+};

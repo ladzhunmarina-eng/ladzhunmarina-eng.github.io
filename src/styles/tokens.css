@@ -215,6 +215,10 @@
   --experience-list: 487px; /* bullet list measure */
   --experience-summary: 497px; /* closing summary measure */
   --reviews-w: 860px; /* the Wall of Love text column */
+  --stack-w: 1148px; /* the design stack block, from the left edge of Experience */
+  --stack-lead-w: 360px; /* its short description */
+  --wave-w: 16px; /* the tile of the wavy line under each row of tools */
+  --wave-h: 10px;
   --reviews-photo: 48px; /* the colleague's photo beside their name */
 
   /* ---------- Hero avatar (scales with the heading font-size) ---------- */
