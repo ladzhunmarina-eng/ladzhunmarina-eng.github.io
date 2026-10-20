@@ -4,13 +4,15 @@ interface Props {
   variant?: 'solid' | 'outline' | 'outline-strong';
   size?: 'md' | 'sm';
   wide?: boolean;
+  /** Opens in a new tab: for links to other sites. */
+  external?: boolean;
   class?: string;
 }
 
-const { href, variant = 'solid', size = 'md', wide = false, class: className } = Astro.props;
+const { href, variant = 'solid', size = 'md', wide = false, external = false, class: className } = Astro.props;
 ---
 
-<a class:list={['button', `button--${variant}`, `button--${size}`, { 'button--wide': wide }, className]} href={href}><slot /></a>
+<a class:list={['button', `button--${variant}`, `button--${size}`, { 'button--wide': wide }, className]} href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined}><slot /></a>
 
 <style>
   .button {

@@ -2,6 +2,9 @@ import card1 from '../assets/images/card1.png';
 import card2 from '../assets/images/card2.png';
 import card3 from '../assets/images/card3.png';
 import card4 from '../assets/images/card4.png';
+import review1 from '../assets/images/review-1.png';
+import review2 from '../assets/images/review-2.png';
+import review3 from '../assets/images/review-3.png';
 import projectorLogo from '../assets/images/projector-logo.png';
 import robotDreamsLogo from '../assets/images/robot-dreams-logo.png';
 
@@ -138,3 +141,40 @@ export const education = [
     card: { theme: 'cream', logo: robotDreamsLogo, logoWidth: 59, logoHeight: 33, kind: '📚 Course', title: 'Product Hypothesis', year: '2025' },
   },
 ];
+
+/*
+ * "Wall of Love": one colleague's line set large, two more as shorter excerpts. Every quote is a passage taken
+ * word for word from the full recommendation; the full texts are on LinkedIn.
+ */
+export const reviews = {
+  linkedin: 'https://www.linkedin.com/in/marina-ladzhun-876068101/',
+  featured: {
+    name: 'Agata Woźniak',
+    role: 'Product Manager',
+    photo: review3,
+    alt: 'Portrait of Agata Woźniak',
+    quote: 'She is always a priceless team member that can bring a lot of positive changes for your Team and Customers.',
+  },
+  others: [
+    {
+      name: 'Kenneth Lambæk Jensen',
+      role: 'Chief Innovation Officer',
+      photo: review1,
+      alt: 'Portrait of Kenneth Lambæk Jensen',
+      quote: [
+        'Marina is not only very competent and talented at creating beautiful UI’s, she is also very knowledgeable about UI/UX and good at communicating her ideas.',
+        'In Marina we didn’t just find a trustworthy business partner, we also got the best and most creative designs that matched our high expectations.',
+      ],
+    },
+    {
+      name: 'Jen Volmer',
+      role: 'Head of Product',
+      photo: review2,
+      alt: 'Portrait of Jen Volmer',
+      quote: [
+        'Marina was a fantastic contributor to the team - she brought thoughtful and strategic UX/UI recommendations to a complex product.',
+        'She is both agile and focused, works quickly and efficiently, and always stands by the integrity of her work',
+      ],
+    },
+  ],
+};

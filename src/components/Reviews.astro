@@ -1,0 +1,197 @@
+---
+import { Image } from 'astro:assets';
+import Button from './Button.astro';
+import QuoteOpen from '../assets/icons/quote-open.svg';
+import QuoteClose from '../assets/icons/quote-close.svg';
+import { reviews } from '../data/content';
+
+const { featured, others, linkedin } = reviews;
+---
+
+<section class="reviews" id="reviews" aria-labelledby="reviews-title">
+  <div class="reviews__inner">
+    <h2 id="reviews-title" class="reviews__title">Wall of Love</h2>
+
+    <figure class="feature">
+      <figcaption class="author">
+        <Image class="author__photo" src={featured.photo} alt={featured.alt} width={96} height={96} widths={[48, 96, 144]} sizes="48px" />
+        <span class="author__line"><span class="author__name">{featured.name}</span><span class="author__dot" aria-hidden="true">✳</span>{featured.role}</span>
+      </figcaption>
+      <blockquote class="feature__quote">
+        <QuoteOpen class="mark mark--open" aria-hidden="true" />
+        <p>{featured.quote}<QuoteClose class="mark mark--close" aria-hidden="true" /></p>
+      </blockquote>
+    </figure>
+
+    <ul class="others">
+      {others.map((review) => (
+        <li>
+          <figure class="note">
+            <figcaption class="author">
+              <Image class="author__photo" src={review.photo} alt={review.alt} width={96} height={96} widths={[48, 96, 144]} sizes="48px" />
+              <span class="author__line"><span class="author__name">{review.name}</span><span class="author__dot" aria-hidden="true">✳</span>{review.role}</span>
+            </figcaption>
+            <blockquote class="note__quote">
+              <QuoteOpen class="mark mark--small mark--open" aria-hidden="true" />
+              {review.quote.map((paragraph, index) => (
+                <p>
+                  {paragraph}
+                  {index === review.quote.length - 1 && <QuoteClose class="mark mark--small mark--close" aria-hidden="true" />}
+                </p>
+              ))}
+            </blockquote>
+          </figure>
+        </li>
+      ))}
+    </ul>
+
+    <Button class="reviews__more" href={linkedin} variant="outline-strong" external>More on LinkedIn</Button>
+  </div>
+</section>
+
+<style>
+  /* A tinted band across the page, with the text held to the same left edge as Experience above it. */
+  .reviews {
+    padding: var(--space-134) var(--gutter) var(--space-167) max(var(--gutter), calc((100% - 1148px) / 2));
+    background: var(--color-icon-bg);
+  }
+
+  .reviews__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-56);
+    max-width: var(--reviews-w);
+  }
+
+  .reviews__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-display);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-display);
+    color: var(--color-ink);
+  }
+
+  /* "Name ✳ Role" above each quote */
+  .author {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    margin-bottom: var(--space-20);
+    font-size: var(--fs-16);
+    line-height: var(--lh-20);
+    color: var(--color-muted);
+  }
+
+  .author__photo {
+    flex: none;
+    width: var(--reviews-photo);
+    height: var(--reviews-photo);
+  }
+
+  .author__name {
+    color: var(--color-ink);
+  }
+
+  .author__dot {
+    margin-inline: var(--space-8);
+    font-size: var(--fs-14);
+    color: var(--color-nav-active);
+  }
+
+  /* In the narrower columns the role goes under the name, so the two lines match each other. */
+  .note .author__line {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .note .author__dot {
+    display: none;
+  }
+
+  .feature {
+    margin: 0;
+  }
+
+  .feature__quote {
+    position: relative;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--fs-quote);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-display);
+    letter-spacing: var(--ls-title);
+    color: var(--color-ink);
+  }
+
+  /* The brush-stroke quote marks, in the yellow of the active nav chip */
+  .mark {
+    color: var(--color-nav-active);
+  }
+
+  .mark--open {
+    position: absolute;
+    top: var(--space-4);
+    left: calc(-1 * var(--space-30));
+    width: var(--space-24);
+    height: auto;
+  }
+
+  .mark--close {
+    display: inline-block;
+    width: var(--space-24);
+    height: auto;
+    margin-left: var(--space-8);
+    vertical-align: bottom;
+  }
+
+  .others {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-42);
+  }
+
+  .note {
+    margin: 0;
+  }
+
+  .note__quote {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    margin: 0;
+    font-size: var(--fs-18);
+    line-height: var(--lh-quote);
+    color: var(--color-ink);
+  }
+
+  .mark--small.mark--open {
+    top: var(--space-2);
+    left: calc(-1 * var(--space-20));
+    width: var(--space-12);
+  }
+
+  .mark--small.mark--close {
+    width: var(--space-12);
+    margin-left: var(--space-4);
+    vertical-align: baseline;
+  }
+
+  @media (max-width: 860px) {
+    .others {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .mark--open {
+      position: static;
+      display: block;
+      margin-bottom: var(--space-8);
+    }
+
+    .mark--small.mark--open {
+      width: var(--space-12);
+    }
+  }
+</style>
