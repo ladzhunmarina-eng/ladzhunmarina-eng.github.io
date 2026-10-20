@@ -130,13 +130,17 @@ const shots: Record<string, ImageMetadata> = { A: shotA, B: shotB, C: shotC };
     top: 96.5%; /* 577 / 598 */
   }
 
+  /* Turned upside down: points down at the basket icon in the top bar */
   .entry__hand--b {
     left: 54.4%; /* 429 / 788 */
     top: 16.9%; /* 101 / 598 */
+    transform: translate(-50%, -50%) rotate(180deg);
   }
 
+  /* Tilted 49.8° anticlockwise: points up and left at the floating button */
   .entry__hand--c {
     left: 93.2%; /* 734.5 / 788 */
     top: 86.6%; /* 518 / 598 */
+    transform: translate(-50%, -50%) rotate(-49.8deg);
   }
 </style>
