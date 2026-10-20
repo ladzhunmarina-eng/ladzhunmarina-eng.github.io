@@ -103,10 +103,10 @@ let chipIndex = 0;
 
   /* A tool: its logo and name in a soft pill that sits in the line of text */
   .tool {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.26em;
-    padding: 0.04em 0.4em 0.04em 0.15em;
+    /* inline-block, so the name's baseline is the chip's baseline and it sits on the line of the sentence */
+    display: inline-block;
+    padding: 0.06em 0.4em 0.06em 0.15em;
+    line-height: 1.2;
     border-radius: var(--radius-pill);
     background: var(--color-tool-chip);
     vertical-align: baseline;
@@ -116,9 +116,11 @@ let chipIndex = 0;
 
   /* Every logo is a circle; on hover it relaxes into the shape it was drawn with. */
   .tool :global(.tool__logo) {
-    flex: none;
+    display: inline-block; /* the global reset makes images block, which would ignore vertical-align */
     width: 1.15em;
     height: 1.15em;
+    margin-right: 0.26em;
+    vertical-align: -0.2em;
     border-radius: 50%;
     object-fit: cover;
     transition: border-radius 0.4s var(--ease-out);
