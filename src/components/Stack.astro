@@ -1,63 +1,112 @@
 ---
 import { Image } from 'astro:assets';
 import { stack, tools } from '../data/content';
+
+// Each line becomes a list of pieces: text, or a chip that carries the comma or full stop after it, so a
+// line break can never leave punctuation on its own at the start of a line.
+type Piece = { text: string } | { tool: keyof typeof tools; after: string };
+
+const lines: Piece[][] = stack.lines.map((line) => {
+  const pieces: Piece[] = [];
+  for (const part of line) {
+    if (typeof part !== 'string') {
+      pieces.push({ tool: part.tool, after: '' });
+      continue;
+    }
+    const last = pieces[pieces.length - 1];
+    const lead = part.match(/^[,.]+/)?.[0] ?? '';
+    if (last && 'tool' in last && lead) {
+      last.after = lead;
+      if (part.length > lead.length) pieces.push({ text: part.slice(lead.length) });
+    } else {
+      pieces.push({ text: part });
+    }
+  }
+  return pieces;
+});
+
+// The chips come in one after another; this is each chip's place in that order.
+let chipIndex = 0;
 ---
 
 <section class="stack" id="stack" aria-labelledby="stack-title">
-  <h2 id="stack-title" class="stack__title">{stack.title}</h2>
+  <h2 id="stack-title" class="visually-hidden">{stack.title}</h2>
 
   <p class="stack__sentence">
-    {stack.sentence.map((part) => {
-      if (typeof part === 'string') return part;
-      const tool = tools[part.tool];
-      return (
-        <span class="tool">
-          {tool.logo ? (
-            <Image class="tool__logo" src={tool.logo} alt="" width={64} height={64} widths={[32, 64, 96]} sizes="1.15em" />
-          ) : (
-            <span class="tool__logo tool__logo--initial" aria-hidden="true"><span>{tool.name[0]}</span></span>
-          )}
-          {tool.name}
-        </span>
-      );
-    })}
+    {lines.map((line) => (
+      <span class="line">
+        {line.map((piece) => {
+          if ('text' in piece) return piece.text;
+          const tool = tools[piece.tool];
+          const index = chipIndex++;
+          return (
+            <span class="unit">
+              <span class="tool" style={`--i: ${index}`}>
+                <Image class="tool__logo" src={tool.logo} alt="" width={64} height={64} widths={[32, 64, 96]} sizes="1.15em" />
+                {tool.name}
+              </span>
+              {piece.after}
+            </span>
+          );
+        })}
+      </span>
+    ))}
   </p>
 </section>
+
+<script>
+  // The chips settle into the sentence the first time it scrolls into view. Without this script
+  // (or with reduced motion) they are simply there from the start.
+  const section = document.querySelector<HTMLElement>('.stack');
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  if (section && !calm.matches && 'IntersectionObserver' in window) {
+    section.dataset.reveal = 'ready';
+    const seen = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        seen.disconnect();
+        section.dataset.reveal = 'go';
+      },
+      { threshold: 0.35 },
+    );
+    seen.observe(section);
+  }
+</script>
 
 <style>
   .stack {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-32);
+    justify-content: center;
     padding: var(--space-167) var(--gutter);
     text-align: center;
-  }
-
-  .stack__title {
-    font-size: var(--fs-14);
-    font-weight: var(--weight-medium);
-    line-height: var(--lh-14-20);
-    letter-spacing: var(--ls-eyebrow);
-    text-transform: uppercase;
-    color: var(--color-muted);
   }
 
   .stack__sentence {
     max-width: var(--stack-w);
     font-size: var(--fs-stack);
     font-weight: var(--weight-medium);
-    line-height: 1.5;
+    line-height: 1.55;
     letter-spacing: var(--ls-title);
     color: var(--color-ink);
+    text-wrap: balance;
+  }
+
+  /* One clause per line. If a line is too long for the screen it wraps inside itself. */
+  .line {
+    display: block;
+  }
+
+  .unit {
+    white-space: nowrap;
   }
 
   /* A tool: its logo and name in a soft pill that sits in the line of text */
   .tool {
     display: inline-flex;
     align-items: center;
-    gap: 0.28em;
-    padding: 0.02em 0.4em 0.02em 0.14em;
+    gap: 0.26em;
+    padding: 0.04em 0.4em 0.04em 0.15em;
     border-radius: var(--radius-pill);
     background: var(--color-tool-chip);
     vertical-align: baseline;
@@ -65,35 +114,42 @@ import { stack, tools } from '../data/content';
     transition: background-color 0.2s ease-out;
   }
 
-  .tool:hover {
-    background: var(--color-nav-active);
-  }
-
   .tool :global(.tool__logo) {
     flex: none;
     width: 1.15em;
     height: 1.15em;
+    transition: transform 0.35s var(--ease-out);
   }
 
-  /* A tool without a logo file yet: its initial on a white tile, the size of a logo */
-  .tool :global(.tool__logo--initial) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 0.3em;
-    background: var(--color-white);
-    color: var(--color-ink);
-    font-weight: var(--weight-bold);
-    line-height: 1;
+  .tool:hover {
+    background: var(--color-nav-active);
   }
 
-  .tool__logo--initial span {
-    font-size: 0.6em;
+  .tool:hover :global(.tool__logo) {
+    transform: rotate(-8deg) scale(1.08);
+  }
+
+  /* The settle-in: each chip rises a little and fades up, a short beat after the one before it. */
+  .stack[data-reveal='ready'] .tool {
+    opacity: 0;
+    transform: translateY(0.3em) scale(0.94);
+  }
+
+  .stack[data-reveal='go'] .tool {
+    transition:
+      opacity 0.6s var(--ease-out) calc(var(--i) * 70ms),
+      transform 0.6s var(--ease-out) calc(var(--i) * 70ms),
+      background-color 0.2s ease-out;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .tool {
+    .tool,
+    .tool :global(.tool__logo) {
       transition: none;
+    }
+
+    .tool:hover :global(.tool__logo) {
+      transform: none;
     }
   }
 </style>

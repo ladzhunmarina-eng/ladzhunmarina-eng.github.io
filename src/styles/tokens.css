@@ -164,6 +164,9 @@
   --ls-eyebrow: 0.08em; /* small uppercase labels */
   --ls-title: -0.015em; /* the case study title */
 
+  /* ---------- Motion ---------- */
+  --ease-out: cubic-bezier(0.25, 1, 0.5, 1); /* ease-out-quart: things settle, they do not bounce */
+
   /* ---------- Spacing ---------- */
   --space-2: 2px;
   --space-3: 3px;
@@ -219,7 +222,7 @@
   --experience-list: 487px; /* bullet list measure */
   --experience-summary: 497px; /* closing summary measure */
   --reviews-w: 860px; /* the Wall of Love text column */
-  --stack-w: 1000px; /* the width of the design stack sentence */
+  --stack-w: 1272px; /* the widest the design stack sentence may run (its longest line is about 1250px) */
   --reviews-photo: 48px; /* the colleague's photo beside their name */
 
   /* ---------- Hero avatar (scales with the heading font-size) ---------- */

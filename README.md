@@ -26,7 +26,7 @@ src/
     Marquee.astro          the scrolling skills strip
     WorkCard.astro         one Featured Work panel (stacks with CSS sticky on desktop)
     Experience.astro       Experience and Education columns
-    Stack.astro            "Design stack and craft": one sentence where each tool is a chip with its logo
+    Stack.astro            "Design stack and craft": a sentence in which each tool is a pill with its logo
     Reviews.astro          "Wall of Love": one large colleague quote, two shorter ones, a LinkedIn button
     ContactCard.astro      the card that opens from every "Contact" trigger
     case/                  the building blocks of a case study page:
@@ -63,7 +63,7 @@ src/
 - **Experience and Education:** two 576px columns from 1024px wide (stacked below): the roles on the left; the degree and two certificates, each with its coloured card, on the right. Content lives in `experience` and `education` in `src/data/content.ts`. The endorsement notes and the Wall of Love carousel are in git history (commits `9452a91` and `59bfb44`).
 - **Footer:** black, "Say Hi!" (the letters of "Hi!" drop in one after another when the footer scrolls into view, bounce and settle; hovering the heading drops them again; off for reduced motion) over three pill buttons (Email opens a mail draft, Telegram and WhatsApp open the chats), then the copyright line and the round GitHub / LinkedIn / Dribbble buttons. A yellow round arrow in the top-right corner of the footer scrolls back to the top (on phones it sits centred at the bottom). 535px tall at 1440px wide, as in the design.
 - **Wall of Love:** a tinted band after Experience (its heading is only for screen readers). The quotes are passages taken word for word from the full recommendations (`reviews` in `content.ts`); the button opens the LinkedIn profile.
-- **Design stack:** a single centred sentence in which every tool is a soft pill with its logo (`tools` and `stack` in `content.ts`; logos in `src/assets/tools/`). Rive, GitHub and Azure DevOps show an initial until their logo files are added.
+- **Design stack:** one centred sentence, one clause per line (research, design, prototype, ship), in which every tool is a soft pill with its logo (`tools` and `stack` in `content.ts`; logos in `src/assets/tools/`). The pills settle in one after another the first time it scrolls into view (off for reduced motion); the heading is only for screen readers.
 - **Motion:** the marquee, the hand wave and the contact card respect `prefers-reduced-motion`.
 - **Font:** DM Sans (one variable file, weight and optical-size axes) for everything, self-hosted through `@fontsource-variable/dm-sans`. The font tokens are at the top of `tokens.css`.
 

@@ -186,48 +186,34 @@ import toolCodex from '../assets/tools/codex.png';
 import toolEnterpret from '../assets/tools/enterpret.png';
 import toolLovable from '../assets/tools/lovable.png';
 import toolMaze from '../assets/tools/maze.png';
+import toolRive from '../assets/tools/rive.png';
+import toolGithub from '../assets/tools/github.png';
+import toolAzure from '../assets/tools/azure-devops.png';
 
 /*
- * "Design stack and craft": one sentence in which every tool is a chip with its logo. A logo is the file
- * exported from Figma; a tool with `logo: null` shows a plain initial until its logo file is added.
+ * "Design stack and craft": one sentence in which every tool is a chip with its logo (files exported
+ * from the Figma, in src/assets/tools/).
  */
 export const tools = {
   notebooklm: { name: 'NotebookLM', logo: toolNotebookLm },
   maze: { name: 'Maze', logo: toolMaze },
   enterpret: { name: 'Enterpret', logo: toolEnterpret },
   figma: { name: 'Figma', logo: toolFigma },
-  rive: { name: 'Rive', logo: null },
+  rive: { name: 'Rive', logo: toolRive },
   lovable: { name: 'Lovable', logo: toolLovable },
   claude: { name: 'Claude Code', logo: toolClaude },
   codex: { name: 'Codex', logo: toolCodex },
-  github: { name: 'GitHub', logo: null },
-  azure: { name: 'Azure DevOps', logo: null },
+  github: { name: 'GitHub', logo: toolGithub },
+  azure: { name: 'Azure DevOps', logo: toolAzure },
 };
 
 export const stack = {
   title: 'Design stack and craft',
-  // strings are text; { tool } is a chip
-  sentence: [
-    'I research with ',
-    { tool: 'notebooklm' },
-    ', ',
-    { tool: 'maze' },
-    ' and ',
-    { tool: 'enterpret' },
-    ', design in ',
-    { tool: 'figma' },
-    ' and animate with ',
-    { tool: 'rive' },
-    ', prototype in ',
-    { tool: 'lovable' },
-    ' and ',
-    { tool: 'claude' },
-    ', and ship with ',
-    { tool: 'codex' },
-    ', ',
-    { tool: 'github' },
-    ' and ',
-    { tool: 'azure' },
-    '.',
+  // One clause per line (research, design, prototype, ship); strings are text, { tool } is a chip
+  lines: [
+    ['I research with ', { tool: 'notebooklm' }, ', ', { tool: 'maze' }, ' and ', { tool: 'enterpret' }, ','],
+    ['design in ', { tool: 'figma' }, ' and animate with ', { tool: 'rive' }, ','],
+    ['prototype in ', { tool: 'lovable' }, ', ', { tool: 'claude' }, ' and ', { tool: 'codex' }, ','],
+    ['and ship with ', { tool: 'github' }, ' and ', { tool: 'azure' }, '.'],
   ],
 } as const;
