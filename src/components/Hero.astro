@@ -37,7 +37,7 @@ import SocialLinks from './SocialLinks.astro';
   .hero__title {
     max-width: var(--hero-measure);
     font-family: var(--font-display);
-    font-size: var(--fs-display);
+    font-size: var(--fs-hero);
     font-weight: var(--weight-bold);
     line-height: var(--lh-display);
     letter-spacing: var(--ls-0);
@@ -139,6 +139,14 @@ import SocialLinks from './SocialLinks.astro';
   }
 
   @media (min-width: 1025px) {
+    /* Keep the heading clear of the social icons on the right: it stops --hero-rail-room short of them. */
+    .hero__title {
+      max-width: min(
+        var(--hero-measure),
+        calc(100% + var(--hero-gutter) - var(--gutter) - var(--icon-hit) - var(--hero-rail-room))
+      );
+    }
+
     .hero :global(.hero__rail) {
       position: absolute;
       top: var(--rail-top);

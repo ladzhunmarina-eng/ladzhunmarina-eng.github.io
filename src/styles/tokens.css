@@ -127,6 +127,7 @@
   --fs-56: 56px; /* the big scores on the Maze cards */
   --fs-tab-min: 18px;
   --fs-display: clamp(36px, 4.3056vw, 62px); /* 62px at 1440px */
+  --fs-hero: clamp(34px, 4.1667vw, 60px); /* the home heading: 60px at 1440px, so it keeps clear of the social icons */
   --fs-quote: clamp(30px, 3.6111vw, 52px); /* the large quote in Wall of Love: 52px at 1440px */
   --fs-case-title: clamp(34px, 3.8889vw, 56px); /* case study title: 56px at 1440px */
   --fs-case-h2: clamp(26px, 2.5vw, 36px); /* section thesis titles */
@@ -197,6 +198,7 @@
   --hero-gutter: 93px;
   --hero-top: 254px; /* first heading line sits 254px from page top */
   --hero-measure: 1188px;
+  --hero-rail-room: 72px; /* clear space between the heading and the social icons beside it */
   --work-inner-max: 1196px;
   --work-panel-w-max: 726px;
   --work-text-col: 411px;
