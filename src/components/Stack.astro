@@ -114,19 +114,22 @@ let chipIndex = 0;
     transition: background-color 0.2s ease-out;
   }
 
+  /* Every logo is a circle; on hover it relaxes into the shape it was drawn with. */
   .tool :global(.tool__logo) {
     flex: none;
     width: 1.15em;
     height: 1.15em;
-    transition: transform 0.35s var(--ease-out);
+    border-radius: 50%;
+    object-fit: cover;
+    transition: border-radius 0.4s var(--ease-out);
   }
 
   .tool:hover {
-    background: var(--color-nav-active);
+    background: var(--color-white);
   }
 
   .tool:hover :global(.tool__logo) {
-    transform: rotate(-8deg) scale(1.08);
+    border-radius: 0;
   }
 
   /* The settle-in: each chip rises a little and fades up, a short beat after the one before it. */
@@ -149,7 +152,7 @@ let chipIndex = 0;
     }
 
     .tool:hover :global(.tool__logo) {
-      transform: none;
+      border-radius: 50%;
     }
   }
 </style>
