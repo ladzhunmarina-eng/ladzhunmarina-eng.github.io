@@ -30,7 +30,7 @@ const columns = [
 ];
 ---
 
-<!-- The findings are wider than the column, so they scroll sideways; the fade at the right edge says so. -->
+<!-- The findings are wider than the column, so they scroll sideways. -->
 <div class="people" role="region" aria-label="Moderated test findings, scrolls sideways" tabindex="0">
   <div class="people__track">
     <ul class="people__row">
@@ -89,30 +89,11 @@ const columns = [
   </div>
 </div>
 
-<script>
-  // The fade on the right edge goes once the end is reached.
-  document.querySelectorAll<HTMLElement>('.people').forEach((people) => {
-    const sync = () => {
-      const atEnd = people.scrollLeft + people.clientWidth >= people.scrollWidth - 2;
-      people.toggleAttribute('data-end', atEnd);
-    };
-    people.addEventListener('scroll', sync, { passive: true });
-    window.addEventListener('resize', sync);
-    sync();
-  });
-</script>
-
 <style>
   .people {
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scrollbar-width: thin;
-    /* the right edge fades into the page while there is more to see */
-    mask-image: linear-gradient(to right, #000 calc(100% - var(--case-fade-w)), transparent);
-  }
-
-  .people[data-end] {
-    mask-image: none;
   }
 
   .people__track {
