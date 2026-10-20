@@ -1,129 +1,99 @@
 ---
-import { stack } from '../data/content';
-
-// Each row is a step wider than the one above, all ending at the right edge: a staircase of tools.
-const widths = stack.rows.map((_, index) => 17 + index * (83 / (stack.rows.length - 1)));
+import { Image } from 'astro:assets';
+import { stack, tools } from '../data/content';
 ---
 
 <section class="stack" id="stack" aria-labelledby="stack-title">
-  <div class="stack__inner">
-    <header class="stack__head">
-      <h2 id="stack-title" class="stack__title">{stack.title}</h2>
-      <p class="stack__lead">{stack.lead}</p>
-    </header>
+  <h2 id="stack-title" class="stack__title">{stack.title}</h2>
 
-    <ul class="steps">
-      {stack.rows.map((tools, index) => (
-        <li class="step" style={`--w: ${widths[index].toFixed(2)}%`}>
-          <ul class="step__tools">
-            {tools.map((tool) => <li class="tool">{tool}</li>)}
-          </ul>
-        </li>
-      ))}
-    </ul>
-  </div>
+  <p class="stack__sentence">
+    {stack.sentence.map((part) => {
+      if (typeof part === 'string') return part;
+      const tool = tools[part.tool];
+      return (
+        <span class="tool">
+          {tool.logo ? (
+            <Image class="tool__logo" src={tool.logo} alt="" width={64} height={64} widths={[32, 64, 96]} sizes="1.15em" />
+          ) : (
+            <span class="tool__logo tool__logo--initial" aria-hidden="true"><span>{tool.name[0]}</span></span>
+          )}
+          {tool.name}
+        </span>
+      );
+    })}
+  </p>
 </section>
 
 <style>
   .stack {
-    padding: var(--space-167) var(--gutter) var(--space-167) max(var(--gutter), calc((100% - 1148px) / 2));
-  }
-
-  .stack__inner {
     display: flex;
     flex-direction: column;
-    gap: var(--space-92);
-    max-width: var(--stack-w);
-  }
-
-  .stack__head {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: var(--space-42);
+    align-items: center;
+    gap: var(--space-32);
+    padding: var(--space-167) var(--gutter);
+    text-align: center;
   }
 
   .stack__title {
-    max-width: 9em;
-    font-family: var(--font-display);
-    font-size: var(--fs-display);
-    font-weight: var(--weight-bold);
-    line-height: var(--lh-display);
-    color: var(--color-ink);
-  }
-
-  .stack__lead {
-    flex: none;
-    max-width: var(--stack-lead-w);
-    padding-top: var(--space-12);
-    font-size: var(--fs-18);
-    line-height: var(--lh-body);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-14-20);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
     color: var(--color-muted);
   }
 
-  .steps {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-24);
-  }
-
-  .step {
-    position: relative;
-    align-self: flex-end;
-    width: var(--w);
-    padding-bottom: var(--space-16);
-  }
-
-  /* The wavy line under each row: a mask in the shape of the wave, filled with the nav yellow */
-  .step::after {
-    content: '';
-    position: absolute;
-    inset: auto 0 0 0;
-    height: var(--wave-h);
-    background: var(--color-nav-active);
-    mask-image: url('../assets/icons/wave.svg');
-    mask-size: var(--wave-w) var(--wave-h);
-    mask-repeat: repeat-x;
-  }
-
-  .step__tools {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-20);
-    padding-bottom: var(--space-16);
-  }
-
-  .tool {
-    font-family: var(--font-display);
-    font-size: var(--fs-24);
-    font-weight: var(--weight-bold);
-    line-height: var(--lh-24);
-    white-space: nowrap;
+  .stack__sentence {
+    max-width: var(--stack-w);
+    font-size: var(--fs-stack);
+    font-weight: var(--weight-medium);
+    line-height: 1.5;
+    letter-spacing: var(--ls-title);
     color: var(--color-ink);
   }
 
-  @media (max-width: 860px) {
-    .stack__head {
-      flex-direction: column;
-      gap: var(--space-16);
-    }
-
-    .stack__lead {
-      padding-top: 0;
-    }
+  /* A tool: its logo and name in a soft pill that sits in the line of text */
+  .tool {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.28em;
+    padding: 0.02em 0.4em 0.02em 0.14em;
+    border-radius: var(--radius-pill);
+    background: var(--color-tool-chip);
+    vertical-align: baseline;
+    white-space: nowrap;
+    transition: background-color 0.2s ease-out;
   }
 
-  /* Phones: no room for a staircase, so every row takes the full width and its tools wrap. */
-  @media (max-width: 640px) {
-    .step {
-      width: 100%;
-    }
+  .tool:hover {
+    background: var(--color-nav-active);
+  }
 
-    .step__tools {
-      flex-wrap: wrap;
-      justify-content: flex-start;
-      gap: var(--space-4) var(--space-24);
+  .tool :global(.tool__logo) {
+    flex: none;
+    width: 1.15em;
+    height: 1.15em;
+  }
+
+  /* A tool without a logo file yet: its initial on a white tile, the size of a logo */
+  .tool :global(.tool__logo--initial) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.3em;
+    background: var(--color-white);
+    color: var(--color-ink);
+    font-weight: var(--weight-bold);
+    line-height: 1;
+  }
+
+  .tool__logo--initial span {
+    font-size: 0.6em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tool {
+      transition: none;
     }
   }
 </style>

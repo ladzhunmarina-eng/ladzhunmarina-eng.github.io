@@ -179,15 +179,55 @@ export const reviews = {
   ],
 };
 
-/* "Design stack and craft": the tools, in rows that get wider from top to bottom. */
+import toolNotebookLm from '../assets/tools/notebooklm.png';
+import toolClaude from '../assets/tools/claude.png';
+import toolFigma from '../assets/tools/figma.png';
+import toolCodex from '../assets/tools/codex.png';
+import toolEnterpret from '../assets/tools/enterpret.png';
+import toolLovable from '../assets/tools/lovable.png';
+import toolMaze from '../assets/tools/maze.png';
+
+/*
+ * "Design stack and craft": one sentence in which every tool is a chip with its logo. A logo is the file
+ * exported from Figma; a tool with `logo: null` shows a plain initial until its logo file is added.
+ */
+export const tools = {
+  notebooklm: { name: 'NotebookLM', logo: toolNotebookLm },
+  maze: { name: 'Maze', logo: toolMaze },
+  enterpret: { name: 'Enterpret', logo: toolEnterpret },
+  figma: { name: 'Figma', logo: toolFigma },
+  rive: { name: 'Rive', logo: null },
+  lovable: { name: 'Lovable', logo: toolLovable },
+  claude: { name: 'Claude Code', logo: toolClaude },
+  codex: { name: 'Codex', logo: toolCodex },
+  github: { name: 'GitHub', logo: null },
+  azure: { name: 'Azure DevOps', logo: null },
+};
+
 export const stack = {
   title: 'Design stack and craft',
-  lead: 'The tools I research, design, prototype and ship with.',
-  rows: [
-    ['Figma'],
-    ['Rive', 'Lovable'],
-    ['Maze', 'Enterpret'],
-    ['NotebookLM', 'GitHub'],
-    ['Codex', 'Claude Code', 'Azure DevOps'],
+  // strings are text; { tool } is a chip
+  sentence: [
+    'I research with ',
+    { tool: 'notebooklm' },
+    ', ',
+    { tool: 'maze' },
+    ' and ',
+    { tool: 'enterpret' },
+    ', design in ',
+    { tool: 'figma' },
+    ' and animate with ',
+    { tool: 'rive' },
+    ', prototype in ',
+    { tool: 'lovable' },
+    ' and ',
+    { tool: 'claude' },
+    ', and ship with ',
+    { tool: 'codex' },
+    ', ',
+    { tool: 'github' },
+    ' and ',
+    { tool: 'azure' },
+    '.',
   ],
-};
+} as const;

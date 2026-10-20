@@ -18,6 +18,7 @@
   --color-heading-muted: #999898;
   --color-heading-strong: #000;
   --color-icon-bg: #f3f0e5;
+  --color-tool-chip: rgb(42 42 42 / 0.07); /* the pill behind a tool's logo and name */
   --color-icon-muted: #b3b3b3;
   --color-ink-button: #2e2e2e;
   --color-nav-chip: #fff;
@@ -129,6 +130,7 @@
   --fs-display: clamp(36px, 4.3056vw, 62px); /* 62px at 1440px */
   --fs-hero: clamp(34px, 4.1667vw, 60px); /* the home heading: 60px at 1440px, so it keeps clear of the social icons */
   --fs-quote: clamp(30px, 3.6111vw, 52px); /* the large quote in Wall of Love: 52px at 1440px */
+  --fs-stack: clamp(24px, 3.3333vw, 48px); /* the design stack sentence: 48px at 1440px */
   --fs-case-title: clamp(34px, 3.8889vw, 56px); /* case study title: 56px at 1440px */
   --fs-case-h2: clamp(26px, 2.5vw, 36px); /* section thesis titles */
   --fs-case-h3: clamp(22px, 1.9444vw, 28px); /* titles of tests and sub-blocks */
@@ -217,10 +219,7 @@
   --experience-list: 487px; /* bullet list measure */
   --experience-summary: 497px; /* closing summary measure */
   --reviews-w: 860px; /* the Wall of Love text column */
-  --stack-w: 1148px; /* the design stack block, from the left edge of Experience */
-  --stack-lead-w: 360px; /* its short description */
-  --wave-w: 16px; /* the tile of the wavy line under each row of tools */
-  --wave-h: 10px;
+  --stack-w: 1000px; /* the width of the design stack sentence */
   --reviews-photo: 48px; /* the colleague's photo beside their name */
 
   /* ---------- Hero avatar (scales with the heading font-size) ---------- */
