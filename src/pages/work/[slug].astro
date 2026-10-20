@@ -103,7 +103,6 @@ const card = work.find((item) => item.href === `/work/${study.slug}`);
               responses={basket.usability.responses}
               painPoints={basket.usability.painPoints}
             />
-            <p class="callout">{basket.usability.followUp}</p>
           </SubSection>
 
           <SubSection title={basket.entryTest.title} lead={basket.entryTest.lead}>
@@ -204,15 +203,6 @@ const card = work.find((item) => item.href === `/work/${study.slug}`);
     width: var(--case-maze-logo-w);
     height: auto;
     color: var(--color-black);
-  }
-
-  .callout {
-    max-width: var(--case-measure);
-    padding: var(--space-16) var(--space-20);
-    border-left: 4px solid var(--case-bg);
-    font-size: var(--fs-18);
-    line-height: var(--lh-body);
-    color: var(--color-ink);
   }
 
   @media (max-width: 1023px) {

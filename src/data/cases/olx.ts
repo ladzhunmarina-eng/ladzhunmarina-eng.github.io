@@ -242,7 +242,6 @@ export const olxCase = {
           { title: 'Hard to find more items from the same seller', quote: 'The confusing part was to find a list of actual items offered by the seller.' },
         ],
       },
-      followUp: 'The seller shelf went into the next iteration. One checkout across sellers is next.',
     },
 
     entryTest: {
