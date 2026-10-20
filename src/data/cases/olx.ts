@@ -20,7 +20,7 @@ export const olxCase = {
   hero: {
     tags: ['C2C marketplace', 'Ukraine', 'Web · iOS · Android', 'A/B testing', 'User testing', 'UM UX Light Score', 'Survey'],
     eyebrow: 'OLX · Purchase & delivery',
-    title: 'Turning a silent Favorites into a real basket.',
+    title: 'A basket and free delivery that make bundling easy.',
     lead:
       'Two linked initiatives on the OLX goods marketplace: a per-seller basket that makes bundling visible, and free delivery that sellers switch on in a few taps.',
     meta: [
