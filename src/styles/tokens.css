@@ -101,9 +101,9 @@
   --color-footer-circle: #242424; /* the round social buttons */
 
   /* ---------- Typography: families ---------- */
-  --font-display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
-  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-meta: 'Gantari', 'Inter', system-ui, sans-serif;
+  --font-display: 'DM Sans Variable', 'DM Sans', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'DM Sans Variable', 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-meta: var(--font-body);
 
   /* ---------- Typography: weights ---------- */
   --weight-extralight: 200;
@@ -255,14 +255,14 @@
   --marquee-dot: 12px;
   --marquee-gap: 24px;
   --marquee-icon: 20px;
-  --marquee-speed: 131s; /* one list width (2620px) per loop = 20px per second, like the reference */
+  --marquee-speed: 130s; /* one list width (2593px) per loop = 20px per second, like the reference */
 
   /* ---------- Education certificate cards ---------- */
   --cert-w: 324px;
   --cert-h: 215px;
   --cert-pad-x: 38px; /* logo and text start this far from the card's left edge */
   --cert-radius: 23px;
-  --font-card: 'Poppins', 'Inter', system-ui, sans-serif;
+  --font-card: var(--font-body);
 
   /* ---------- Case study pages ---------- */
   --case-nav-w: 200px; /* the sticky "On this page" column */

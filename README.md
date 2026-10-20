@@ -65,7 +65,7 @@ src/
 - **Wall of Love:** a tinted band after Experience. The quotes are passages taken word for word from the full recommendations (`reviews` in `content.ts`); the button opens the LinkedIn profile.
 - **Design stack:** rows of tools that get wider from top to bottom (`stack` in `content.ts`), each over a wavy yellow line; on phones the rows go full width and wrap.
 - **Motion:** the marquee, the hand wave and the contact card respect `prefers-reduced-motion`.
-- **Fonts** (Bricolage Grotesque, Inter, Gantari) are self-hosted through `@fontsource`.
+- **Font:** DM Sans (one variable file, weight and optical-size axes) for everything, self-hosted through `@fontsource-variable/dm-sans`. The font tokens are at the top of `tokens.css`.
 
 ## Case study pages
 
