@@ -123,15 +123,19 @@ let chipIndex = 0;
     vertical-align: -0.2em;
     border-radius: 50%;
     object-fit: cover;
-    transition: border-radius 0.4s var(--ease-out);
+    transition:
+      border-radius 0.4s var(--ease-out),
+      transform 0.4s var(--ease-out);
   }
 
   .tool:hover {
     background: var(--color-white);
   }
 
+  /* ...and tips a few degrees, as if picked up. */
   .tool:hover :global(.tool__logo) {
     border-radius: 0;
+    transform: rotate(-12deg);
   }
 
   /* The settle-in: each chip rises a little and fades up, a short beat after the one before it. */
@@ -155,6 +159,7 @@ let chipIndex = 0;
 
     .tool:hover :global(.tool__logo) {
       border-radius: 50%;
+      transform: none;
     }
   }
 </style>
