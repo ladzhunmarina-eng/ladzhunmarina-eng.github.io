@@ -1,8 +1,6 @@
 ---
 import { Image } from 'astro:assets';
 import Button from './Button.astro';
-import QuoteOpen from '../assets/icons/quote-open.svg';
-import QuoteClose from '../assets/icons/quote-close.svg';
 import { reviews } from '../data/content';
 
 const { featured, others, linkedin } = reviews;
@@ -18,8 +16,8 @@ const { featured, others, linkedin } = reviews;
         <span class="author__line"><span class="author__name">{featured.name}</span><span class="author__dot" aria-hidden="true">✳</span>{featured.role}</span>
       </figcaption>
       <blockquote class="feature__quote">
-        <QuoteOpen class="mark mark--open" aria-hidden="true" />
-        <p>{featured.quote}<QuoteClose class="mark mark--close" aria-hidden="true" /></p>
+        <span class="mark mark--open" aria-hidden="true">“</span>
+        <p>{featured.quote}<span class="mark mark--close" aria-hidden="true">”</span></p>
       </blockquote>
     </figure>
 
@@ -32,11 +30,11 @@ const { featured, others, linkedin } = reviews;
               <span class="author__line"><span class="author__name">{review.name}</span><span class="author__dot" aria-hidden="true">✳</span>{review.role}</span>
             </figcaption>
             <blockquote class="note__quote">
-              <QuoteOpen class="mark mark--small mark--open" aria-hidden="true" />
+              <span class="mark mark--small mark--open" aria-hidden="true">“</span>
               {review.quote.map((paragraph, index) => (
                 <p>
                   {paragraph}
-                  {index === review.quote.length - 1 && <QuoteClose class="mark mark--small mark--close" aria-hidden="true" />}
+                  {index === review.quote.length - 1 && <span class="mark mark--small mark--close" aria-hidden="true">”</span>}
                 </p>
               ))}
             </blockquote>
@@ -117,25 +115,25 @@ const { featured, others, linkedin } = reviews;
     color: var(--color-ink);
   }
 
-  /* The brush-stroke quote marks, in the yellow of the active nav chip */
+  /* Quote marks are the typeface's own round “ ”, set heavy, in the yellow of the active nav chip */
   .mark {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 2.8em;
+    line-height: 0;
     color: var(--color-nav-active);
   }
 
   .mark--open {
     position: absolute;
-    top: var(--space-4);
-    left: calc(-1 * var(--space-30));
-    width: var(--space-24);
-    height: auto;
+    top: 0.45em;
+    left: -0.5em;
   }
 
   .mark--close {
     display: inline-block;
-    width: var(--space-24);
-    height: auto;
-    margin-left: var(--space-8);
-    vertical-align: bottom;
+    margin-left: 0.08em;
+    vertical-align: -0.38em;
   }
 
   .others {
@@ -160,16 +158,17 @@ const { featured, others, linkedin } = reviews;
     color: var(--color-ink);
   }
 
+  .mark--small {
+    font-size: 2.3em;
+  }
+
   .mark--small.mark--open {
-    top: var(--space-2);
-    left: calc(-1 * var(--space-20));
-    width: var(--space-12);
+    top: 0.3em;
+    left: -0.5em;
   }
 
   .mark--small.mark--close {
-    width: var(--space-12);
-    margin-left: var(--space-4);
-    vertical-align: baseline;
+    vertical-align: -0.3em;
   }
 
   @media (max-width: 860px) {
@@ -180,11 +179,8 @@ const { featured, others, linkedin } = reviews;
     .mark--open {
       position: static;
       display: block;
-      margin-bottom: var(--space-8);
-    }
-
-    .mark--small.mark--open {
-      width: var(--space-12);
+      margin-bottom: 0.3em;
+      height: 0.5em;
     }
   }
 </style>
