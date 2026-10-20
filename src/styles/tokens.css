@@ -297,6 +297,7 @@
   --case-person-w: 520px; /* a participant card in the moderated test */
   --case-person-gap: 48px;
   --case-person-pad: 27px;
+  --case-fade-w: 153px; /* the fade on the right edge of the scrolling participants */
   --case-maze-img-w: 604px; /* the Maze screenshot; the dark cards take the rest */
   --case-maze-gap: 24px;
   --case-maze-logo-w: 112px;
