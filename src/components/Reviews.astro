@@ -16,8 +16,7 @@ const { featured, others, linkedin } = reviews;
         <span class="author__line"><span class="author__name">{featured.name}</span><span class="author__dot" aria-hidden="true">✳</span>{featured.role}</span>
       </figcaption>
       <blockquote class="feature__quote">
-        <span class="mark mark--open" aria-hidden="true">“</span>
-        <p>{featured.quote}<span class="mark mark--close" aria-hidden="true">”</span></p>
+        <p>{featured.quote}</p>
       </blockquote>
     </figure>
 
@@ -30,13 +29,7 @@ const { featured, others, linkedin } = reviews;
               <span class="author__line"><span class="author__name">{review.name}</span><span class="author__dot" aria-hidden="true">✳</span>{review.role}</span>
             </figcaption>
             <blockquote class="note__quote">
-              <span class="mark mark--small mark--open" aria-hidden="true">“</span>
-              {review.quote.map((paragraph, index) => (
-                <p>
-                  {paragraph}
-                  {index === review.quote.length - 1 && <span class="mark mark--small mark--close" aria-hidden="true">”</span>}
-                </p>
-              ))}
+              {review.quote.map((paragraph) => <p>{paragraph}</p>)}
             </blockquote>
           </figure>
         </li>
@@ -115,27 +108,6 @@ const { featured, others, linkedin } = reviews;
     color: var(--color-ink);
   }
 
-  /* Quote marks are the typeface's own round “ ”, set heavy, in the yellow of the active nav chip */
-  .mark {
-    font-family: var(--font-display);
-    font-weight: 900;
-    font-size: 2.8em;
-    line-height: 0;
-    color: var(--color-nav-active);
-  }
-
-  .mark--open {
-    position: absolute;
-    top: 0.45em;
-    left: -0.5em;
-  }
-
-  .mark--close {
-    display: inline-block;
-    margin-left: 0.08em;
-    vertical-align: -0.38em;
-  }
-
   .others {
     display: grid;
     width: 100%;
@@ -158,29 +130,9 @@ const { featured, others, linkedin } = reviews;
     color: var(--color-ink);
   }
 
-  .mark--small {
-    font-size: 2.3em;
-  }
-
-  .mark--small.mark--open {
-    top: 0.3em;
-    left: -0.5em;
-  }
-
-  .mark--small.mark--close {
-    vertical-align: -0.3em;
-  }
-
   @media (max-width: 860px) {
     .others {
       grid-template-columns: minmax(0, 1fr);
-    }
-
-    .mark--open {
-      position: static;
-      display: block;
-      margin-bottom: 0.3em;
-      height: 0.5em;
     }
   }
 </style>
