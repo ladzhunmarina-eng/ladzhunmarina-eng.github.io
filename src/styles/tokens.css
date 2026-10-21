@@ -567,7 +567,8 @@
   --color-icon-bg: var(--olx-tint);
 }
 
-/* The header's Contact me carries its own backing; on a branded case page it matches that page. */
+/* The header and footer sit outside the case article, so a branded page reaches them from the root. */
 :root:has([data-case-palette='olx']) {
-  --header-backing: var(--olx-page);
+  --header-backing: var(--olx-page); /* the header's Contact me carries its own backing; it matches the page */
+  --color-footer-accent: var(--olx-cyan); /* the footer's "Hi!" and its back-to-top button: OLX cyan instead of the yellow */
 }
