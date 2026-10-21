@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import CaseBack from '../../components/case/CaseBack.astro';
 import CaseHero from '../../components/case/CaseHero.astro';
@@ -25,6 +26,7 @@ import MazeLogo from '../../assets/icons/maze.svg';
 import problemPhoto from '../../assets/images/olx-problem.jpg';
 import mazeShot from '../../assets/images/olx-maze.png';
 import carrierPicker from '../../assets/images/olx-carrier-picker.webp';
+import clickThrough from '../../assets/images/olx-click-through.png';
 import carrierPickerAfter from '../../assets/images/olx-carrier-picker-after.png';
 import { cases } from '../../data/cases';
 import { work } from '../../data/content';
@@ -122,14 +124,14 @@ const card = work.find((item) => item.href === `/work/${study.slug}`);
             <DeliveryDemo {...delivery.seller.demo} />
           </SubSection>
 
-          <SubSection title={delivery.buyer.title}>
+          <SubSection title={delivery.buyer.title} lead={delivery.buyer.lead}>
             <BeforeAfter
               before={delivery.buyer.before}
               after={delivery.buyer.after}
               beforeImage={{ src: carrierPicker, alt: delivery.buyer.pickerAlt }}
               afterImage={{ src: carrierPickerAfter, alt: delivery.buyer.pickerAfterAlt }}
             />
-            <StatGrid stats={delivery.buyer.results} />
+            <Image class="results-chart" src={clickThrough} alt={delivery.buyer.resultsAlt} widths={[527, 1054]} sizes="(max-width: 640px) 100vw, 527px" quality={90} />
             <p class="note">{delivery.buyer.resultNote}</p>
           </SubSection>
         </Section>
@@ -190,6 +192,12 @@ const card = work.find((item) => item.href === `/work/${study.slug}`);
     list-style: disc;
     font-size: var(--fs-18);
     line-height: var(--lh-body);
+  }
+
+  :global(.results-chart) {
+    width: 100%;
+    max-width: var(--case-chart-w);
+    height: auto;
   }
 
   .note {

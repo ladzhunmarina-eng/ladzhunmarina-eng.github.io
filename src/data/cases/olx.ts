@@ -302,14 +302,19 @@ export const olxCase = {
         'The Delivery provider screen: Ukrposhta, Nova Poshta and Meest, each with a 0 uah badge. Nova Poshta is open with four options (At the branch, free from 60 uah, selected; Currier; Parcel locker; To Poland) and City and Branch selectors.',
       pickerAlt:
         'The Delivery method screen: a list of carriers, each with a delivery time and a price. Ukrposhta, Nova Post and Meest show a 0 uah badge and Free delivery; Nova Post is selected.',
-      title: 'Buyer side: the free option comes first, not last.',
-      before: { label: 'Before', text: 'Delivery cost appeared late in checkout, after the carrier was already chosen.' },
-      after: { label: 'After', text: 'The carrier picker shows the free option upfront, so the price is clear before choosing.' },
-      results: [
-        { value: '+9%', label: 'payment → delivery step, mobile' },
-        { value: '+7%', label: 'payment → delivery step, desktop' },
-      ],
-      resultNote: 'Click-through from payment finalisation to the delivery step, new layout vs old.',
+      title: 'Buyer side: a “0 uah” label, and a delivery form that is easier to finish.',
+      lead: 'The ask was small: mark the carriers that deliver for free with a “0 uah” label at checkout. The delivery form itself was long and hard to scan, so we went past the brief and redesigned it too.',
+      before: {
+        label: 'The ask',
+        text: 'A “0 uah” label on every carrier that delivers for free, added to the existing form: a long list where each carrier and each method is its own row.',
+      },
+      after: {
+        label: 'The redesign',
+        text: 'Carriers are grouped. Pick one and its methods open inside it as four short options, each with its price (the free one reads 0 uah, the old price struck through), then city and branch.',
+      },
+      resultsAlt:
+        'Payment finalisation to delivery clicks. Mobile reaches 54%, up 9%. Desktop reaches 38%, up 7%. Each has a line chart that rises after the change.',
+      resultNote: 'Click-through from payment finalisation to the delivery step: +9% on mobile and +7% on desktop with the redesigned form.',
     },
   },
 
