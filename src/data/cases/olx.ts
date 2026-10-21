@@ -302,15 +302,15 @@ export const olxCase = {
         'The Delivery provider screen: Ukrposhta, Nova Poshta and Meest, each with a 0 uah badge. Nova Poshta is open with four options (At the branch, free from 60 uah, selected; Currier; Parcel locker; To Poland) and City and Branch selectors.',
       pickerAlt:
         'The Delivery method screen: a list of carriers, each with a delivery time and a price. Ukrposhta, Nova Post and Meest show a 0 uah badge and Free delivery; Nova Post is selected.',
-      title: 'Buyer side: a “0 uah” label, and a delivery form that is easier to finish.',
-      lead: 'The ask was small: mark the carriers that deliver for free with a “0 uah” label at checkout. The delivery form itself was long and hard to scan, so we went past the brief and redesigned it too.',
+      title: 'Buyer side: a “0 uah” label, and a shorter form.',
+      lead: 'The ask was a “0 uah” label at checkout. The delivery form was long and hard to scan, so we redesigned it too.',
       before: {
         label: 'The ask',
-        text: 'A “0 uah” label on every carrier that delivers for free, added to the existing form: a long list where each carrier and each method is its own row.',
+        text: 'A “0 uah” label on free carriers, added to the existing long list.',
       },
       after: {
         label: 'The redesign',
-        text: 'Carriers are grouped. Pick one and its methods open inside it as four short options, each with its price (the free one reads 0 uah, the old price struck through), then city and branch.',
+        text: 'Carriers are grouped. Methods open inside the chosen one, each with its price, then city and branch.',
       },
       results: {
         title: 'Payment finalisation to delivery clicks',
