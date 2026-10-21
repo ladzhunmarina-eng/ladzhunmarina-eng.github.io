@@ -26,7 +26,7 @@ const sides = [
       <p class="ba__text">{side.text}</p>
       {side.image ? (
         <div class="ba__frame">
-          <Image class="ba__shot" src={side.image.src} alt={side.image.alt} widths={[360, 720]} sizes="(max-width: 640px) 80vw, 360px" quality={85} />
+          <Image class="ba__shot" src={side.image.src} alt={side.image.alt} widths={[432, 864]} sizes="(max-width: 1023px) 80vw, 432px" quality={85} />
         </div>
       ) : (
         side.slot && <ImageSlot label={side.slot} ratio="4 / 3" />
@@ -73,11 +73,8 @@ const sides = [
     color: var(--color-white);
   }
 
-  /* A phone-sized screen on a white frame, centred in the card. The picture itself is not rounded: the screenshot has its own corners, and clipping them cut the first letters of its heading. */
+  /* The screen on a white frame as wide as the text above it, so their edges line up. The picture itself is not rounded: the screenshot has its own corners, and clipping them cut the first letters of its heading. */
   .ba__frame {
-    align-self: center;
-    width: 100%;
-    max-width: calc(var(--case-shot-w) + 2 * var(--space-16));
     padding: var(--space-16);
     border-radius: var(--radius-person);
     background: var(--color-white);
