@@ -102,6 +102,10 @@ const endY = (points: readonly number[]) => PAD + (1 - points[points.length - 1]
     display: flex;
     flex-direction: column;
     gap: var(--space-16);
+    /* the same width as the white frame above it, centred, so their edges line up */
+    align-self: center;
+    width: 100%;
+    max-width: calc(var(--case-shot-w) + 2 * var(--space-16));
     margin: var(--space-8) 0 0;
   }
 
