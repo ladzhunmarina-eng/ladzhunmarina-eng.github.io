@@ -146,16 +146,20 @@ const carriers = [
         setEnabled(carrier, false);
         carrier.querySelector<HTMLInputElement>('.field__input')!.value = '';
         carrier.querySelectorAll<HTMLInputElement>('.method__input').forEach((box) => (box.checked = false));
+        carrier.querySelector<HTMLInputElement>('.field__input')!.blur();
         carrier.querySelector('.field')!.classList.remove('is-typing');
       });
     };
 
-    const moveTo = (target: Element, ms: number) => {
+    // The pointer's tip goes to a spot inside the target (by default its middle, but never further than 40px in).
+    const moveTo = (target: Element, ms: number, at?: { x: number; y: number }) => {
       const t = target.getBoundingClientRect();
       const s = stage.getBoundingClientRect();
+      const x = at ? t.width * at.x : Math.min(t.width / 2, 40);
+      const y = at ? t.height * at.y : t.height / 2;
       cursor.style.setProperty('--ms', `${ms}ms`);
-      cursor.style.setProperty('--x', `${t.left - s.left + Math.min(t.width / 2, 40)}px`);
-      cursor.style.setProperty('--y', `${t.top - s.top + t.height / 2}px`);
+      cursor.style.setProperty('--x', `${t.left - s.left + x}px`);
+      cursor.style.setProperty('--y', `${t.top - s.top + y}px`);
     };
 
     const press = () => {
@@ -196,8 +200,17 @@ const carriers = [
         const input = carrier.querySelector<HTMLInputElement>('.field__input')!;
         const boxes = [...carrier.querySelectorAll<HTMLInputElement>('.method__input')].slice(0, 3); // the first three methods
         if (!(await click(toggleOf(carrier), 900, () => setEnabled(carrier, true), 900))) return false;
-        if (!(await click(field, 650, () => field.classList.add('is-typing'), 250))) return false;
+        if (!(await click(field, 650, () => {
+          input.focus({ preventScroll: true });
+          field.classList.add('is-typing'); // the same look as :focus, for when the window itself is not focused
+        }, 150))) return false;
+        // the pointer steps aside, so it does not sit on top of what is being typed
+        moveTo(field, 450, { x: 0.78, y: 1.45 });
+        await wait(500);
+        if (!alive()) return false;
         if (!(await type(input, '1000'))) return false;
+        await wait(250);
+        input.blur();
         field.classList.remove('is-typing');
         await wait(350);
         for (const box of boxes) {
@@ -567,15 +580,19 @@ const carriers = [
     color: var(--form-disabled);
   }
 
-  /* While the recording types, the field looks focused (the real focus is left alone) */
-  .field.is-typing .field__input {
-    border-color: var(--form-title);
-    box-shadow: 0 0 0 1px var(--form-title);
+  /* Focus: a dark border with a soft halo, and the caret in the same ink. The recording uses the real focus too. */
+  .field__input {
+    caret-color: var(--form-title);
+    transition:
+      border-color 0.2s ease-out,
+      box-shadow 0.2s ease-out;
   }
 
-  .field__input:focus-visible {
-    outline: var(--focus-width) solid var(--color-focus);
-    outline-offset: var(--focus-offset);
+  .field__input:focus,
+  .field.is-typing .field__input {
+    outline: none;
+    border-color: var(--form-title);
+    box-shadow: 0 0 0 3px var(--form-focus-halo);
   }
 
   .field__unit {
@@ -689,7 +706,8 @@ const carriers = [
     .settings,
     .carrier[data-open='true'] .settings,
     .method__box,
-    .method__box :global(svg) {
+    .method__box :global(svg),
+    .field__input {
       transition: none;
     }
 
