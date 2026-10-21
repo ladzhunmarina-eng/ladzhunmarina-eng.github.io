@@ -212,7 +212,7 @@ export const stack = {
   // One clause per line (research, design, prototype, ship); strings are text, { tool } is a chip
   lines: [
     ['I research with ', { tool: 'notebooklm' }, ', ', { tool: 'maze' }, ' and ', { tool: 'enterpret' }, ','],
-    ['design in ', { tool: 'figma' }, ' and animate with ', { tool: 'rive' }, ','],
+    ['explore in ', { tool: 'figma' }, ' and animate with ', { tool: 'rive' }, ','],
     ['prototype in ', { tool: 'lovable' }, ', ', { tool: 'claude' }, ' and ', { tool: 'codex' }, ','],
     ['and ship with ', { tool: 'github' }, ' and ', { tool: 'azure' }, '.'],
   ],
