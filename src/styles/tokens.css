@@ -81,7 +81,7 @@
   --form-disabled: #7f9799; /* the option that is switched off */
   --form-divider: rgb(11 55 61 / 0.16); /* between carriers */
   --form-field-line: rgb(4 51 55 / 0.51); /* the price field's border */
-  --form-font: 'Figtree Variable', 'Figtree', var(--font-body); /* the mockups use GeomanistOLX; Figtree is the nearest open typeface */
+  --form-font: 'Outfit Variable', 'Outfit', var(--font-body); /* the mockups use GeomanistOLX; Outfit is the nearest open typeface */
   --form-w: 494px;
   --form-row-h: 56px;
 
