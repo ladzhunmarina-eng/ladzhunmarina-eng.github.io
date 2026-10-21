@@ -100,8 +100,9 @@ const shots: Record<string, ImageMetadata> = { A: shotA, B: shotB, C: shotC };
     color: var(--case-variant-text);
   }
 
+  /* C is the softer circle in the design; only the circle fades, the letter keeps its full colour */
   .entry__variant--c .entry__mark {
-    opacity: 0.5;
+    background: color-mix(in srgb, var(--mark) 50%, transparent);
   }
 
   .entry__shot {
