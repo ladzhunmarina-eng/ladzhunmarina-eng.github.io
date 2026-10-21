@@ -59,6 +59,12 @@ const carriers = [
                     <div class="field">
                       <input class="field__input" id={`${id}-price`} type="number" inputmode="numeric" min="0" placeholder="0" aria-describedby={`${id}-price-note`} />
                       <span class="field__unit" aria-hidden="true">uah</span>
+                      <button class="field__clear" type="button" aria-label="Clear" tabindex="-1" data-demo-clear>
+                        <svg viewBox="0 0 20 20" aria-hidden="true">
+                          <circle cx="10" cy="10" r="8.5" fill="currentColor" />
+                          <path d="m7 7 6 6m0-6-6 6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" />
+                        </svg>
+                      </button>
                     </div>
                     <p class="settings__note" id={`${id}-price-note`}>
                       <InfoIcon class="settings__info" aria-hidden="true" />
@@ -121,6 +127,22 @@ const carriers = [
       else setOpen(carrier, false);
     };
 
+    // The clear button and the shifted "uah" show while the field has a value
+    const syncValue = (field: HTMLElement) => {
+      const input = field.querySelector<HTMLInputElement>('.field__input')!;
+      field.classList.toggle('has-value', input.value !== '');
+    };
+    demo.querySelectorAll<HTMLElement>('.field').forEach((field) => {
+      const input = field.querySelector<HTMLInputElement>('.field__input')!;
+      input.addEventListener('input', () => syncValue(field));
+      field.querySelector('[data-demo-clear]')!.addEventListener('mousedown', (event) => event.preventDefault()); // keep the focus
+      field.querySelector('[data-demo-clear]')!.addEventListener('click', () => {
+        input.value = '';
+        syncValue(field);
+        input.focus();
+      });
+    });
+
     carriers.forEach((carrier) => {
       toggleOf(carrier).addEventListener('click', (event) => {
         event.stopPropagation();
@@ -145,6 +167,7 @@ const carriers = [
       carriers.forEach((carrier) => {
         setEnabled(carrier, false);
         carrier.querySelector<HTMLInputElement>('.field__input')!.value = '';
+        carrier.querySelector('.field')!.classList.remove('has-value');
         carrier.querySelectorAll<HTMLInputElement>('.method__input').forEach((box) => (box.checked = false));
         carrier.querySelector<HTMLInputElement>('.field__input')!.blur();
         carrier.querySelector('.field')!.classList.remove('is-typing');
@@ -188,6 +211,7 @@ const carriers = [
       const type = async (input: HTMLInputElement, text: string) => {
         for (const char of text) {
           input.value += char;
+          input.dispatchEvent(new Event('input'));
           await wait(170);
           if (!alive()) return false;
         }
@@ -580,29 +604,79 @@ const carriers = [
     color: var(--form-disabled);
   }
 
-  /* Focus: a dark border with a soft halo, and the caret in the same ink. The recording uses the real focus too. */
+  /* Focus, as in the design: the border becomes 2px teal (the second pixel is drawn inside, so nothing shifts) and the caret goes teal. */
   .field__input {
-    caret-color: var(--form-title);
+    caret-color: var(--form-focus);
     transition:
       border-color 0.2s ease-out,
-      box-shadow 0.2s ease-out;
+      box-shadow 0.2s ease-out,
+      padding 0.2s ease-out;
   }
 
   .field__input:focus,
   .field.is-typing .field__input {
     outline: none;
-    border-color: var(--form-title);
-    box-shadow: 0 0 0 3px var(--form-focus-halo);
+    border-color: var(--form-focus);
+    box-shadow: inset 0 0 0 1px var(--form-focus);
+  }
+
+  /* With a value in it, a clear button sits at the right and "uah" steps left of it */
+  .field.has-value .field__input {
+    padding-right: 96px;
   }
 
   .field__unit {
     position: absolute;
     top: 50%;
     right: var(--space-16);
+    transition: right 0.2s ease-out;
     transform: translateY(-50%);
     font-size: var(--fs-16);
     color: var(--form-muted);
     pointer-events: none;
+  }
+
+  .field.has-value .field__unit {
+    right: 60px;
+  }
+
+  .field__clear {
+    position: absolute;
+    top: 50%;
+    right: var(--space-14);
+    width: var(--space-20);
+    height: var(--space-20);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--form-muted);
+    opacity: 0;
+    transform: translateY(-50%) scale(0.8);
+    transition:
+      opacity 0.15s ease-out,
+      transform 0.2s var(--ease-out);
+    pointer-events: none;
+    cursor: pointer;
+  }
+
+  .field__clear :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .field.has-value:is(:focus-within, .is-typing) .field__clear {
+    opacity: 1;
+    transform: translateY(-50%);
+    pointer-events: auto;
+  }
+
+  .field.has-value:not(:focus-within, .is-typing) .field__unit {
+    right: var(--space-16);
+  }
+
+  .field.has-value:not(:focus-within, .is-typing) .field__input {
+    padding-right: 56px;
   }
 
   .settings__note {
@@ -707,7 +781,9 @@ const carriers = [
     .carrier[data-open='true'] .settings,
     .method__box,
     .method__box :global(svg),
-    .field__input {
+    .field__input,
+    .field__unit,
+    .field__clear {
       transition: none;
     }
 

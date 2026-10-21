@@ -86,7 +86,7 @@
   --form-lh-ui: 1.25; /* 16px labels: 20px lines */
   --form-lh-label: 1.3; /* 14px labels: 18px lines */
   --form-badge-h: 26px;
-  --form-focus-halo: rgb(35 229 219 / 0.35); /* the glow around a focused field, from the OLX cyan */
+  --form-focus: #00a49f; /* the focused field's border and caret */
   --form-w: 494px;
   --form-row-h: 56px;
 
