@@ -56,6 +56,7 @@ const { variants, metrics = [], verify = false } = Astro.props;
   }
 
   .variant {
+    container-type: inline-size;
     display: flex;
     flex-direction: column;
     gap: var(--space-12);
@@ -130,13 +131,21 @@ const { variants, metrics = [], verify = false } = Astro.props;
     padding: var(--space-16) 0 15px;
   }
 
-  /* Label left, value right. If the card is too narrow for both, the value drops under its label, still on the right, instead of breaking in the middle. */
+  /* Label left, value right. In a card too narrow for that, every metric stacks in two lines, both on the left. */
   .variant__metric {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
     justify-content: space-between;
     gap: var(--space-4) var(--space-12);
+  }
+
+  @container (max-width: 220px) {
+    .variant__metric {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+    }
   }
 
   .variant__metric dt {
@@ -147,7 +156,7 @@ const { variants, metrics = [], verify = false } = Astro.props;
   }
 
   .variant__metric dd {
-    margin: 0 0 0 auto;
+    margin: 0;
     white-space: nowrap;
     font-family: var(--font-display);
     font-size: var(--fs-20);
