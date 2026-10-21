@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import CaseBack from '../../components/case/CaseBack.astro';
 import CaseHero from '../../components/case/CaseHero.astro';
@@ -26,6 +27,7 @@ import MazeLogo from '../../assets/icons/maze.svg';
 import problemPhoto from '../../assets/images/olx-problem.jpg';
 import mazeShot from '../../assets/images/olx-maze.png';
 import carrierPicker from '../../assets/images/olx-carrier-picker.webp';
+import freeDeliveryArt from '../../assets/images/olx-free-delivery.png';
 import carrierPickerAfter from '../../assets/images/olx-carrier-picker-after.png';
 import { cases } from '../../data/cases';
 import { work } from '../../data/content';
@@ -118,6 +120,9 @@ const card = work.find((item) => item.href === `/work/${study.slug}`);
         </Section>
 
         <Section id="delivery" eyebrow={delivery.eyebrow} title={delivery.title}>
+          <Fragment slot="art">
+            <Image src={freeDeliveryArt} alt="" widths={[320, 640]} sizes="(max-width: 1023px) 70vw, 320px" quality={90} />
+          </Fragment>
           <SubSection title={delivery.seller.title} lead={delivery.seller.text}>
             <StatGrid stats={delivery.seller.stats} />
             <DeliveryDemo {...delivery.seller.demo} />

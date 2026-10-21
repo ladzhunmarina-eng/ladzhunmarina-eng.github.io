@@ -302,6 +302,8 @@
   --case-maze-img-w: 604px; /* the Maze screenshot; the dark cards take the rest */
   --case-maze-gap: 24px;
   --case-maze-logo-w: 112px;
+  --case-art-w: 320px; /* an illustration beside a section heading */
+  --case-art-w-small: 240px; /* ...and under it on narrow screens */
   --spark-h: 44px; /* a small line chart */
   --case-shot-w: 360px; /* a phone screen shown inside a card (before / after) */
   --case-entry-ratio: 1008 / 645; /* the entry-point test panel */

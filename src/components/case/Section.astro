@@ -14,15 +14,61 @@ const titleId = id ? `${id}-title` : undefined;
 ---
 
 <section class="section" id={id} aria-labelledby={titleId}>
-  <p class="section__eyebrow">{eyebrow}</p>
-  <h2 class="section__title" id={titleId}>{title}{verify && <Verify />}</h2>
-  {lead && <p class="section__lead">{lead}</p>}
+  <div class="section__head">
+    <div class="section__heading">
+      <p class="section__eyebrow">{eyebrow}</p>
+      <h2 class="section__title" id={titleId}>{title}{verify && <Verify />}</h2>
+      {lead && <p class="section__lead">{lead}</p>}
+    </div>
+    <!-- An optional picture beside the heading (a decorative illustration) -->
+    <div class="section__art"><slot name="art" /></div>
+  </div>
   <div class="section__body"><slot /></div>
 </section>
 
 <style>
   .section {
     scroll-margin-top: calc(var(--header-h) + var(--space-24));
+  }
+
+  .section__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-24);
+  }
+
+  .section__heading {
+    min-width: 0;
+  }
+
+  .section__art:empty {
+    display: none;
+  }
+
+  .section__art {
+    flex: none;
+    width: var(--case-art-w);
+    /* the picture has air around it; pull it in so it sits level with the heading */
+    margin-block: calc(-1 * var(--space-36));
+  }
+
+  .section__art :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 1023px) {
+    .section__head {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .section__art {
+      width: min(100%, var(--case-art-w-small));
+      margin-block: calc(-1 * var(--space-16)) 0;
+    }
   }
 
   .section__eyebrow {
