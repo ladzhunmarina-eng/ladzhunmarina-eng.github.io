@@ -286,7 +286,7 @@ export const olxCase = {
           { label: 'To the branch', checked: true },
           { label: 'Currier', checked: true },
           { label: 'Parcel locker', checked: true },
-          { label: 'To Poland', checked: false, disabled: true },
+          { label: 'To Poland', checked: false },
         ],
       },
       stats: [

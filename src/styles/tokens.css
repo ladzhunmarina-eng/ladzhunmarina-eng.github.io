@@ -81,7 +81,11 @@
   --form-disabled: #7f9799; /* the option that is switched off */
   --form-divider: rgb(11 55 61 / 0.16); /* between carriers */
   --form-field-line: rgb(4 51 55 / 0.51); /* the price field's border */
-  --form-font: 'Outfit Variable', 'Outfit', var(--font-body); /* the mockups use GeomanistOLX; Outfit is the nearest open typeface */
+  --form-font: 'Inter Variable', 'Inter', var(--font-body); /* the mockups set this card in Inter */
+  --form-lh-tight: 1.15; /* the card title: 18px on 16px */
+  --form-lh-ui: 1.25; /* 16px labels: 20px lines */
+  --form-lh-label: 1.3; /* 14px labels: 18px lines */
+  --form-badge-h: 26px;
   --form-w: 494px;
   --form-row-h: 56px;
 
@@ -122,6 +126,7 @@
   --weight-light: 300;
   --weight-regular: 400;
   --weight-medium: 500;
+  --weight-semibold: 600; /* only the bold phrases in the free-delivery card's description */
   --weight-bold: 700;
   --weight-extrabold: 800;
 

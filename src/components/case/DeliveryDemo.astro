@@ -1,7 +1,6 @@
 ---
-// GeomanistOLX, the typeface of the OLX mockups, is not available for the web; Outfit is the closest open one
-// (its line widths match the mockup within 2%).
-import '@fontsource-variable/outfit/index.css';
+// The mockups set this card in Inter.
+import '@fontsource-variable/inter/index.css';
 import UkrposhtaLogo from '../../assets/icons/carrier-ukrposhta.svg';
 import NovaPostLogo from '../../assets/icons/carrier-novapost.svg';
 import MeestLogo from '../../assets/icons/carrier-meest.svg';
@@ -195,7 +194,7 @@ const carriers = [
       const fill = async (carrier: HTMLElement) => {
         const field = carrier.querySelector<HTMLElement>('.field')!;
         const input = carrier.querySelector<HTMLInputElement>('.field__input')!;
-        const boxes = [...carrier.querySelectorAll<HTMLInputElement>('.method__input:not(:disabled)')];
+        const boxes = [...carrier.querySelectorAll<HTMLInputElement>('.method__input')].slice(0, 3); // the first three methods
         if (!(await click(toggleOf(carrier), 900, () => setEnabled(carrier, true), 900))) return false;
         if (!(await click(field, 650, () => field.classList.add('is-typing'), 250))) return false;
         if (!(await type(input, '1000'))) return false;
@@ -378,30 +377,33 @@ const carriers = [
 
   .form__title {
     font-size: var(--fs-16);
-    font-weight: var(--weight-medium);
-    line-height: var(--lh-ui);
+    font-weight: var(--weight-bold);
+    line-height: var(--form-lh-tight);
     color: var(--form-title);
   }
 
   .form__badge {
-    padding: var(--space-4) var(--space-8);
+    display: flex;
+    align-items: center;
+    height: var(--form-badge-h);
+    padding-inline: var(--space-8);
     border-radius: 4px;
     background: var(--olx-cyan);
-    font-size: var(--fs-14);
+    font-size: var(--fs-12);
     font-weight: var(--weight-medium);
-    line-height: var(--lh-ui);
+    line-height: var(--lh-lead);
     color: var(--form-title);
   }
 
   .form__desc {
     margin-top: var(--space-8);
     font-size: var(--fs-12);
-    line-height: 1.2;
+    line-height: var(--lh-lead);
     color: var(--form-muted);
   }
 
   .form__desc strong {
-    font-weight: var(--weight-bold);
+    font-weight: var(--weight-semibold);
   }
 
   .form__link {
@@ -435,7 +437,7 @@ const carriers = [
   .carrier__name {
     flex: 1;
     font-size: var(--fs-16);
-    line-height: var(--lh-ui);
+    line-height: var(--form-lh-ui);
     color: var(--olx-ink);
   }
 
@@ -509,7 +511,7 @@ const carriers = [
     display: flex;
     flex-direction: column;
     gap: var(--space-24);
-    padding: var(--space-8) 0 var(--space-12);
+    padding: var(--space-8) 0;
     opacity: 0;
     transform: translateY(-8px);
     transition:
@@ -533,7 +535,7 @@ const carriers = [
 
   .settings__label {
     font-size: var(--fs-14);
-    line-height: var(--lh-snug);
+    line-height: var(--form-lh-label);
     color: var(--form-muted);
   }
 
@@ -614,9 +616,9 @@ const carriers = [
   .methods__label {
     margin-bottom: var(--space-12);
     padding: 0;
-    font-size: var(--fs-16);
-    line-height: var(--lh-ui);
-    color: var(--form-disabled);
+    font-size: var(--fs-14);
+    line-height: var(--form-lh-label);
+    color: var(--form-muted);
   }
 
   .method {
@@ -624,7 +626,7 @@ const carriers = [
     align-items: center;
     gap: var(--space-8);
     font-size: var(--fs-16);
-    line-height: var(--lh-ui);
+    line-height: var(--form-lh-ui);
     color: var(--form-title);
     cursor: pointer;
   }
@@ -648,7 +650,7 @@ const carriers = [
     width: var(--space-18);
     height: var(--space-18);
     margin: 3px;
-    border: 1px solid var(--form-card-line);
+    border: 1px solid var(--form-title);
     border-radius: 2px;
     background: transparent;
     color: var(--color-white);
