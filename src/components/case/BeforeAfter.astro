@@ -51,8 +51,9 @@ const sides = [
     background: var(--color-icon-bg);
   }
 
+  /* The "after" card is the deep dark of the page (OLX: its teal), with light text, not the bright highlight */
   .ba__side--after {
-    background: var(--case-bg);
+    background: var(--case-dark);
   }
 
   .ba__label {
@@ -64,7 +65,11 @@ const sides = [
   }
 
   .ba__side--after .ba__label {
-    color: var(--case-on-bg);
+    color: var(--case-dark-fg);
+  }
+
+  .ba__side--after .ba__text {
+    color: var(--color-white);
   }
 
   /* A phone-sized screen on a white frame, centred in the card. The picture itself is not rounded: the screenshot has its own corners, and clipping them cut the first letters of its heading. */
