@@ -25,6 +25,7 @@ import MazeLogo from '../../assets/icons/maze.svg';
 import problemPhoto from '../../assets/images/olx-problem.jpg';
 import mazeShot from '../../assets/images/olx-maze.png';
 import carrierPicker from '../../assets/images/olx-carrier-picker.webp';
+import carrierPickerAfter from '../../assets/images/olx-carrier-picker-after.png';
 import { cases } from '../../data/cases';
 import { work } from '../../data/content';
 
@@ -126,7 +127,7 @@ const card = work.find((item) => item.href === `/work/${study.slug}`);
               before={delivery.buyer.before}
               after={delivery.buyer.after}
               beforeImage={{ src: carrierPicker, alt: delivery.buyer.pickerAlt }}
-              afterSlot="Carrier picker after, free option first"
+              afterImage={{ src: carrierPickerAfter, alt: delivery.buyer.pickerAfterAlt }}
             />
             <StatGrid stats={delivery.buyer.results} />
             <p class="note">{delivery.buyer.resultNote}</p>

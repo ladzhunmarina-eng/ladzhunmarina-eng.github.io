@@ -298,6 +298,8 @@ export const olxCase = {
       ],
     },
     buyer: {
+      pickerAfterAlt:
+        'The Delivery provider screen: Ukrposhta, Nova Poshta and Meest, each with a 0 uah badge. Nova Poshta is open with four options (At the branch, free from 60 uah, selected; Currier; Parcel locker; To Poland) and City and Branch selectors.',
       pickerAlt:
         'The Delivery method screen: a list of carriers, each with a delivery time and a price. Ukrposhta, Nova Post and Meest show a 0 uah badge and Free delivery; Nova Post is selected.',
       title: 'Buyer side: the free option comes first, not last.',
