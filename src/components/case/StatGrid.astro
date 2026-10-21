@@ -51,9 +51,10 @@ const noteVerify = (note: Stat['note']) => typeof note === 'object' && !!note?.v
   .stat__value {
     font-family: var(--font-display);
     font-size: var(--fs-case-stat);
-    font-weight: var(--weight-extrabold);
-    line-height: var(--lh-display);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-tight);
     color: var(--color-ink);
+    letter-spacing: var(--ls-display);
   }
 
   .stat__label {
@@ -63,7 +64,7 @@ const noteVerify = (note: Stat['note']) => typeof note === 'object' && !!note?.v
 
   .stat__note {
     font-size: var(--fs-14);
-    line-height: var(--lh-14-20);
+    line-height: var(--lh-snug);
     color: var(--color-muted);
   }
 </style>

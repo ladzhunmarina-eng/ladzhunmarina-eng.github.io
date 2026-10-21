@@ -66,6 +66,7 @@ src/
 - **Design stack:** one centred sentence, one clause per line (research, design, prototype, ship), in which every tool is a soft pill with its logo (`tools` and `stack` in `content.ts`; logos in `src/assets/tools/`). The pills settle in one after another the first time it scrolls into view (off for reduced motion); the heading is only for screen readers.
 - **Motion:** the marquee, the hand wave and the contact card respect `prefers-reduced-motion`.
 - **Font:** DM Sans (one variable file, weight and optical-size axes) for everything, self-hosted through `@fontsource-variable/dm-sans`. The font tokens are at the top of `tokens.css`.
+- **Type system** (all in `tokens.css`): text sizes 12 / 14 / 16 / 18 / 20 / 24 / 32 and fluid display sizes, nothing in between; three weights (400 text, 500 interface labels, 700 every heading and number); four line-height ratios (`--lh-tight` 1.2, `--lh-snug` 1.45, `--lh-lead` 1.5, `--lh-body` 1.55); running text is never letter-spaced, 36px+ headings use `--ls-display`, 20-32px headings `--ls-heading`, small uppercase labels `--ls-eyebrow`.
 
 ## Case study pages
 

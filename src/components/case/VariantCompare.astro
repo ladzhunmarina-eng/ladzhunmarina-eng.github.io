@@ -81,14 +81,14 @@ const { variants, metrics = [], verify = false } = Astro.props;
     background: var(--mark);
     font-size: var(--fs-16);
     font-weight: var(--weight-bold);
-    line-height: var(--lh-16);
+    line-height: var(--lh-ui);
     color: var(--case-variant-text);
   }
 
   .variant__name {
     font-size: var(--fs-16);
     font-weight: var(--weight-medium);
-    line-height: var(--space-24);
+    line-height: var(--lh-ui);
     color: var(--color-ink);
   }
 
@@ -100,7 +100,7 @@ const { variants, metrics = [], verify = false } = Astro.props;
     background: var(--case-bg);
     font-size: var(--fs-14);
     font-weight: var(--weight-medium);
-    line-height: var(--lh-14-20);
+    line-height: var(--lh-snug);
     color: var(--case-on-bg);
   }
 
@@ -114,7 +114,7 @@ const { variants, metrics = [], verify = false } = Astro.props;
     border-radius: var(--space-8);
     background: var(--case-button-ghost);
     font-size: var(--fs-16);
-    line-height: var(--lh-16);
+    line-height: var(--lh-ui);
     color: var(--color-ink);
   }
 
@@ -139,7 +139,7 @@ const { variants, metrics = [], verify = false } = Astro.props;
 
   .variant__metric dt {
     font-size: var(--fs-14);
-    line-height: var(--lh-14-20);
+    line-height: var(--lh-snug);
     color: var(--color-muted);
   }
 
@@ -148,7 +148,7 @@ const { variants, metrics = [], verify = false } = Astro.props;
     font-family: var(--font-display);
     font-size: var(--fs-20);
     font-weight: var(--weight-bold);
-    line-height: 1.05;
+    line-height: var(--lh-tight);
     color: var(--color-ink);
   }
 

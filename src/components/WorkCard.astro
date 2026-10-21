@@ -99,8 +99,7 @@ const themeVars = {
     font-family: var(--font-display);
     font-size: var(--fs-tab);
     font-weight: var(--weight-light);
-    line-height: var(--lh-24);
-    letter-spacing: var(--ls-24);
+    line-height: var(--lh-tight);
     color: var(--accent);
   }
 
@@ -153,18 +152,17 @@ const themeVars = {
 
   .work__category {
     font-size: var(--fs-20);
-    line-height: var(--lh-20);
-    letter-spacing: var(--ls-20);
+    line-height: var(--lh-tight);
     color: var(--color-muted);
   }
 
   .work__title {
     font-family: var(--font-display);
     font-size: var(--fs-32);
-    font-weight: var(--weight-extrabold);
-    line-height: var(--lh-32);
-    letter-spacing: var(--ls-0);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-tight);
     color: var(--color-ink);
+    letter-spacing: var(--ls-heading);
   }
 
   /* One link covers the whole card, so the card is a single click target. */
@@ -199,7 +197,7 @@ const themeVars = {
     background: var(--color-white);
     color: var(--color-black);
     font-size: var(--fs-16);
-    line-height: var(--lh-16);
+    line-height: var(--lh-ui);
     transition:
       background-color 0.25s ease-out,
       color 0.25s ease-out;
@@ -243,8 +241,7 @@ const themeVars = {
 
   .work__description {
     font-size: var(--fs-16);
-    line-height: var(--lh-20);
-    letter-spacing: var(--ls-20);
+    line-height: var(--lh-body);
     color: var(--color-black);
   }
 

@@ -203,15 +203,15 @@ import { contact } from '../data/contact';
   .contact__title {
     font-family: var(--font-display);
     font-size: var(--contact-title);
-    font-weight: var(--weight-extrabold);
-    line-height: 1.1;
-    letter-spacing: -0.025em;
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-display);
     color: var(--contact-fg-strong);
   }
 
   .contact__lead {
     font-size: var(--contact-lead);
-    line-height: 1.45;
+    line-height: var(--lh-snug);
     color: var(--contact-muted);
   }
 
@@ -234,7 +234,7 @@ import { contact } from '../data/contact';
     color: var(--contact-fg);
     font: inherit;
     font-size: var(--fs-16);
-    line-height: var(--lh-20);
+    line-height: var(--lh-ui);
     text-align: left;
     cursor: pointer;
     transition:

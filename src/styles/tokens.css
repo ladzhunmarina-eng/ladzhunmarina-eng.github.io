@@ -107,30 +107,27 @@
   --font-meta: var(--font-body);
 
   /* ---------- Typography: weights ---------- */
-  --weight-extralight: 200;
+  /* Three working weights: 400 text, 500 interface labels and emphasis, 700 every heading and number. 300 / 800 are the footer's "Say Hi!" only. */
   --weight-light: 300;
   --weight-regular: 400;
   --weight-medium: 500;
-  --weight-semibold: 600;
   --weight-bold: 700;
   --weight-extrabold: 800;
 
   /* ---------- Typography: sizes ---------- */
+  /* Text steps (px): 12 caption, 14 small, 16 body, 18 large body, 20 lead and card titles, 24, 32. Nothing in between. */
   --fs-12: 12px;
   --fs-14: 14px;
   --fs-16: 16px;
-  --fs-17: 17px; /* the "At a glance" tab */
   --fs-18: 18px;
   --fs-20: 20px;
-  --fs-22: 22px;
   --fs-24: 24px;
   --fs-32: 32px;
   --fs-56: 56px; /* the big scores on the Maze cards */
   --fs-tab-min: 18px;
-  --fs-display: clamp(36px, 4.3056vw, 62px); /* 62px at 1440px */
-  --fs-hero: clamp(34px, 4.1667vw, 60px); /* the home heading: 60px at 1440px, so it keeps clear of the social icons */
-  --fs-quote: clamp(30px, 3.6111vw, 52px); /* the large quote in Wall of Love: 52px at 1440px */
-  --fs-stack: clamp(24px, 3.3333vw, 48px); /* the design stack sentence: 48px at 1440px */
+  /* Display steps, fluid. The home heading, Experience / Education and the closing line share one size. */
+  --fs-display: clamp(34px, 4.1667vw, 60px); /* 60px at 1440px; the hero heading also keeps clear of the social icons */
+  --fs-statement: clamp(26px, 3.3333vw, 48px); /* the large quote in Wall of Love and the design stack sentence: 48px at 1440px */
   --fs-case-title: clamp(34px, 3.8889vw, 56px); /* case study title: 56px at 1440px */
   --fs-case-h2: clamp(26px, 2.5vw, 36px); /* section thesis titles */
   --fs-case-h3: clamp(22px, 1.9444vw, 28px); /* titles of tests and sub-blocks */
@@ -138,31 +135,19 @@
   --fs-case-stat-sm: clamp(24px, 2.2222vw, 32px); /* numbers in the impact columns */
   --fs-case-score: clamp(56px, 5.5556vw, 80px); /* the UMUX-Lite score */
 
-  /* ---------- Typography: line heights ---------- */
-  --lh-display: 1.2; /* 120% */
-  --lh-12-18: 18px;
-  --lh-14-14: 14px;
-  --lh-14-18: 18px;
-  --lh-14-20: 20px;
-  --lh-14-24: 24px;
-  --lh-16: 19.2px;
-  --lh-16-meta: 19.25px;
-  --lh-20: 24px;
-  --lh-22: 28.8px;
-  --lh-24: 28.8px;
-  --lh-32: 38.4px;
+  /* ---------- Typography: line heights (four ratios) ---------- */
+  --lh-tight: 1.2; /* headings and numbers */
+  --lh-ui: 1.2; /* one-line interface text: buttons, nav, labels */
+  --lh-snug: 1.45; /* 12 / 14px secondary text and chips */
+  --lh-lead: 1.5; /* lead paragraphs (20px) */
+  --lh-body: 1.55; /* running text at 16 / 18px */
   --lh-auto: normal;
-  --lh-quote: 1.45; /* the smaller quotes */
-  --lh-body: 1.6; /* long-form text on case pages */
-  --lh-lead: 1.5; /* lead paragraphs */
 
   /* ---------- Typography: letter spacing ---------- */
-  --ls-0: 0;
-  --ls-16: 0.16px;
-  --ls-20: 0.2px;
-  --ls-24: 0.24px;
+  /* Text is never tracked. Big type tightens a little; small uppercase labels open up. */
+  --ls-display: -0.02em; /* 36px and up */
+  --ls-heading: -0.01em; /* 20 to 32px headings */
   --ls-eyebrow: 0.08em; /* small uppercase labels */
-  --ls-title: -0.015em; /* the case study title */
 
   /* ---------- Motion ---------- */
   --ease-out: cubic-bezier(0.25, 1, 0.5, 1); /* ease-out-quart: things settle, they do not bounce */
@@ -245,7 +230,6 @@
   --nav-toggle: 40px;
   --menu-blur: 5px;
   --menu-fs: 28px;
-  --menu-lh: 33.6px;
   --menu-gap: 23px;
   --menu-close: 36px;
   --menu-close-inset: 20px;
@@ -314,8 +298,8 @@
   --contact-row-radius: var(--radius-button); /* fully rounded, like the buttons */
   --contact-pad: 24px;
   --contact-pad-top: 56px;
-  --contact-title: 34px;
-  --contact-lead: 15px;
+  --contact-title: var(--fs-32);
+  --contact-lead: var(--fs-16);
   --contact-icon: 18px;
   --contact-close: 40px;
   --contact-pivot: -128px; /* the card sways around a point above it, like it hangs from a string */
@@ -400,8 +384,6 @@
     --space-303: 120px;
     --fs-24: 20px;
     --fs-32: 28px;
-    --lh-32: 33.6px;
-    --lh-24: 24px;
     --radius-panel: 24px;
     --nav-top: 16px;
     --nav-pad-x: 20px;
@@ -448,8 +430,8 @@
   :root {
     --contact-pad: 28px;
     --contact-pad-top: 64px;
-    --contact-title: 38px;
-    --contact-lead: 16px;
+    --contact-title: var(--fs-32);
+    --contact-lead: var(--fs-16);
   }
 }
 

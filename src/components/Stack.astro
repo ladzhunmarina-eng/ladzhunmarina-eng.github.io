@@ -84,12 +84,12 @@ let chipIndex = 0;
 
   .stack__sentence {
     max-width: var(--stack-w);
-    font-size: var(--fs-stack);
+    font-size: var(--fs-statement);
     font-weight: var(--weight-medium);
-    line-height: 1.55;
-    letter-spacing: var(--ls-title);
+    line-height: var(--lh-body);
     color: var(--color-ink);
     text-wrap: balance;
+    letter-spacing: var(--ls-display);
   }
 
   /* One clause per line. If a line is too long for the screen it wraps inside itself. */
@@ -106,7 +106,7 @@ let chipIndex = 0;
     /* inline-block, so the name's baseline is the chip's baseline and it sits on the line of the sentence */
     display: inline-block;
     padding: 0.06em 0.4em 0.06em 0.15em;
-    line-height: 1.2;
+    line-height: var(--lh-tight);
     border-radius: var(--radius-pill);
     background: var(--color-tool-chip);
     vertical-align: baseline;

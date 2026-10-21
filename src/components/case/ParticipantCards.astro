@@ -165,15 +165,15 @@ const columns = [
   }
 
   .person__name {
-    font-size: 15px;
-    font-weight: var(--weight-semibold);
-    line-height: var(--space-20);
+    font-size: var(--fs-16);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-snug);
     color: var(--case-ink-soft);
   }
 
   .person__meta {
     font-size: var(--fs-12);
-    line-height: var(--lh-12-18);
+    line-height: var(--lh-snug);
     color: var(--case-label);
   }
 
@@ -191,9 +191,9 @@ const columns = [
   }
 
   .label {
-    font-size: 10px;
+    font-size: var(--fs-12);
     font-weight: var(--weight-medium);
-    line-height: var(--space-20);
+    line-height: var(--lh-snug);
     letter-spacing: var(--ls-eyebrow);
     text-transform: uppercase;
     color: var(--case-label);
@@ -205,8 +205,8 @@ const columns = [
     padding: 6px var(--space-12);
     border-radius: 6px;
     background: var(--case-note-bg);
-    font-size: 13px;
-    line-height: var(--space-20);
+    font-size: var(--fs-14);
+    line-height: var(--lh-snug);
     color: var(--case-note-text);
   }
 
@@ -231,8 +231,8 @@ const columns = [
     display: flex;
     flex-direction: column;
     gap: var(--space-8);
-    font-size: 13px;
-    line-height: var(--space-20);
+    font-size: var(--fs-14);
+    line-height: var(--lh-snug);
     color: var(--case-ink-soft);
   }
 
@@ -322,19 +322,20 @@ const columns = [
     font-family: var(--font-display);
     font-size: var(--fs-32);
     font-weight: var(--weight-bold);
-    line-height: var(--lh-32);
+    line-height: var(--lh-tight);
     color: var(--case-rating);
+    letter-spacing: var(--ls-heading);
   }
 
   .rating__out {
-    font-size: 13px;
+    font-size: var(--fs-14);
     color: var(--case-label);
   }
 
   .rating__detail {
     margin-left: var(--space-12);
     font-size: var(--fs-12);
-    line-height: var(--lh-12-18);
+    line-height: var(--lh-snug);
     color: var(--case-rating-text);
   }
 

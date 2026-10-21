@@ -45,7 +45,7 @@ const { persona } = Astro.props;
   .persona__eyebrow {
     font-size: var(--fs-12);
     font-weight: var(--weight-medium);
-    line-height: var(--lh-12-18);
+    line-height: var(--lh-snug);
     letter-spacing: var(--ls-eyebrow);
     color: var(--case-accent);
   }
@@ -54,8 +54,9 @@ const { persona } = Astro.props;
     font-family: var(--font-display);
     font-size: var(--fs-24);
     font-weight: var(--weight-bold);
-    line-height: var(--lh-24);
+    line-height: var(--lh-tight);
     color: var(--color-ink);
+    letter-spacing: var(--ls-heading);
   }
 
   .persona__text {
@@ -68,8 +69,8 @@ const { persona } = Astro.props;
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
-    font-size: 15px;
-    line-height: var(--lh-14-20);
+    font-size: var(--fs-16);
+    line-height: var(--lh-snug);
     color: var(--case-accent);
   }
 

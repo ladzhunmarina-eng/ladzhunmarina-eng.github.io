@@ -86,8 +86,9 @@ const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
     font-family: var(--font-display);
     font-size: var(--fs-display);
     font-weight: var(--weight-bold);
-    line-height: var(--lh-display);
+    line-height: var(--lh-tight);
     color: var(--color-ink);
+    letter-spacing: var(--ls-display);
   }
 
   /* The Education heading sits 4px closer to its first entry than the Experience heading does, in the design. */
@@ -125,15 +126,13 @@ const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
   .item__title {
     font-size: var(--fs-20);
     font-weight: var(--weight-medium);
-    line-height: var(--lh-20);
-    letter-spacing: var(--ls-20);
+    line-height: var(--lh-tight);
   }
 
   .item__dates {
     font-size: var(--fs-16);
     font-weight: var(--weight-medium);
-    line-height: var(--lh-20);
-    letter-spacing: var(--ls-20);
+    line-height: var(--lh-ui);
     color: var(--color-dates);
   }
 
@@ -144,8 +143,7 @@ const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
     padding-left: var(--space-24);
     list-style: disc;
     font-size: var(--fs-16);
-    line-height: var(--lh-20);
-    letter-spacing: var(--ls-20);
+    line-height: var(--lh-body);
   }
 
   .role__list { max-width: 527px; }
@@ -155,9 +153,8 @@ const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
     max-width: 527px;
     margin-top: var(--space-8); /* with the 16px item gap: the 24px between list and summary in the design */
     font-size: var(--fs-16);
-    font-weight: var(--weight-semibold);
-    line-height: var(--lh-20);
-    letter-spacing: var(--ls-20);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-body);
   }
 
   /* ---------- Education ---------- */
@@ -176,8 +173,8 @@ const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
   }
 
   /* The two cards are set at slightly different sizes in the design (18.69px and 17.75px). */
-  .cert--blue { --cert-bg: var(--cert-blue-bg); --cert-fs: 18.69px; }
-  .cert--cream { --cert-bg: var(--cert-cream-bg); --cert-fs: 17.75px; }
+  .cert--blue { --cert-bg: var(--cert-blue-bg) }
+  .cert--cream { --cert-bg: var(--cert-cream-bg) }
 
   .cert__logo {
     display: block;
@@ -190,14 +187,14 @@ const icons = { graduation: GraduationIcon, certificate: CertificateIcon };
   .cert__kind,
   .cert__title,
   .cert__year {
-    font-size: var(--cert-fs);
-    line-height: 27px;
+    font-size: var(--fs-18);
+    line-height: var(--lh-snug);
   }
 
   /* Offsets measured from the design: the kind label sits ~89px from the top of both cards. */
   .cert__kind {
     margin-top: 19px;
-    font-weight: var(--weight-semibold);
+    font-weight: var(--weight-medium);
   }
 
   .cert--cream .cert__kind { margin-top: 31px; }
