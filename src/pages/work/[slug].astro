@@ -19,6 +19,7 @@ import LearningCards from '../../components/case/LearningCards.astro';
 import CaseCover from '../../components/case/CaseCover.astro';
 import CasePhoto from '../../components/case/CasePhoto.astro';
 import ImageSlot from '../../components/case/ImageSlot.astro';
+import BasketScreens from '../../components/case/BasketScreens.astro';
 import MazeLogo from '../../assets/icons/maze.svg';
 import problemPhoto from '../../assets/images/olx-problem.jpg';
 import mazeShot from '../../assets/images/olx-maze.png';
@@ -109,10 +110,7 @@ const card = work.find((item) => item.href === `/work/${study.slug}`);
             <EntryPoints variants={basket.entryTest.variants} />
           </SubSection>
 
-          <SubSection title={basket.screens.title}>
-            <ImageSlot label="Basket screens" ratio="1008 / 630" />
-            <p class="note">{basket.screens.caption}</p>
-          </SubSection>
+          <BasketScreens title={basket.screens.title} lead={basket.screens.lead} shots={basket.screens.shots} />
         </Section>
 
         <Section id="delivery" eyebrow={delivery.eyebrow} title={delivery.title}>

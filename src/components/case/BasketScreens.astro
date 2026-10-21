@@ -1,0 +1,111 @@
+---
+import { Image } from 'astro:assets';
+import shotBasket from '../../assets/images/olx-basket-1.png';
+import shotEmpty from '../../assets/images/olx-basket-2.png';
+import shotMore from '../../assets/images/olx-basket-3.png';
+
+interface Props {
+  title: string;
+  lead: readonly string[];
+  shots: readonly { alt: string }[];
+}
+
+const { title, lead, shots } = Astro.props;
+const images = [shotBasket, shotEmpty, shotMore];
+---
+
+<!--
+  The basket screens on a tinted panel, with the title and a two-line status note inside it, as in the design.
+  Everything is sized as a share of the panel, so it scales as one picture.
+-->
+<section class="screens" aria-labelledby="basket-screens-title">
+  <div class="screens__panel">
+  <h3 id="basket-screens-title" class="screens__title">{title}</h3>
+  <p class="screens__lead">
+    {lead.map((line) => <span>{line}</span>)}
+  </p>
+  <ul class="screens__row">
+    {images.map((image, index) => (
+      <li class={`screens__phone screens__phone--${index + 1}`}>
+        <Image src={image} alt={shots[index].alt} widths={[191, 382, 573]} sizes="(max-width: 1023px) 28vw, 191px" quality={85} />
+      </li>
+    ))}
+  </ul>
+  </div>
+</section>
+
+<style>
+  /* The section is the size container; the panel inside is what is sized from it (an element cannot use its own container units). */
+  .screens {
+    container-type: inline-size;
+    margin-top: var(--space-32);
+  }
+
+  .screens__panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5.75cqw 3cqw 6.6cqw;
+    border-radius: var(--radius-card);
+    background: var(--color-icon-bg);
+    text-align: center;
+  }
+
+  .screens__title {
+    font-family: var(--font-display);
+    font-size: clamp(20px, 2.78cqw, 28px);
+    font-weight: var(--weight-bold);
+    line-height: 1.2;
+    color: var(--color-ink);
+  }
+
+  .screens__lead {
+    display: flex;
+    flex-direction: column;
+    max-width: 60.5cqw;
+    margin-top: 0.9cqw;
+    font-size: clamp(13px, 1.3cqw, 16px);
+    line-height: 1.45;
+    color: var(--color-black);
+  }
+
+  .screens__row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+    margin-top: 3.4cqw;
+  }
+
+  .screens__phone {
+    flex: none;
+  }
+
+  .screens__phone :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Widths measured from the design (191 / 190 / 186 of 1008) */
+  .screens__phone--1 {
+    width: 19cqw;
+  }
+
+  /* The gaps in the design are not equal: 23.6 and 18.7 */
+  .screens__phone--2 {
+    width: 18.9cqw;
+    margin-left: 2.34cqw;
+  }
+
+  .screens__phone--3 {
+    width: 18.5cqw;
+    margin-left: 1.86cqw;
+  }
+
+  @media (max-width: 640px) {
+    .screens__lead {
+      max-width: none;
+    }
+  }
+</style>

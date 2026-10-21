@@ -32,7 +32,7 @@ src/
     case/                  the building blocks of a case study page:
                              CaseBack, CaseHero, CaseCover, MetricStrip, CaseNav (sticky "On this page"),
                              Section, SubSection, StatGrid, CasePhoto, Persona, ProcessChart (Gantt), SurveyBars,
-                             VariantCompare, ParticipantCards (scrolls sideways), MazeResults, EntryPoints,
+                             VariantCompare, ParticipantCards (scrolls sideways), MazeResults, EntryPoints, BasketScreens,
                              BeforeAfter, LearningCards, plus ImageSlot (labelled placeholder) and Verify (dev-only badge)
     Button.astro, SocialLinks.astro
     Footer.astro           "Say Hi!", contact pills, copyright and social buttons

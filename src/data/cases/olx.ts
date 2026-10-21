@@ -256,7 +256,15 @@ export const olxCase = {
 
     screens: {
       title: 'The basket',
-      caption: 'Basket with free-delivery progress, empty state with Favourites, and more items from the same seller.',
+      lead: [
+        'As of August 2026, the feature has been launched on the Web platform for 100% of traffic.',
+        'A/B/C entry points test is the next step',
+      ],
+      shots: [
+        { alt: 'Basket with four items from one seller, a free-delivery progress bar, the subtotal and a Continue to checkout button.' },
+        { alt: 'Empty basket with a Browse items button, and a row of favourites below it.' },
+        { alt: 'More items from the same seller, each with an Add or Remove button, and a Go to basket bar with free-delivery progress.' },
+      ],
     },
   },
 
