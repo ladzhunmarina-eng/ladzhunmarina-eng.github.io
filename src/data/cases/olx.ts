@@ -298,6 +298,8 @@ export const olxCase = {
       ],
     },
     buyer: {
+      pickerAlt:
+        'The Delivery method screen: a list of carriers, each with a delivery time and a price. Ukrposhta, Nova Post and Meest show a 0 uah badge and Free delivery; Nova Post is selected.',
       title: 'Buyer side: the free option comes first, not last.',
       before: { label: 'Before', text: 'Delivery cost appeared late in checkout, after the carrier was already chosen.' },
       after: { label: 'After', text: 'The carrier picker shows the free option upfront, so the price is clear before choosing.' },

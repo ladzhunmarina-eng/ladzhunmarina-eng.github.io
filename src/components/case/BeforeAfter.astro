@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import ImageSlot from './ImageSlot.astro';
 
 interface Props {
@@ -6,12 +7,15 @@ interface Props {
   after: { label: string; text: string };
   beforeSlot?: string;
   afterSlot?: string;
+  /** A real screenshot in place of the placeholder */
+  beforeImage?: { src: ImageMetadata; alt: string };
+  afterImage?: { src: ImageMetadata; alt: string };
 }
 
-const { before, after, beforeSlot, afterSlot } = Astro.props;
+const { before, after, beforeSlot, afterSlot, beforeImage, afterImage } = Astro.props;
 const sides = [
-  { ...before, slot: beforeSlot, kind: 'before' },
-  { ...after, slot: afterSlot, kind: 'after' },
+  { ...before, slot: beforeSlot, image: beforeImage, kind: 'before' },
+  { ...after, slot: afterSlot, image: afterImage, kind: 'after' },
 ];
 ---
 
@@ -20,7 +24,11 @@ const sides = [
     <section class:list={['ba__side', `ba__side--${side.kind}`]}>
       <h4 class="ba__label">{side.label}</h4>
       <p class="ba__text">{side.text}</p>
-      {side.slot && <ImageSlot label={side.slot} ratio="4 / 3" />}
+      {side.image ? (
+        <Image class="ba__shot" src={side.image.src} alt={side.image.alt} widths={[360, 720]} sizes="(max-width: 640px) 80vw, 360px" quality={85} />
+      ) : (
+        side.slot && <ImageSlot label={side.slot} ratio="4 / 3" />
+      )}
     </section>
   ))}
 </div>
@@ -55,6 +63,15 @@ const sides = [
 
   .ba__side--after .ba__label {
     color: var(--case-on-bg);
+  }
+
+  /* A phone-sized screen: held to its natural width and centred in the card */
+  .ba__side :global(.ba__shot) {
+    align-self: center;
+    width: 100%;
+    max-width: var(--case-shot-w);
+    height: auto;
+    border-radius: var(--radius-card);
   }
 
   .ba__text {

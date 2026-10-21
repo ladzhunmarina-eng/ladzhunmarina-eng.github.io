@@ -24,6 +24,7 @@ import DeliveryDemo from '../../components/case/DeliveryDemo.astro';
 import MazeLogo from '../../assets/icons/maze.svg';
 import problemPhoto from '../../assets/images/olx-problem.jpg';
 import mazeShot from '../../assets/images/olx-maze.png';
+import carrierPicker from '../../assets/images/olx-carrier-picker.webp';
 import { cases } from '../../data/cases';
 import { work } from '../../data/content';
 
@@ -124,7 +125,7 @@ const card = work.find((item) => item.href === `/work/${study.slug}`);
             <BeforeAfter
               before={delivery.buyer.before}
               after={delivery.buyer.after}
-              beforeSlot="Carrier picker before"
+              beforeImage={{ src: carrierPicker, alt: delivery.buyer.pickerAlt }}
               afterSlot="Carrier picker after, free option first"
             />
             <StatGrid stats={delivery.buyer.results} />

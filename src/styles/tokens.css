@@ -302,6 +302,7 @@
   --case-maze-img-w: 604px; /* the Maze screenshot; the dark cards take the rest */
   --case-maze-gap: 24px;
   --case-maze-logo-w: 112px;
+  --case-shot-w: 360px; /* a phone screen shown inside a card (before / after) */
   --case-entry-ratio: 1008 / 645; /* the entry-point test panel */
   --radius-glass: 24px; /* the hero card */
   --radius-glass-inner: 16px; /* the card inside it */
