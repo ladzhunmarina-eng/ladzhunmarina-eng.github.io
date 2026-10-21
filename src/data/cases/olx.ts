@@ -316,12 +316,14 @@ export const olxCase = {
         title: 'Payment finalisation to delivery clicks',
         rows: [
           {
+            icon: '📱',
             label: 'Mobile',
             level: '54%',
             change: '+9%',
             points: [0, 0.29, 0.27, 0.41, 0.12, 0.2, 0.04, 0.1, 0.43, 0.69, 0.69, 0.94, 0.51, 0.59, 1, 0.76, 0.82, 0.65, 0.94],
           },
           {
+            icon: '🖥️',
             label: 'Desktop',
             level: '38%',
             change: '+7%',

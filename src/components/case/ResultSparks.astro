@@ -1,5 +1,7 @@
 ---
 interface Row {
+  /** An emoji shown above the label, as on the mockups */
+  icon: string;
   label: string;
   /** The level reached, shown at the end of the line */
   level: string;
@@ -37,29 +39,70 @@ const endY = (points: readonly number[]) => PAD + (1 - points[points.length - 1]
   <ul class="sparks__list">
     {rows.map((row) => (
       <li class="spark">
-        <p class="spark__label">{row.label}</p>
+        <p class="spark__label">
+          <span class="spark__icon" aria-hidden="true">{row.icon}</span>
+          {row.label}
+        </p>
         <div class="spark__chart">
           <svg class="spark__line" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" aria-hidden="true">
             <path d={path(row.points)} fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
           </svg>
           <span class="spark__dot" style={`--y: ${(endY(row.points) / H).toFixed(3)}`} aria-hidden="true"></span>
-          <span class="spark__level">{row.level}</span>
+          <span class="spark__level" data-count>{row.level}</span>
         </div>
-        <p class="spark__change">{row.change}</p>
+        <p class="spark__change" data-count>{row.change}</p>
       </li>
     ))}
   </ul>
 </figure>
 
+<script>
+  /*
+   * When the charts scroll into view the lines draw themselves from left to right, then the dot and the
+   * numbers arrive, and the numbers count up. Without the script (or with reduced motion) they are simply there.
+   */
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const countUp = (el: HTMLElement) => {
+    const match = el.textContent?.match(/^(\+?)(\d+(?:\.\d+)?)(.*)$/);
+    if (!match) return;
+    const [, sign, digits, rest] = match;
+    const target = parseFloat(digits);
+    const places = digits.includes('.') ? digits.split('.')[1].length : 0;
+    const start = performance.now();
+    const duration = 1400;
+    const tick = (now: number) => {
+      const t = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 4); // ease-out-quart
+      el.textContent = `${sign}${(target * eased).toFixed(places)}${rest}`;
+      if (t < 1) requestAnimationFrame(tick);
+    };
+    el.textContent = `${sign}${(0).toFixed(places)}${rest}`;
+    requestAnimationFrame(tick);
+  };
+
+  document.querySelectorAll<HTMLElement>('.sparks').forEach((sparks) => {
+    if (calm.matches || !('IntersectionObserver' in window)) return;
+    sparks.dataset.motion = 'ready';
+    const seen = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        seen.disconnect();
+        sparks.dataset.motion = 'go';
+        sparks.querySelectorAll<HTMLElement>('[data-count]').forEach((el, index) => window.setTimeout(() => countUp(el), 400 + index * 120));
+      },
+      { threshold: 0.6 },
+    );
+    seen.observe(sparks);
+  });
+</script>
+
 <style>
   .sparks {
     display: flex;
     flex-direction: column;
-    gap: var(--space-20);
-    margin: 0;
-    padding: var(--space-24);
-    border-radius: var(--radius-person);
-    background: var(--case-dark-panel);
+    gap: var(--space-16);
+    margin: var(--space-8) 0 0;
   }
 
   .sparks__title {
@@ -74,7 +117,7 @@ const endY = (points: readonly number[]) => PAD + (1 - points[points.length - 1]
   .sparks__list {
     display: flex;
     flex-direction: column;
-    gap: var(--space-24);
+    gap: var(--space-16);
   }
 
   /* label over the line, the change to its right */
@@ -85,22 +128,29 @@ const endY = (points: readonly number[]) => PAD + (1 - points[points.length - 1]
       'label label'
       'chart change';
     align-items: center;
-    gap: var(--space-8) var(--space-20);
+    gap: var(--space-4) var(--space-16);
   }
 
   .spark__label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
     grid-area: label;
     font-size: var(--fs-14);
     line-height: var(--lh-snug);
     color: var(--color-white);
-    opacity: 0.8;
+  }
+
+  .spark__icon {
+    font-size: var(--fs-20);
+    line-height: 1;
   }
 
   .spark__chart {
     position: relative;
     grid-area: chart;
     min-width: 0;
-    padding-top: var(--space-20);
+    padding-top: var(--space-18);
     color: var(--case-dark-fg);
   }
 
@@ -115,7 +165,7 @@ const endY = (points: readonly number[]) => PAD + (1 - points[points.length - 1]
   .spark__dot {
     position: absolute;
     right: -4px;
-    top: calc(var(--space-20) + var(--spark-h) * var(--y));
+    top: calc(var(--space-18) + var(--spark-h) * var(--y));
     width: var(--space-8);
     height: var(--space-8);
     border-radius: 50%;
@@ -129,6 +179,7 @@ const endY = (points: readonly number[]) => PAD + (1 - points[points.length - 1]
     right: 0;
     font-size: var(--fs-14);
     font-weight: var(--weight-medium);
+    font-variant-numeric: tabular-nums;
     line-height: var(--lh-snug);
     color: var(--color-white);
   }
@@ -136,11 +187,53 @@ const endY = (points: readonly number[]) => PAD + (1 - points[points.length - 1]
   .spark__change {
     grid-area: change;
     min-width: 2.4em; /* both changes take the same room, so both lines are as long */
+    font-variant-numeric: tabular-nums; /* the digits do not jiggle while they count */
     font-family: var(--font-display);
-    font-size: var(--fs-case-stat);
+    font-size: var(--fs-case-stat-sm);
     font-weight: var(--weight-bold);
     line-height: var(--lh-tight);
     letter-spacing: var(--ls-display);
     color: var(--color-white);
+  }
+
+  /* The motion: the line is revealed left to right, the dot and the level come in after it */
+  .sparks[data-motion='ready'] .spark__line {
+    clip-path: inset(-8px 100% -8px -8px);
+  }
+
+  .sparks[data-motion='ready'] .spark__dot,
+  .sparks[data-motion='ready'] .spark__level {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.4);
+  }
+
+  .sparks[data-motion='ready'] .spark__level {
+    transform: translateY(6px);
+  }
+
+  .sparks[data-motion='go'] .spark__line {
+    clip-path: inset(-8px -8px -8px -8px);
+    transition: clip-path 1.6s var(--ease-out);
+  }
+
+  .sparks[data-motion='go'] .spark__dot {
+    transition:
+      opacity 0.3s ease-out 1.3s,
+      transform 0.5s var(--ease-out) 1.3s;
+  }
+
+  .sparks[data-motion='go'] .spark__level {
+    transition:
+      opacity 0.4s ease-out 1.3s,
+      transform 0.5s var(--ease-out) 1.3s;
+  }
+
+  .sparks[data-motion='go'] .spark:nth-child(2) .spark__line {
+    transition-delay: 0.25s;
+  }
+
+  .sparks[data-motion='go'] .spark:nth-child(2) .spark__dot,
+  .sparks[data-motion='go'] .spark:nth-child(2) .spark__level {
+    transition-delay: 1.55s;
   }
 </style>
