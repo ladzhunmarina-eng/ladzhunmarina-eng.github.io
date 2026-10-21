@@ -302,7 +302,7 @@
   --case-maze-img-w: 604px; /* the Maze screenshot; the dark cards take the rest */
   --case-maze-gap: 24px;
   --case-maze-logo-w: 112px;
-  --case-chart-w: 527px; /* the click-through chart */
+  --spark-h: 56px; /* a small line chart */
   --case-shot-w: 360px; /* a phone screen shown inside a card (before / after) */
   --case-entry-ratio: 1008 / 645; /* the entry-point test panel */
   --radius-glass: 24px; /* the hero card */
@@ -501,6 +501,7 @@
   --case-friction: var(--color-black);
   --case-dark: var(--color-ink); /* the dark result cards */
   --case-dark-fg: var(--case-bg);
+  --case-dark-panel: rgb(255 255 255 / 0.07); /* a panel inside a dark card */
   --case-dark-chip: rgb(255 255 255 / 0.15);
   --case-pain: var(--color-black);
   --case-divider: var(--case-line); /* the lines between the four facts in the hero card */

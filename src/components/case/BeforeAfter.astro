@@ -31,6 +31,7 @@ const sides = [
       ) : (
         side.slot && <ImageSlot label={side.slot} ratio="4 / 3" />
       )}
+      {side.kind === 'after' && <slot name="after" />}
     </section>
   ))}
 </div>

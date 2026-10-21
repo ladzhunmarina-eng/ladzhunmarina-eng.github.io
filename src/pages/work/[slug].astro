@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import CaseBack from '../../components/case/CaseBack.astro';
 import CaseHero from '../../components/case/CaseHero.astro';
@@ -15,6 +14,7 @@ import VariantCompare from '../../components/case/VariantCompare.astro';
 import ParticipantCards from '../../components/case/ParticipantCards.astro';
 import MazeResults from '../../components/case/MazeResults.astro';
 import EntryPoints from '../../components/case/EntryPoints.astro';
+import ResultSparks from '../../components/case/ResultSparks.astro';
 import BeforeAfter from '../../components/case/BeforeAfter.astro';
 import LearningCards from '../../components/case/LearningCards.astro';
 import CaseCover from '../../components/case/CaseCover.astro';
@@ -26,7 +26,6 @@ import MazeLogo from '../../assets/icons/maze.svg';
 import problemPhoto from '../../assets/images/olx-problem.jpg';
 import mazeShot from '../../assets/images/olx-maze.png';
 import carrierPicker from '../../assets/images/olx-carrier-picker.webp';
-import clickThrough from '../../assets/images/olx-click-through.png';
 import carrierPickerAfter from '../../assets/images/olx-carrier-picker-after.png';
 import { cases } from '../../data/cases';
 import { work } from '../../data/content';
@@ -130,9 +129,9 @@ const card = work.find((item) => item.href === `/work/${study.slug}`);
               after={delivery.buyer.after}
               beforeImage={{ src: carrierPicker, alt: delivery.buyer.pickerAlt }}
               afterImage={{ src: carrierPickerAfter, alt: delivery.buyer.pickerAfterAlt }}
-            />
-            <Image class="results-chart" src={clickThrough} alt={delivery.buyer.resultsAlt} widths={[527, 1054]} sizes="(max-width: 640px) 100vw, 527px" quality={90} />
-            <p class="note">{delivery.buyer.resultNote}</p>
+            >
+              <ResultSparks slot="after" title={delivery.buyer.results.title} rows={delivery.buyer.results.rows} />
+            </BeforeAfter>
           </SubSection>
         </Section>
 
@@ -192,12 +191,6 @@ const card = work.find((item) => item.href === `/work/${study.slug}`);
     list-style: disc;
     font-size: var(--fs-18);
     line-height: var(--lh-body);
-  }
-
-  :global(.results-chart) {
-    width: 100%;
-    max-width: var(--case-chart-w);
-    height: auto;
   }
 
   .note {

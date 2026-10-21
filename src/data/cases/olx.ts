@@ -312,9 +312,23 @@ export const olxCase = {
         label: 'The redesign',
         text: 'Carriers are grouped. Pick one and its methods open inside it as four short options, each with its price (the free one reads 0 uah, the old price struck through), then city and branch.',
       },
-      resultsAlt:
-        'Payment finalisation to delivery clicks. Mobile reaches 54%, up 9%. Desktop reaches 38%, up 7%. Each has a line chart that rises after the change.',
-      resultNote: 'Click-through from payment finalisation to the delivery step: +9% on mobile and +7% on desktop with the redesigned form.',
+      results: {
+        title: 'Payment finalisation to delivery clicks',
+        rows: [
+          {
+            label: 'Mobile',
+            level: '54%',
+            change: '+9%',
+            points: [0, 0.29, 0.27, 0.41, 0.12, 0.2, 0.04, 0.1, 0.43, 0.69, 0.69, 0.94, 0.51, 0.59, 1, 0.76, 0.82, 0.65, 0.94],
+          },
+          {
+            label: 'Desktop',
+            level: '38%',
+            change: '+7%',
+            points: [0.19, 0.22, 0.07, 0.08, 0.31, 0, 0.07, 0, 0.07, 0.07, 0.54, 0.93, 0.93, 1, 1, 0.9, 0.88, 0.75, 0.92, 0.85, 0.85, 0.88],
+          },
+        ],
+      },
     },
   },
 

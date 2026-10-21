@@ -1,0 +1,146 @@
+---
+interface Row {
+  label: string;
+  /** The level reached, shown at the end of the line */
+  level: string;
+  /** The change, shown large */
+  change: string;
+  /** The line, from 0 (lowest) to 1 (highest) */
+  points: readonly number[];
+}
+
+interface Props {
+  title: string;
+  rows: readonly Row[];
+}
+
+const { title, rows } = Astro.props;
+
+// Every line is drawn in the same 264 x 56 box, with room at the top and bottom for the stroke
+const W = 264;
+const H = 56;
+const PAD = 4;
+const path = (points: readonly number[]) =>
+  points
+    .map((value, index) => {
+      const x = (index / (points.length - 1)) * W;
+      const y = PAD + (1 - value) * (H - 2 * PAD);
+      return `${index === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`;
+    })
+    .join(' ');
+const endY = (points: readonly number[]) => PAD + (1 - points[points.length - 1]) * (H - 2 * PAD);
+---
+
+<!-- Two small line charts and the change they led to, on a slightly lighter panel inside a dark card. -->
+<figure class="sparks">
+  <figcaption class="sparks__title">{title}</figcaption>
+  <ul class="sparks__list">
+    {rows.map((row) => (
+      <li class="spark">
+        <p class="spark__label">{row.label}</p>
+        <div class="spark__chart">
+          <svg class="spark__line" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" aria-hidden="true">
+            <path d={path(row.points)} fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+          </svg>
+          <span class="spark__dot" style={`--y: ${(endY(row.points) / H).toFixed(3)}`} aria-hidden="true"></span>
+          <span class="spark__level">{row.level}</span>
+        </div>
+        <p class="spark__change">{row.change}</p>
+      </li>
+    ))}
+  </ul>
+</figure>
+
+<style>
+  .sparks {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-20);
+    margin: 0;
+    padding: var(--space-24);
+    border-radius: var(--radius-person);
+    background: var(--case-dark-panel);
+  }
+
+  .sparks__title {
+    font-size: var(--fs-12);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-snug);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--case-dark-fg);
+  }
+
+  .sparks__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  /* label over the line, the change to its right */
+  .spark {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'label label'
+      'chart change';
+    align-items: center;
+    gap: var(--space-8) var(--space-20);
+  }
+
+  .spark__label {
+    grid-area: label;
+    font-size: var(--fs-14);
+    line-height: var(--lh-snug);
+    color: var(--color-white);
+    opacity: 0.8;
+  }
+
+  .spark__chart {
+    position: relative;
+    grid-area: chart;
+    min-width: 0;
+    padding-top: var(--space-20);
+    color: var(--case-dark-fg);
+  }
+
+  .spark__line {
+    display: block;
+    width: 100%;
+    height: var(--spark-h);
+    overflow: visible;
+  }
+
+  /* a dot at the last point, with its level just above */
+  .spark__dot {
+    position: absolute;
+    right: -4px;
+    top: calc(var(--space-20) + var(--spark-h) * var(--y));
+    width: var(--space-8);
+    height: var(--space-8);
+    border-radius: 50%;
+    background: currentColor;
+    transform: translateY(-50%);
+  }
+
+  .spark__level {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: var(--fs-14);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-snug);
+    color: var(--color-white);
+  }
+
+  .spark__change {
+    grid-area: change;
+    min-width: 2.4em; /* both changes take the same room, so both lines are as long */
+    font-family: var(--font-display);
+    font-size: var(--fs-case-stat);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-display);
+    color: var(--color-white);
+  }
+</style>
