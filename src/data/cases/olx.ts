@@ -277,7 +277,7 @@ export const olxCase = {
       demo: {
         title: 'Offer free delivery',
         badge: 'New',
-        hint: 'Try it: switch on Ukrposhta to see its settings open.',
+        hint: 'Plays on a loop. Click it to take over and try it yourself.',
         priceLabel: 'Minimum item price for free delivery',
         priceNote:
           'Set a minimum price for free delivery. If an item’s price is below this amount, the buyer will pay for the delivery. Leave blank to offer free delivery on all items, regardless of their price.',

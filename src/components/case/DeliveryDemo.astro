@@ -1,4 +1,6 @@
 ---
+// GeomanistOLX, the typeface of the OLX mockups, is not available for the web; Figtree is the closest open one.
+import '@fontsource-variable/figtree/index.css';
 import UkrposhtaLogo from '../../assets/icons/carrier-ukrposhta.svg';
 import NovaPostLogo from '../../assets/icons/carrier-novapost.svg';
 import MeestLogo from '../../assets/icons/carrier-meest.svg';
@@ -85,23 +87,143 @@ const { title, badge, hint, priceLabel, priceNote, methodsLabel, methods } = Ast
         </li>
       </ul>
     </section>
+    <span class="cursor" aria-hidden="true">
+      <span class="cursor__ring"></span>
+      <svg class="cursor__arrow" viewBox="0 0 20 24" fill="none"><path d="M2 1.5v17.2l4.6-4.1 3 6.9 3-1.3-3-6.8 6.3-.4L2 1.5Z" fill="#fff" stroke="#02282c" stroke-width="1.5" stroke-linejoin="round" /></svg>
+    </span>
   </div>
   <p class="demo__hint">{hint}</p>
 </div>
 
 <script>
+  /*
+   * The card plays itself like a short screen recording: a cursor switches Ukrposhta on, ticks two methods off
+   * and on again, then switches Ukrposhta off, and starts over. It runs only while it is on screen, and a tap
+   * or a click anywhere on it hands control to the visitor. With reduced motion it never plays by itself.
+   */
   document.querySelectorAll<HTMLElement>('.demo').forEach((demo) => {
-    demo.querySelectorAll<HTMLButtonElement>('[data-demo-switch]').forEach((toggle) => {
-      toggle.addEventListener('click', () => {
-        const on = toggle.getAttribute('aria-checked') !== 'true';
-        toggle.setAttribute('aria-checked', String(on));
-        const carrier = toggle.closest<HTMLElement>('.carrier');
-        const panel = carrier?.querySelector<HTMLElement>('.carrier__panel');
-        if (!carrier || !panel) return;
-        carrier.dataset.open = String(on);
-        // closed settings must not be reachable by keyboard
-        panel.toggleAttribute('inert', !on);
-      });
+    const stage = demo.querySelector<HTMLElement>('.demo__stage')!;
+    const cursor = demo.querySelector<HTMLElement>('.cursor')!;
+    const switches = demo.querySelectorAll<HTMLButtonElement>('[data-demo-switch]');
+    const ukrposhta = demo.querySelector<HTMLButtonElement>('[data-carrier="ukrposhta"] [data-demo-switch]')!;
+    const boxes = [...demo.querySelectorAll<HTMLInputElement>('.method__input')];
+
+    const setSwitch = (toggle: HTMLButtonElement, on: boolean) => {
+      toggle.setAttribute('aria-checked', String(on));
+      const carrier = toggle.closest<HTMLElement>('.carrier');
+      const panel = carrier?.querySelector<HTMLElement>('.carrier__panel');
+      if (!carrier || !panel) return;
+      carrier.dataset.open = String(on);
+      // closed settings must not be reachable by keyboard
+      panel.toggleAttribute('inert', !on);
+    };
+
+    switches.forEach((toggle) => {
+      toggle.addEventListener('click', () => setSwitch(toggle, toggle.getAttribute('aria-checked') !== 'true'));
+    });
+
+    // ---------- the recording ----------
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let run = 0; // each play gets a number; a newer number (or 0) cancels the older one
+    let visible = false;
+    let handedOver = false;
+
+    const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+
+    const reset = () => {
+      setSwitch(ukrposhta, false);
+      boxes.forEach((box) => (box.checked = !box.disabled));
+    };
+
+    const moveTo = (target: Element, ms: number) => {
+      const t = target.getBoundingClientRect();
+      const s = stage.getBoundingClientRect();
+      cursor.style.setProperty('--ms', `${ms}ms`);
+      cursor.style.setProperty('--x', `${t.left - s.left + t.width / 2}px`);
+      cursor.style.setProperty('--y', `${t.top - s.top + t.height / 2}px`);
+    };
+
+    const press = () => {
+      cursor.classList.remove('is-click');
+      void cursor.offsetWidth; // restart the animation
+      cursor.classList.add('is-click');
+    };
+
+    const play = async () => {
+      const id = ++run;
+      const alive = () => id === run;
+      const step = async (target: Element, travel: number, action: () => void, after: number) => {
+        moveTo(target, travel);
+        await wait(travel + 120);
+        if (!alive()) return false;
+        press();
+        await wait(110);
+        if (!alive()) return false;
+        action();
+        await wait(after);
+        return alive();
+      };
+
+      while (alive()) {
+        reset();
+        // the cursor starts at the lower right, out of the way
+        const s = stage.getBoundingClientRect();
+        cursor.style.setProperty('--ms', '0ms');
+        cursor.style.setProperty('--x', `${s.width * 0.82}px`);
+        cursor.style.setProperty('--y', `${s.height * 0.72}px`);
+        cursor.dataset.show = 'true';
+        await wait(900);
+        if (!alive()) return;
+
+        const first = boxes[0];
+        const second = boxes[1];
+        const mark = (box: HTMLInputElement) => box.closest('.method')!.querySelector('.method__box')!;
+
+        if (!(await step(ukrposhta, 900, () => setSwitch(ukrposhta, true), 900))) return;
+        if (!(await step(mark(first), 700, () => first.click(), 450))) return;
+        if (!(await step(mark(second), 450, () => second.click(), 700))) return;
+        // and back again
+        if (!(await step(mark(second), 300, () => second.click(), 450))) return;
+        if (!(await step(mark(first), 450, () => first.click(), 800))) return;
+        if (!(await step(ukrposhta, 800, () => setSwitch(ukrposhta, false), 900))) return;
+
+        cursor.dataset.show = 'false';
+        await wait(1800);
+      }
+    };
+
+    const stop = () => {
+      run++;
+      cursor.dataset.show = 'false';
+    };
+
+    const sync = () => {
+      if (calm.matches || handedOver) return;
+      if (visible) play();
+      else {
+        stop();
+        reset();
+      }
+    };
+
+    new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        sync();
+      },
+      { threshold: 0.6 },
+    ).observe(stage);
+
+    // the visitor takes over: stop the recording and leave things as they are
+    stage.addEventListener('pointerdown', () => {
+      if (handedOver) return;
+      handedOver = true;
+      stop();
+    });
+    stage.addEventListener('keydown', () => {
+      if (handedOver) return;
+      handedOver = true;
+      stop();
     });
   });
 </script>
@@ -114,11 +236,82 @@ const { title, badge, hint, priceLabel, priceNote, methodsLabel, methods } = Ast
   }
 
   .demo__stage {
+    position: relative;
     display: flex;
+    font-family: var(--form-font);
     justify-content: center;
     padding: var(--space-42) var(--space-24);
     border-radius: var(--radius-card);
     background: var(--color-icon-bg);
+  }
+
+  /* The recorded pointer. JS sets --x / --y (its tip, inside the stage) and --ms (how long the trip takes). */
+  .cursor {
+    --x: 0px;
+    --y: 0px;
+    --ms: 0ms;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    transform: translate(var(--x), var(--y));
+    transition:
+      transform var(--ms) var(--ease-out),
+      opacity 0.3s ease-out;
+    pointer-events: none;
+  }
+
+  .cursor[data-show='true'] {
+    opacity: 1;
+  }
+
+  .cursor__arrow {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: 22px;
+    height: 26px;
+    filter: drop-shadow(0 2px 3px rgb(0 0 0 / 0.25));
+    transform-origin: 2px 2px;
+  }
+
+  .cursor__ring {
+    position: absolute;
+    top: -14px;
+    left: -14px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgb(2 40 44 / 0.18);
+    opacity: 0;
+  }
+
+  .cursor.is-click .cursor__ring {
+    animation: demo-click 0.45s ease-out;
+  }
+
+  .cursor.is-click .cursor__arrow {
+    animation: demo-press 0.25s ease-out;
+  }
+
+  @keyframes demo-click {
+    from {
+      opacity: 1;
+      transform: scale(0.4);
+    }
+    to {
+      opacity: 0;
+      transform: scale(1.5);
+    }
+  }
+
+  @keyframes demo-press {
+    40% {
+      transform: scale(0.85);
+    }
   }
 
   .demo__hint {
@@ -452,6 +645,10 @@ const { title, badge, hint, priceLabel, priceNote, methodsLabel, methods } = Ast
     .method__box,
     .method__box :global(svg) {
       transition: none;
+    }
+
+    .cursor {
+      display: none;
     }
   }
 
