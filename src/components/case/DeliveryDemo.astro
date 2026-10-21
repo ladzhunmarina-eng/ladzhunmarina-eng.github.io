@@ -17,6 +17,13 @@ interface Props {
 }
 
 const { title, badge, hint, priceLabel, priceNote, methodsLabel, methods } = Astro.props;
+
+// Every carrier has the same settings. Only the order of the rows and the logos differ.
+const carriers = [
+  { id: 'ukrposhta', name: 'Ukrposhta', Logo: UkrposhtaLogo },
+  { id: 'novapost', name: 'Nova Post', Logo: NovaPostLogo },
+  { id: 'meest', name: 'Meest', Logo: MeestLogo },
+];
 ---
 
 <!--
@@ -35,56 +42,48 @@ const { title, badge, hint, priceLabel, priceNote, methodsLabel, methods } = Ast
       </p>
 
       <ul class="carriers">
-        <li class="carrier" data-carrier="ukrposhta" data-open="false">
-          <div class="carrier__row">
-            <UkrposhtaLogo class="carrier__logo" aria-hidden="true" />
-            <p class="carrier__name">Ukrposhta</p>
-            <button class="switch" type="button" role="switch" aria-checked="false" aria-label="Ukrposhta" aria-controls="ukrposhta-settings" data-demo-switch><span class="switch__knob"></span></button>
-          </div>
-          <div class="carrier__panel" id="ukrposhta-settings" inert>
-            <div class="carrier__clip">
-              <div class="settings">
-                <div class="settings__price">
-                  <label class="settings__label" for="min-price">{priceLabel}</label>
-                  <div class="field">
-                    <input class="field__input" id="min-price" type="number" inputmode="numeric" min="0" placeholder="0" aria-describedby="min-price-note" />
-                    <span class="field__unit" aria-hidden="true">uah</span>
+        {carriers.map(({ id, name, Logo }) => (
+          <li class="carrier" data-carrier={id} data-open="false">
+            <div class="carrier__row">
+              <Logo class="carrier__logo" aria-hidden="true" />
+              <p class="carrier__name">{name}</p>
+              <button class="switch" type="button" role="switch" aria-checked="false" aria-label={name} aria-controls={`${id}-settings`} data-demo-switch>
+                <span class="switch__knob" />
+              </button>
+            </div>
+            <div class="carrier__panel" id={`${id}-settings`} inert>
+              <div class="carrier__clip">
+                <div class="settings">
+                  <div class="settings__price">
+                    <label class="settings__label" for={`${id}-price`}>{priceLabel}</label>
+                    <div class="field">
+                      <input class="field__input" id={`${id}-price`} type="number" inputmode="numeric" min="0" placeholder="0" aria-describedby={`${id}-price-note`} />
+                      <span class="field__unit" aria-hidden="true">uah</span>
+                    </div>
+                    <p class="settings__note" id={`${id}-price-note`}>
+                      <InfoIcon class="settings__info" aria-hidden="true" />
+                      <span>{priceNote}</span>
+                    </p>
                   </div>
-                  <p class="settings__note" id="min-price-note">
-                    <InfoIcon class="settings__info" aria-hidden="true" />
-                    <span>{priceNote}</span>
-                  </p>
+                  <fieldset class="methods">
+                    <legend class="methods__label">{methodsLabel}</legend>
+                    {methods.map((method) => (
+                      <label class:list={['method', { 'method--off': method.disabled }]}>
+                        <input class="method__input" type="checkbox" checked={method.checked} disabled={method.disabled} />
+                        <span class="method__box" aria-hidden="true">
+                          <svg viewBox="0 0 14 14" fill="none">
+                            <path d="M2.5 7.4 5.6 10.4 11.5 3.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                          </svg>
+                        </span>
+                        <span class="method__text">{method.label}</span>
+                      </label>
+                    ))}
+                  </fieldset>
                 </div>
-                <fieldset class="methods">
-                  <legend class="methods__label">{methodsLabel}</legend>
-                  {methods.map((method) => (
-                    <label class:list={['method', { 'method--off': method.disabled }]}>
-                      <input class="method__input" type="checkbox" checked={method.checked} disabled={method.disabled} />
-                      <span class="method__box" aria-hidden="true">
-                        <svg viewBox="0 0 14 14" fill="none"><path d="M2.5 7.4 5.6 10.4 11.5 3.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
-                      </span>
-                      <span class="method__text">{method.label}</span>
-                    </label>
-                  ))}
-                </fieldset>
               </div>
             </div>
-          </div>
-        </li>
-        <li class="carrier">
-          <div class="carrier__row">
-            <NovaPostLogo class="carrier__logo" aria-hidden="true" />
-            <p class="carrier__name">Nova Post</p>
-            <button class="switch" type="button" role="switch" aria-checked="false" aria-label="Nova Post" data-demo-switch><span class="switch__knob"></span></button>
-          </div>
-        </li>
-        <li class="carrier">
-          <div class="carrier__row">
-            <MeestLogo class="carrier__logo" aria-hidden="true" />
-            <p class="carrier__name">Meest</p>
-            <button class="switch" type="button" role="switch" aria-checked="false" aria-label="Meest" data-demo-switch><span class="switch__knob"></span></button>
-          </div>
-        </li>
+          </li>
+        ))}
       </ul>
     </section>
     <span class="cursor" aria-hidden="true">
@@ -97,29 +96,41 @@ const { title, badge, hint, priceLabel, priceNote, methodsLabel, methods } = Ast
 
 <script>
   /*
-   * The card plays itself like a short screen recording: a cursor switches Ukrposhta on, ticks two methods off
-   * and on again, then switches Ukrposhta off, and starts over. It runs only while it is on screen, and a tap
-   * or a click anywhere on it hands control to the visitor. With reduced motion it never plays by itself.
+   * The card plays itself like a short screen recording. For Ukrposhta, then for Nova Post, a cursor switches
+   * the carrier on, types 1000 into the minimum price and ticks the delivery methods; then it starts over.
+   * It runs only while it is on screen, and a tap or a click on it hands control to the visitor. With reduced
+   * motion it never plays by itself.
    */
   document.querySelectorAll<HTMLElement>('.demo').forEach((demo) => {
     const stage = demo.querySelector<HTMLElement>('.demo__stage')!;
     const cursor = demo.querySelector<HTMLElement>('.cursor')!;
-    const switches = demo.querySelectorAll<HTMLButtonElement>('[data-demo-switch]');
-    const ukrposhta = demo.querySelector<HTMLButtonElement>('[data-carrier="ukrposhta"] [data-demo-switch]')!;
-    const boxes = [...demo.querySelectorAll<HTMLInputElement>('.method__input')];
+    const carriers = [...demo.querySelectorAll<HTMLElement>('.carrier')];
 
-    const setSwitch = (toggle: HTMLButtonElement, on: boolean) => {
-      toggle.setAttribute('aria-checked', String(on));
-      const carrier = toggle.closest<HTMLElement>('.carrier');
-      const panel = carrier?.querySelector<HTMLElement>('.carrier__panel');
-      if (!carrier || !panel) return;
-      carrier.dataset.open = String(on);
-      // closed settings must not be reachable by keyboard
-      panel.toggleAttribute('inert', !on);
+    const toggleOf = (carrier: HTMLElement) => carrier.querySelector<HTMLButtonElement>('[data-demo-switch]')!;
+
+    // Opening or closing the settings of one carrier; opening one closes the others (an accordion).
+    const setOpen = (carrier: HTMLElement, open: boolean) => {
+      carrier.dataset.open = String(open);
+      carrier.querySelector('.carrier__panel')?.toggleAttribute('inert', !open);
+    };
+    const openOnly = (carrier: HTMLElement) => carriers.forEach((c) => setOpen(c, c === carrier));
+
+    const setEnabled = (carrier: HTMLElement, on: boolean) => {
+      toggleOf(carrier).setAttribute('aria-checked', String(on));
+      if (on) openOnly(carrier);
+      else setOpen(carrier, false);
     };
 
-    switches.forEach((toggle) => {
-      toggle.addEventListener('click', () => setSwitch(toggle, toggle.getAttribute('aria-checked') !== 'true'));
+    carriers.forEach((carrier) => {
+      toggleOf(carrier).addEventListener('click', (event) => {
+        event.stopPropagation();
+        setEnabled(carrier, toggleOf(carrier).getAttribute('aria-checked') !== 'true');
+      });
+      // a click on the row itself folds or unfolds the settings
+      carrier.querySelector('.carrier__row')!.addEventListener('click', () => {
+        if (carrier.dataset.open === 'true') setOpen(carrier, false);
+        else openOnly(carrier);
+      });
     });
 
     // ---------- the recording ----------
@@ -131,15 +142,19 @@ const { title, badge, hint, priceLabel, priceNote, methodsLabel, methods } = Ast
     const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
     const reset = () => {
-      setSwitch(ukrposhta, false);
-      boxes.forEach((box) => (box.checked = !box.disabled));
+      carriers.forEach((carrier) => {
+        setEnabled(carrier, false);
+        carrier.querySelector<HTMLInputElement>('.field__input')!.value = '';
+        carrier.querySelectorAll<HTMLInputElement>('.method__input').forEach((box) => (box.checked = false));
+        carrier.querySelector('.field')!.classList.remove('is-typing');
+      });
     };
 
     const moveTo = (target: Element, ms: number) => {
       const t = target.getBoundingClientRect();
       const s = stage.getBoundingClientRect();
       cursor.style.setProperty('--ms', `${ms}ms`);
-      cursor.style.setProperty('--x', `${t.left - s.left + t.width / 2}px`);
+      cursor.style.setProperty('--x', `${t.left - s.left + Math.min(t.width / 2, 40)}px`);
       cursor.style.setProperty('--y', `${t.top - s.top + t.height / 2}px`);
     };
 
@@ -152,7 +167,9 @@ const { title, badge, hint, priceLabel, priceNote, methodsLabel, methods } = Ast
     const play = async () => {
       const id = ++run;
       const alive = () => id === run;
-      const step = async (target: Element, travel: number, action: () => void, after: number) => {
+
+      // go to something, click it, run what the click does, then rest a moment
+      const click = async (target: Element, travel: number, action: () => void, after: number) => {
         moveTo(target, travel);
         await wait(travel + 120);
         if (!alive()) return false;
@@ -164,31 +181,53 @@ const { title, badge, hint, priceLabel, priceNote, methodsLabel, methods } = Ast
         return alive();
       };
 
+      const type = async (input: HTMLInputElement, text: string) => {
+        for (const char of text) {
+          input.value += char;
+          await wait(170);
+          if (!alive()) return false;
+        }
+        return true;
+      };
+
+      // one carrier: switch on, a minimum price, three methods
+      const fill = async (carrier: HTMLElement) => {
+        const field = carrier.querySelector<HTMLElement>('.field')!;
+        const input = carrier.querySelector<HTMLInputElement>('.field__input')!;
+        const boxes = [...carrier.querySelectorAll<HTMLInputElement>('.method__input:not(:disabled)')];
+        if (!(await click(toggleOf(carrier), 900, () => setEnabled(carrier, true), 900))) return false;
+        if (!(await click(field, 650, () => field.classList.add('is-typing'), 250))) return false;
+        if (!(await type(input, '1000'))) return false;
+        field.classList.remove('is-typing');
+        await wait(350);
+        for (const box of boxes) {
+          const mark = box.closest('.method')!.querySelector('.method__box')!;
+          if (!(await click(mark, 500, () => box.click(), 280))) return false;
+        }
+        await wait(500);
+        return alive();
+      };
+
       while (alive()) {
         reset();
-        // the cursor starts at the lower right, out of the way
         const s = stage.getBoundingClientRect();
+        // the cursor starts at the lower right, out of the way
         cursor.style.setProperty('--ms', '0ms');
         cursor.style.setProperty('--x', `${s.width * 0.82}px`);
-        cursor.style.setProperty('--y', `${s.height * 0.72}px`);
+        cursor.style.setProperty('--y', `${s.height * 0.7}px`);
         cursor.dataset.show = 'true';
         await wait(900);
         if (!alive()) return;
 
-        const first = boxes[0];
-        const second = boxes[1];
-        const mark = (box: HTMLInputElement) => box.closest('.method')!.querySelector('.method__box')!;
-
-        if (!(await step(ukrposhta, 900, () => setSwitch(ukrposhta, true), 900))) return;
-        if (!(await step(mark(first), 700, () => first.click(), 450))) return;
-        if (!(await step(mark(second), 450, () => second.click(), 700))) return;
-        // and back again
-        if (!(await step(mark(second), 300, () => second.click(), 450))) return;
-        if (!(await step(mark(first), 450, () => first.click(), 800))) return;
-        if (!(await step(ukrposhta, 800, () => setSwitch(ukrposhta, false), 900))) return;
+        if (!(await fill(carriers[0]))) return;
+        if (!(await fill(carriers[1]))) return;
 
         cursor.dataset.show = 'false';
-        await wait(1800);
+        await wait(2200);
+        if (!alive()) return;
+        // fold everything back before the next round
+        carriers.forEach((carrier) => setEnabled(carrier, false));
+        await wait(900);
       }
     };
 
@@ -211,20 +250,17 @@ const { title, badge, hint, priceLabel, priceNote, methodsLabel, methods } = Ast
         visible = entry.isIntersecting;
         sync();
       },
-      { threshold: 0.6 },
+      { threshold: 0.35 },
     ).observe(stage);
 
     // the visitor takes over: stop the recording and leave things as they are
-    stage.addEventListener('pointerdown', () => {
+    const handOver = () => {
       if (handedOver) return;
       handedOver = true;
       stop();
-    });
-    stage.addEventListener('keydown', () => {
-      if (handedOver) return;
-      handedOver = true;
-      stop();
-    });
+    };
+    stage.addEventListener('pointerdown', handOver);
+    stage.addEventListener('keydown', handOver);
   });
 </script>
 
@@ -386,6 +422,7 @@ const { title, badge, hint, priceLabel, priceNote, methodsLabel, methods } = Ast
     align-items: center;
     gap: var(--space-12);
     min-height: var(--form-row-h);
+    cursor: pointer;
   }
 
   .carrier__row :global(.carrier__logo) {
@@ -525,6 +562,12 @@ const { title, badge, hint, priceLabel, priceNote, methodsLabel, methods } = Ast
 
   .field__input::placeholder {
     color: var(--form-disabled);
+  }
+
+  /* While the recording types, the field looks focused (the real focus is left alone) */
+  .field.is-typing .field__input {
+    border-color: var(--form-title);
+    box-shadow: 0 0 0 1px var(--form-title);
   }
 
   .field__input:focus-visible {
