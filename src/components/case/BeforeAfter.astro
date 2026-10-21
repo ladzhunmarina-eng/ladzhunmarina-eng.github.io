@@ -65,13 +65,12 @@ const sides = [
     color: var(--case-on-bg);
   }
 
-  /* A phone-sized screen: held to its natural width and centred in the card */
+  /* A phone-sized screen: held to its natural width and centred in the card. No rounding of its own: the screenshot has its corners, and clipping them cut the first letters of its heading. */
   .ba__side :global(.ba__shot) {
     align-self: center;
     width: 100%;
     max-width: var(--case-shot-w);
     height: auto;
-    border-radius: var(--radius-card);
   }
 
   .ba__text {
