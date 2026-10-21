@@ -274,6 +274,21 @@ export const olxCase = {
     seller: {
       title: 'Seller side: free delivery in a few taps.',
       text: 'A settings screen where sellers switch on free delivery and choose which carriers to cover.',
+      demo: {
+        title: 'Offer free delivery',
+        badge: 'New',
+        hint: 'Try it: switch on Ukrposhta to see its settings open.',
+        priceLabel: 'Minimum item price for free delivery',
+        priceNote:
+          'Set a minimum price for free delivery. If an item’s price is below this amount, the buyer will pay for the delivery. Leave blank to offer free delivery on all items, regardless of their price.',
+        methodsLabel: 'Delivery methods included',
+        methods: [
+          { label: 'To the branch', checked: true },
+          { label: 'Currier', checked: true },
+          { label: 'Parcel locker', checked: true },
+          { label: 'To Poland', checked: false, disabled: true },
+        ],
+      },
       stats: [
         { value: '29,355', label: 'listings with free delivery' },
         { value: '3,862', label: 'sellers offering free delivery' },

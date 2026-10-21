@@ -20,6 +20,7 @@ import CaseCover from '../../components/case/CaseCover.astro';
 import CasePhoto from '../../components/case/CasePhoto.astro';
 import ImageSlot from '../../components/case/ImageSlot.astro';
 import BasketScreens from '../../components/case/BasketScreens.astro';
+import DeliveryDemo from '../../components/case/DeliveryDemo.astro';
 import MazeLogo from '../../assets/icons/maze.svg';
 import problemPhoto from '../../assets/images/olx-problem.jpg';
 import mazeShot from '../../assets/images/olx-maze.png';
@@ -116,7 +117,7 @@ const card = work.find((item) => item.href === `/work/${study.slug}`);
         <Section id="delivery" eyebrow={delivery.eyebrow} title={delivery.title}>
           <SubSection title={delivery.seller.title} lead={delivery.seller.text}>
             <StatGrid stats={delivery.seller.stats} />
-            <ImageSlot label="Seller settings: free delivery and carriers" ratio="1008 / 567" />
+            <DeliveryDemo {...delivery.seller.demo} />
           </SubSection>
 
           <SubSection title={delivery.buyer.title}>

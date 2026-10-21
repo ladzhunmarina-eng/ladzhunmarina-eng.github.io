@@ -1,0 +1,463 @@
+---
+import UkrposhtaLogo from '../../assets/icons/carrier-ukrposhta.svg';
+import NovaPostLogo from '../../assets/icons/carrier-novapost.svg';
+import MeestLogo from '../../assets/icons/carrier-meest.svg';
+import InfoIcon from '../../assets/icons/info.svg';
+
+interface Props {
+  title: string;
+  badge: string;
+  hint: string;
+  priceLabel: string;
+  priceNote: string;
+  methodsLabel: string;
+  methods: readonly { label: string; checked: boolean; disabled?: boolean }[];
+}
+
+const { title, badge, hint, priceLabel, priceNote, methodsLabel, methods } = Astro.props;
+---
+
+<!--
+  A working copy of the seller's "Offer free delivery" card. Switching Ukrposhta on opens its settings
+  (the second state in the design); switching it off closes them. The other two carriers only flip their switch.
+-->
+<div class="demo">
+  <div class="demo__stage">
+    <section class="form" aria-labelledby="form-title">
+      <header class="form__head">
+        <h4 id="form-title" class="form__title">{title}</h4>
+        <p class="form__badge">{badge}</p>
+      </header>
+      <p class="form__desc">
+        The delivery cost will be <strong>deducted from your payout</strong> after the buyer receives the order. If the buyer rejects it, <strong>OLX covers the return cost.</strong>{' '}<span class="form__link">How does this work?</span>
+      </p>
+
+      <ul class="carriers">
+        <li class="carrier" data-carrier="ukrposhta" data-open="false">
+          <div class="carrier__row">
+            <UkrposhtaLogo class="carrier__logo" aria-hidden="true" />
+            <p class="carrier__name">Ukrposhta</p>
+            <button class="switch" type="button" role="switch" aria-checked="false" aria-label="Ukrposhta" aria-controls="ukrposhta-settings" data-demo-switch><span class="switch__knob"></span></button>
+          </div>
+          <div class="carrier__panel" id="ukrposhta-settings" inert>
+            <div class="carrier__clip">
+              <div class="settings">
+                <div class="settings__price">
+                  <label class="settings__label" for="min-price">{priceLabel}</label>
+                  <div class="field">
+                    <input class="field__input" id="min-price" type="number" inputmode="numeric" min="0" placeholder="0" aria-describedby="min-price-note" />
+                    <span class="field__unit" aria-hidden="true">uah</span>
+                  </div>
+                  <p class="settings__note" id="min-price-note">
+                    <InfoIcon class="settings__info" aria-hidden="true" />
+                    <span>{priceNote}</span>
+                  </p>
+                </div>
+                <fieldset class="methods">
+                  <legend class="methods__label">{methodsLabel}</legend>
+                  {methods.map((method) => (
+                    <label class:list={['method', { 'method--off': method.disabled }]}>
+                      <input class="method__input" type="checkbox" checked={method.checked} disabled={method.disabled} />
+                      <span class="method__box" aria-hidden="true">
+                        <svg viewBox="0 0 14 14" fill="none"><path d="M2.5 7.4 5.6 10.4 11.5 3.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                      </span>
+                      <span class="method__text">{method.label}</span>
+                    </label>
+                  ))}
+                </fieldset>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="carrier">
+          <div class="carrier__row">
+            <NovaPostLogo class="carrier__logo" aria-hidden="true" />
+            <p class="carrier__name">Nova Post</p>
+            <button class="switch" type="button" role="switch" aria-checked="false" aria-label="Nova Post" data-demo-switch><span class="switch__knob"></span></button>
+          </div>
+        </li>
+        <li class="carrier">
+          <div class="carrier__row">
+            <MeestLogo class="carrier__logo" aria-hidden="true" />
+            <p class="carrier__name">Meest</p>
+            <button class="switch" type="button" role="switch" aria-checked="false" aria-label="Meest" data-demo-switch><span class="switch__knob"></span></button>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
+  <p class="demo__hint">{hint}</p>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.demo').forEach((demo) => {
+    demo.querySelectorAll<HTMLButtonElement>('[data-demo-switch]').forEach((toggle) => {
+      toggle.addEventListener('click', () => {
+        const on = toggle.getAttribute('aria-checked') !== 'true';
+        toggle.setAttribute('aria-checked', String(on));
+        const carrier = toggle.closest<HTMLElement>('.carrier');
+        const panel = carrier?.querySelector<HTMLElement>('.carrier__panel');
+        if (!carrier || !panel) return;
+        carrier.dataset.open = String(on);
+        // closed settings must not be reachable by keyboard
+        panel.toggleAttribute('inert', !on);
+      });
+    });
+  });
+</script>
+
+<style>
+  .demo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+  }
+
+  .demo__stage {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-42) var(--space-24);
+    border-radius: var(--radius-card);
+    background: var(--color-icon-bg);
+  }
+
+  .demo__hint {
+    max-width: var(--case-measure);
+    font-size: var(--fs-14);
+    line-height: var(--lh-snug);
+    color: var(--color-muted);
+  }
+
+  /* ---------- The card ---------- */
+
+  .form {
+    width: min(100%, var(--form-w));
+    padding: var(--space-16) var(--space-24);
+    border: 1px solid var(--form-card-line);
+    border-radius: 4px;
+    background: var(--form-card-bg);
+    color: var(--form-title);
+  }
+
+  .form__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-12);
+  }
+
+  .form__title {
+    font-size: var(--fs-16);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-ui);
+    color: var(--form-title);
+  }
+
+  .form__badge {
+    padding: var(--space-4) var(--space-8);
+    border-radius: 4px;
+    background: var(--olx-cyan);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-ui);
+    color: var(--form-title);
+  }
+
+  .form__desc {
+    margin-top: var(--space-8);
+    font-size: var(--fs-12);
+    line-height: 1.2;
+    color: var(--form-muted);
+  }
+
+  .form__desc strong {
+    font-weight: var(--weight-bold);
+  }
+
+  .form__link {
+    text-decoration: underline;
+  }
+
+  .carriers {
+    margin-top: var(--space-12);
+  }
+
+  /* ---------- A carrier ---------- */
+
+  .carrier + .carrier {
+    border-top: 1px solid var(--form-divider);
+  }
+
+  .carrier__row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    min-height: var(--form-row-h);
+  }
+
+  .carrier__row :global(.carrier__logo) {
+    flex: none;
+    width: var(--space-20);
+    height: var(--space-20);
+  }
+
+  .carrier__name {
+    flex: 1;
+    font-size: var(--fs-16);
+    line-height: var(--lh-ui);
+    color: var(--olx-ink);
+  }
+
+  /* The switch: off is an outline with a small dark knob, on is filled with a white knob on the right */
+  .switch {
+    position: relative;
+    flex: none;
+    width: 40px;
+    height: var(--space-24);
+    padding: 0;
+    border: 1px solid var(--form-title);
+    border-radius: var(--radius-pill);
+    background: var(--form-card-bg);
+    cursor: pointer;
+    transition: background-color 0.25s var(--ease-out);
+  }
+
+  .switch__knob {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    width: var(--space-12);
+    height: var(--space-12);
+    margin-top: -6px;
+    border-radius: 50%;
+    background: var(--form-title);
+    transition:
+      transform 0.3s var(--ease-out),
+      background-color 0.25s var(--ease-out),
+      width 0.3s var(--ease-out),
+      height 0.3s var(--ease-out),
+      margin-top 0.3s var(--ease-out);
+  }
+
+  .switch[aria-checked='true'] {
+    background: var(--form-title);
+  }
+
+  .switch[aria-checked='true'] .switch__knob {
+    width: var(--space-16);
+    height: var(--space-16);
+    margin-top: -8px;
+    background: var(--color-white);
+    transform: translateX(15px);
+  }
+
+  .switch:focus-visible {
+    outline: var(--focus-width) solid var(--color-focus);
+    outline-offset: var(--focus-offset);
+  }
+
+  /* ---------- The settings that open ---------- */
+
+  /* Height eases between 0 and its content (the 0fr to 1fr grid trick), then the content fades in a beat later. */
+  .carrier__panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.45s var(--ease-out);
+  }
+
+  .carrier[data-open='true'] .carrier__panel {
+    grid-template-rows: 1fr;
+  }
+
+  .carrier__clip {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .settings {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+    padding: var(--space-8) 0 var(--space-12);
+    opacity: 0;
+    transform: translateY(-8px);
+    transition:
+      opacity 0.2s ease-out,
+      transform 0.2s ease-out;
+  }
+
+  .carrier[data-open='true'] .settings {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.35s ease-out 0.12s,
+      transform 0.45s var(--ease-out) 0.12s;
+  }
+
+  .settings__price {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .settings__label {
+    font-size: var(--fs-14);
+    line-height: var(--lh-snug);
+    color: var(--form-muted);
+  }
+
+  .field {
+    position: relative;
+  }
+
+  .field__input {
+    display: block;
+    width: 100%;
+    height: 48px;
+    padding: 0 56px 0 var(--space-16);
+    border: 1px solid var(--form-field-line);
+    border-radius: 4px;
+    background: var(--color-white);
+    font: inherit;
+    font-size: var(--fs-16);
+    color: var(--form-title);
+    appearance: textfield;
+  }
+
+  .field__input::-webkit-outer-spin-button,
+  .field__input::-webkit-inner-spin-button {
+    margin: 0;
+    appearance: none;
+  }
+
+  .field__input::placeholder {
+    color: var(--form-disabled);
+  }
+
+  .field__input:focus-visible {
+    outline: var(--focus-width) solid var(--color-focus);
+    outline-offset: var(--focus-offset);
+  }
+
+  .field__unit {
+    position: absolute;
+    top: 50%;
+    right: var(--space-16);
+    transform: translateY(-50%);
+    font-size: var(--fs-16);
+    color: var(--form-muted);
+    pointer-events: none;
+  }
+
+  .settings__note {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    font-size: var(--fs-12);
+    line-height: 1.5;
+    color: var(--form-muted);
+  }
+
+  .settings__note :global(.settings__info) {
+    flex: none;
+    width: var(--space-16);
+    height: var(--space-16);
+  }
+
+  .methods {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .methods__label {
+    margin-bottom: var(--space-12);
+    padding: 0;
+    font-size: var(--fs-16);
+    line-height: var(--lh-ui);
+    color: var(--form-disabled);
+  }
+
+  .method {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    font-size: var(--fs-16);
+    line-height: var(--lh-ui);
+    color: var(--form-title);
+    cursor: pointer;
+  }
+
+  .method--off {
+    color: var(--form-disabled);
+    cursor: default;
+  }
+
+  .method__input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .method__box {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--space-18);
+    height: var(--space-18);
+    margin: 3px;
+    border: 1px solid var(--form-card-line);
+    border-radius: 2px;
+    background: transparent;
+    color: var(--color-white);
+    transition: background-color 0.15s ease-out, border-color 0.15s ease-out;
+  }
+
+  .method__box :global(svg) {
+    width: 14px;
+    height: 14px;
+    opacity: 0;
+    transform: scale(0.6);
+    transition:
+      opacity 0.15s ease-out,
+      transform 0.2s var(--ease-out);
+  }
+
+  .method__input:checked + .method__box {
+    border-color: var(--form-title);
+    background: var(--form-title);
+  }
+
+  .method__input:checked + .method__box :global(svg) {
+    opacity: 1;
+    transform: none;
+  }
+
+  .method__input:focus-visible + .method__box {
+    outline: var(--focus-width) solid var(--color-focus);
+    outline-offset: var(--focus-offset);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .switch,
+    .switch__knob,
+    .carrier__panel,
+    .settings,
+    .carrier[data-open='true'] .settings,
+    .method__box,
+    .method__box :global(svg) {
+      transition: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .demo__stage {
+      padding: var(--space-24) var(--space-12);
+    }
+  }
+</style>

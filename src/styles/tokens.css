@@ -73,6 +73,16 @@
   --olx-rating-text: #338085;
   --olx-friction: #d93333; /* the dot of a critical friction point */
   --olx-pain: #ed4d4d; /* the dot of a pain point on the dark cards */
+  /* The seller-settings prototype (free delivery card), measured from the design */
+  --form-card-bg: #fafbfb;
+  --form-card-line: #d8dfe0;
+  --form-title: #02282c; /* titles, labels, the switch and the ticks */
+  --form-muted: #406367; /* descriptions and hints */
+  --form-disabled: #7f9799; /* the option that is switched off */
+  --form-divider: rgb(11 55 61 / 0.16); /* between carriers */
+  --form-field-line: rgb(4 51 55 / 0.51); /* the price field's border */
+  --form-w: 494px;
+  --form-row-h: 56px;
 
   /* ---------- Color: education certificate cards ---------- */
   --cert-blue-bg: #e0f2fe;
