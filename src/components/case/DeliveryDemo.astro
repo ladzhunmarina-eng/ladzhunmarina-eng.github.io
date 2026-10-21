@@ -9,14 +9,13 @@ import InfoIcon from '../../assets/icons/info.svg';
 interface Props {
   title: string;
   badge: string;
-  hint: string;
   priceLabel: string;
   priceNote: string;
   methodsLabel: string;
   methods: readonly { label: string; checked: boolean; disabled?: boolean }[];
 }
 
-const { title, badge, hint, priceLabel, priceNote, methodsLabel, methods } = Astro.props;
+const { title, badge, priceLabel, priceNote, methodsLabel, methods } = Astro.props;
 
 // Every carrier has the same settings. Only the order of the rows and the logos differ.
 const carriers = [
@@ -97,7 +96,6 @@ const carriers = [
       <svg class="cursor__arrow" viewBox="0 0 20 24" fill="none"><path d="M2 1.5v17.2l4.6-4.1 3 6.9 3-1.3-3-6.8 6.3-.4L2 1.5Z" fill="#fff" stroke="#02282c" stroke-width="1.5" stroke-linejoin="round" /></svg>
     </span>
   </div>
-  <p class="demo__hint">{hint}</p>
 </div>
 
 <script>
@@ -387,13 +385,6 @@ const carriers = [
     }
   }
 
-  .demo__hint {
-    max-width: var(--case-measure);
-    font-size: var(--fs-14);
-    line-height: var(--lh-snug);
-    color: var(--color-muted);
-  }
-
   /* ---------- The card ---------- */
 
   .form {
@@ -444,6 +435,7 @@ const carriers = [
   }
 
   .form__link {
+    white-space: nowrap; /* the whole link moves to the next line instead of breaking in the middle */
     text-decoration: underline;
   }
 
