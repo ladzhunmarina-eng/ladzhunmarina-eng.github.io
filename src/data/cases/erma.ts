@@ -17,17 +17,16 @@ export const ermaCase = {
   },
 
   hero: {
-    // Focus areas. "B2B SaaS" is the business model, not an area, so it is not here (nor in Industry).
+    // Focus areas (the business model, B2B SaaS, is in the Industry fact, not here).
     tags: ['Roles and permissions', 'Workflow', 'Dashboards', 'Fleet management', 'Timesheets'],
     eyebrow: 'Power utilities · Storm response',
     title: 'Post-Storm Power Restoration Platform',
     lead: 'A multi-tenant platform that replaced phone-based crew callouts for U.S. utility contractors working against a 90-hour restoration window.',
     meta: [
-      { label: 'My role', value: '[Product Designer · sole / lead]' },
-      { label: 'Team', value: '[PM, N engineers, BA]' },
-      { label: 'Industry', value: 'Energy · utility services' },
-      { label: 'Platform', value: 'Web [+ mobile?]' },
-      { label: 'Timeline', value: '2023 – [2025 / present]' },
+      { label: 'Client', value: 'Vision Utilities, Inc.' },
+      { label: 'Industry', value: 'B2B SaaS' },
+      { label: 'Country', value: 'USA' },
+      { label: 'Year', value: '2023 – 2025' },
     ],
     focus: [] as string[],
   },
