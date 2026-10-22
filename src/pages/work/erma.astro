@@ -4,7 +4,7 @@ import CaseBack from '../../components/case/CaseBack.astro';
 import CaseHero from '../../components/case/CaseHero.astro';
 import CaseNav from '../../components/case/CaseNav.astro';
 import Section from '../../components/case/Section.astro';
-import ProblemTimeline from '../../components/case/ProblemTimeline.astro';
+import ProcessChart from '../../components/case/ProcessChart.astro';
 import NoteCards from '../../components/case/NoteCards.astro';
 import CasePhoto from '../../components/case/CasePhoto.astro';
 import QuoteCard from '../../components/case/QuoteCard.astro';
@@ -54,7 +54,7 @@ const logo = { left: 4.37, top: 2.64, width: 11.9, height: 4.58 };
         </Section>
 
         <Section id="process" eyebrow={process.eyebrow} title={process.title}>
-          <ProblemTimeline steps={process.steps} label="How the work went, from discovery to handoff" />
+          <ProcessChart phases={process.phases} bars={process.bars} />
         </Section>
 
         <Section id="roles" eyebrow={roles.eyebrow} title={roles.title} lead={roles.lead}>

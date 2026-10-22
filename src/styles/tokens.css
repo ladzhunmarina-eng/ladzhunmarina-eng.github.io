@@ -507,6 +507,7 @@
   --case-button-ghost: rgb(12 55 69 / 0.07); /* the button mock-ups in the A/B/C test */
   --case-process-bar: var(--color-icon-bg); /* the process chart */
   --case-grid: var(--case-line);
+  --case-phase-text: var(--case-accent); /* the phase names under the process chart */
   --case-ink-soft: var(--color-ink); /* the test cards */
   --case-note-text: var(--color-ink);
   --case-label: var(--color-muted);
@@ -608,6 +609,8 @@
   --case-glass: var(--erma-peach); /* the At a glance card and its tab */
   --case-nav-current-bg: var(--erma-peach);
   --case-nav-dot-color: var(--erma-orange);
+  --case-process-bar: var(--erma-pill);
+  --case-phase-text: var(--erma-muted);
   --case-pill-bg: var(--erma-pill); /* Web / Mobile / Tablet */
   --case-pill-text: var(--erma-pill-text);
   --case-label: var(--erma-muted);

@@ -82,11 +82,13 @@ export const ermaCase = {
   process: {
     eyebrow: 'Process',
     title: 'From the field to the handoff.',
-    steps: [
-      { label: 'Discovery with foremen and linemen' },
-      { label: 'Study of their timesheets and process' },
-      { label: 'Prototypes validated with the client' },
-      { label: 'Final handoff' },
+    phases: ['Discover', 'Define', 'Design', 'Validate', 'Handoff'],
+    // start and length are in pixels on a 960px-wide chart; the chart turns them into percentages
+    bars: [
+      { label: 'Discovery with foremen and linemen', start: 0, length: 340 },
+      { label: 'Study of their timesheets and process', start: 110, length: 370 },
+      { label: 'Prototypes validated with the client', start: 420, length: 400 },
+      { label: 'Final handoff', start: 770, length: 190 },
     ],
   },
 

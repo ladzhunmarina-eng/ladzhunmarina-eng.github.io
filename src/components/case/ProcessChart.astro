@@ -8,7 +8,7 @@ interface Props {
 const { phases, bars } = Astro.props;
 ---
 
-<div class="chart">
+<div class="chart" style={`--n: ${phases.length}`}>
   <div class="chart__plot">
     <span class="chart__grid" aria-hidden="true"></span>
     <ol class="chart__bars">
@@ -38,15 +38,15 @@ const { phases, bars } = Astro.props;
     position: relative;
   }
 
-  /* Five lines, between the six equal phase columns */
+  /* The lines between the equal phase columns */
   .chart__grid {
     position: absolute;
     inset: 0;
     background-image: linear-gradient(to right, var(--case-grid) 1px, transparent 1px);
-    background-size: calc(100% / 6) 100%;
+    background-size: calc(100% / var(--n)) 100%;
     background-position: left top;
     /* the first line would sit on the left edge: pull the pattern off it */
-    clip-path: inset(0 0 0 calc(100% / 6 - 1px));
+    clip-path: inset(0 0 0 calc(100% / var(--n) - 1px));
   }
 
   .chart__bars {
@@ -73,7 +73,7 @@ const { phases, bars } = Astro.props;
 
   .chart__phases {
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--n), minmax(0, 1fr));
     margin-top: var(--space-16);
     padding-top: var(--space-12);
     border-top: 1px solid var(--case-grid);
@@ -83,7 +83,7 @@ const { phases, bars } = Astro.props;
     font-size: var(--fs-14);
     line-height: var(--lh-snug);
     text-align: center;
-    color: var(--case-accent);
+    color: var(--case-phase-text);
   }
 
   /* Narrow screens: the bars stack at full width and the phases wrap underneath. */
