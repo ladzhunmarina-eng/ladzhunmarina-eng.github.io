@@ -20,10 +20,17 @@ interface Part {
 }
 
 interface Props {
-  parts: readonly Part[];
+  /** The blocks of the page as buttons under the window; without them the window stands alone */
+  parts?: readonly Part[];
+  /** A short line over the bottom edge until the visitor first scrolls */
+  hint?: string;
+  /** Blur the product's logo in the corner */
+  blurLogo?: boolean;
+  /** The window is the first thing on the page: load it straight away */
+  eager?: boolean;
 }
 
-const { parts } = Astro.props;
+const { parts = [], hint, blurLogo = false, eager = false } = Astro.props;
 
 // The page is drawn from the design's own groups, each placed where it sits on the 1440 x 2640 canvas (x, y, width in design pixels).
 const W = 1440;
@@ -55,10 +62,12 @@ const pos = (item: { x: number; y: number; w: number }, height: number) =>
     <div class="dash__scroll" role="region" aria-label="The event dashboard. Scroll to see the whole page." tabindex="0">
       <div class="dash__page" style={`--page-ratio: ${W} / ${PAGE_H}`}>
         {scrolls.map((item) => (
-          <Image class="dash__piece" src={item.src} alt="" style={pos(item, PAGE_H)} widths={[720, 1080, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} />
+          <Image class="dash__piece" src={item.src} alt="" style={pos(item, PAGE_H)} widths={[720, 1080, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} loading={eager ? 'eager' : 'lazy'} />
         ))}
       </div>
     </div>
+    {hint && <p class="dash__hint" aria-hidden="true">{hint}</p>}
+    {blurLogo && <span class="dash__blur" aria-hidden="true"></span>}
     <div class="dash__stay" aria-hidden="true">
       {stay.map((item) => (
         <Image class="dash__piece dash__piece--stay" src={item.src} alt="" style={pos(item, VIEW_H)} widths={[480, 960, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} loading="eager" />
@@ -66,19 +75,21 @@ const pos = (item: { x: number; y: number; w: number }, height: number) =>
     </div>
   </div>
 
-  <ol class="dash__parts">
-    {parts.map((part, index) => (
-      <li>
-        <button class="part" type="button" data-dash-go={index} aria-label={`Show ${part.title} in the dashboard`}>
-          <span class="part__number" aria-hidden="true">{index + 1}</span>
-          <span class="part__body">
-            <span class="part__title">{part.title}</span>
-            <span class="part__text">{part.text}</span>
-          </span>
-        </button>
-      </li>
-    ))}
-  </ol>
+  {parts.length > 0 && (
+    <ol class="dash__parts">
+      {parts.map((part, index) => (
+        <li>
+          <button class="part" type="button" data-dash-go={index} aria-label={`Show ${part.title} in the dashboard`}>
+            <span class="part__number" aria-hidden="true">{index + 1}</span>
+            <span class="part__body">
+              <span class="part__title">{part.title}</span>
+              <span class="part__text">{part.text}</span>
+            </span>
+          </button>
+        </li>
+      ))}
+    </ol>
+  )}
 </div>
 
 <script>
@@ -118,6 +129,8 @@ const pos = (item: { x: number; y: number; w: number }, height: number) =>
         scroller.focus({ preventScroll: true });
       });
     });
+    // the hint goes with the first scroll
+    scroller.addEventListener('scroll', () => dash.setAttribute('data-scrolled', ''), { passive: true, once: true });
     scroller.addEventListener('scroll', sync, { passive: true });
     window.addEventListener('resize', sync);
     sync();
@@ -145,7 +158,6 @@ const pos = (item: { x: number; y: number; w: number }, height: number) =>
     inset: 0;
     overflow-x: hidden;
     overflow-y: auto;
-    overscroll-behavior: contain;
     scrollbar-width: thin;
   }
 
@@ -158,6 +170,44 @@ const pos = (item: { x: number; y: number; w: number }, height: number) =>
     position: relative;
     width: 100%;
     aspect-ratio: var(--page-ratio);
+  }
+
+  /* a pill over the bottom edge: scrolling is possible here */
+  .dash__hint {
+    position: absolute;
+    bottom: var(--space-16);
+    left: 50%;
+    z-index: 2;
+    padding: var(--space-8) var(--space-16);
+    border-radius: var(--radius-pill);
+    background: var(--erma-ink);
+    font-size: var(--fs-14);
+    line-height: var(--lh-ui);
+    color: var(--color-white);
+    transform: translateX(-50%);
+    pointer-events: none;
+    transition:
+      opacity 0.3s ease-out,
+      transform 0.4s var(--ease-out);
+  }
+
+  .dash[data-scrolled] .dash__hint {
+    opacity: 0;
+    transform: translate(-50%, var(--space-8));
+  }
+
+  /* over the logo (about 170 x 60 design pixels at the corner) */
+  .dash__blur {
+    position: absolute;
+    top: 2.2%;
+    left: 1.9%;
+    z-index: 2;
+    width: 11.8%;
+    height: 7%;
+    border-radius: 10px;
+    background: rgb(249 249 249 / 0.1);
+    backdrop-filter: blur(24px);
+    pointer-events: none;
   }
 
   .dash__stay {
@@ -258,7 +308,8 @@ const pos = (item: { x: number; y: number; w: number }, height: number) =>
 
   @media (prefers-reduced-motion: reduce) {
     .part,
-    .part__number {
+    .part__number,
+    .dash__hint {
       transition: none;
     }
   }

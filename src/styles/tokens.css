@@ -86,8 +86,6 @@
   --erma-dash: #b8b8b8; /* the dotted outlines of the flow diagrams */
   --erma-muted: #666; /* labels and secondary text */
   --erma-photo-w: 320px; /* the persona's portrait */
-  --erma-cover-ratio: 1270 / 900; /* the dashboard under the title */
-  --erma-cover-fade: 18.7%; /* the strip at its bottom that fades into the page (168 of 900) */
 
   /* The seller-settings prototype (free delivery card), measured from the design */
   --form-card-bg: #fafbfb;
