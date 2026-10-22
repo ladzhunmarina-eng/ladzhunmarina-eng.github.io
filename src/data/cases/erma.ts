@@ -70,7 +70,7 @@ export const ermaCase = {
     ],
     quote: {
       text: '“During a storm I spend the first 12 hours on the phone instead of on the road.”',
-      source: '[Name or role], general foreman · [source: interview, date]',
+      source: 'General foreman, utility storm crew · User interview',
     },
   },
 
