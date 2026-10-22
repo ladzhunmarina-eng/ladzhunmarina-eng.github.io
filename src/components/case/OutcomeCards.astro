@@ -1,0 +1,65 @@
+---
+interface Card {
+  label: string;
+  value: string;
+  note: string;
+}
+
+interface Props {
+  cards: readonly Card[];
+}
+
+const { cards } = Astro.props;
+---
+
+<ul class="outcome">
+  {cards.map((card) => (
+    <li class="card">
+      <p class="card__label">{card.label}</p>
+      <p class="card__value">{card.value}</p>
+      <p class="card__note">{card.note}</p>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .outcome {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--case-card-min), 1fr)); /* four across in the content column */
+    gap: var(--space-16);
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding: var(--case-card-pad);
+    border: 1px solid var(--case-line);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+  }
+
+  .card__label {
+    font-size: var(--fs-12);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-snug);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--case-accent);
+  }
+
+  .card__value {
+    font-family: var(--font-display);
+    font-size: var(--fs-24);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-heading);
+    color: var(--color-ink);
+  }
+
+  .card__note {
+    font-size: var(--fs-14);
+    line-height: var(--lh-body);
+    color: var(--color-muted);
+  }
+</style>

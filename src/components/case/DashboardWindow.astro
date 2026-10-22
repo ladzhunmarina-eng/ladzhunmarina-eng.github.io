@@ -11,6 +11,7 @@ import timeline from '../../assets/images/dash/timeline.png';
 import summary from '../../assets/images/dash/summary.png';
 import map from '../../assets/images/dash/map.png';
 import documents from '../../assets/images/dash/documents.png';
+import LogoShield from './LogoShield.astro';
 
 interface Part {
   title: string;
@@ -67,7 +68,7 @@ const pos = (item: { x: number; y: number; w: number }, height: number) =>
       </div>
     </div>
     {hint && <p class="dash__hint" aria-hidden="true">{hint}</p>}
-    {blurLogo && <span class="dash__blur" aria-hidden="true"></span>}
+    {blurLogo && <LogoShield left={3.19} top={2.44} width={11.11} height={6.44} />}
     <div class="dash__stay" aria-hidden="true">
       {stay.map((item) => (
         <Image class="dash__piece dash__piece--stay" src={item.src} alt="" style={pos(item, VIEW_H)} widths={[480, 960, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} loading="eager" />
@@ -194,24 +195,6 @@ const pos = (item: { x: number; y: number; w: number }, height: number) =>
   .dash[data-scrolled] .dash__hint {
     opacity: 0;
     transform: translate(-50%, var(--space-8));
-  }
-
-  /* Over the logo, which sits at x 66 to 185, y 39 to 63 (design pixels). The blur reaches 20px past it on every side and fades only in the last 8% / 12% of the box, so the whole logo is inside the solid part. */
-  .dash__blur {
-    position: absolute;
-    top: 2.44%;
-    left: 3.19%;
-    z-index: 2;
-    width: 11.11%;
-    height: 6.44%;
-    background: rgb(250 250 250 / 0.5);
-    backdrop-filter: blur(12px);
-    mask-image:
-      linear-gradient(to right, transparent, #000 8%, #000 92%, transparent),
-      linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
-    mask-composite: intersect;
-    -webkit-mask-composite: source-in;
-    pointer-events: none;
   }
 
   .dash__stay {

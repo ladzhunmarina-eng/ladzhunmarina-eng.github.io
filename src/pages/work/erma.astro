@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import CaseBack from '../../components/case/CaseBack.astro';
 import CaseHero from '../../components/case/CaseHero.astro';
@@ -7,28 +6,26 @@ import CaseNav from '../../components/case/CaseNav.astro';
 import Section from '../../components/case/Section.astro';
 import FlowSteps from '../../components/case/FlowSteps.astro';
 import NoteCards from '../../components/case/NoteCards.astro';
+import QuoteCard from '../../components/case/QuoteCard.astro';
+import ColumnLists from '../../components/case/ColumnLists.astro';
 import RoleGroups from '../../components/case/RoleGroups.astro';
-import PersonaProfile from '../../components/case/PersonaProfile.astro';
+import StageCompare from '../../components/case/StageCompare.astro';
 import DecisionBlock from '../../components/case/DecisionBlock.astro';
+import ShotFrame from '../../components/case/ShotFrame.astro';
+import MissingScreen from '../../components/case/MissingScreen.astro';
 import DashboardWindow from '../../components/case/DashboardWindow.astro';
-import VisualsMosaic from '../../components/case/VisualsMosaic.astro';
-import markPhoto from '../../assets/images/erma-mark.png';
+import OutcomeCards from '../../components/case/OutcomeCards.astro';
 import rostersList from '../../assets/images/erma-rosters-list.png';
 import rosterResources from '../../assets/images/erma-roster-resources.png';
-import vRosters from '../../assets/images/erma-v-rosters.png';
-import vBattery from '../../assets/images/erma-v-battery.png';
-import vEmpty from '../../assets/images/erma-v-empty.png';
 import vUpload from '../../assets/images/erma-v-upload.png';
-import vUploading from '../../assets/images/erma-v-uploading.png';
 import vAttachment from '../../assets/images/erma-v-attachment.png';
-import vCreateEvent from '../../assets/images/erma-v-create-event.png';
-import vSummary from '../../assets/images/erma-v-summary.png';
-import vOwed from '../../assets/images/erma-v-owed.png';
-import fontsColors from '../../assets/images/erma-fonts-colors.png';
 import NextCase from '../../components/case/NextCase.astro';
 import { ermaCase as study } from '../../data/cases/erma';
 
-const { problem, roles, workflow, decisions, visuals, brand } = study;
+const { problem, research, roles, workflow, decisions, outcome, retrospective } = study;
+
+// The product logo in the corner of the roster screens, blurred (its bounds plus a margin, as a share of the picture)
+const logo = { left: 4.37, top: 2.64, width: 11.9, height: 4.58 };
 ---
 
 <Layout title={study.seo.title} description={study.seo.description} current="work">
@@ -48,59 +45,86 @@ const { problem, roles, workflow, decisions, visuals, brand } = study;
         <Section id="problem" eyebrow={problem.eyebrow} title={problem.title} lead={problem.lead}>
           <FlowSteps steps={problem.flow} label="How a storm callout worked before the platform" />
           <NoteCards cards={problem.cards} />
+          <QuoteCard text={problem.quote.text} source={problem.quote.source} />
+        </Section>
+
+        <Section id="research" eyebrow={research.eyebrow} title={research.title} lead={research.lead}>
+          <ColumnLists columns={research.columns} />
         </Section>
 
         <Section id="roles" eyebrow={roles.eyebrow} title={roles.title} lead={roles.lead}>
           <RoleGroups groups={roles.groups} />
-          <PersonaProfile persona={roles.persona} photo={markPhoto} />
+          <p class="legend">{roles.legend}</p>
         </Section>
 
         <Section id="workflow" eyebrow={workflow.eyebrow} title={workflow.title} lead={workflow.lead}>
-          <FlowSteps steps={workflow.steps} label="The six states of a job, with the roles that own them" />
+          <StageCompare before={workflow.before} steps={workflow.steps} label="The six stages of a job, with the roles that own them" />
         </Section>
 
         <Section id="decisions" eyebrow={decisions.eyebrow} title={decisions.title} lead={decisions.lead}>
           <div class="decisions">
-            <DecisionBlock title={decisions.rosters.title} paragraphs={decisions.rosters.paragraphs} image={rostersList} imageAlt={decisions.rosters.imageAlt} />
             <DecisionBlock
-              title={decisions.assembly.title}
-              pain={decisions.assembly.pain}
-              decision={decisions.assembly.decision}
-              why={decisions.assembly.why}
-              image={rosterResources}
-              imageAlt={decisions.assembly.imageAlt}
-            />
+              index={decisions.roster.index}
+              title={decisions.roster.title}
+              lead={decisions.roster.lead}
+              pain={decisions.roster.pain}
+              decision={decisions.roster.decision}
+              why={decisions.roster.why}
+              tradeoff={decisions.tradeoff}
+            >
+              <Fragment slot="media">
+                <ShotFrame src={rostersList} alt={decisions.roster.listAlt} shield={logo} />
+                <ShotFrame src={rosterResources} alt={decisions.roster.resourcesAlt} shield={logo} />
+              </Fragment>
+            </DecisionBlock>
+
             <DecisionBlock
+              index={decisions.dashboard.index}
               title={decisions.dashboard.title}
               pain={decisions.dashboard.pain}
               decision={decisions.dashboard.decision}
               why={decisions.dashboard.why}
+              tradeoff={decisions.tradeoff}
             >
-              <DashboardWindow parts={decisions.dashboard.parts} />
+              <DashboardWindow blurLogo parts={decisions.dashboard.parts} />
+            </DecisionBlock>
+
+            <DecisionBlock
+              index={decisions.permissions.index}
+              title={decisions.permissions.title}
+              lead={decisions.permissions.lead}
+              pain={decisions.permissions.pain}
+              decision={decisions.permissions.decision}
+              why={decisions.permissions.why}
+              tradeoff={decisions.tradeoff}
+            >
+              <MissingScreen slot="media" label={decisions.permissions.missing} />
+            </DecisionBlock>
+
+            <DecisionBlock
+              index={decisions.timesheets.index}
+              title={decisions.timesheets.title}
+              lead={decisions.timesheets.lead}
+              pain={decisions.timesheets.pain}
+              decision={decisions.timesheets.decision}
+              why={decisions.timesheets.why}
+              tradeoff={decisions.tradeoff}
+            >
+              <Fragment slot="media">
+                <MissingScreen label={decisions.timesheets.missing} />
+                <ShotFrame src={vUpload} alt={decisions.timesheets.uploadAlt} />
+                <ShotFrame src={vAttachment} alt={decisions.timesheets.attachmentAlt} />
+              </Fragment>
             </DecisionBlock>
           </div>
         </Section>
 
-        <Section id="visuals" eyebrow={visuals.eyebrow} title={visuals.title}>
-          <VisualsMosaic
-            shots={{
-              rosters: { src: vRosters, alt: visuals.alts.rosters },
-              battery: { src: vBattery, alt: visuals.alts.battery },
-              upload: { src: vUpload, alt: visuals.alts.upload },
-              uploading: { src: vUploading, alt: visuals.alts.uploading },
-              attachment: { src: vAttachment, alt: visuals.alts.attachment },
-              createEvent: { src: vCreateEvent, alt: visuals.alts.createEvent },
-              summary: { src: vSummary, alt: visuals.alts.summary },
-              empty: { src: vEmpty, alt: visuals.alts.empty },
-              owed: { src: vOwed, alt: visuals.alts.owed },
-            }}
-          />
+        <Section id="outcome" eyebrow={outcome.eyebrow} title={outcome.title} lead={outcome.lead}>
+          <OutcomeCards cards={outcome.cards} />
         </Section>
 
-        <Section id="brand" eyebrow={brand.eyebrow} title={brand.title}>
-          <figure class="brand">
-            <Image src={fontsColors} alt={brand.alt} widths={[720, 1008, 1512]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} />
-          </figure>
+        <Section id="retrospective" eyebrow={retrospective.eyebrow} title={retrospective.title}>
+          <ColumnLists columns={retrospective.columns} bullets={false} />
         </Section>
 
         <NextCase current="/work/erma" />
@@ -154,18 +178,10 @@ const { problem, roles, workflow, decisions, visuals, brand } = study;
     gap: var(--space-92);
   }
 
-  .brand {
-    margin: 0;
-    overflow: hidden;
-    border-radius: var(--radius-card);
-  }
-
-  /* The exported picture carries its own "Fonts & Colors" heading at the top; this section already has one, so that strip is cut off. */
-  .brand :global(img) {
-    display: block;
-    width: 100%;
-    height: auto;
-    margin-top: -6.5%;
+  .legend {
+    font-size: var(--fs-14);
+    line-height: var(--lh-snug);
+    color: var(--color-muted);
   }
 
   @media (max-width: 1023px) {

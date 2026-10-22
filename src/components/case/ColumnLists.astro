@@ -1,0 +1,77 @@
+---
+interface Column {
+  title: string;
+  items: readonly string[];
+}
+
+interface Props {
+  columns: readonly Column[];
+  /** A dot in front of each item (a list); without it each item is a paragraph */
+  bullets?: boolean;
+}
+
+const { columns, bullets = true } = Astro.props;
+---
+
+<ul class="cols">
+  {columns.map((column) => (
+    <li class="col">
+      <h3 class="col__title">{column.title}</h3>
+      <ul class:list={['col__items', { 'col__items--bullets': bullets }]}>
+        {column.items.map((item) => <li>{item}</li>)}
+      </ul>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--case-card-min-wide), 1fr));
+    gap: var(--space-16);
+  }
+
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    padding: var(--case-card-pad);
+    border: 1px solid var(--case-line);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+  }
+
+  .col__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-18);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-heading);
+    color: var(--color-ink);
+  }
+
+  .col__items {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    font-size: var(--fs-16);
+    line-height: var(--lh-body);
+    color: var(--color-ink);
+  }
+
+  .col__items--bullets li {
+    position: relative;
+    padding-left: var(--space-16);
+  }
+
+  .col__items--bullets li::before {
+    content: '';
+    position: absolute;
+    top: 0.65em;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--erma-orange);
+  }
+</style>

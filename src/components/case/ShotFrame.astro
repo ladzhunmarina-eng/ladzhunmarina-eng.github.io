@@ -1,0 +1,35 @@
+---
+import { Image } from 'astro:assets';
+import LogoShield from './LogoShield.astro';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  /** Blur the product logo in the corner: the box, as percentages of the picture (left, top, width, height) */
+  shield?: { left: number; top: number; width: number; height: number };
+}
+
+const { src, alt, shield } = Astro.props;
+---
+
+<figure class="shot">
+  <Image src={src} alt={alt} widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
+  {shield && <LogoShield {...shield} />}
+</figure>
+
+<style>
+  .shot {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--case-line);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+  }
+
+  .shot :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+</style>

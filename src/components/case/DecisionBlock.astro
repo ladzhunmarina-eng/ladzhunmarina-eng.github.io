@@ -1,83 +1,71 @@
 ---
-import { Image } from 'astro:assets';
-
 interface Props {
+  /** "01", "02": the number of the decision */
+  index?: string;
   title: string;
-  /** Plain paragraphs */
-  paragraphs?: readonly string[];
-  /** Or the pain, the decision and the reason behind it */
+  lead?: string;
   pain?: string;
   decision?: string;
   why?: string;
-  /** Without a picture the block runs full width: the text first, then whatever is placed inside */
-  image?: ImageMetadata;
-  imageAlt?: string;
-  /** The picture comes first (left) instead of the text */
-  reverse?: boolean;
+  tradeoff?: string;
 }
 
-const { title, paragraphs, pain, decision, why, image, imageAlt, reverse = false } = Astro.props;
+const { index, title, lead, pain, decision, why, tradeoff } = Astro.props;
 const steps = [
   { label: 'Pain', text: pain },
   { label: 'Decision', text: decision },
   { label: 'Why', text: why },
+  { label: 'Trade-off', text: tradeoff },
 ].filter((step) => step.text);
+const hasMedia = Astro.slots.has('media');
 ---
 
-<article class:list={['decision', { 'decision--reverse': reverse, 'decision--wide': !image }]}>
-  <div class="decision__text">
+<article class:list={['decision', { 'decision--wide': !hasMedia }]}>
+  <header class="decision__head">
+    {index && <p class="decision__index">{index}</p>}
     <h3 class="decision__title">{title}</h3>
-    {paragraphs && paragraphs.map((paragraph) => <p class="decision__paragraph">{paragraph}</p>)}
-    {steps.length > 0 && (
-      <dl class="decision__steps">
-        {steps.map((step) => (
-          <div>
-            <dt>{step.label}</dt>
-            <dd>{step.text}</dd>
-          </div>
-        ))}
-      </dl>
+    {lead && <p class="decision__lead">{lead}</p>}
+  </header>
+
+  <div class="decision__body">
+    <dl class="decision__steps">
+      {steps.map((step) => (
+        <div>
+          <dt>{step.label}</dt>
+          <dd>{step.text}</dd>
+        </div>
+      ))}
+    </dl>
+    {hasMedia && (
+      <div class="decision__media">
+        <slot name="media" />
+      </div>
     )}
-    <slot />
   </div>
-  {image && (
-    <div class="decision__shot">
-      <Image src={image} alt={imageAlt ?? ''} widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
-    </div>
-  )}
+
+  <slot />
 </article>
 
 <style>
   .decision {
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: var(--space-32);
-    align-items: start;
-  }
-
-  .decision--reverse {
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-  }
-
-  /* no picture: one column, and the pain, the decision and the reason side by side */
-  .decision--wide {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .decision--wide .decision__steps {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    display: flex;
+    flex-direction: column;
     gap: var(--space-24);
   }
 
-  .decision--reverse .decision__text {
-    order: 2;
-  }
-
-  .decision__text {
+  .decision__head {
     display: flex;
     flex-direction: column;
-    gap: var(--space-16);
+    gap: var(--space-8);
+    max-width: var(--case-measure);
+  }
+
+  .decision__index {
+    font-size: var(--fs-14);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-snug);
+    letter-spacing: var(--ls-eyebrow);
+    color: var(--case-accent);
   }
 
   .decision__title {
@@ -89,10 +77,17 @@ const steps = [
     color: var(--color-ink);
   }
 
-  .decision__paragraph {
-    font-size: var(--fs-16);
+  .decision__lead {
+    font-size: var(--fs-18);
     line-height: var(--lh-body);
     color: var(--color-ink);
+  }
+
+  .decision__body {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--space-32);
+    align-items: start;
   }
 
   .decision__steps {
@@ -116,31 +111,27 @@ const steps = [
     color: var(--color-ink);
   }
 
-  .decision__shot {
-    overflow: hidden;
-    border: 1px solid var(--case-line);
-    border-radius: var(--radius-card);
-    background: var(--color-white);
+  .decision__media {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    min-width: 0;
   }
 
-  .decision__shot :global(img) {
-    display: block;
-    width: 100%;
-    height: auto;
+  /* no pictures beside it: the four steps run side by side */
+  .decision--wide .decision__body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .decision--wide .decision__steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--case-card-min-wide), 1fr));
+    gap: var(--space-24);
   }
 
   @media (max-width: 1023px) {
-    .decision,
-    .decision--reverse {
+    .decision__body {
       grid-template-columns: minmax(0, 1fr);
-    }
-
-    .decision--wide .decision__steps {
-      grid-template-columns: minmax(0, 1fr);
-    }
-
-    .decision--reverse .decision__text {
-      order: 0;
     }
   }
 </style>

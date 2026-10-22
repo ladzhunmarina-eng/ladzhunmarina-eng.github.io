@@ -1,0 +1,44 @@
+---
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<!-- A dashed box where a screen is still to come; it stays on the page until the screen is there -->
+<div class="missing" role="img" aria-label={label}>
+  <span class="missing__tag">Screen needed</span>
+  <span class="missing__label">{label}</span>
+</div>
+
+<style>
+  .missing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-8);
+    min-height: 240px;
+    padding: var(--space-16);
+    border: 1px dashed var(--erma-orange);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+    text-align: center;
+  }
+
+  .missing__tag {
+    font-size: var(--fs-12);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    line-height: var(--lh-snug);
+    color: var(--case-accent);
+  }
+
+  .missing__label {
+    font-size: var(--fs-14);
+    line-height: var(--lh-snug);
+    color: var(--color-muted);
+  }
+</style>

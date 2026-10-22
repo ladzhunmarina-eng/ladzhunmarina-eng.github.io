@@ -1,0 +1,32 @@
+---
+/*
+ * A soft blur laid over a product logo, so the client stays unnamed. Put it inside a positioned box that holds the picture;
+ * the four numbers are the blurred box as a share of that picture, measured from the logo's own bounds plus a margin.
+ * The edges fade only in the last part of the box, so the whole logo is inside the solid blur.
+ */
+interface Props {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+}
+
+const { left, top, width, height } = Astro.props;
+---
+
+<span class="shield" style={`left:${left}%;top:${top}%;width:${width}%;height:${height}%;`} aria-hidden="true"></span>
+
+<style>
+  .shield {
+    position: absolute;
+    z-index: 2;
+    background: rgb(250 250 250 / 0.5);
+    backdrop-filter: blur(12px);
+    mask-image:
+      linear-gradient(to right, transparent, #000 8%, #000 92%, transparent),
+      linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+    mask-composite: intersect;
+    -webkit-mask-composite: source-in;
+    pointer-events: none;
+  }
+</style>

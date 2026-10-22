@@ -1,0 +1,73 @@
+---
+import FlowSteps from './FlowSteps.astro';
+
+interface Props {
+  before: readonly string[];
+  steps: readonly { label: string; role?: string }[];
+  label: string;
+}
+
+const { before, steps, label } = Astro.props;
+---
+
+<!-- The old way as a short line of chips, the new way as the stage diagram, in the same style as the diagram in Problem -->
+<div class="compare">
+  <section class="compare__row" aria-label="Before">
+    <h3 class="compare__label">Before</h3>
+    <ol class="compare__chips">
+      {before.map((item, index) => (
+        <li class="compare__chip">
+          {item}
+          {index < before.length - 1 && <span class="compare__arrow" aria-hidden="true">→</span>}
+        </li>
+      ))}
+    </ol>
+  </section>
+  <section class="compare__row" aria-label="After">
+    <h3 class="compare__label">After</h3>
+    <FlowSteps steps={steps} label={label} />
+  </section>
+</div>
+
+<style>
+  .compare {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-32);
+  }
+
+  .compare__row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .compare__label {
+    font-size: var(--fs-12);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-snug);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--case-accent);
+  }
+
+  .compare__chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-8) var(--space-12);
+  }
+
+  .compare__chip {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    font-size: var(--fs-16);
+    line-height: var(--lh-ui);
+    color: var(--color-muted);
+  }
+
+  .compare__arrow {
+    color: var(--erma-dash);
+  }
+</style>
