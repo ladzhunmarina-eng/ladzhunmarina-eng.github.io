@@ -2,7 +2,7 @@
  * ERMA case study: content only, no layout.
  * Lives in src/data/cases/erma.ts and is rendered by src/pages/work/erma.astro.
  *
- * The structure follows the "DRAFT · Vision Utilities case study v2" frame in the Figma file (node 38:49372).
+ * The structure follows the "DRAFT · case study v2" frame in the Figma file (node 38:49372).
  * Anything in [square brackets] is a placeholder that stays visible on the page until it is filled in.
  */
 
@@ -25,7 +25,6 @@ export const ermaCase = {
     meta: [
       { label: 'My role', value: '[Product Designer · sole / lead]' },
       { label: 'Team', value: '[PM, N engineers, BA]' },
-      { label: 'Client', value: 'Vision Utilities, Inc.' },
       { label: 'Industry', value: 'Energy · utility services' },
       { label: 'Platform', value: 'Web [+ mobile?]' },
       { label: 'Timeline', value: '2023 – [2025 / present]' },
@@ -212,7 +211,7 @@ export const ermaCase = {
       { label: 'Status', value: '[Shipped]', note: '[In production since 20XX]' },
       { label: 'Adoption', value: '[N companies]', note: '[N storm events run on the platform]' },
       { label: 'Process', value: '[Phone rounds → roster states]', note: '[What disappeared from the callout]' },
-      { label: 'Client', value: '[“…”]', note: '[Feedback from Vision Utilities]' },
+      { label: 'Client', value: '[“…”]', note: '[Feedback from the client]' },
     ],
   },
 

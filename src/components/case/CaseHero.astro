@@ -18,6 +18,14 @@ interface Props {
 }
 
 const { hero } = Astro.props;
+
+// The facts sit two to a row; a last odd one takes the whole row. Each cell knows whether it has a line to its right and below it.
+const cells = hero.meta.map((item, index) => {
+  const last = index === hero.meta.length - 1;
+  const alone = last && index % 2 === 0;
+  const rows = Math.ceil(hero.meta.length / 2);
+  return { ...item, right: index % 2 === 0 && !alone, below: Math.floor(index / 2) < rows - 1, alone };
+});
 ---
 
 <header class="hero">
@@ -36,8 +44,8 @@ const { hero } = Astro.props;
     <p class="hero__tab">At a glance</p>
     <div class="hero__card">
     <dl class="hero__meta">
-      {hero.meta.map((item) => (
-        <div class="hero__cell">
+      {cells.map((item) => (
+        <div class:list={['hero__cell', { 'hero__cell--right': item.right, 'hero__cell--below': item.below, 'hero__cell--alone': item.alone }]}>
           <dt>{item.label}</dt>
           <dd>{item.value}{item.verify && <Verify />}</dd>
         </div>
@@ -160,25 +168,22 @@ const { hero } = Astro.props;
     background: var(--case-glass-cell);
   }
 
-  /* The lines sit inside the 80px cells, as in the design, so the cell loses a pixel of padding to its line. */
-  .hero__cell:nth-child(1) {
-    padding-bottom: calc(var(--space-16) - 1px);
-    border-right: 1px solid var(--case-divider);
-    border-bottom: 1px solid var(--case-divider);
-  }
-
-  .hero__cell:nth-child(2) {
-    padding-bottom: calc(var(--space-16) - 1px);
-    border-bottom: 1px solid var(--case-divider);
-  }
-
-  .hero__cell:nth-child(3) {
-    border-right: 1px solid var(--case-divider);
-    border-bottom: 1px solid transparent; /* the design's card is a pixel taller than its two rows */
-  }
-
-  .hero__cell:nth-child(4) {
+  /* The lines sit inside the cells, as in the design: a line to the right of the left cell, one under every row but the last; the last row keeps a transparent pixel (the design's card is a pixel taller than its rows). */
+  .hero__cell {
     border-bottom: 1px solid transparent;
+  }
+
+  .hero__cell--right {
+    border-right: 1px solid var(--case-divider);
+  }
+
+  .hero__cell--below {
+    padding-bottom: calc(var(--space-16) - 1px);
+    border-bottom-color: var(--case-divider);
+  }
+
+  .hero__cell--alone {
+    grid-column: 1 / -1;
   }
 
   .hero__meta dt {
