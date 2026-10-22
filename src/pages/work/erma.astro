@@ -4,6 +4,7 @@ import CaseBack from '../../components/case/CaseBack.astro';
 import CaseHero from '../../components/case/CaseHero.astro';
 import CaseNav from '../../components/case/CaseNav.astro';
 import Section from '../../components/case/Section.astro';
+import ChallengeCards from '../../components/case/ChallengeCards.astro';
 import ProcessChart from '../../components/case/ProcessChart.astro';
 import CasePhoto from '../../components/case/CasePhoto.astro';
 import QuoteCard from '../../components/case/QuoteCard.astro';
@@ -21,7 +22,7 @@ import vAttachment from '../../assets/images/erma-v-attachment.png';
 import NextCase from '../../components/case/NextCase.astro';
 import { ermaCase as study } from '../../data/cases/erma';
 
-const { problem, process, decisions, outcome, retrospective } = study;
+const { problem, challenge, process, decisions, outcome, retrospective } = study;
 
 // The product logo in the corner of the roster screens, blurred (its bounds plus a margin, as a share of the picture)
 const logo = { left: 4.37, top: 2.64, width: 11.9, height: 4.58 };
@@ -44,6 +45,10 @@ const logo = { left: 4.37, top: 2.64, width: 11.9, height: 4.58 };
         <Section id="problem" eyebrow={problem.eyebrow} title={problem.title} lead={problem.lead}>
           <CasePhoto src={quotePhoto} alt="A lineman in an orange storm jacket on the phone in a truck cab, bucket trucks working on a flooded road ahead" />
           <QuoteCard text={problem.quote.text} source={problem.quote.source} />
+        </Section>
+
+        <Section id="challenge" eyebrow={challenge.eyebrow} title={challenge.title} lead={challenge.lead}>
+          <ChallengeCards cards={challenge.cards} solution={challenge.solution} />
         </Section>
 
         <Section id="process" eyebrow={process.eyebrow} title={process.title}>

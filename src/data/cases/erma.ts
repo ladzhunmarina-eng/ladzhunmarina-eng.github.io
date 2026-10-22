@@ -34,6 +34,7 @@ export const ermaCase = {
 
   nav: [
     { id: 'problem', label: 'Problem' },
+    { id: 'challenge', label: 'Challenge' },
     { id: 'process', label: 'Process' },
     { id: 'decisions', label: 'Decisions' },
     { id: 'outcome', label: 'Outcome' },
@@ -58,6 +59,27 @@ export const ermaCase = {
     },
   },
 
+  challenge: {
+    eyebrow: 'The challenge',
+    title: 'How do you coordinate several companies and about 15 roles inside a 90-hour window?',
+    lead: 'The phone calls were the symptom. The platform had to hold several companies, about 15 roles and every billable hour in one place.',
+    cards: [
+      { icon: 'network', title: 'Several companies, in real time', text: 'Contractors, subcontractors and utilities coordinating crews during the same event.' },
+      { icon: 'users', title: 'About 15 roles', text: 'Each with different permissions, from linemen in the field to finance in the office.' },
+      { icon: 'route', title: 'Traceable end to end', text: 'Every job and every hour has to hold up from callout to invoice, or it turns into a dispute.' },
+    ],
+    solution: {
+      title: 'One platform from callout to invoice.',
+      intro: 'A multi-tenant platform for crew assembly and dispatch:',
+      links: [
+        { text: 'rosters instead of phone rounds', target: 'decision-roster' },
+        { text: 'one page per event', target: 'decision-dashboard' },
+        { text: 'one permission model for every company', target: 'decision-permissions' },
+        { text: 'timesheet sign-off before invoicing', target: 'decision-timesheets' },
+      ],
+    },
+  },
+
   process: {
     eyebrow: 'Process',
     title: 'From the field to the handoff.',
@@ -74,7 +96,7 @@ export const ermaCase = {
   decisions: {
     eyebrow: 'Decisions',
     title: 'Key design decisions.',
-    lead: 'Three constraints shaped every decision: several companies on one platform, about 15 roles with different permissions, and every hour traceable from callout to invoice.',
+    lead: 'Four decisions that carried the business problem into the interface. Each one names the pain, the choice, the reason, and the trade-off.',
     map: {
       stages: ['Event', 'Roster', 'Assign', 'On site', 'Timesheets', 'Invoice'],
       bars: [
