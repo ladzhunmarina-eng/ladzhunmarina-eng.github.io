@@ -6,6 +6,7 @@ import CaseNav from '../../components/case/CaseNav.astro';
 import Section from '../../components/case/Section.astro';
 import FlowSteps from '../../components/case/FlowSteps.astro';
 import NoteCards from '../../components/case/NoteCards.astro';
+import CasePhoto from '../../components/case/CasePhoto.astro';
 import QuoteCard from '../../components/case/QuoteCard.astro';
 import ColumnLists from '../../components/case/ColumnLists.astro';
 import RoleGroups from '../../components/case/RoleGroups.astro';
@@ -46,7 +47,8 @@ const logo = { left: 4.37, top: 2.64, width: 11.9, height: 4.58 };
         <Section id="problem" eyebrow={problem.eyebrow} title={problem.title} lead={problem.lead}>
           <FlowSteps steps={problem.flow} label="How a storm callout worked before the platform" />
           <NoteCards cards={problem.cards} />
-          <QuoteCard image={quotePhoto} imageAlt="A lineman in an orange storm jacket on the phone in a truck cab, bucket trucks working on a flooded road ahead" text={problem.quote.text} source={problem.quote.source} />
+          <CasePhoto src={quotePhoto} alt="A lineman in an orange storm jacket on the phone in a truck cab, bucket trucks working on a flooded road ahead" />
+          <QuoteCard text={problem.quote.text} source={problem.quote.source} />
         </Section>
 
         <Section id="research" eyebrow={research.eyebrow} title={research.title} lead={research.lead}>

@@ -1,19 +1,14 @@
 ---
-import { Image } from 'astro:assets';
-
 interface Props {
-  image?: ImageMetadata;
-  imageAlt?: string;
   label?: string;
   text: string;
   source: string;
 }
 
-const { image, imageAlt = '', label, text, source } = Astro.props;
+const { label, text, source } = Astro.props;
 ---
 
 <figure class="quote">
-  {image && <Image class="quote__image" src={image} alt={imageAlt} widths={[720, 1440]} sizes="(min-width: 1024px) 720px, 100vw" />}
   {label && <p class="quote__label">{label}</p>}
   <blockquote class="quote__text">{text}</blockquote>
   <figcaption class="quote__source">{source}</figcaption>
@@ -29,16 +24,6 @@ const { image, imageAlt = '', label, text, source } = Astro.props;
     border: 1px solid var(--case-line);
     border-radius: var(--radius-card);
     background: var(--color-white);
-  }
-
-  /* the photo sits inside the card, above the quote */
-  .quote__image {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 9;
-    margin-bottom: var(--space-12);
-    border-radius: var(--radius-person);
-    object-fit: cover;
   }
 
   .quote__label {
