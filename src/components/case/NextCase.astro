@@ -35,7 +35,7 @@ const themeVars = next && { yellow: '1', cream: '2', lilac: '3', mint: '4' }[nex
 )}
 
 <style>
-  /* The whole block is one link (see .next__link); the pill says so and turns black with the hover, as on Featured Work. */
+  /* A black block, so it stands apart from any case palette; the panel keeps the next case's own colour. The whole block is one link (see .next__link); the pill says so and turns yellow on hover. */
   .next {
     position: relative;
     display: grid;
@@ -44,7 +44,7 @@ const themeVars = next && { yellow: '1', cream: '2', lilac: '3', mint: '4' }[nex
     align-items: center;
     padding: var(--space-24);
     border-radius: var(--radius-card);
-    background: var(--bg);
+    background: var(--color-black);
   }
 
   .next__text {
@@ -60,7 +60,8 @@ const themeVars = next && { yellow: '1', cream: '2', lilac: '3', mint: '4' }[nex
     line-height: var(--lh-snug);
     letter-spacing: var(--ls-eyebrow);
     text-transform: uppercase;
-    color: var(--color-black);
+    color: var(--color-white);
+    opacity: 0.7;
   }
 
   .next__title {
@@ -69,7 +70,7 @@ const themeVars = next && { yellow: '1', cream: '2', lilac: '3', mint: '4' }[nex
     font-weight: var(--weight-bold);
     line-height: var(--lh-tight);
     letter-spacing: var(--ls-display);
-    color: var(--color-black);
+    color: var(--color-white);
   }
 
   .next__link::after {
@@ -91,7 +92,8 @@ const themeVars = next && { yellow: '1', cream: '2', lilac: '3', mint: '4' }[nex
   .next__category {
     font-size: var(--fs-16);
     line-height: var(--lh-body);
-    color: var(--color-black);
+    color: var(--color-white);
+    opacity: 0.8;
   }
 
   .next__go {
@@ -121,8 +123,8 @@ const themeVars = next && { yellow: '1', cream: '2', lilac: '3', mint: '4' }[nex
 
   .next:hover .next__go,
   .next:has(.next__link:focus-visible) .next__go {
-    background: var(--color-black);
-    color: var(--color-white);
+    background: var(--color-nav-active);
+    color: var(--color-black);
   }
 
   .next:hover .next__go :global(svg),
