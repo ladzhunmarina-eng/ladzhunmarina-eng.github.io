@@ -9,7 +9,6 @@ import NoteCards from '../../components/case/NoteCards.astro';
 import CasePhoto from '../../components/case/CasePhoto.astro';
 import QuoteCard from '../../components/case/QuoteCard.astro';
 import ColumnLists from '../../components/case/ColumnLists.astro';
-import DecisionMap from '../../components/case/DecisionMap.astro';
 import DecisionBlock from '../../components/case/DecisionBlock.astro';
 import ShotFrame from '../../components/case/ShotFrame.astro';
 import MissingScreen from '../../components/case/MissingScreen.astro';
@@ -57,8 +56,6 @@ const logo = { left: 4.37, top: 2.64, width: 11.9, height: 4.58 };
         </Section>
 
         <Section id="decisions" eyebrow={decisions.eyebrow} title={decisions.title} lead={decisions.lead}>
-          <DecisionMap stages={decisions.map.stages} bars={decisions.map.bars} legend={decisions.map.legend} />
-
           <div class="decisions">
             <DecisionBlock
               id="decision-roster"
