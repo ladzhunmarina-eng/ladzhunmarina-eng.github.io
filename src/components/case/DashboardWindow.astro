@@ -1,0 +1,265 @@
+---
+import { Image } from 'astro:assets';
+import sidebar from '../../assets/images/dash/sidebar.png';
+import profile from '../../assets/images/dash/profile.png';
+import header from '../../assets/images/dash/header.png';
+import tabs from '../../assets/images/dash/tabs.png';
+import actions from '../../assets/images/dash/actions.png';
+import search from '../../assets/images/dash/search.png';
+import overview from '../../assets/images/dash/overview.png';
+import timeline from '../../assets/images/dash/timeline.png';
+import summary from '../../assets/images/dash/summary.png';
+import map from '../../assets/images/dash/map.png';
+import documents from '../../assets/images/dash/documents.png';
+
+interface Part {
+  title: string;
+  text: string;
+  /** Where in the page (design pixels, 1440 wide) this part starts: the window scrolls here when its button is pressed */
+  at: number;
+}
+
+interface Props {
+  parts: readonly Part[];
+}
+
+const { parts } = Astro.props;
+
+// The page is drawn from the design's own groups, each placed where it sits on the 1440 x 2640 canvas (x, y, width in design pixels).
+const W = 1440;
+const PAGE_H = 2640; // the whole page, with a little room under the last block
+const VIEW_H = 900; // the window shows 900 of it at a time
+const HEADER_H = 139; // the bar that stays at the top
+const stay = [
+  { src: sidebar, x: 0, y: 0, w: 251 },
+  { src: profile, x: 14, y: 652, w: 224 },
+  { src: header, x: 251, y: 0, w: 1188 },
+  { src: tabs, x: 277, y: 91, w: 586 },
+  { src: actions, x: 645, y: 25, w: 334 },
+  { src: search, x: 1003, y: 25, w: 413 },
+];
+const scrolls = [
+  { src: overview, x: 275, y: 171, w: 1141 },
+  { src: timeline, x: 276, y: 335, w: 1141 },
+  { src: summary, x: 275, y: 528, w: 1141 },
+  { src: map, x: 275, y: 1293, w: 1138 },
+  { src: documents, x: 275, y: 1792, w: 1141 },
+];
+const pos = (item: { x: number; y: number; w: number }, height: number) =>
+  `left:${((item.x / W) * 100).toFixed(3)}%;top:${((item.y / height) * 100).toFixed(3)}%;width:${((item.w / W) * 100).toFixed(3)}%;`;
+---
+
+<div class="dash" data-header={HEADER_H} data-width={W} data-parts={JSON.stringify(parts.map((part) => part.at))}>
+  <!-- The window: the sidebar and the top bar stay, the page scrolls under them -->
+  <div class="dash__view" style={`--view-ratio: ${W} / ${VIEW_H}`}>
+    <div class="dash__scroll" role="region" aria-label="The event dashboard. Scroll to see the whole page." tabindex="0">
+      <div class="dash__page" style={`--page-ratio: ${W} / ${PAGE_H}`}>
+        {scrolls.map((item) => (
+          <Image class="dash__piece" src={item.src} alt="" style={pos(item, PAGE_H)} widths={[720, 1080, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} />
+        ))}
+      </div>
+    </div>
+    <div class="dash__stay" aria-hidden="true">
+      {stay.map((item) => (
+        <Image class="dash__piece dash__piece--stay" src={item.src} alt="" style={pos(item, VIEW_H)} widths={[480, 960, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} loading="eager" />
+      ))}
+    </div>
+  </div>
+
+  <ol class="dash__parts">
+    {parts.map((part, index) => (
+      <li>
+        <button class="part" type="button" data-dash-go={index} aria-label={`Show ${part.title} in the dashboard`}>
+          <span class="part__number" aria-hidden="true">{index + 1}</span>
+          <span class="part__body">
+            <span class="part__title">{part.title}</span>
+            <span class="part__text">{part.text}</span>
+          </span>
+        </button>
+      </li>
+    ))}
+  </ol>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.dash').forEach((dash) => {
+    const scroller = dash.querySelector<HTMLElement>('.dash__scroll')!;
+    const page = dash.querySelector<HTMLElement>('.dash__page')!;
+    const buttons = [...dash.querySelectorAll<HTMLButtonElement>('[data-dash-go]')];
+    const anchors: number[] = JSON.parse(dash.dataset.parts ?? '[]');
+    const design = Number(dash.dataset.width);
+    const header = Number(dash.dataset.header);
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    // design pixels to screen pixels
+    const scale = () => page.getBoundingClientRect().width / design;
+    // a little air above the block a button asks for, under the fixed bar
+    const target = (index: number) => Math.max(0, (anchors[index] - header - 16) * scale());
+
+    // The button of the block at the top of the window is marked (and the one sharing its place); at the very end, the last one
+    const sync = () => {
+      const top = scroller.scrollTop / scale() + header + 24;
+      const atEnd = scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 2;
+      let current = 0;
+      anchors.forEach((at, index) => {
+        if (at <= top) current = index;
+      });
+      buttons.forEach((button, index) => {
+        const near = anchors[index] === anchors[current] || (atEnd && index === anchors.length - 1);
+        button.toggleAttribute('data-current', near);
+        if (near) button.setAttribute('aria-current', 'true');
+        else button.removeAttribute('aria-current');
+      });
+    };
+
+    buttons.forEach((button, index) => {
+      button.addEventListener('click', () => {
+        scroller.scrollTo({ top: target(index), behavior: calm.matches ? 'auto' : 'smooth' });
+        scroller.focus({ preventScroll: true });
+      });
+    });
+    scroller.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    sync();
+  });
+</script>
+
+<style>
+  .dash {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  .dash__view {
+    position: relative;
+    aspect-ratio: var(--view-ratio);
+    overflow: hidden;
+    border: 1px solid var(--case-line);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+  }
+
+  .dash__scroll {
+    position: absolute;
+    inset: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+
+  .dash__scroll:focus-visible {
+    outline: var(--focus-width) solid var(--color-focus);
+    outline-offset: calc(-1 * var(--focus-width));
+  }
+
+  .dash__page {
+    position: relative;
+    width: 100%;
+    aspect-ratio: var(--page-ratio);
+  }
+
+  .dash__stay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none; /* wheel and touch go through to the page underneath */
+  }
+
+  .dash__piece {
+    position: absolute;
+    display: block;
+    height: auto;
+  }
+
+  /* the part buttons: a number and what the block shows */
+  .dash__parts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-8) var(--space-24);
+  }
+
+  .part {
+    display: flex;
+    gap: var(--space-12);
+    width: 100%;
+    padding: var(--space-12);
+    border: 1px solid transparent;
+    border-radius: var(--radius-person);
+    background: none;
+    font: inherit;
+    text-align: left;
+    color: inherit;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease-out,
+      border-color 0.2s ease-out;
+  }
+
+  .part:hover {
+    background: var(--color-white);
+  }
+
+  .part[data-current] {
+    border-color: var(--case-line);
+    background: var(--color-white);
+  }
+
+  .part:focus-visible {
+    outline: var(--focus-width) solid var(--color-focus);
+    outline-offset: var(--focus-offset);
+  }
+
+  .part__number {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--space-24);
+    height: var(--space-24);
+    border-radius: 50%;
+    background: var(--color-icon-bg);
+    font-size: var(--fs-12);
+    font-weight: var(--weight-bold);
+    line-height: 1;
+    color: var(--erma-ink);
+    transition: background-color 0.2s ease-out;
+  }
+
+  .part[data-current] .part__number {
+    background: var(--erma-orange);
+  }
+
+  .part__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    min-width: 0;
+  }
+
+  .part__title {
+    font-size: var(--fs-16);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-snug);
+    color: var(--color-ink);
+  }
+
+  .part__text {
+    font-size: var(--fs-14);
+    line-height: var(--lh-body);
+    color: var(--color-muted);
+  }
+
+  @media (max-width: 1023px) {
+    .dash__parts {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .part,
+    .part__number {
+      transition: none;
+    }
+  }
+</style>

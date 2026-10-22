@@ -10,13 +10,12 @@ import NoteCards from '../../components/case/NoteCards.astro';
 import RoleGroups from '../../components/case/RoleGroups.astro';
 import PersonaProfile from '../../components/case/PersonaProfile.astro';
 import DecisionBlock from '../../components/case/DecisionBlock.astro';
-import PartsList from '../../components/case/PartsList.astro';
+import DashboardWindow from '../../components/case/DashboardWindow.astro';
 import VisualsMosaic from '../../components/case/VisualsMosaic.astro';
 import dashboardHero from '../../assets/images/erma-dashboard-hero.png';
 import markPhoto from '../../assets/images/erma-mark.png';
 import rostersList from '../../assets/images/erma-rosters-list.png';
 import rosterResources from '../../assets/images/erma-roster-resources.png';
-import eventDashboard from '../../assets/images/erma-event-dashboard.png';
 import vRosters from '../../assets/images/erma-v-rosters.png';
 import vBattery from '../../assets/images/erma-v-battery.png';
 import vEmpty from '../../assets/images/erma-v-empty.png';
@@ -84,15 +83,12 @@ const { problem, roles, workflow, decisions, visuals, brand } = study;
               imageAlt={decisions.assembly.imageAlt}
             />
             <DecisionBlock
-              reverse
               title={decisions.dashboard.title}
               pain={decisions.dashboard.pain}
               decision={decisions.dashboard.decision}
               why={decisions.dashboard.why}
-              image={eventDashboard}
-              imageAlt={decisions.dashboard.imageAlt}
             >
-              <PartsList parts={decisions.dashboard.parts} />
+              <DashboardWindow parts={decisions.dashboard.parts} />
             </DecisionBlock>
           </div>
         </Section>

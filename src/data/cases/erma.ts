@@ -155,13 +155,14 @@ export const ermaCase = {
       imageAlt:
         'The Event Dashboard: an overview bar, a timeline, a roster summary gauge, operational numbers, a timesheet overview, a vehicle map and a documents list.',
       parts: [
-        { title: 'Event overview', text: 'Name, status, start and end dates, duration, utility company.' },
-        { title: 'Event timeline', text: 'Hired, Activated, Closed, each with a timestamp.' },
-        { title: 'Event summary', text: 'Rosters by state: total, draft, active, closed, with the split shown on a gauge.' },
-        { title: 'Operational overview', text: 'People and vehicles mobilized, billable hours, final invoice amount, amount owed to the union.' },
-        { title: 'Timesheet overview', text: 'Signed, awaiting, and not signed, as one bar and a count.' },
-        { title: 'Vehicles GPS map', text: 'Total, available, in use, with live positions of the fleet.' },
+        { at: 171, title: 'Event overview', text: 'Name, status, start and end dates, duration, utility company.' },
+        { at: 335, title: 'Event timeline', text: 'Hired, Activated, Closed, each with a timestamp.' },
+        { at: 528, title: 'Event summary', text: 'Rosters by state: total, draft, active, closed, with the split shown on a gauge.' },
+        { at: 528, title: 'Operational overview', text: 'People and vehicles mobilized, billable hours, final invoice amount, amount owed to the union.' },
+        { at: 962, title: 'Timesheet overview', text: 'Signed, awaiting, and not signed, as one bar and a count.' },
+        { at: 1293, title: 'Vehicles GPS map', text: 'Total, available, in use, with live positions of the fleet.' },
         {
+          at: 1792,
           title: 'Event documentation',
           text: 'Hire and release notices, rosters, timesheets, expenses, invoices, MSA, invoice financing. Files grouped by day, signed and unsigned side by side.',
         },
