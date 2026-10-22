@@ -35,7 +35,6 @@ export const ermaCase = {
     { id: 'overview', label: 'Overview' },
     { id: 'problem', label: 'Problem' },
     { id: 'process', label: 'Process' },
-    { id: 'roles', label: 'Roles' },
     { id: 'workflow', label: 'Workflow' },
     { id: 'decisions', label: 'Decisions' },
     { id: 'outcome', label: 'Outcome' },
@@ -89,38 +88,6 @@ export const ermaCase = {
       { label: 'Study of their timesheets and process', start: 110, length: 370 },
       { label: 'Prototypes validated with the client', start: 420, length: 400 },
       { label: 'Final handoff', start: 770, length: 190 },
-    ],
-  },
-
-  roles: {
-    eyebrow: 'Roles',
-    title: '[15] roles, 4 groups, one process.',
-    lead: 'Every role touches the same event at a different step and sees a different slice of it.',
-    groups: [
-      {
-        name: 'Ops and dispatch',
-        process: 'Create the event, assemble rosters, track readiness against the deadline.',
-        sees: 'Event summary, all rosters and their states, fleet availability.',
-        roles: ['Business manager', 'Super Admin', 'Storm Admin', 'Safety Manager', 'System Admin'],
-      },
-      {
-        name: 'Field',
-        process: 'Confirm availability, join a roster, log hours on site.',
-        sees: 'Own roster and assignment, event details, own timesheets.',
-        roles: ['Lineman', 'General foreman', 'Storm Admin', 'Mechanic', 'Yard Hand', 'Fleet Manager'],
-      },
-      {
-        name: 'Finance and admin',
-        process: 'Review timesheets, build and upload the client invoice, manage users and roles.',
-        sees: 'Timesheets across rosters, invoices, workspace settings.',
-        roles: ['System Admin', 'General Foreman', 'Safety Manager'],
-      },
-      {
-        name: 'Client',
-        process: 'Request crews, follow progress, receive the invoice.',
-        sees: 'Event status and crews assigned to their request.',
-        roles: ['Utility company', 'Subcontractor', 'Contractor'],
-      },
     ],
   },
 

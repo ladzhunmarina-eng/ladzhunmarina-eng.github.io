@@ -9,7 +9,6 @@ import NoteCards from '../../components/case/NoteCards.astro';
 import CasePhoto from '../../components/case/CasePhoto.astro';
 import QuoteCard from '../../components/case/QuoteCard.astro';
 import ColumnLists from '../../components/case/ColumnLists.astro';
-import RoleGroups from '../../components/case/RoleGroups.astro';
 import StageCompare from '../../components/case/StageCompare.astro';
 import DecisionBlock from '../../components/case/DecisionBlock.astro';
 import ShotFrame from '../../components/case/ShotFrame.astro';
@@ -24,7 +23,7 @@ import vAttachment from '../../assets/images/erma-v-attachment.png';
 import NextCase from '../../components/case/NextCase.astro';
 import { ermaCase as study } from '../../data/cases/erma';
 
-const { overview, problem, process, roles, workflow, decisions, outcome, retrospective } = study;
+const { overview, problem, process, workflow, decisions, outcome, retrospective } = study;
 
 // The product logo in the corner of the roster screens, blurred (its bounds plus a margin, as a share of the picture)
 const logo = { left: 4.37, top: 2.64, width: 11.9, height: 4.58 };
@@ -55,10 +54,6 @@ const logo = { left: 4.37, top: 2.64, width: 11.9, height: 4.58 };
 
         <Section id="process" eyebrow={process.eyebrow} title={process.title}>
           <ProcessChart phases={process.phases} bars={process.bars} />
-        </Section>
-
-        <Section id="roles" eyebrow={roles.eyebrow} title={roles.title} lead={roles.lead}>
-          <RoleGroups groups={roles.groups} />
         </Section>
 
         <Section id="workflow" eyebrow={workflow.eyebrow} title={workflow.title} lead={workflow.lead}>
