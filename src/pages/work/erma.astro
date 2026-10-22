@@ -27,6 +27,7 @@ import vCreateEvent from '../../assets/images/erma-v-create-event.png';
 import vSummary from '../../assets/images/erma-v-summary.png';
 import vOwed from '../../assets/images/erma-v-owed.png';
 import fontsColors from '../../assets/images/erma-fonts-colors.png';
+import NextCase from '../../components/case/NextCase.astro';
 import { ermaCase as study } from '../../data/cases/erma';
 
 const { problem, roles, workflow, decisions, visuals, brand } = study;
@@ -116,6 +117,8 @@ const { problem, roles, workflow, decisions, visuals, brand } = study;
             <Image src={fontsColors} alt={brand.alt} widths={[720, 1008, 1512]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} />
           </figure>
         </Section>
+
+        <NextCase current="/work/erma" />
       </div>
     </div>
   </article>

@@ -29,6 +29,7 @@ import mazeShot from '../../assets/images/olx-maze.png';
 import carrierPicker from '../../assets/images/olx-carrier-picker.webp';
 import freeDeliveryArt from '../../assets/images/olx-free-delivery.png';
 import carrierPickerAfter from '../../assets/images/olx-carrier-picker-after.png';
+import NextCase from '../../components/case/NextCase.astro';
 import { cases } from '../../data/cases';
 import { work } from '../../data/content';
 
@@ -143,6 +144,8 @@ const card = work.find((item) => item.href === `/work/${study.slug}`);
         <Section id="learnings" eyebrow={study.learnings.eyebrow} title={study.learnings.title}>
           <LearningCards items={study.learnings.items} next={study.next.text} />
         </Section>
+
+        <NextCase current={`/work/${study.slug}`} />
       </div>
     </div>
   </article>
