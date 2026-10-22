@@ -34,7 +34,6 @@ export const ermaCase = {
   nav: [
     { id: 'overview', label: 'Overview' },
     { id: 'problem', label: 'Problem' },
-    { id: 'research', label: 'Research' },
     { id: 'roles', label: 'Roles' },
     { id: 'workflow', label: 'Workflow' },
     { id: 'decisions', label: 'Decisions' },
@@ -77,26 +76,6 @@ export const ermaCase = {
       text: '“During a storm I spend the first 12 hours on the phone instead of on the road.”',
       source: 'General foreman, utility storm crew · User interview',
     },
-  },
-
-  research: {
-    eyebrow: 'Research',
-    title: '[How I got to the problem.]',
-    lead: '[One line: who you talked to and what you looked at.]',
-    columns: [
-      {
-        title: 'Sources',
-        items: ['[N interviews with general foremen]', '[Calls with the client’s ops team]', '[Existing rosters, timesheets, invoices]'],
-      },
-      {
-        title: 'What we saw',
-        items: ['[Confirmations lived in the crew lead’s head]', '[Nobody could answer “are we staffed?” from one place]'],
-      },
-      {
-        title: 'What it changed',
-        items: ['[Insight → decision 01]', '[Insight → decision 02]'],
-      },
-    ],
   },
 
   roles: {
