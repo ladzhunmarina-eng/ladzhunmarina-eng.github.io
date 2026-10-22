@@ -74,7 +74,7 @@ export const ermaCase = {
   decisions: {
     eyebrow: 'Decisions',
     title: 'Key design decisions.',
-    lead: '[Four] decisions that carried the business problem into the interface. Each one names the pain, the choice, the reason, and the trade-off.',
+    lead: 'Three constraints shaped every decision: several companies on one platform, about 15 roles with different permissions, and every hour traceable from callout to invoice.',
     map: {
       stages: ['Event', 'Roster', 'Assign', 'On site', 'Timesheets', 'Invoice'],
       bars: [
