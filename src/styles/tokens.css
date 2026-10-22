@@ -79,12 +79,14 @@
   --erma-orange-text: #c23d00; /* the same orange, darkened to read as small text on the page */
   --erma-yellow: #ffb600; /* the highlight, as the cyan is for OLX */
   --erma-blue: #054fb9;
-  --erma-page: #f9f9f9; /* the page */
+  --erma-page: #f4f3ed; /* the page, as in the design */
   --erma-tint: #ececec; /* chips, tracks, placeholders */
   --erma-line: rgb(13 13 13 / 0.12);
   --erma-dash: #b8b8b8; /* the dotted outlines of the flow diagrams */
   --erma-muted: #666; /* labels and secondary text */
   --erma-photo-w: 320px; /* the persona's portrait */
+  --erma-cover-ratio: 1270 / 900; /* the dashboard under the title */
+  --erma-cover-fade: 18.7%; /* the strip at its bottom that fades into the page (168 of 900) */
 
   /* The seller-settings prototype (free delivery card), measured from the design */
   --form-card-bg: #fafbfb;

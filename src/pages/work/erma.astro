@@ -50,6 +50,7 @@ const { problem, roles, workflow, decisions, visuals, brand } = study;
           quality={85}
           loading="eager"
         />
+        <span class="cover__blur" aria-hidden="true"></span>
       </figure>
     </div>
 
@@ -149,13 +150,23 @@ const { problem, roles, workflow, decisions, visuals, brand } = study;
     gap: var(--space-24);
   }
 
+  /* The dashboard, as in the design: no frame, the bottom fades into the page, and the product's logo in the corner is blurred out. */
   .cover {
+    position: relative;
     margin: 0;
-    aspect-ratio: var(--case-cover-ratio);
+    aspect-ratio: var(--erma-cover-ratio);
     overflow: hidden;
-    border: 1px solid var(--case-line);
     border-radius: var(--radius-card);
     background: var(--color-white);
+  }
+
+  .cover::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: var(--erma-cover-fade);
+    background: linear-gradient(to bottom, transparent, var(--case-page));
+    pointer-events: none;
   }
 
   /* The top of the dashboard: the sidebar, the overview and the first blocks */
@@ -165,6 +176,18 @@ const { problem, roles, workflow, decisions, visuals, brand } = study;
     height: 100%;
     object-fit: cover;
     object-position: top;
+  }
+
+  /* Over the logo (146 x 59 at 38 / 11 of a 1272 x 900 picture) */
+  .cover__blur {
+    position: absolute;
+    top: 1.2%;
+    left: 3%;
+    width: 11.5%;
+    height: 6.6%;
+    border-radius: 10px;
+    background: rgb(249 249 249 / 0.1);
+    backdrop-filter: blur(24px);
   }
 
   .case__main {
