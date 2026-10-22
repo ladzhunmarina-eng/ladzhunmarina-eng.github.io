@@ -14,6 +14,8 @@ interface Props {
     lead: string;
     meta: readonly MetaItem[];
     focus: readonly string[];
+    /** The title above the chips; defaults to "Focus areas" */
+    areasLabel?: string;
   };
 }
 
@@ -53,7 +55,7 @@ const cells = hero.meta.map((item, index) => {
     </dl>
 
     <div class="hero__areas">
-      <p class="hero__areas-title">Focus areas</p>
+      <p class="hero__areas-title">{hero.areasLabel ?? 'Focus areas'}</p>
       <ul class="hero__chips" aria-label="Project tags">
         {hero.tags.map((tag) => <li class="hero__chip">{tag}</li>)}
       </ul>

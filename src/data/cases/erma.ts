@@ -17,11 +17,12 @@ export const ermaCase = {
   },
 
   hero: {
-    // Focus areas (the business model, B2B SaaS, is in the Industry fact, not here).
-    tags: ['Roles and permissions', 'Workflow', 'Dashboards', 'Fleet management', 'Timesheets'],
+    // My scope (the business model, B2B SaaS, is in the Industry fact, not here).
+    tags: ['Rosters', 'Dashboards', 'Roles and permissions', 'Timesheets', 'Fleet management', 'Workflow'],
+    areasLabel: 'My scope',
     eyebrow: 'Power utilities · Storm response',
     title: 'Post-Storm Power Restoration Platform',
-    lead: 'A multi-tenant platform that replaced phone-based crew callouts for U.S. utility contractors working against a 90-hour restoration window.',
+    lead: 'A multi-tenant platform that replaced phone-based crew callouts for U.S. utility contractors: several companies, about 15 roles, one 90-hour restoration window.',
     meta: [
       { label: 'Client', value: 'Vision Utilities, Inc.' },
       { label: 'Industry', value: 'B2B SaaS' },
@@ -32,7 +33,6 @@ export const ermaCase = {
   },
 
   nav: [
-    { id: 'overview', label: 'Overview' },
     { id: 'problem', label: 'Problem' },
     { id: 'process', label: 'Process' },
     { id: 'decisions', label: 'Decisions' },
@@ -40,29 +40,10 @@ export const ermaCase = {
     { id: 'retrospective', label: 'Retrospective' },
   ],
 
-  overview: {
-    eyebrow: 'Overview',
-    cards: [
-      {
-        title: 'Context',
-        text: 'Contracts gave 90 hours to restore the grid and charged penalties for missing the window.',
-      },
-      {
-        title: 'Challenges',
-        text: 'Coordinate several companies and crews in real time, about 15 roles with different permissions, every job traceable from callout to invoice.',
-      },
-      {
-        title: 'Solution',
-        text: 'Multi-tenant platform for crew assembly and dispatch. My scope: dashboard, roles and permissions, workflow, rosters, fleet, timesheets → invoice.',
-        highlight: true,
-      },
-    ],
-  },
-
   problem: {
     eyebrow: 'The problem',
     title: '90 hours on the clock, and the first ones went to phone calls.',
-    lead: 'How a storm callout worked before the platform, and where the hours and the money leaked.',
+    lead: 'Contracts gave 90 hours to restore the grid, with penalties for missing the window. Here’s where those hours went.',
     flow: [
       { label: 'Storm hits' },
       { label: 'Utility callout' },
