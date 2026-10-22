@@ -1,5 +1,5 @@
 /*
- * ERMA case study (Storm360, Vision Utilities): content only, no layout.
+ * ERMA case study: content only, no layout.
  * Lives in src/data/cases/erma.ts and is rendered by src/pages/work/erma.astro.
  * The text follows the Figma "Portfolio" file, node 36:45959.
  */
@@ -16,7 +16,7 @@ export const ermaCase = {
 
   hero: {
     tags: ['B2B SaaS', 'Roles and permissions', 'Workflow', 'Dashboards', 'Fleet management', 'Timesheets'],
-    eyebrow: 'Vision Utilities · Storm360',
+    eyebrow: 'Power utilities · Storm response',
     title: 'Post-Storm Power Restoration Platform',
     lead: 'A digital platform that helps U.S. utility and emergency teams restore power after storms by improving coordination, resource allocation, and communication.',
     meta: [
