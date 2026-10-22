@@ -98,7 +98,6 @@ export const ermaCase = {
     eyebrow: 'Roles',
     title: '[15] roles, 4 groups, one process.',
     lead: 'Every role touches the same event at a different step and sees a different slice of it.',
-    legend: 'Yellow chips: the role sits in more than one group.',
     groups: [
       {
         name: 'Ops and dispatch',

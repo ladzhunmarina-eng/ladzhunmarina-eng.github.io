@@ -12,10 +12,6 @@ interface Props {
 
 const { groups } = Astro.props;
 
-// A role that sits in more than one group is marked; roles are compared by name, ignoring case
-const seen = new Map<string, number>();
-groups.forEach((group) => group.roles.forEach((role) => seen.set(role.toLowerCase(), (seen.get(role.toLowerCase()) ?? 0) + 1)));
-const shared = (role: string) => (seen.get(role.toLowerCase()) ?? 0) > 1;
 ---
 
 <ul class="groups">
@@ -33,7 +29,7 @@ const shared = (role: string) => (seen.get(role.toLowerCase()) ?? 0) > 1;
         </div>
       </dl>
       <ul class="group__roles" aria-label={`Roles in ${group.name}`}>
-        {group.roles.map((role) => <li class:list={['group__role', { 'group__role--shared': shared(role) }]}>{role}</li>)}
+        {group.roles.map((role) => <li class="group__role">{role}</li>)}
       </ul>
     </li>
   ))}
@@ -108,10 +104,5 @@ const shared = (role: string) => (seen.get(role.toLowerCase()) ?? 0) > 1;
     font-size: var(--fs-12);
     line-height: var(--lh-snug);
     color: var(--color-ink);
-  }
-
-  /* a role that appears in several groups */
-  .group__role--shared {
-    background: var(--erma-yellow);
   }
 </style>
