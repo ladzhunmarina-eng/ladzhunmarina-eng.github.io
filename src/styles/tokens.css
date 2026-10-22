@@ -80,6 +80,7 @@
   --erma-yellow: #ffb600; /* the highlight, as the cyan is for OLX */
   --erma-blue: #054fb9;
   --erma-page: #f4f3ed; /* the page, as in the design */
+  --erma-peach: #f5e9de; /* the At a glance card */
   --erma-tint: #ececec; /* chips, tracks, placeholders */
   --erma-line: rgb(13 13 13 / 0.12);
   --erma-dash: #b8b8b8; /* the dotted outlines of the flow diagrams */
@@ -595,6 +596,7 @@
   --case-strip-value: var(--erma-yellow);
   --case-on-bg: var(--erma-ink);
   --case-chip-text: var(--erma-ink);
+  --case-glass: var(--erma-peach); /* the At a glance card and its tab */
   --case-label: var(--erma-muted);
   --case-hairline: var(--erma-line);
   --case-dark: var(--erma-ink);
