@@ -1,0 +1,130 @@
+---
+interface Step {
+  label: string;
+  /** A step where the old process hurt: its dot and the line into it are drawn in the accent */
+  hot?: boolean;
+  /** What went wrong there, under the label */
+  note?: string;
+}
+
+interface Props {
+  steps: readonly Step[];
+  label: string;
+}
+
+const { steps, label } = Astro.props;
+---
+
+<!-- A thin line with a dot per step. Only the steps that hurt, and the line between them, carry the accent. -->
+<ol class="timeline" style={`--n: ${steps.length}`} aria-label={label}>
+  {steps.map((step, index) => (
+    <li class:list={['step', { 'step--hot': step.hot, 'step--joined': step.hot && steps[index + 1]?.hot }]}>
+      <p class="step__label">{step.label}</p>
+      {step.note && <p class="step__note">{step.note}</p>}
+    </li>
+  ))}
+</ol>
+
+<style>
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+    align-items: start;
+  }
+
+  .step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-12);
+    padding: calc(var(--erma-timeline-dot) + var(--space-16)) var(--space-8) 0;
+    text-align: center;
+  }
+
+  /* the dot, centred on the line */
+  .step::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: calc(50% - var(--erma-timeline-dot) / 2);
+    z-index: 1;
+    width: var(--erma-timeline-dot);
+    height: var(--erma-timeline-dot);
+    border-radius: 50%;
+    background: var(--erma-dash);
+  }
+
+  /* the line from this dot to the next one */
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: calc((var(--erma-timeline-dot) - var(--erma-timeline-line)) / 2);
+    left: 50%;
+    width: 100%;
+    height: var(--erma-timeline-line);
+    background: var(--erma-dash);
+  }
+
+  .step--hot::before,
+  .step--joined:not(:last-child)::after {
+    background: var(--erma-orange);
+  }
+
+  .step__label {
+    font-size: var(--fs-16);
+    line-height: var(--lh-snug);
+    color: var(--color-ink);
+  }
+
+  /* a pain note: a short accent bar, then the words */
+  .step__note {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-8);
+    font-size: var(--fs-14);
+    line-height: var(--lh-snug);
+    color: var(--erma-orange-text);
+  }
+
+  .step__note::before {
+    content: '';
+    width: var(--erma-timeline-bar);
+    height: var(--erma-timeline-line);
+    background: var(--erma-orange);
+  }
+
+  /* a phone: the line runs down the left, the labels sit to its right */
+  @media (max-width: 639px) {
+    .timeline {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .step {
+      align-items: flex-start;
+      padding: 0 0 var(--space-24) calc(var(--erma-timeline-dot) + var(--space-16));
+      text-align: left;
+    }
+
+    .step:last-child {
+      padding-bottom: 0;
+    }
+
+    .step::before {
+      top: calc((var(--fs-16) * var(--lh-snug) - var(--erma-timeline-dot)) / 2);
+      left: 0;
+    }
+
+    .step:not(:last-child)::after {
+      top: calc((var(--fs-16) * var(--lh-snug) + var(--erma-timeline-dot)) / 2);
+      left: calc((var(--erma-timeline-dot) - var(--erma-timeline-line)) / 2);
+      width: var(--erma-timeline-line);
+      height: calc(100% - (var(--fs-16) * var(--lh-snug) + var(--erma-timeline-dot)) / 2 + (var(--fs-16) * var(--lh-snug) - var(--erma-timeline-dot)) / 2);
+    }
+
+    .step__note {
+      align-items: flex-start;
+    }
+  }
+</style>

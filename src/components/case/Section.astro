@@ -4,20 +4,20 @@ import Verify from './Verify.astro';
 interface Props {
   id?: string;
   eyebrow: string;
-  title: string;
+  title?: string;
   lead?: string;
   verify?: boolean;
 }
 
 const { id, eyebrow, title, lead, verify = false } = Astro.props;
-const titleId = id ? `${id}-title` : undefined;
+const titleId = id && title ? `${id}-title` : undefined;
 ---
 
-<section class="section" id={id} aria-labelledby={titleId}>
+<section class="section" id={id} aria-labelledby={titleId} aria-label={titleId ? undefined : eyebrow}>
   <div class="section__head">
     <div class="section__heading">
       <p class="section__eyebrow">{eyebrow}</p>
-      <h2 class="section__title" id={titleId}>{title}{verify && <Verify />}</h2>
+      {title && <h2 class="section__title" id={titleId}>{title}{verify && <Verify />}</h2>}
       {lead && <p class="section__lead">{lead}</p>}
     </div>
     <!-- An optional picture beside the heading (a decorative illustration) -->

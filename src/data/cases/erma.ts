@@ -32,6 +32,7 @@ export const ermaCase = {
   },
 
   nav: [
+    { id: 'overview', label: 'Overview' },
     { id: 'problem', label: 'Problem' },
     { id: 'research', label: 'Research' },
     { id: 'roles', label: 'Roles' },
@@ -41,22 +42,12 @@ export const ermaCase = {
     { id: 'retrospective', label: 'Retrospective' },
   ],
 
-  problem: {
-    eyebrow: 'The problem',
-    title: '90 hours on the clock, and the first ones went to phone calls.',
-    lead: 'How a storm callout worked before the platform, and where the hours and the money leaked.',
-    flow: [
-      { label: 'Storm hits' },
-      { label: 'Utility requests crews' },
-      { label: 'Crew lead phones [N] people one by one', hot: true, note: '[X] hours lost per event on calls and follow-ups' },
-      { label: 'Rosters written by hand', hot: true, note: 'No visibility while crews are out' },
-      { label: 'Timesheets on paper / spreadsheets', hot: true, note: 'Timesheet errors turn into invoice disputes' },
-      { label: 'Invoice compiled by hand' },
-    ],
+  overview: {
+    eyebrow: 'Overview',
     cards: [
       {
-        title: 'Problem',
-        text: 'Crews were assembled by phone. Contracts gave 90 hours to restore the grid and charged penalties for missing the window.',
+        title: 'Context',
+        text: 'Contracts gave 90 hours to restore the grid and charged penalties for missing the window.',
       },
       {
         title: 'Challenges',
@@ -67,6 +58,20 @@ export const ermaCase = {
         text: 'Multi-tenant platform for crew assembly and dispatch. My scope: dashboard, roles and permissions, workflow, rosters, fleet, timesheets → invoice.',
         highlight: true,
       },
+    ],
+  },
+
+  problem: {
+    eyebrow: 'The problem',
+    title: '90 hours on the clock, and the first ones went to phone calls.',
+    lead: 'How a storm callout worked before the platform, and where the hours and the money leaked.',
+    flow: [
+      { label: 'Storm hits' },
+      { label: 'Utility callout' },
+      { label: 'Crew built by phone', hot: true, note: '[X] h lost on calls' },
+      { label: 'Paper rosters', hot: true, note: 'No field visibility' },
+      { label: 'Paper timesheets', hot: true, note: 'Errors become disputes' },
+      { label: 'Manual invoice' },
     ],
     quote: {
       text: '“During a storm I spend the first 12 hours on the phone instead of on the road.”',

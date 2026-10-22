@@ -4,7 +4,7 @@ import CaseBack from '../../components/case/CaseBack.astro';
 import CaseHero from '../../components/case/CaseHero.astro';
 import CaseNav from '../../components/case/CaseNav.astro';
 import Section from '../../components/case/Section.astro';
-import FlowSteps from '../../components/case/FlowSteps.astro';
+import ProblemTimeline from '../../components/case/ProblemTimeline.astro';
 import NoteCards from '../../components/case/NoteCards.astro';
 import CasePhoto from '../../components/case/CasePhoto.astro';
 import QuoteCard from '../../components/case/QuoteCard.astro';
@@ -24,7 +24,7 @@ import vAttachment from '../../assets/images/erma-v-attachment.png';
 import NextCase from '../../components/case/NextCase.astro';
 import { ermaCase as study } from '../../data/cases/erma';
 
-const { problem, research, roles, workflow, decisions, outcome, retrospective } = study;
+const { overview, problem, research, roles, workflow, decisions, outcome, retrospective } = study;
 
 // The product logo in the corner of the roster screens, blurred (its bounds plus a margin, as a share of the picture)
 const logo = { left: 4.37, top: 2.64, width: 11.9, height: 4.58 };
@@ -44,9 +44,12 @@ const logo = { left: 4.37, top: 2.64, width: 11.9, height: 4.58 };
       <CaseNav items={study.nav} />
 
       <div class="case__sections">
+        <Section id="overview" eyebrow={overview.eyebrow}>
+          <NoteCards cards={overview.cards} />
+        </Section>
+
         <Section id="problem" eyebrow={problem.eyebrow} title={problem.title} lead={problem.lead}>
-          <FlowSteps steps={problem.flow} label="How a storm callout worked before the platform" />
-          <NoteCards cards={problem.cards} />
+          <ProblemTimeline steps={problem.flow} label="How a storm callout worked before the platform" />
           <CasePhoto src={quotePhoto} alt="A lineman in an orange storm jacket on the phone in a truck cab, bucket trucks working on a flooded road ahead" />
           <QuoteCard text={problem.quote.text} source={problem.quote.source} />
         </Section>
