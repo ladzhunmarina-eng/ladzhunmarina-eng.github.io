@@ -32,7 +32,7 @@ src/
     case/                  the building blocks of a case study page:
                              CaseBack, CaseHero, CaseCover, MetricStrip, CaseNav (sticky "On this page"),
                              Section, SubSection, StatGrid, CasePhoto, Persona, ProcessChart (Gantt), SurveyBars,
-                             VariantCompare, ParticipantCards (scrolls sideways), MazeResults, EntryPoints, BasketScreens, ResultSparks, FlowSteps, NoteCards, RoleGroups, DecisionBlock, DashboardWindow (a scrollable event dashboard) (the seven from FlowSteps on are used by the ERMA case), NextCase (the preview of the next case at the end of a case page), DeliveryDemo (interactive seller-settings card),
+                             VariantCompare, ParticipantCards (scrolls sideways), MazeResults, EntryPoints, BasketScreens, ResultSparks, ProblemTimeline, FlowSteps, NoteCards, RoleGroups, DecisionBlock, DashboardWindow (a scrollable event dashboard) (the eight from ProblemTimeline on are used by the ERMA case), NextCase (the preview of the next case at the end of a case page), DeliveryDemo (interactive seller-settings card),
                              BeforeAfter, LearningCards, plus ImageSlot (labelled placeholder) and Verify (dev-only badge)
     Button.astro, SocialLinks.astro
     Footer.astro           "Say Hi!", contact pills, copyright and social buttons
