@@ -34,6 +34,7 @@ export const ermaCase = {
   nav: [
     { id: 'overview', label: 'Overview' },
     { id: 'problem', label: 'Problem' },
+    { id: 'process', label: 'Process' },
     { id: 'roles', label: 'Roles' },
     { id: 'workflow', label: 'Workflow' },
     { id: 'decisions', label: 'Decisions' },
@@ -76,6 +77,17 @@ export const ermaCase = {
       text: '“During a storm I spend the first 12 hours on the phone instead of on the road.”',
       source: 'General foreman, utility storm crew · User interview',
     },
+  },
+
+  process: {
+    eyebrow: 'Process',
+    title: 'From the field to the handoff.',
+    steps: [
+      { label: 'Discovery with foremen and linemen' },
+      { label: 'Study of their timesheets and process' },
+      { label: 'Prototypes validated with the client' },
+      { label: 'Final handoff' },
+    ],
   },
 
   roles: {

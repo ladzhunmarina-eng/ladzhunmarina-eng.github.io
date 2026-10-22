@@ -24,7 +24,7 @@ import vAttachment from '../../assets/images/erma-v-attachment.png';
 import NextCase from '../../components/case/NextCase.astro';
 import { ermaCase as study } from '../../data/cases/erma';
 
-const { overview, problem, roles, workflow, decisions, outcome, retrospective } = study;
+const { overview, problem, process, roles, workflow, decisions, outcome, retrospective } = study;
 
 // The product logo in the corner of the roster screens, blurred (its bounds plus a margin, as a share of the picture)
 const logo = { left: 4.37, top: 2.64, width: 11.9, height: 4.58 };
@@ -52,6 +52,10 @@ const logo = { left: 4.37, top: 2.64, width: 11.9, height: 4.58 };
           <ProblemTimeline steps={problem.flow} label="How a storm callout worked before the platform" />
           <CasePhoto src={quotePhoto} alt="A lineman in an orange storm jacket on the phone in a truck cab, bucket trucks working on a flooded road ahead" />
           <QuoteCard text={problem.quote.text} source={problem.quote.source} />
+        </Section>
+
+        <Section id="process" eyebrow={process.eyebrow} title={process.title}>
+          <ProblemTimeline steps={process.steps} label="How the work went, from discovery to handoff" />
         </Section>
 
         <Section id="roles" eyebrow={roles.eyebrow} title={roles.title} lead={roles.lead}>
