@@ -17,6 +17,7 @@ import DashboardWindow from '../../components/case/DashboardWindow.astro';
 import OutcomeCards from '../../components/case/OutcomeCards.astro';
 import rostersList from '../../assets/images/erma-rosters-list.png';
 import rosterResources from '../../assets/images/erma-roster-resources.png';
+import quotePhoto from '../../assets/images/erma-quote.webp';
 import vUpload from '../../assets/images/erma-v-upload.png';
 import vAttachment from '../../assets/images/erma-v-attachment.png';
 import NextCase from '../../components/case/NextCase.astro';
@@ -45,7 +46,7 @@ const logo = { left: 4.37, top: 2.64, width: 11.9, height: 4.58 };
         <Section id="problem" eyebrow={problem.eyebrow} title={problem.title} lead={problem.lead}>
           <FlowSteps steps={problem.flow} label="How a storm callout worked before the platform" />
           <NoteCards cards={problem.cards} />
-          <QuoteCard text={problem.quote.text} source={problem.quote.source} />
+          <QuoteCard image={quotePhoto} imageAlt="A lineman in an orange storm jacket on the phone in a truck cab, bucket trucks working on a flooded road ahead" text={problem.quote.text} source={problem.quote.source} />
         </Section>
 
         <Section id="research" eyebrow={research.eyebrow} title={research.title} lead={research.lead}>
