@@ -35,7 +35,7 @@ const themeVars = next && { yellow: '1', cream: '2', lilac: '3', mint: '4' }[nex
 )}
 
 <style>
-  /* A dark neutral block, so it stands apart from any case palette; the panel keeps the next case's own colour. The whole block is one link (see .next__link); the pill says so and turns yellow on hover. */
+  /* A cool grey-blue block, the same on every case page; the panel keeps the next case's own colour. The whole block is one link (see .next__link); the pill says so and turns black on hover, as on Featured Work. */
   .next {
     position: relative;
     display: grid;
@@ -60,8 +60,8 @@ const themeVars = next && { yellow: '1', cream: '2', lilac: '3', mint: '4' }[nex
     line-height: var(--lh-snug);
     letter-spacing: var(--ls-eyebrow);
     text-transform: uppercase;
-    color: var(--color-white);
-    opacity: 0.7;
+    color: var(--color-black);
+    opacity: 0.65;
   }
 
   .next__title {
@@ -70,7 +70,7 @@ const themeVars = next && { yellow: '1', cream: '2', lilac: '3', mint: '4' }[nex
     font-weight: var(--weight-bold);
     line-height: var(--lh-tight);
     letter-spacing: var(--ls-heading);
-    color: var(--color-white);
+    color: var(--color-black);
   }
 
   .next__link::after {
@@ -92,8 +92,7 @@ const themeVars = next && { yellow: '1', cream: '2', lilac: '3', mint: '4' }[nex
   .next__category {
     font-size: var(--fs-16);
     line-height: var(--lh-body);
-    color: var(--color-white);
-    opacity: 0.8;
+    color: var(--color-black);
   }
 
   .next__go {
@@ -123,8 +122,8 @@ const themeVars = next && { yellow: '1', cream: '2', lilac: '3', mint: '4' }[nex
 
   .next:hover .next__go,
   .next:has(.next__link:focus-visible) .next__go {
-    background: var(--color-nav-active);
-    color: var(--color-black);
+    background: var(--color-black);
+    color: var(--color-white);
   }
 
   .next:hover .next__go :global(svg),
