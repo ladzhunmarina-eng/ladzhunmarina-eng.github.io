@@ -518,6 +518,7 @@
   --case-rating-text: var(--case-accent);
   --case-friction: var(--color-black);
   --case-dark: var(--color-ink); /* the dark result cards */
+  --case-result-bg: var(--case-dark); /* the UMUX-Lite, Responses and Pain points cards */
   --case-dark-fg: var(--case-bg);
   --case-dark-chip: rgb(255 255 255 / 0.15);
   --case-pain: var(--color-black);
@@ -581,6 +582,7 @@
   --case-rating-text: var(--olx-rating-text);
   --case-friction: var(--olx-friction);
   --case-dark: var(--olx-teal);
+  --case-result-bg: var(--olx-ink); /* the deep teal of the cards in the design (#002f34) */
   --case-dark-fg: var(--olx-cyan);
   --case-pain: var(--olx-pain);
   /* Inside an OLX case, the shared "ink" and tint are OLX's own. */
