@@ -81,22 +81,22 @@ export const ermaCase = {
 
   research: {
     eyebrow: 'Research',
-    title: 'Foremen at the start, the client at every round.',
-    lead: '[N] sessions with general foremen to see how a callout really runs. After that, no access to users, so every flow was validated with the client’s team.',
-    phases: ['Discover', 'Define', 'Design', 'Validate'],
-    bars: [
+    title: '[How I got to the problem.]',
+    lead: '[One line: who you talked to and what you looked at.]',
+    columns: [
       {
-        label: 'Sessions with general foremen',
-        from: 0,
-        to: 25,
-        notes: ['[Confirmations lived in the crew lead’s head]', '[Nobody could answer “are we staffed?” from one place]'],
+        title: 'Sources',
+        items: ['[N interviews with general foremen]', '[Calls with the client’s ops team]', '[Existing rosters, timesheets, invoices]'],
       },
-      { label: 'Mapping callout → invoice', from: 15, to: 50 },
-      { label: 'Flows: dispatch, rosters, timesheets', from: 40, to: 80 },
-      { label: 'Validation with the client, [N] rounds', from: 55, to: 100 },
+      {
+        title: 'What we saw',
+        items: ['[Confirmations lived in the crew lead’s head]', '[Nobody could answer “are we staffed?” from one place]'],
+      },
+      {
+        title: 'What it changed',
+        items: ['[Insight → decision 01]', '[Insight → decision 02]'],
+      },
     ],
-    // Where the research changed the design: listed at the start of Decisions
-    insights: ['[Insight → decision 01]', '[Insight → decision 02]'],
   },
 
   roles: {

@@ -1,160 +1,107 @@
 ---
-interface Bar {
-  label: string;
-  /** Where the bar starts and ends, as a percentage of the chart width */
-  from: number;
-  to: number;
-  /** Short notes under the bar, each with an accent marker */
-  notes?: readonly string[];
-}
-
 interface Props {
   phases: readonly string[];
-  bars: readonly Bar[];
-  label: string;
+  /** start and length are in pixels on the design's 960px-wide chart; they become percentages here */
+  bars: readonly { label: string; start: number; length: number }[];
 }
 
-const { phases, bars, label } = Astro.props;
-
-// The phases a bar touches, for the label above it on a phone and for screen readers
-const span = (bar: Bar) => {
-  const width = 100 / phases.length;
-  const first = phases[Math.min(phases.length - 1, Math.floor(bar.from / width))];
-  const last = phases[Math.max(0, Math.ceil(bar.to / width) - 1)];
-  return first === last ? first : `${first} to ${last}`;
-};
+const { phases, bars } = Astro.props;
 ---
 
 <div class="chart">
-  <ol class="chart__rows" aria-label={label}>
-    {bars.map((bar) => (
-      <li class="row" style={`--from: ${bar.from}%; --to: ${bar.to}%`}>
-        <p class="row__range">{span(bar)}</p>
-        <p class="row__bar">{bar.label}</p>
-        {bar.notes && (
-          <ul class="row__notes">
-            {bar.notes.map((note) => <li>{note}</li>)}
-          </ul>
-        )}
-      </li>
-    ))}
-  </ol>
-  <ul class="chart__axis" aria-hidden="true" style={`--n: ${phases.length}`}>
-    {phases.map((phase) => <li>{phase}</li>)}
+  <div class="chart__plot">
+    <span class="chart__grid" aria-hidden="true"></span>
+    <ol class="chart__bars">
+      {bars.map((bar) => (
+        <li class="bar" style={`--start: ${bar.start}; --length: ${bar.length}`}>{bar.label}</li>
+      ))}
+    </ol>
+  </div>
+
+  <ul class="chart__phases" aria-label="Phases">
+    {phases.map((phase) => <li class="phase">{phase}</li>)}
   </ul>
 </div>
 
 <style>
+  /* A Gantt-style chart: each step starts where the last one's work led to it, over six phases. */
   .chart {
-    padding: var(--case-card-pad);
+    display: flex;
+    flex-direction: column;
+    padding: var(--case-chart-pad);
     border: 1px solid var(--case-line);
     border-radius: var(--radius-card);
     background: var(--color-white);
   }
 
-  /* four equal columns, drawn as thin vertical lines behind the bars */
-  .chart__rows {
+  .chart__plot {
+    position: relative;
+  }
+
+  /* Five lines, between the six equal phase columns */
+  .chart__grid {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(to right, var(--case-grid) 1px, transparent 1px);
+    background-size: calc(100% / 6) 100%;
+    background-position: left top;
+    /* the first line would sit on the left edge: pull the pattern off it */
+    clip-path: inset(0 0 0 calc(100% / 6 - 1px));
+  }
+
+  .chart__bars {
+    position: relative;
     display: flex;
     flex-direction: column;
-    gap: var(--space-16);
-    padding-block: var(--space-8);
-    border-right: 1px solid var(--case-line);
-    background: linear-gradient(to right, var(--case-line) 1px, transparent 1px) 0 0 / 25% 100%;
+    gap: calc(var(--case-bar-pitch) - var(--case-bar-pill-h));
   }
 
-  .row {
-    margin-left: var(--from);
-    width: calc(var(--to) - var(--from));
-  }
-
-  /* said to screen readers on a wide chart; a visible label on a phone */
-  .row__range {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
-  .row__bar {
-    display: flex;
-    align-items: center;
-    min-height: var(--space-42);
-    padding: var(--space-8) var(--space-16);
-    border-radius: var(--radius-pill);
-    background: var(--erma-pill);
+  .bar {
+    box-sizing: border-box;
+    width: calc(var(--length) * 100% / 960);
+    min-height: var(--case-bar-pill-h);
+    margin-left: calc(var(--start) * 100% / 960);
+    padding: var(--space-8) var(--space-10);
+    border-radius: calc(var(--case-bar-pill-h) / 2);
+    background: var(--case-process-bar);
     font-size: var(--fs-14);
+    font-weight: var(--weight-medium);
     line-height: var(--lh-snug);
+    text-align: center;
     color: var(--color-ink);
   }
 
-  .row__notes {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-8);
-    width: max-content;
-    max-width: min(320px, 100%);
-    margin-top: var(--space-12);
-    padding-inline: var(--space-8);
-  }
-
-  .row__notes li {
-    position: relative;
-    padding-left: var(--space-16);
-    font-size: var(--fs-12);
-    line-height: var(--lh-snug);
-    color: var(--color-muted);
-  }
-
-  .row__notes li::before {
-    content: '';
-    position: absolute;
-    top: 0.4em;
-    left: 0;
-    width: var(--space-8);
-    height: var(--space-8);
-    border-radius: 50%;
-    background: var(--erma-orange);
-  }
-
-  .chart__axis {
+  .chart__phases {
     display: grid;
-    grid-template-columns: repeat(var(--n), minmax(0, 1fr));
-    margin-top: var(--space-12);
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    margin-top: var(--space-16);
+    padding-top: var(--space-12);
+    border-top: 1px solid var(--case-grid);
+  }
+
+  .phase {
     font-size: var(--fs-14);
     line-height: var(--lh-snug);
     text-align: center;
-    color: var(--color-muted);
+    color: var(--case-accent);
   }
 
-  /* a phone: a plain list, every step full width, the phases as a small label above it */
-  @media (max-width: 639px) {
-    .chart__rows {
-      gap: var(--space-24);
-      padding-block: 0;
-      border-right: 0;
-      background: none;
-    }
-
-    .row {
-      margin-left: 0;
-      width: 100%;
-    }
-
-    .row__range {
-      position: static;
-      width: auto;
-      height: auto;
-      margin-bottom: var(--space-8);
-      clip-path: none;
-      font-size: var(--fs-12);
-      line-height: var(--lh-snug);
-      color: var(--color-muted);
-    }
-
-    .chart__axis {
+  /* Narrow screens: the bars stack at full width and the phases wrap underneath. */
+  @media (max-width: 700px) {
+    .chart__grid {
       display: none;
+    }
+
+    .bar {
+      width: auto;
+      margin-left: 0;
+    }
+
+    .chart__phases {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-8) var(--space-16);
+      justify-content: flex-start;
     }
   }
 </style>

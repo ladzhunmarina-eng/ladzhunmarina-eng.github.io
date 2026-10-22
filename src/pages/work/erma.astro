@@ -8,7 +8,6 @@ import ProblemTimeline from '../../components/case/ProblemTimeline.astro';
 import NoteCards from '../../components/case/NoteCards.astro';
 import CasePhoto from '../../components/case/CasePhoto.astro';
 import QuoteCard from '../../components/case/QuoteCard.astro';
-import ProcessChart from '../../components/case/ProcessChart.astro';
 import ColumnLists from '../../components/case/ColumnLists.astro';
 import RoleGroups from '../../components/case/RoleGroups.astro';
 import StageCompare from '../../components/case/StageCompare.astro';
@@ -56,7 +55,7 @@ const logo = { left: 4.37, top: 2.64, width: 11.9, height: 4.58 };
         </Section>
 
         <Section id="research" eyebrow={research.eyebrow} title={research.title} lead={research.lead}>
-          <ProcessChart phases={research.phases} bars={research.bars} label="The research and design process, by phase" />
+          <ColumnLists columns={research.columns} />
         </Section>
 
         <Section id="roles" eyebrow={roles.eyebrow} title={roles.title} lead={roles.lead}>
@@ -68,10 +67,6 @@ const logo = { left: 4.37, top: 2.64, width: 11.9, height: 4.58 };
         </Section>
 
         <Section id="decisions" eyebrow={decisions.eyebrow} title={decisions.title} lead={decisions.lead}>
-          <ul class="insights" aria-label="What the research changed">
-            {research.insights.map((item) => <li>{item}</li>)}
-          </ul>
-
           <div class="decisions">
             <DecisionBlock
               index={decisions.roster.index}
@@ -186,32 +181,6 @@ const logo = { left: 4.37, top: 2.64, width: 11.9, height: 4.58 };
     display: flex;
     flex-direction: column;
     gap: var(--space-92);
-  }
-
-  /* what the research changed, ahead of the decisions it led to */
-  .insights {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-8);
-  }
-
-  .insights li {
-    position: relative;
-    padding-left: var(--space-16);
-    font-size: var(--fs-16);
-    line-height: var(--lh-body);
-    color: var(--color-ink);
-  }
-
-  .insights li::before {
-    content: '';
-    position: absolute;
-    top: 0.6em;
-    left: 0;
-    width: var(--space-8);
-    height: var(--space-8);
-    border-radius: 50%;
-    background: var(--erma-orange);
   }
 
   @media (max-width: 1023px) {
