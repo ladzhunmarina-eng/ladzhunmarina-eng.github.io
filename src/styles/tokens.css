@@ -522,6 +522,8 @@
   --case-dark-chip: rgb(255 255 255 / 0.15);
   --case-pain: var(--color-black);
   --case-divider: var(--case-line); /* the lines between the four facts in the hero card */
+  --case-nav-current-bg: var(--color-icon-bg); /* the pill of the current section in the side nav */
+  --case-nav-dot: currentColor; /* and its dot */
   --case-pill-bg: var(--color-icon-bg); /* the platform pills under "Back to projects" */
   --case-pill-text: var(--color-ink-button);
 }
@@ -599,6 +601,8 @@
   --case-on-bg: var(--erma-ink);
   --case-chip-text: var(--erma-ink);
   --case-glass: var(--erma-peach); /* the At a glance card and its tab */
+  --case-nav-current-bg: var(--erma-peach);
+  --case-nav-dot: var(--erma-orange);
   --case-pill-bg: var(--erma-pill); /* Web / Mobile / Tablet */
   --case-pill-text: var(--erma-pill-text);
   --case-label: var(--erma-muted);

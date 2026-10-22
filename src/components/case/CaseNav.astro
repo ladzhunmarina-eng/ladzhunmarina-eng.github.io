@@ -60,7 +60,7 @@ const { items } = Astro.props;
   /* The current section: a soft pill with a dot in front; the other links start where the dot does. */
   .case-nav__link[aria-current],
   .case-nav__link[aria-current]:hover {
-    background: var(--color-icon-bg);
+    background: var(--case-nav-current-bg);
     color: var(--color-ink);
   }
 
@@ -71,7 +71,7 @@ const { items } = Astro.props;
     height: var(--case-nav-dot);
     margin-right: var(--case-nav-dot-gap);
     border-radius: 50%;
-    background: currentColor;
+    background: var(--case-nav-dot);
   }
 
   @media (max-width: 1023px) {
@@ -91,7 +91,7 @@ const { items } = Astro.props;
     }
 
     .case-nav__link[aria-current] {
-      background: var(--color-icon-bg);
+      background: var(--case-nav-current-bg);
     }
 
     .case-nav__title {
