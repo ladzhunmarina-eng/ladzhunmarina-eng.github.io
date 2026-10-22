@@ -7,7 +7,7 @@ interface Card {
 
 interface Props {
   cards: readonly Card[];
-  solution: {
+  solution?: {
     title: string;
     /** The sentence up to the colon */
     intro: string;
@@ -55,6 +55,7 @@ const { cards, solution } = Astro.props;
     ))}
   </ul>
 
+  {solution && (
   <div class="solution">
     <span class="icon" aria-hidden="true">
       <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
@@ -74,6 +75,7 @@ const { cards, solution } = Astro.props;
       </p>
     </div>
   </div>
+  )}
 </div>
 
 <style>
