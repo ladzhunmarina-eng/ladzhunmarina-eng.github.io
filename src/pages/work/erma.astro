@@ -9,7 +9,7 @@ import NoteCards from '../../components/case/NoteCards.astro';
 import CasePhoto from '../../components/case/CasePhoto.astro';
 import QuoteCard from '../../components/case/QuoteCard.astro';
 import ColumnLists from '../../components/case/ColumnLists.astro';
-import StageCompare from '../../components/case/StageCompare.astro';
+import DecisionMap from '../../components/case/DecisionMap.astro';
 import DecisionBlock from '../../components/case/DecisionBlock.astro';
 import ShotFrame from '../../components/case/ShotFrame.astro';
 import MissingScreen from '../../components/case/MissingScreen.astro';
@@ -23,7 +23,7 @@ import vAttachment from '../../assets/images/erma-v-attachment.png';
 import NextCase from '../../components/case/NextCase.astro';
 import { ermaCase as study } from '../../data/cases/erma';
 
-const { overview, problem, process, workflow, decisions, outcome, retrospective } = study;
+const { overview, problem, process, decisions, outcome, retrospective } = study;
 
 // The product logo in the corner of the roster screens, blurred (its bounds plus a margin, as a share of the picture)
 const logo = { left: 4.37, top: 2.64, width: 11.9, height: 4.58 };
@@ -56,13 +56,12 @@ const logo = { left: 4.37, top: 2.64, width: 11.9, height: 4.58 };
           <ProcessChart phases={process.phases} bars={process.bars} />
         </Section>
 
-        <Section id="workflow" eyebrow={workflow.eyebrow} title={workflow.title} lead={workflow.lead}>
-          <StageCompare before={workflow.before} steps={workflow.steps} label="The six stages of a job, with the roles that own them" />
-        </Section>
-
         <Section id="decisions" eyebrow={decisions.eyebrow} title={decisions.title} lead={decisions.lead}>
+          <DecisionMap stages={decisions.map.stages} bars={decisions.map.bars} legend={decisions.map.legend} />
+
           <div class="decisions">
             <DecisionBlock
+              id="decision-roster"
               index={decisions.roster.index}
               title={decisions.roster.title}
               lead={decisions.roster.lead}
@@ -78,6 +77,7 @@ const logo = { left: 4.37, top: 2.64, width: 11.9, height: 4.58 };
             </DecisionBlock>
 
             <DecisionBlock
+              id="decision-dashboard"
               index={decisions.dashboard.index}
               title={decisions.dashboard.title}
               pain={decisions.dashboard.pain}
@@ -89,11 +89,13 @@ const logo = { left: 4.37, top: 2.64, width: 11.9, height: 4.58 };
             </DecisionBlock>
 
             <DecisionBlock
+              id="decision-permissions"
               index={decisions.permissions.index}
               title={decisions.permissions.title}
               lead={decisions.permissions.lead}
               pain={decisions.permissions.pain}
               decision={decisions.permissions.decision}
+              decisionList={decisions.permissions.groups}
               why={decisions.permissions.why}
               tradeoff={decisions.tradeoff}
             >
@@ -101,6 +103,7 @@ const logo = { left: 4.37, top: 2.64, width: 11.9, height: 4.58 };
             </DecisionBlock>
 
             <DecisionBlock
+              id="decision-timesheets"
               index={decisions.timesheets.index}
               title={decisions.timesheets.title}
               lead={decisions.timesheets.lead}

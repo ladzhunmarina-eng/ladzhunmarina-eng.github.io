@@ -86,6 +86,7 @@
   --erma-tint: #ececec; /* chips, tracks, placeholders */
   --erma-line: rgb(13 13 13 / 0.12);
   --erma-dash: #b8b8b8; /* the dotted outlines of the flow diagrams, and the problem timeline's line and dots */
+  --erma-orange-tint: #ffdccb; /* a light tint of the accent: the decisions map */
   --erma-timeline-dot: 10px;
   --erma-timeline-line: 2px;
   --erma-timeline-bar: 20px; /* the short bar before a pain note */

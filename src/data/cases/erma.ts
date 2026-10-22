@@ -35,7 +35,6 @@ export const ermaCase = {
     { id: 'overview', label: 'Overview' },
     { id: 'problem', label: 'Problem' },
     { id: 'process', label: 'Process' },
-    { id: 'workflow', label: 'Workflow' },
     { id: 'decisions', label: 'Decisions' },
     { id: 'outcome', label: 'Outcome' },
     { id: 'retrospective', label: 'Retrospective' },
@@ -91,25 +90,20 @@ export const ermaCase = {
     ],
   },
 
-  workflow: {
-    eyebrow: 'Workflow',
-    title: 'From event to invoice in six stages.',
-    lead: 'The workflow that replaced the phone rounds. Every job moves through the same stages, and every role sees where it is.',
-    before: ['Phone rounds', 'Rosters by hand', 'Paper timesheets', 'Invoice by hand'],
-    steps: [
-      { label: 'Event created', role: 'Ops and dispatch' },
-      { label: 'Roster created', role: 'Crew lead, ops' },
-      { label: 'Assignments', role: 'Crew lead' },
-      { label: 'Work on site', role: 'Field' },
-      { label: 'Timesheets', role: 'Field, finance' },
-      { label: 'Invoice', role: 'Finance, client' },
-    ],
-  },
-
   decisions: {
     eyebrow: 'Decisions',
     title: 'Key design decisions.',
     lead: '[Four] decisions that carried the business problem into the interface. Each one names the pain, the choice, the reason, and the trade-off.',
+    map: {
+      stages: ['Event', 'Roster', 'Assign', 'On site', 'Timesheets', 'Invoice'],
+      bars: [
+        { index: '01', label: 'Roster assembly', target: 'decision-roster', from: 2, to: 3, row: 1, kind: 'stage' },
+        { index: '04', label: 'Timesheet sign-off', target: 'decision-timesheets', from: 5, to: 6, row: 1, kind: 'stage' },
+        { index: '02', label: 'One page per event', target: 'decision-dashboard', from: 1, to: 6, row: 2, kind: 'event' },
+        { index: '03', label: 'One permission model', target: 'decision-permissions', from: 1, to: 6, row: 3, kind: 'event' },
+      ],
+      legend: { stage: 'Fixes a specific stage', event: 'Holds the whole event together' },
+    },
     tradeoff: '[What you gave up, simplified or deferred, and why it was acceptable.]',
     roster: {
       index: '01',
@@ -150,6 +144,12 @@ export const ermaCase = {
       lead: '[How 15 roles across several companies stayed one product instead of fifteen.]',
       pain: '[Who could see and do what before, and where it broke.]',
       decision: '[Role groups, permission matrix, a workspace per company: what you actually designed.]',
+      groups: [
+        '[Ops and dispatch: Event summary, all rosters and their states, fleet availability.]',
+        '[Field: Own roster and assignment, event details, own timesheets.]',
+        '[Finance and admin: Timesheets across rosters, invoices, workspace settings.]',
+        '[Client: Event status and crews assigned to their request.]',
+      ],
       missing: 'Missing screen · Users / roles and permissions',
       why: '[The reasoning behind the structure.]',
     },
