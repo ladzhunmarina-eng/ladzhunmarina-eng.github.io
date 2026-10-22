@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import CaseBack from '../../components/case/CaseBack.astro';
-import ErmaHero from '../../components/case/ErmaHero.astro';
+import CaseHero from '../../components/case/CaseHero.astro';
 import CaseNav from '../../components/case/CaseNav.astro';
 import Section from '../../components/case/Section.astro';
 import FlowSteps from '../../components/case/FlowSteps.astro';
@@ -36,17 +36,21 @@ const { problem, roles, workflow, decisions, visuals, brand } = study;
 <Layout title={study.seo.title} description={study.seo.description} current="work">
   <article class="case" data-case-palette="erma">
     <div class="case__container case__top">
-      <CaseBack />
-      <ErmaHero
-        lineOne="Post-Storm"
-        accent="Power Restoration"
-        lineTwoEnd="Platform"
-        tags={study.hero.focus}
-        image={dashboardHero}
-        imageAlt="The Storm360 event dashboard: a sidebar, an event overview bar, a timeline, a roster summary gauge and operational numbers."
-        about={study.hero.lead}
-        meta={study.hero.meta}
-      />
+      <div class="case__intro">
+        <CaseBack />
+        <CaseHero hero={study.hero} />
+      </div>
+      <figure class="cover">
+        <Image
+          class="cover__image"
+          src={dashboardHero}
+          alt="The Storm360 event dashboard: a sidebar, an event overview bar, a timeline, a roster summary gauge and operational numbers."
+          widths={[720, 1080, 1440]}
+          sizes="(max-width: 1023px) 100vw, 1272px"
+          quality={85}
+          loading="eager"
+        />
+      </figure>
     </div>
 
     <div class="case__container case__main">
@@ -137,6 +141,30 @@ const { problem, roles, workflow, decisions, visuals, brand } = study;
     gap: var(--space-56);
     /* The back link sits in the space above the hero; the whole block is lowered by --case-top-shift. */
     padding-top: calc(var(--header-h) + var(--space-8) + var(--case-top-shift));
+  }
+
+  .case__intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  .cover {
+    margin: 0;
+    aspect-ratio: var(--case-cover-ratio);
+    overflow: hidden;
+    border: 1px solid var(--case-line);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+  }
+
+  /* The top of the dashboard: the sidebar, the overview and the first blocks */
+  .cover :global(.cover__image) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
   }
 
   .case__main {
