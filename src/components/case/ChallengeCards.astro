@@ -1,0 +1,177 @@
+---
+interface Card {
+  icon: 'network' | 'users' | 'route';
+  title: string;
+  text: string;
+}
+
+interface Props {
+  cards: readonly Card[];
+  solution: {
+    title: string;
+    /** The sentence up to the colon */
+    intro: string;
+    /** The phrases after it, each linking to the decision it names */
+    links: readonly { text: string; target: string }[];
+  };
+}
+
+const { cards, solution } = Astro.props;
+---
+
+<div class="challenge">
+  <ul class="cards">
+    {cards.map((card) => (
+      <li class="card">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            {card.icon === 'network' && (
+              <>
+                <rect x="9" y="3" width="6" height="5" rx="1" />
+                <rect x="3" y="16" width="6" height="5" rx="1" />
+                <rect x="15" y="16" width="6" height="5" rx="1" />
+                <path d="M12 8v4M6 16v-4h12v4" />
+              </>
+            )}
+            {card.icon === 'users' && (
+              <>
+                <circle cx="9" cy="8" r="3.5" />
+                <path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6" />
+                <path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18.5 14.4c1.9.8 3 2.7 3 5.6" />
+              </>
+            )}
+            {card.icon === 'route' && (
+              <>
+                <circle cx="6" cy="18" r="2.5" />
+                <circle cx="18" cy="6" r="2.5" />
+                <path d="M8.5 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.5" />
+              </>
+            )}
+          </svg>
+        </span>
+        <h3 class="card__title">{card.title}</h3>
+        <p class="card__text">{card.text}</p>
+      </li>
+    ))}
+  </ul>
+
+  <div class="solution">
+    <span class="icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9" />
+        <path d="m8 12.5 2.8 2.8L16 9.5" />
+      </svg>
+    </span>
+    <div class="solution__copy">
+      <h3 class="card__title">{solution.title}</h3>
+      <p class="card__text">
+        {solution.intro}{' '}
+        {solution.links.map((link, index) => (
+          <>
+            {index === solution.links.length - 1 && 'and '}<a class="solution__link" href={`#${link.target}`}>{link.text}</a>{index < solution.links.length - 1 ? ', ' : '.'}
+          </>
+        ))}
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .challenge {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-16);
+  }
+
+  .card,
+  .solution {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    padding: var(--case-card-pad);
+    border: 1px solid var(--case-line);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+  }
+
+  /* the answer: the solid accent card, as the Solution card was in the draft */
+  .solution {
+    border-color: transparent;
+    background: var(--erma-orange);
+  }
+
+  .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: var(--space-44);
+    height: var(--space-44);
+    border-radius: var(--radius-person);
+    background: var(--erma-orange-tint);
+    color: var(--erma-orange-text);
+  }
+
+  .solution .icon {
+    background: var(--color-white);
+  }
+
+  .card__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-20);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-heading);
+    color: var(--color-ink);
+  }
+
+  .card__text {
+    font-size: var(--fs-16);
+    line-height: var(--lh-body);
+    color: var(--color-ink);
+  }
+
+  .solution__copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    max-width: var(--case-measure);
+  }
+
+  .solution__link {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: currentColor;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: text-decoration-thickness 0.15s ease, color 0.15s ease;
+  }
+
+  .solution__link:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  .solution__link:focus-visible {
+    outline: 2px solid var(--erma-ink);
+    outline-offset: 2px;
+    border-radius: var(--space-2);
+  }
+
+  @media (max-width: 639px) {
+    .cards {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .solution__link {
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,210 @@
+---
+interface Bar {
+  /** "01" */
+  index: string;
+  label: string;
+  /** The id of the decision it links to */
+  target: string;
+  /** First and last column it spans, 1-based */
+  from: number;
+  to: number;
+  row: number;
+  /** "stage": fixes one stage (accent tint); "event": holds the whole event together (neutral) */
+  kind: 'stage' | 'event';
+}
+
+interface Props {
+  stages: readonly string[];
+  bars: readonly Bar[];
+  legend: { stage: string; event: string };
+}
+
+const { stages, bars, legend } = Astro.props;
+const stagesOf = (bar: Bar) => (bar.from === bar.to ? stages[bar.from - 1] : `${stages[bar.from - 1]} to ${stages[bar.to - 1]}`);
+---
+
+<div class="map" style={`--n: ${stages.length}`}>
+  <ul class="map__stages" aria-hidden="true">
+    {stages.map((stage) => <li>{stage}</li>)}
+  </ul>
+  <ul class="map__line" aria-hidden="true">
+    {stages.map(() => <li></li>)}
+  </ul>
+
+  <nav aria-label="The decisions, by stage of the job">
+    <ul class="map__bars">
+      {bars.map((bar) => (
+        <li class="bar" style={`--from: ${bar.from}; --to: ${bar.to + 1}; --row: ${bar.row}`}>
+          <a class:list={['bar__link', `bar__link--${bar.kind}`]} href={`#${bar.target}`}>
+            <span class="bar__index">{bar.index}</span> {bar.label}
+            <span class="bar__stages"> (stages: {stagesOf(bar)})</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+  <ul class="map__legend">
+    <li><span class="swatch swatch--stage"></span>{legend.stage}</li>
+    <li><span class="swatch swatch--event"></span>{legend.event}</li>
+  </ul>
+</div>
+
+<style>
+  .map {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .map__stages,
+  .map__line {
+    display: grid;
+    grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+    text-align: center;
+  }
+
+  .map__stages {
+    font-size: var(--fs-12);
+    line-height: var(--lh-snug);
+    color: var(--color-muted);
+  }
+
+  /* a thin line through the middle of the dots, one dot per column */
+  .map__line {
+    position: relative;
+    margin-top: calc(-1 * var(--space-8));
+  }
+
+  .map__line::before {
+    content: '';
+    position: absolute;
+    top: calc(var(--erma-timeline-dot) / 2);
+    left: calc(50% / var(--n));
+    right: calc(50% / var(--n));
+    height: 1px;
+    background: var(--erma-dash);
+  }
+
+  .map__line li {
+    position: relative;
+    justify-self: center;
+    width: var(--erma-timeline-dot);
+    height: var(--erma-timeline-dot);
+    border-radius: 50%;
+    background: var(--erma-dash);
+  }
+
+  .map__bars {
+    display: grid;
+    grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+    gap: var(--space-8) 0;
+  }
+
+  .bar {
+    grid-column: var(--from) / var(--to);
+    grid-row: var(--row);
+    min-width: 0;
+    padding-inline: var(--space-4);
+  }
+
+  .bar__link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    box-sizing: border-box;
+    min-height: var(--space-32);
+    padding: var(--space-4) var(--space-16);
+    border-radius: var(--radius-pill);
+    font-size: var(--fs-14);
+    line-height: var(--lh-snug);
+    color: var(--erma-ink);
+    text-decoration: none;
+    transition: box-shadow 0.15s ease;
+  }
+
+  .bar__link--stage {
+    background: var(--erma-orange-tint);
+  }
+
+  .bar__link--event {
+    background: var(--erma-pill);
+  }
+
+  .bar__link:hover {
+    box-shadow: inset 0 0 0 1px var(--erma-ink);
+  }
+
+  .bar__link:focus-visible {
+    outline: 2px solid var(--erma-ink);
+    outline-offset: 2px;
+  }
+
+  .bar__index {
+    font-weight: var(--weight-bold);
+  }
+
+  /* said to screen readers: which stages the decision covers */
+  .bar__stages {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .map__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8) var(--space-24);
+    font-size: var(--fs-12);
+    line-height: var(--lh-snug);
+    color: var(--color-muted);
+  }
+
+  .map__legend li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .swatch {
+    width: var(--space-16);
+    height: var(--space-12);
+    border-radius: var(--radius-pill);
+  }
+
+  .swatch--stage {
+    background: var(--erma-orange-tint);
+  }
+
+  .swatch--event {
+    background: var(--erma-pill);
+  }
+
+  /* a phone: six columns are too narrow for the labels, so the bars stack and the stage line goes */
+  @media (max-width: 639px) {
+    .map__stages,
+    .map__line {
+      display: none;
+    }
+
+    .map__bars {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .bar {
+      grid-column: 1;
+      grid-row: auto;
+      padding-inline: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bar__link {
+      transition: none;
+    }
+  }
+</style>
