@@ -196,17 +196,21 @@ const pos = (item: { x: number; y: number; w: number }, height: number) =>
     transform: translate(-50%, var(--space-8));
   }
 
-  /* Over the logo (it sits at 66 / 39, 120 x 24 design pixels): a blur with soft edges, so it reads as the logo being out of focus, not as a patch laid on top. */
+  /* Over the logo, which sits at x 66 to 185, y 39 to 63 (design pixels). The blur reaches 20px past it on every side and fades only in the last 8% / 12% of the box, so the whole logo is inside the solid part. */
   .dash__blur {
     position: absolute;
-    top: 2.4%;
-    left: 3.3%;
+    top: 2.44%;
+    left: 3.19%;
     z-index: 2;
-    width: 10.8%;
-    height: 6.2%;
+    width: 11.11%;
+    height: 6.44%;
     background: rgb(250 250 250 / 0.5);
     backdrop-filter: blur(12px);
-    mask-image: radial-gradient(ellipse 52% 55% at 50% 50%, #000 66%, transparent 100%);
+    mask-image:
+      linear-gradient(to right, transparent, #000 8%, #000 92%, transparent),
+      linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+    mask-composite: intersect;
+    -webkit-mask-composite: source-in;
     pointer-events: none;
   }
 
