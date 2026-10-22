@@ -1,0 +1,128 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  title: string;
+  /** Plain paragraphs */
+  paragraphs?: readonly string[];
+  /** Or the pain, the decision and the reason behind it */
+  pain?: string;
+  decision?: string;
+  why?: string;
+  image: ImageMetadata;
+  imageAlt: string;
+  /** The picture comes first (left) instead of the text */
+  reverse?: boolean;
+}
+
+const { title, paragraphs, pain, decision, why, image, imageAlt, reverse = false } = Astro.props;
+const steps = [
+  { label: 'Pain', text: pain },
+  { label: 'Decision', text: decision },
+  { label: 'Why', text: why },
+].filter((step) => step.text);
+---
+
+<article class:list={['decision', { 'decision--reverse': reverse }]}>
+  <div class="decision__text">
+    <h3 class="decision__title">{title}</h3>
+    {paragraphs && paragraphs.map((paragraph) => <p class="decision__paragraph">{paragraph}</p>)}
+    {steps.length > 0 && (
+      <dl class="decision__steps">
+        {steps.map((step) => (
+          <div>
+            <dt>{step.label}</dt>
+            <dd>{step.text}</dd>
+          </div>
+        ))}
+      </dl>
+    )}
+    <slot />
+  </div>
+  <div class="decision__shot">
+    <Image src={image} alt={imageAlt} widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
+  </div>
+</article>
+
+<style>
+  .decision {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--space-32);
+    align-items: start;
+  }
+
+  .decision--reverse {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  }
+
+  .decision--reverse .decision__text {
+    order: 2;
+  }
+
+  .decision__text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .decision__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-case-h3);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-heading);
+    color: var(--color-ink);
+  }
+
+  .decision__paragraph {
+    font-size: var(--fs-16);
+    line-height: var(--lh-body);
+    color: var(--color-ink);
+  }
+
+  .decision__steps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .decision__steps dt {
+    margin-bottom: var(--space-4);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-snug);
+    color: var(--case-accent);
+  }
+
+  .decision__steps dd {
+    margin: 0;
+    font-size: var(--fs-16);
+    line-height: var(--lh-body);
+    color: var(--color-ink);
+  }
+
+  .decision__shot {
+    overflow: hidden;
+    border: 1px solid var(--case-line);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+  }
+
+  .decision__shot :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 1023px) {
+    .decision,
+    .decision--reverse {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .decision--reverse .decision__text {
+      order: 0;
+    }
+  }
+</style>

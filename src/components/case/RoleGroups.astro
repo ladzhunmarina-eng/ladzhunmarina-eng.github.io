@@ -1,0 +1,107 @@
+---
+interface Group {
+  name: string;
+  process: string;
+  sees: string;
+  roles: readonly string[];
+}
+
+interface Props {
+  groups: readonly Group[];
+}
+
+const { groups } = Astro.props;
+---
+
+<ul class="groups">
+  {groups.map((group) => (
+    <li class="group">
+      <h3 class="group__name">{group.name}</h3>
+      <dl class="group__facts">
+        <div>
+          <dt>In the process</dt>
+          <dd>{group.process}</dd>
+        </div>
+        <div>
+          <dt>Sees</dt>
+          <dd>{group.sees}</dd>
+        </div>
+      </dl>
+      <ul class="group__roles" aria-label={`Roles in ${group.name}`}>
+        {group.roles.map((role) => <li class="group__role">{role}</li>)}
+      </ul>
+    </li>
+  ))}
+</ul>
+
+<style>
+  /* four groups: two by two, one column on a phone */
+  .groups {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-16);
+  }
+
+  @media (max-width: 640px) {
+    .groups {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    padding: var(--case-card-pad);
+    border: 1px solid var(--case-line);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+  }
+
+  .group__name {
+    font-family: var(--font-display);
+    font-size: var(--fs-20);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-heading);
+    color: var(--color-ink);
+  }
+
+  .group__facts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+  }
+
+  .group__facts dt {
+    font-size: var(--fs-12);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    line-height: var(--lh-snug);
+    color: var(--case-accent);
+  }
+
+  .group__facts dd {
+    margin: 0;
+    font-size: var(--fs-14);
+    line-height: var(--lh-body);
+    color: var(--color-ink);
+  }
+
+  .group__roles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+    margin-top: auto;
+  }
+
+  .group__role {
+    padding: var(--space-4) var(--space-12);
+    border-radius: var(--radius-pill);
+    background: var(--color-icon-bg);
+    font-size: var(--fs-12);
+    line-height: var(--lh-snug);
+    color: var(--color-ink);
+  }
+</style>

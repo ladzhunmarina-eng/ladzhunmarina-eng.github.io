@@ -1,0 +1,61 @@
+---
+interface Props {
+  parts: readonly { title: string; text: string }[];
+}
+
+const { parts } = Astro.props;
+---
+
+<ol class="parts">
+  {parts.map((part, index) => (
+    <li class="part">
+      <span class="part__number" aria-hidden="true">{index + 1}</span>
+      <div>
+        <h4 class="part__title">{part.title}</h4>
+        <p class="part__text">{part.text}</p>
+      </div>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .parts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .part {
+    display: flex;
+    gap: var(--space-12);
+  }
+
+  .part__number {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--space-24);
+    height: var(--space-24);
+    border-radius: 50%;
+    background: var(--erma-orange);
+    font-size: var(--fs-12);
+    font-weight: var(--weight-bold);
+    line-height: 1;
+    color: var(--erma-ink);
+  }
+
+  .part__title {
+    font-size: var(--fs-16);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-snug);
+    color: var(--color-ink);
+  }
+
+  .part__text {
+    margin-top: var(--space-4);
+    font-size: var(--fs-14);
+    line-height: var(--lh-body);
+    color: var(--color-muted);
+  }
+</style>

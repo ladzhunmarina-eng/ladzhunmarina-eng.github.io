@@ -1,0 +1,61 @@
+---
+interface Card {
+  title: string;
+  text: string;
+  /** The card that carries the answer: drawn in the highlight colour */
+  highlight?: boolean;
+}
+
+interface Props {
+  cards: readonly Card[];
+}
+
+const { cards } = Astro.props;
+---
+
+<ul class="notes">
+  {cards.map((card) => (
+    <li class:list={['note', { 'note--hot': card.highlight }]}>
+      <h3 class="note__title">{card.title}</h3>
+      <p class="note__text">{card.text}</p>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .notes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--case-card-min-wide), 1fr));
+    gap: var(--space-16);
+  }
+
+  .note {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    padding: var(--case-card-pad);
+    border: 1px solid var(--case-line);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+  }
+
+  .note--hot {
+    border-color: transparent;
+    background: var(--erma-orange);
+  }
+
+  .note__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-24);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-heading);
+    color: var(--color-ink);
+  }
+
+  .note__text {
+    font-size: var(--fs-16);
+    line-height: var(--lh-body);
+    color: var(--color-ink);
+  }
+</style>

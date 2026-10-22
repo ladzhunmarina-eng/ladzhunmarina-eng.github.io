@@ -1,0 +1,212 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import CaseBack from '../../components/case/CaseBack.astro';
+import CaseHero from '../../components/case/CaseHero.astro';
+import CaseNav from '../../components/case/CaseNav.astro';
+import Section from '../../components/case/Section.astro';
+import FlowSteps from '../../components/case/FlowSteps.astro';
+import NoteCards from '../../components/case/NoteCards.astro';
+import RoleGroups from '../../components/case/RoleGroups.astro';
+import PersonaProfile from '../../components/case/PersonaProfile.astro';
+import DecisionBlock from '../../components/case/DecisionBlock.astro';
+import PartsList from '../../components/case/PartsList.astro';
+import VisualsMosaic from '../../components/case/VisualsMosaic.astro';
+import dashboardHero from '../../assets/images/erma-dashboard-hero.png';
+import markPhoto from '../../assets/images/erma-mark.png';
+import rostersList from '../../assets/images/erma-rosters-list.png';
+import rosterResources from '../../assets/images/erma-roster-resources.png';
+import eventDashboard from '../../assets/images/erma-event-dashboard.png';
+import vRosters from '../../assets/images/erma-v-rosters.png';
+import vBattery from '../../assets/images/erma-v-battery.png';
+import vEmpty from '../../assets/images/erma-v-empty.png';
+import vUpload from '../../assets/images/erma-v-upload.png';
+import vUploading from '../../assets/images/erma-v-uploading.png';
+import vAttachment from '../../assets/images/erma-v-attachment.png';
+import vCreateEvent from '../../assets/images/erma-v-create-event.png';
+import vSummary from '../../assets/images/erma-v-summary.png';
+import vOwed from '../../assets/images/erma-v-owed.png';
+import fontsColors from '../../assets/images/erma-fonts-colors.png';
+import { ermaCase as study } from '../../data/cases/erma';
+
+const { problem, roles, workflow, decisions, visuals, brand } = study;
+---
+
+<Layout title={study.seo.title} description={study.seo.description} current="work">
+  <article class="case" data-case-palette="erma">
+    <div class="case__container case__top">
+      <div class="case__intro">
+        <CaseBack />
+        <CaseHero hero={study.hero} />
+      </div>
+      <figure class="cover">
+        <Image
+          class="cover__image"
+          src={dashboardHero}
+          alt="The Storm360 event dashboard: a sidebar, an event overview bar, a timeline, a roster summary gauge and operational numbers."
+          widths={[720, 1080, 1440]}
+          sizes="(max-width: 1023px) 100vw, 1272px"
+          quality={85}
+          loading="eager"
+        />
+      </figure>
+    </div>
+
+    <div class="case__container case__main">
+      <CaseNav items={study.nav} />
+
+      <div class="case__sections">
+        <Section id="problem" eyebrow={problem.eyebrow} title={problem.title} lead={problem.lead}>
+          <FlowSteps steps={problem.flow} label="How a storm callout worked before the platform" />
+          <NoteCards cards={problem.cards} />
+        </Section>
+
+        <Section id="roles" eyebrow={roles.eyebrow} title={roles.title} lead={roles.lead}>
+          <RoleGroups groups={roles.groups} />
+          <PersonaProfile persona={roles.persona} photo={markPhoto} />
+        </Section>
+
+        <Section id="workflow" eyebrow={workflow.eyebrow} title={workflow.title} lead={workflow.lead}>
+          <FlowSteps steps={workflow.steps} label="The six states of a job, with the roles that own them" />
+        </Section>
+
+        <Section id="decisions" eyebrow={decisions.eyebrow} title={decisions.title} lead={decisions.lead}>
+          <div class="decisions">
+            <DecisionBlock title={decisions.rosters.title} paragraphs={decisions.rosters.paragraphs} image={rostersList} imageAlt={decisions.rosters.imageAlt} />
+            <DecisionBlock
+              title={decisions.assembly.title}
+              pain={decisions.assembly.pain}
+              decision={decisions.assembly.decision}
+              why={decisions.assembly.why}
+              image={rosterResources}
+              imageAlt={decisions.assembly.imageAlt}
+            />
+            <DecisionBlock
+              reverse
+              title={decisions.dashboard.title}
+              pain={decisions.dashboard.pain}
+              decision={decisions.dashboard.decision}
+              why={decisions.dashboard.why}
+              image={eventDashboard}
+              imageAlt={decisions.dashboard.imageAlt}
+            >
+              <PartsList parts={decisions.dashboard.parts} />
+            </DecisionBlock>
+          </div>
+        </Section>
+
+        <Section id="visuals" eyebrow={visuals.eyebrow} title={visuals.title}>
+          <VisualsMosaic
+            shots={{
+              rosters: { src: vRosters, alt: visuals.alts.rosters },
+              battery: { src: vBattery, alt: visuals.alts.battery },
+              upload: { src: vUpload, alt: visuals.alts.upload },
+              uploading: { src: vUploading, alt: visuals.alts.uploading },
+              attachment: { src: vAttachment, alt: visuals.alts.attachment },
+              createEvent: { src: vCreateEvent, alt: visuals.alts.createEvent },
+              summary: { src: vSummary, alt: visuals.alts.summary },
+              empty: { src: vEmpty, alt: visuals.alts.empty },
+              owed: { src: vOwed, alt: visuals.alts.owed },
+            }}
+          />
+        </Section>
+
+        <Section id="brand" eyebrow={brand.eyebrow} title={brand.title}>
+          <figure class="brand">
+            <Image src={fontsColors} alt={brand.alt} widths={[720, 1008, 1512]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} />
+          </figure>
+        </Section>
+      </div>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .case {
+    background: var(--case-page);
+  }
+
+  .case__container {
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .case__top {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-56);
+    /* The back link sits in the space above the hero; the whole block is lowered by --case-top-shift. */
+    padding-top: calc(var(--header-h) + var(--space-8) + var(--case-top-shift));
+  }
+
+  .case__intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  .cover {
+    margin: 0;
+    aspect-ratio: var(--case-cover-ratio);
+    overflow: hidden;
+    border: 1px solid var(--case-line);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+  }
+
+  /* The top of the dashboard: the sidebar, the overview and the first blocks */
+  .cover :global(.cover__image) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  .case__main {
+    display: grid;
+    grid-template-columns: var(--case-nav-w) minmax(0, 1fr);
+    gap: var(--case-gap);
+    padding-block: var(--case-section-gap) var(--space-144);
+  }
+
+  .case__sections {
+    display: flex;
+    flex-direction: column;
+    gap: var(--case-section-gap);
+    min-width: 0;
+  }
+
+  .decisions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-92);
+  }
+
+  .brand {
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+  }
+
+  /* The exported picture carries its own "Fonts & Colors" heading at the top; this section already has one, so that strip is cut off. */
+  .brand :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-top: -6.5%;
+  }
+
+  @media (max-width: 1023px) {
+    .case__main {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-32);
+      padding-block: var(--space-56) var(--space-92);
+    }
+
+    .case__sections {
+      gap: var(--space-80);
+    }
+  }
+</style>

@@ -73,6 +73,19 @@
   --olx-rating-text: #338085;
   --olx-friction: #d93333; /* the dot of a critical friction point */
   --olx-pain: #ed4d4d; /* the dot of a pain point on the dark cards */
+  /* ERMA (Storm360) brand colours, from the case in the Figma file */
+  --erma-ink: #0d0d0d; /* text and headings (the design's black, a touch softer) */
+  --erma-orange: #ff5000; /* the accent: markers, dotted pain boxes, the Solution card */
+  --erma-orange-text: #c23d00; /* the same orange, darkened to read as small text on the page */
+  --erma-yellow: #ffb600; /* the highlight, as the cyan is for OLX */
+  --erma-blue: #054fb9;
+  --erma-page: #f9f9f9; /* the page */
+  --erma-tint: #ececec; /* chips, tracks, placeholders */
+  --erma-line: rgb(13 13 13 / 0.12);
+  --erma-dash: #b8b8b8; /* the dotted outlines of the flow diagrams */
+  --erma-muted: #666; /* labels and secondary text */
+  --erma-photo-w: 320px; /* the persona's portrait */
+
   /* The seller-settings prototype (free delivery card), measured from the design */
   --form-card-bg: #fafbfb;
   --form-card-line: #d8dfe0;
@@ -567,7 +580,34 @@
   --color-icon-bg: var(--olx-tint);
 }
 
+[data-case-palette='erma'] {
+  --case-bg: var(--erma-yellow);
+  --case-accent: var(--erma-orange-text);
+  --case-page: var(--erma-page);
+  --case-line: var(--erma-line);
+  --case-track: var(--erma-tint);
+  --case-bar: var(--erma-ink);
+  --case-strip-bg: var(--erma-ink);
+  --case-strip-fg: var(--color-white);
+  --case-strip-value: var(--erma-yellow);
+  --case-on-bg: var(--erma-ink);
+  --case-chip-text: var(--erma-ink);
+  --case-label: var(--erma-muted);
+  --case-hairline: var(--erma-line);
+  --case-dark: var(--erma-ink);
+  --case-dark-fg: var(--erma-yellow);
+  /* Inside this case, the shared "ink" and tint are its own. */
+  --color-ink: var(--erma-ink);
+  --color-muted: var(--erma-muted);
+  --color-icon-bg: var(--erma-tint);
+}
+
 /* The header and footer sit outside the case article, so a branded page reaches them from the root. */
+:root:has([data-case-palette='erma']) {
+  --header-backing: var(--erma-page);
+  --color-footer-accent: var(--erma-yellow);
+}
+
 :root:has([data-case-palette='olx']) {
   --header-backing: var(--olx-page); /* the header's Contact me carries its own backing; it matches the page */
   --color-footer-accent: var(--olx-cyan); /* the footer's "Hi!" and its back-to-top button: OLX cyan instead of the yellow */
