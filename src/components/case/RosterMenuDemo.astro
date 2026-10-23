@@ -3,13 +3,26 @@ import { Image } from 'astro:assets';
 import LogoShield from './LogoShield.astro';
 import base from '../../assets/images/erma-rosters-base.png';
 import menu from '../../assets/images/erma-rosters-menu.png';
+import detail from '../../assets/images/erma-roster-detail.png';
 
 interface Props {
   alt: string;
   menuAlt: string;
+  detailAlt: string;
 }
 
-const { alt, menuAlt } = Astro.props;
+const { alt, menuAlt, detailAlt } = Astro.props;
+
+// The twelve roster cards, as shares of the screen (cards are 264 x 138 at x 277, 568, 859, 1150 and y 353, 518, 683 of 1440 x 1025)
+const names = ['London — James', 'Bristol — Emily', 'Manchester — Oliver', 'Leeds — Sophie', 'Cambridge — Amelia', 'Oxford — Daniel', 'Brighton — Charlotte', 'Liverpool — Thomas', 'Bath — Grace', 'York — William', 'Cardiff — Lucy', 'Edinburgh — Henry'];
+const cards = names.map((name, i) => ({
+  name,
+  left: ((277 + (i % 4) * 291) / 1440) * 100,
+  top: ((353 + Math.floor(i / 4) * 165) / 1025) * 100,
+  width: (264 / 1440) * 100,
+  height: (138 / 1025) * 100,
+}));
+const back = { left: 19.5, top: 2.2, width: 6.5, height: 4.4 }; // "Back" in the roster page
 
 // Everything is a share of the 1440 x 1025 screen (the picture's own size in the design)
 const spot = { left: 34.65, top: 35.02, width: 2.5, height: 3.51 }; // the dots on the first roster card
@@ -26,6 +39,17 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
     <LogoShield {...logo} />
     <LogoShield {...company} />
 
+    {cards.map((card) => (
+      <button class="demo__card" type="button" style={box(card)} data-card aria-label={`Open the roster ${card.name}`}></button>
+    ))}
+
+    <div class="demo__page" aria-hidden="true" inert>
+      <Image src={detail} alt={detailAlt} widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
+      <LogoShield {...logo} />
+      <LogoShield {...company} />
+      <button class="demo__back" type="button" style={box(back)} aria-label="Back to the rosters"></button>
+    </div>
+
     <div class="demo__menu" id="roster-menu" style={box(popup)} role="group" aria-label="Roster menu">
       <Image src={menu} alt={menuAlt} widths={[251, 502]} sizes="(max-width: 1023px) 18vw, 112px" quality={90} />
     </div>
@@ -38,7 +62,7 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
       <span class="demo__ring" aria-hidden="true"></span>
     </button>
   </div>
-  <figcaption class="demo__hint">Click the dots on a roster card to open its menu.</figcaption>
+  <figcaption class="demo__hint">Click the dots on a roster card for its menu, or the card itself to step inside.</figcaption>
 </figure>
 
 <style>
@@ -61,6 +85,53 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
     display: block;
     width: 100%;
     height: auto;
+  }
+
+  /* Each roster card is a quiet button over the picture */
+  .demo__card {
+    position: absolute;
+    z-index: 2;
+    padding: 0;
+    border: 0;
+    border-radius: var(--space-4);
+    background: transparent;
+    cursor: pointer;
+    transition: box-shadow 0.15s ease;
+  }
+
+  [data-ready] .demo__card:hover {
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.25);
+  }
+
+  .demo__card:focus-visible,
+  .demo__back:focus-visible {
+    outline: 2px solid var(--erma-ink);
+    outline-offset: 2px;
+  }
+
+  /* The roster page lies over the list and fades in when a card is opened */
+  .demo__page {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+    background: var(--color-white);
+  }
+
+  [data-page] .demo__page {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .demo__back {
+    position: absolute;
+    padding: 0;
+    border: 0;
+    border-radius: var(--space-4);
+    background: transparent;
+    cursor: pointer;
   }
 
   .demo__menu {
@@ -130,7 +201,7 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
   /* A mouse pointer that plays the click for the visitor: it glides to the dots, presses, the menu opens. */
   .demo__cursor {
     position: absolute;
-    z-index: 5;
+    z-index: 8;
     left: 56%;
     top: 62%;
     opacity: 0;
@@ -160,6 +231,17 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
     top: 36.8%;
   }
 
+  /* on the second card, then on "Back" in the roster page */
+  .demo__cursor[data-at-card] {
+    left: 47%;
+    top: 40.5%;
+  }
+
+  .demo__cursor[data-at-back] {
+    left: 22.2%;
+    top: 4.6%;
+  }
+
   /* the click: a ring spreads from the dots */
   .demo__ring[data-click] {
     animation: spot-click 0.6s cubic-bezier(0.25, 1, 0.5, 1);
@@ -186,7 +268,9 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
     }
 
     .demo__menu,
-    .demo__spot {
+    .demo__spot,
+    .demo__page,
+    .demo__card {
       transition: none;
     }
 
@@ -200,91 +284,125 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
   document.querySelectorAll<HTMLElement>('[data-roster-menu]').forEach((demo) => {
     const spot = demo.querySelector<HTMLButtonElement>('.demo__spot');
     const menu = demo.querySelector<HTMLElement>('.demo__menu');
-    if (!spot || !menu) return;
+    const page = demo.querySelector<HTMLElement>('.demo__page');
+    const screen = demo.querySelector<HTMLElement>('.demo__screen');
+    const cursor = demo.querySelector<HTMLElement>('.demo__cursor');
+    const ring = demo.querySelector<HTMLElement>('.demo__ring');
+    if (!spot || !menu || !page || !screen) return;
 
-    const set = (open: boolean) => {
+    const setMenu = (open: boolean) => {
       demo.toggleAttribute('data-open', open);
       spot.setAttribute('aria-expanded', String(open));
       menu.toggleAttribute('inert', !open);
     };
+    const setPage = (show: boolean) => {
+      demo.toggleAttribute('data-page', show);
+      page.toggleAttribute('inert', !show);
+      page.setAttribute('aria-hidden', String(!show));
+    };
 
     demo.setAttribute('data-ready', '');
-    set(false);
+    setMenu(false);
+    setPage(false);
 
     spot.addEventListener('click', () => {
       demo.setAttribute('data-touched', '');
-      set(!demo.hasAttribute('data-open'));
+      setMenu(!demo.hasAttribute('data-open'));
+    });
+    demo.querySelectorAll<HTMLElement>('[data-card]').forEach((card) =>
+      card.addEventListener('click', () => {
+        demo.setAttribute('data-touched', '');
+        setMenu(false);
+        setPage(true);
+      }),
+    );
+    demo.querySelector('.demo__back')?.addEventListener('click', () => {
+      demo.setAttribute('data-touched', '');
+      setPage(false);
+    });
+    // a click on the list, outside the menu and the dots, closes the menu
+    screen.addEventListener('click', (event) => {
+      const target = event.target as Element;
+      if (demo.hasAttribute('data-open') && !target.closest('.demo__menu, .demo__spot')) setMenu(false);
     });
     document.addEventListener('click', (event) => {
-      if (demo.hasAttribute('data-open') && !demo.querySelector('.demo__screen')?.contains(event.target as Node)) set(false);
+      if (demo.hasAttribute('data-open') && !screen.contains(event.target as Node)) setMenu(false);
     });
-    // a click on the picture, outside the menu and the dots, also closes it
-    demo.querySelector('.demo__screen')?.addEventListener('click', (event) => {
-      const target = event.target as Element;
-      if (demo.hasAttribute('data-open') && !target.closest('.demo__menu, .demo__spot')) set(false);
-    });
-    // The pointer plays the click while the picture is on screen, until the visitor tries it themselves
-    const cursor = demo.querySelector<HTMLElement>('.demo__cursor');
-    const ring = demo.querySelector<HTMLElement>('.demo__ring');
-    const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (cursor && ring && !calm.matches && 'IntersectionObserver' in window) {
-      let timers: number[] = [];
-      let running = false;
-      const later = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms));
-      const stop = () => {
-        running = false;
-        timers.forEach(window.clearTimeout);
-        timers = [];
-        cursor.removeAttribute('data-show');
-        cursor.removeAttribute('data-at-spot');
-        cursor.removeAttribute('data-press');
-      };
-      const play = () => {
-        if (!running || demo.hasAttribute('data-touched')) return stop();
-        set(false);
-        later(300, () => cursor.setAttribute('data-show', ''));
-        later(700, () => cursor.setAttribute('data-at-spot', ''));
-        later(2000, () => cursor.setAttribute('data-press', ''));
-        later(2150, () => {
-          cursor.removeAttribute('data-press');
-          ring.removeAttribute('data-click');
-          void ring.offsetWidth;
-          ring.setAttribute('data-click', '');
-          set(true);
-        });
-        later(5600, () => {
-          cursor.removeAttribute('data-show');
-          set(false);
-        });
-        // back to the start while it is invisible, without gliding there
-        later(6200, () => {
-          cursor.setAttribute('data-jump', '');
-          cursor.removeAttribute('data-at-spot');
-          void cursor.offsetWidth;
-          cursor.removeAttribute('data-jump');
-        });
-        later(7200, play);
-      };
-      spot.addEventListener('click', stop);
-      new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting && !running && !demo.hasAttribute('data-touched')) {
-            running = true;
-            play();
-          } else if (!entry.isIntersecting && running) {
-            stop();
-            set(false);
-          }
-        },
-        { threshold: 0.5 },
-      ).observe(demo);
-    }
-
     demo.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && demo.hasAttribute('data-open')) {
-        set(false);
+      if (event.key !== 'Escape') return;
+      if (demo.hasAttribute('data-page')) setPage(false);
+      else if (demo.hasAttribute('data-open')) {
+        setMenu(false);
         spot.focus();
       }
     });
+
+    // A pointer plays the visit while the picture is on screen: the dots and the menu, then a roster card and its page, then Back.
+    // It stops as soon as the visitor tries it themselves.
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (!cursor || !ring || calm.matches || !('IntersectionObserver' in window)) return;
+
+    let timers: number[] = [];
+    let running = false;
+    const at = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms));
+    const place = (where: 'spot' | 'card' | 'back' | null) => {
+      ['spot', 'card', 'back'].forEach((name) => cursor.toggleAttribute(`data-at-${name}`, name === where));
+    };
+    const click = (then: () => void) => {
+      cursor.setAttribute('data-press', '');
+      at(150, () => {
+        cursor.removeAttribute('data-press');
+        ring.removeAttribute('data-click');
+        void ring.offsetWidth;
+        ring.setAttribute('data-click', '');
+        then();
+      });
+    };
+    const stop = () => {
+      running = false;
+      timers.forEach(window.clearTimeout);
+      timers = [];
+      cursor.removeAttribute('data-show');
+      cursor.removeAttribute('data-press');
+      place(null);
+    };
+    const play = () => {
+      if (!running || demo.hasAttribute('data-touched')) return stop();
+      setMenu(false);
+      setPage(false);
+      at(300, () => cursor.setAttribute('data-show', ''));
+      at(700, () => place('spot'));
+      at(2000, () => click(() => setMenu(true)));
+      at(5300, () => setMenu(false));
+      at(5700, () => place('card'));
+      at(7000, () => click(() => setPage(true)));
+      at(8600, () => place('back'));
+      at(10200, () => click(() => setPage(false)));
+      at(10900, () => cursor.removeAttribute('data-show'));
+      // back to the start while it is invisible, without gliding there
+      at(11400, () => {
+        cursor.setAttribute('data-jump', '');
+        place(null);
+        void cursor.offsetWidth;
+        cursor.removeAttribute('data-jump');
+      });
+      at(12400, play);
+    };
+    spot.addEventListener('click', stop);
+    demo.querySelectorAll('[data-card], .demo__back').forEach((el) => el.addEventListener('click', stop));
+
+    new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !running && !demo.hasAttribute('data-touched')) {
+          running = true;
+          play();
+        } else if (!entry.isIntersecting && running) {
+          stop();
+          setMenu(false);
+          setPage(false);
+        }
+      },
+      { threshold: 0.5 },
+    ).observe(demo);
   });
 </script>
