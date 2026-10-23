@@ -4,6 +4,7 @@ import LogoShield from './LogoShield.astro';
 import upload from '../../assets/images/erma-ts-default.png';
 import hover from '../../assets/images/erma-ts-hover-bg.png';
 import loading from '../../assets/images/erma-ts-loading-bg.png';
+import sidebar from '../../assets/images/erma-rosters-five.png';
 import chip from '../../assets/images/erma-ts-chip.png';
 import bolt from '../../assets/images/erma-ts-bolt.png';
 import oneday from '../../assets/images/erma-ts-bars-bg.png';
@@ -72,6 +73,10 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
     </ul>
     <Image class="ts__chip" src={chip} alt="" widths={[186, 372]} sizes="(max-width: 1023px) 13vw, 130px" quality={90} style={chipBox} />
     <Image class="ts__bolt" src={bolt} alt="" widths={[60, 120]} sizes="(max-width: 1023px) 4vw, 42px" quality={90} style={boltBox} />
+    <!-- the sidebar of the roster screens (with the profile card), over the old one on every screen of the upload -->
+    <div class="ts__side" aria-hidden="true">
+      <Image src={sidebar} alt="" widths={[640, 1008, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} />
+    </div>
     <LogoShield {...logo} />
   </div>
 </figure>
@@ -96,6 +101,26 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
     width: 100%;
     height: 100%;
     object-fit: fill;
+  }
+
+  /* The sidebar: the first 251 of the 1440 pixels of the rosters screen, the full height */
+  .ts__side {
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 17.43%; /* 251 of 1440 */
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .ts__side :global(img) {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 573.7%; /* the whole 1440px screen, so only its sidebar shows */
+    max-width: none;
+    height: 100%;
   }
 
   /* The next screens lie over the first and fade in */
