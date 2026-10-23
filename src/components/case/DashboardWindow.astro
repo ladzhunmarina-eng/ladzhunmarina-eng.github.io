@@ -29,14 +29,20 @@ interface Props {
   blurLogo?: boolean;
   /** The window is the first thing on the page: load it straight away */
   eager?: boolean;
+  /** How much of the page the window shows at once, in design pixels (900 by default; 1025 is the height of the rosters screens) */
+  viewHeight?: number;
+  /** Show the buttons under the window (they are always kept for the scroll stops) */
+  showParts?: boolean;
+  /** While the window is on screen, the page scrolls itself from block to block, until the visitor scrolls it */
+  autoScroll?: boolean;
 }
 
-const { parts = [], hint, blurLogo = false, eager = false } = Astro.props;
+const { parts = [], hint, blurLogo = false, eager = false, viewHeight = 900, showParts = true, autoScroll = false } = Astro.props;
 
 // The page is drawn from the design's own groups, each placed where it sits on the 1440 x 2640 canvas (x, y, width in design pixels).
 const W = 1440;
 const PAGE_H = 2640; // the whole page, with a little room under the last block
-const VIEW_H = 900; // the window shows 900 of it at a time
+const VIEW_H = viewHeight; // how much of it the window shows at a time
 const HEADER_H = 139; // the bar that stays at the top
 const stay = [
   { src: sidebar, x: 0, y: 0, w: 251 },
@@ -57,7 +63,7 @@ const pos = (item: { x: number; y: number; w: number }, height: number) =>
   `left:${((item.x / W) * 100).toFixed(3)}%;top:${((item.y / height) * 100).toFixed(3)}%;width:${((item.w / W) * 100).toFixed(3)}%;`;
 ---
 
-<div class="dash" data-header={HEADER_H} data-width={W} data-parts={JSON.stringify(parts.map((part) => part.at))}>
+<div class="dash" data-header={HEADER_H} data-width={W} data-parts={JSON.stringify(parts.map((part) => part.at))} data-auto={autoScroll ? '' : undefined}>
   <!-- The window: the sidebar and the top bar stay, the page scrolls under them -->
   <div class="dash__view" style={`--view-ratio: ${W} / ${VIEW_H}`}>
     <div class="dash__scroll" role="region" aria-label="The event dashboard. Scroll to see the whole page." tabindex="0">
@@ -68,7 +74,7 @@ const pos = (item: { x: number; y: number; w: number }, height: number) =>
       </div>
     </div>
     {hint && <p class="dash__hint" aria-hidden="true">{hint}</p>}
-    {blurLogo && <LogoShield left={3.19} top={2.44} width={11.11} height={6.44} />}
+    {blurLogo && <LogoShield left={3.19} top={(2.44 * 900) / VIEW_H} width={11.11} height={(6.44 * 900) / VIEW_H} />}
     <div class="dash__stay" aria-hidden="true">
       {stay.map((item) => (
         <Image class="dash__piece dash__piece--stay" src={item.src} alt="" style={pos(item, VIEW_H)} widths={[480, 960, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} loading="eager" />
@@ -76,7 +82,7 @@ const pos = (item: { x: number; y: number; w: number }, height: number) =>
     </div>
   </div>
 
-  {parts.length > 0 && (
+  {showParts && parts.length > 0 && (
     <ol class="dash__parts">
       {parts.map((part, index) => (
         <li>
@@ -135,6 +141,74 @@ const pos = (item: { x: number; y: number; w: number }, height: number) =>
     scroller.addEventListener('scroll', sync, { passive: true });
     window.addEventListener('resize', sync);
     sync();
+
+    // The page scrolls itself from block to block while the window is on screen, and stops for good as soon as the visitor touches it.
+    if (dash.hasAttribute('data-auto') && !calm.matches && 'IntersectionObserver' in window) {
+      // the top, then every block that is further down than the first screen shows (each place once)
+      const stops = [0, ...new Set(anchors.filter((at) => at > header + 200))];
+      const ease = (t: number) => 1 - Math.pow(1 - t, 3);
+      let timers: number[] = [];
+      let frame = 0;
+      let running = false;
+      let handedOver = false;
+
+      const glide = (to: number, ms: number) => {
+        const from = scroller.scrollTop;
+        const start = performance.now();
+        const step = (now: number) => {
+          const t = Math.min(1, (now - start) / ms);
+          scroller.scrollTop = from + (to - from) * ease(t);
+          if (t < 1) frame = requestAnimationFrame(step);
+        };
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(step);
+      };
+      const later = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms));
+      const stop = () => {
+        running = false;
+        timers.forEach(window.clearTimeout);
+        timers = [];
+        cancelAnimationFrame(frame);
+      };
+      const tour = () => {
+        if (!running || handedOver) return;
+        let at = 0;
+        stops.forEach((stopAt, i) => {
+          if (i === 0) return;
+          at += 1700;
+          later(at, () => glide(Math.max(0, (stopAt - header - 16) * scale()), 1600));
+          at += 1600;
+        });
+        at += 2600;
+        later(at, () => glide(0, 1900));
+        at += 3000;
+        later(at, tour);
+      };
+
+      ['wheel', 'touchstart', 'pointerdown', 'keydown'].forEach((type) =>
+        scroller.addEventListener(
+          type,
+          () => {
+            handedOver = true;
+            stop();
+          },
+          { passive: true },
+        ),
+      );
+      new IntersectionObserver(
+        ([entry]) => {
+          if (handedOver) return;
+          if (entry.isIntersecting && !running) {
+            running = true;
+            tour();
+          } else if (!entry.isIntersecting && running) {
+            stop();
+            scroller.scrollTop = 0;
+          }
+        },
+        { threshold: 0.6 },
+      ).observe(dash);
+    }
   });
 </script>
 
