@@ -7,7 +7,7 @@ import loading from '../../assets/images/erma-ts-loading-bg.png';
 import sidebar from '../../assets/images/erma-rosters-five.png';
 import chip from '../../assets/images/erma-ts-chip.png';
 import bolt from '../../assets/images/erma-ts-bolt.png';
-import oneday from '../../assets/images/erma-ts-bars-bg.png';
+import oneday from '../../assets/images/erma-ts-final-bg.png';
 
 interface Props {
   alt: string;
@@ -22,17 +22,8 @@ const pct = (v: number, of: number) => (v / of) * 100;
 const logo = { left: 3.75, top: 2.54, width: 10.07, height: 4.78 };
 const chipBox = `left:${pct(1098, W)}%;top:${pct(370, H)}%;width:${pct(186, W)}%;`; // the file being dragged, where it ends up over the drop zone
 // The files' progress bars, each filling to 100%: the top of its row's bar group, the percent it reaches, the width of its fill (design pixels, the whole 94px track) and where its percent starts
-const barTops = [332, 392, 446, 504, 562, 617, 675, 733, 791, 849, 907];
-const bars = barTops.map((top) => ({ top, pct: 100, fill: 94, tx: 634 }));
-// The table runs on to the bottom of the page: three more files under the eight of the design, and the pagination moved down below them
-const more = [
-  { file: 'File_K9M2X4.pdf', who: 'Daniel Reyes', from: '06 Dec 2025', to: '08 Dec 2025' },
-  { file: 'Aaron_12 Dec 2025.pdf', who: 'Noah Fischer', from: '11 Dec 2025', to: '12 Dec 2025' },
-  { file: 'File_Z3B7N1.csv', who: 'Olivia Brooks', from: '19 Dec 2025', to: '21 Dec 2025' },
-].map((row, i) => ({ ...row, top: 772 + i * 57 }));
-const box = (x: number, y: number, w?: number, h?: number) =>
-  `left:${pct(x, W)}%;top:${pct(y, H)}%;${w ? `width:${pct(w, W)}%;` : ''}${h ? `height:${pct(h, H)}%;` : ''}`;
-const pages = [2, 3, 4, 5, 6, 7, 8, 9];
+const barTops = [334, 391, 448, 505, 562, 619, 676, 733, 790, 847, 904]; // the top of each row's bar group (the track sits 7px lower)
+const bars = barTops.map((top) => ({ top, pct: 100, fill: 94, tx: 621 }));
 const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`; // the loader's bolt
 ---
 
@@ -42,30 +33,9 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
     <Image class="ts__layer ts__layer--hover" src={hover} alt="" widths={[640, 1008, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} />
     <Image class="ts__layer ts__layer--loading" src={loading} alt="" widths={[640, 1008, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} />
     <Image class="ts__layer ts__layer--oneday" src={oneday} alt="" widths={[640, 1008, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} />
-    <div class="ts__more" aria-hidden="true">
-      <span class="ts__cover" style={box(277, 778, 1137, 70)}></span>
-      {more.map((row) => (
-        <div class="ts__row" style={box(277, row.top, 1137, 57)}>
-          <span class="ts__file">{row.file}</span>
-          <span class="ts__who">{row.who}<svg viewBox="0 0 8 4" aria-hidden="true"><path d="M0 0l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.2" /></svg></span>
-          <span class="ts__date ts__date--from">{row.from}</span>
-          <span class="ts__date ts__date--to">{row.to}</span>
-          <span class="ts__status">Select<svg viewBox="0 0 8 4" aria-hidden="true"><path d="M0 0l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.2" /></svg></span>
-          <svg class="ts__trash" viewBox="0 0 20 22" aria-hidden="true"><path d="M2 4h16M7 4V2h6v2M4 4l1 16h10l1-16M8 8v8M12 8v8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" /></svg>
-        </div>
-      ))}
-      <div class="ts__pager" style={box(277, 950, 1137, 50)}>
-        <span class="ts__per">Items per page</span>
-        <span class="ts__perbox">12<svg viewBox="0 0 8 4" aria-hidden="true"><path d="M0 0l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.2" /></svg></span>
-        <span class="ts__prev">‹</span>
-        <span class="ts__page ts__page--on">1</span>
-        {pages.map((n) => <span class="ts__page">{n}</span>)}
-        <span class="ts__next">›</span>
-      </div>
-    </div>
     <ul class="ts__bars" aria-hidden="true">
       {bars.map((bar, i) => (
-        <li class="ts__bar" style={`--top: ${pct(bar.top, H)}%; --fill: ${(bar.fill / 94) * 100}%; --tx: ${((bar.tx - 527) / 133) * 100}%; --i: ${i}`}>
+        <li class="ts__bar" style={`--top: ${pct(bar.top, H)}%; --fill: ${(bar.fill / 94) * 100}%; --tx: ${((bar.tx - 512) / 133) * 100}%; --i: ${i}`}>
           <span class="ts__track"><span class="ts__fill"></span></span>
           <span class="ts__pct"><span data-count={bar.pct}>{bar.pct}</span>%</span>
         </li>
@@ -143,177 +113,6 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
     opacity: 0;
   }
 
-  /* The rest of the table: three more files and the pagination under them, laid over the picture's own pagination */
-  .ts__more {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    font-size: 0.972cqw; /* 14 of the 1440px design */
-    line-height: 1;
-    color: #1e1e1e;
-  }
-
-  [data-oneday] .ts__more {
-    opacity: 1;
-  }
-
-  .ts__cover {
-    position: absolute;
-    background: var(--color-white);
-  }
-
-  .ts__row {
-    position: absolute;
-    border-bottom: 1px solid #eaeaea;
-    background: var(--color-white);
-  }
-
-  .ts__row > * {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    white-space: nowrap;
-  }
-
-  .ts__file {
-    left: 1.7%; /* 298 of the 1137 row, from 277 */
-    color: #0a4bbf;
-  }
-
-  .ts__who,
-  .ts__status,
-  .ts__perbox {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45cqw;
-    border-radius: 0.28cqw;
-    background: #f9f9f9;
-  }
-
-  .ts__who {
-    left: 37.2%; /* 700 */
-    padding: 0.5cqw 0.8cqw;
-  }
-
-  .ts__who svg,
-  .ts__status svg,
-  .ts__perbox svg {
-    width: 0.55cqw;
-    height: auto;
-  }
-
-  .ts__date {
-    left: 54.5%; /* 897 */
-  }
-
-  .ts__date--to {
-    left: 68.4%; /* 1053 */
-  }
-
-  .ts__status {
-    left: 85.6%; /* 1252 */
-    padding: 0.6cqw 0.9cqw;
-    font-size: 0.75cqw;
-  }
-
-  .ts__trash {
-    left: 96.3%; /* 1376 */
-    width: 1.45cqw;
-    height: auto;
-    color: #444;
-  }
-
-  /* the pagination: items per page on the left, the page numbers on the right */
-  .ts__pager {
-    position: absolute;
-  }
-
-  .ts__pager > * {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  .ts__per {
-    left: 0;
-  }
-
-  .ts__perbox {
-    left: 10.8%; /* 123 of the 1137 */
-    gap: 1cqw;
-    padding: 1.1cqw 0.8cqw;
-    border: 1px solid #dcdcdc;
-    background: var(--color-white);
-    font-size: 0.833cqw;
-  }
-
-  .ts__prev,
-  .ts__next,
-  .ts__page {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.67cqw;
-    height: 1.67cqw;
-    font-size: 0.833cqw;
-    border-radius: 0.28cqw;
-  }
-
-  .ts__prev {
-    left: 75.4%;
-    color: #bbb;
-    font-size: 1.4cqw;
-  }
-
-  .ts__next {
-    left: 98%;
-    font-size: 1.4cqw;
-  }
-
-  .ts__pager > .ts__page:nth-child(4) {
-    left: 77.57%;
-  }
-
-  .ts__pager > .ts__page:nth-child(5) {
-    left: 79.60%;
-  }
-
-  .ts__pager > .ts__page:nth-child(6) {
-    left: 81.71%;
-  }
-
-  .ts__pager > .ts__page:nth-child(7) {
-    left: 83.73%;
-  }
-
-  .ts__pager > .ts__page:nth-child(8) {
-    left: 85.84%;
-  }
-
-  .ts__pager > .ts__page:nth-child(9) {
-    left: 88.04%;
-  }
-
-  .ts__pager > .ts__page:nth-child(10) {
-    left: 90.15%;
-  }
-
-  .ts__pager > .ts__page:nth-child(11) {
-    left: 92.26%;
-  }
-
-  .ts__pager > .ts__page:nth-child(12) {
-    left: 94.37%;
-  }
-
-  .ts__pager .ts__page--on {
-    background: #ff5000;
-    color: #fff;
-  }
-
   /* The files' progress bars: they fill in turn, and the percents count up */
   .ts__bars {
     position: absolute;
@@ -324,7 +123,7 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
 
   .ts__bar {
     position: absolute;
-    left: 36.6%; /* 527 of 1440 */
+    left: 35.55%; /* 512 of 1440 */
     top: var(--top);
     width: 9.2%; /* the 94px track and the percent: 133px */
     height: 1.756%; /* 18px */
