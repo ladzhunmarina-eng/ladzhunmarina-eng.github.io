@@ -154,9 +154,9 @@ export const ermaCase = {
     title: 'What the callout no longer needs.',
     lead: '[Product is in development.]',
     cards: [
-      { stage: 'Crew assembly', before: 'Phone rounds, rosters by hand', after: 'A roster where every yes, no and silence is tracked' },
-      { stage: 'Timesheets', before: 'Paper timesheets', after: 'Uploaded in batches, checked for foreman, dates and signature' },
-      { stage: 'Invoice', before: 'Invoice by hand', after: 'Built from signed timesheets on the event dashboard' },
+      { icon: 'users', stage: 'Crew assembly', before: 'Phone rounds, rosters by hand', after: 'A roster where every yes, no and silence is tracked' },
+      { icon: 'file', stage: 'Timesheets', before: 'Paper timesheets', after: 'Uploaded in batches, checked for foreman, dates and signature' },
+      { icon: 'receipt', stage: 'Invoice', before: 'Invoice by hand', after: 'Built from signed timesheets on the event dashboard' },
     ],
   },
 } as const;

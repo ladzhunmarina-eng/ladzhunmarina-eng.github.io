@@ -1,5 +1,6 @@
 ---
 interface Card {
+  icon: 'users' | 'file' | 'receipt';
   /** The stage of the job the card is about */
   stage: string;
   before: string;
@@ -16,6 +17,29 @@ const { cards } = Astro.props;
 <ul class="cards">
   {cards.map((card) => (
     <li class="card">
+      <span class="card__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          {card.icon === 'users' && (
+            <>
+              <circle cx="9" cy="8" r="3.5" />
+              <path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6" />
+              <path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18.5 14.4c1.9.8 3 2.7 3 5.6" />
+            </>
+          )}
+          {card.icon === 'file' && (
+            <>
+              <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+              <path d="M14 3v5h5M9 13h6M9 17h4" />
+            </>
+          )}
+          {card.icon === 'receipt' && (
+            <>
+              <path d="M6 3h12v18l-3-2-3 2-3-2-3 2z" />
+              <path d="M9 8h6M9 12h6" />
+            </>
+          )}
+        </svg>
+      </span>
       <p class="card__stage">{card.stage}</p>
       <dl class="card__rows">
         <div>
@@ -48,7 +72,20 @@ const { cards } = Astro.props;
     background: var(--color-white);
   }
 
+  /* a small icon in a rounded square with a light accent tint, as in the challenge cards */
+  .card__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--space-44);
+    height: var(--space-44);
+    border-radius: var(--radius-person);
+    background: var(--erma-orange-tint);
+    color: var(--erma-orange-text);
+  }
+
   .card__stage {
+    margin-top: calc(-1 * var(--space-4));
     font-size: var(--fs-12);
     font-weight: var(--weight-medium);
     line-height: var(--lh-snug);
