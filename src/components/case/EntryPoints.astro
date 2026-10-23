@@ -16,7 +16,7 @@ const shots: Record<string, ImageMetadata> = { A: shotA, B: shotB, C: shotC };
   Three phones on a tinted panel, each under a label card, with a hand pointing at where the basket lives.
   Everything is positioned as a share of the panel, so it scales as one picture.
 -->
-<div class="entry">
+<div class="entry" data-entry>
   <div class="entry__stage">
     {variants.map((variant) => (
       <figure class={`entry__variant entry__variant--${variant.id.toLowerCase()}`} style={`--mark: var(--case-variant-${variant.id.toLowerCase()})`}>
@@ -123,25 +123,69 @@ const shots: Record<string, ImageMetadata> = { A: shotA, B: shotB, C: shotC };
     position: absolute;
     font-size: 4.07cqw; /* 41px of 1008 */
     line-height: 1;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) rotate(var(--rot, 0deg));
   }
 
   .entry__hand--a {
     left: 8.6%; /* 67.5 / 788 */
     top: 96.5%; /* 577 / 598 */
+    --tap-x: 0cqw;
+    --tap-y: -1.6cqw;
   }
 
   /* Turned upside down: points down at the basket icon in the top bar */
   .entry__hand--b {
     left: 54.4%; /* 429 / 788 */
     top: 16.9%; /* 101 / 598 */
-    transform: translate(-50%, -50%) rotate(180deg);
+    --rot: 180deg;
+    --tap-x: 0cqw;
+    --tap-y: 1.6cqw;
   }
 
   /* Tilted 49.8° anticlockwise: points up and left at the floating button */
   .entry__hand--c {
     left: 93.2%; /* 734.5 / 788 */
     top: 86.6%; /* 518 / 598 */
-    transform: translate(-50%, -50%) rotate(-49.8deg);
+    --rot: -49.8deg;
+    --tap-x: -1.2cqw;
+    --tap-y: -1.4cqw;
+  }
+
+  /* Once in view, the three hands tap their button in turn: two quick presses, then a pause while the next hand goes. */
+  [data-motion='go'] .entry__hand {
+    animation: tap 4.5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  }
+
+  [data-motion='go'] .entry__hand--b {
+    animation-delay: 1.5s;
+  }
+
+  [data-motion='go'] .entry__hand--c {
+    animation-delay: 3s;
+  }
+
+  @keyframes tap {
+    0%,
+    6%,
+    16%,
+    26%,
+    100% {
+      transform: translate(-50%, -50%) rotate(var(--rot, 0deg));
+    }
+    11%,
+    21% {
+      transform: translate(-50%, -50%) translate(var(--tap-x), var(--tap-y)) rotate(var(--rot, 0deg)) scale(0.9);
+    }
   }
 </style>
+
+<script>
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  document.querySelectorAll<HTMLElement>('[data-entry]').forEach((entry) => {
+    if (calm.matches || !('IntersectionObserver' in window)) return;
+    // Taps run only while the picture is on screen
+    const seen = new IntersectionObserver(([e]) => (entry.dataset.motion = e.isIntersecting ? 'go' : 'rest'), { threshold: 0.4 });
+    seen.observe(entry);
+  });
+</script>
