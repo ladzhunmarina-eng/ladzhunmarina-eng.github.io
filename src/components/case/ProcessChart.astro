@@ -3,12 +3,14 @@ interface Props {
   phases: readonly string[];
   /** start and length are in pixels on the design's 960px-wide chart; they become percentages here */
   bars: readonly { label: string; start: number; length: number }[];
+  /** Draw the bars one after another, with a pause between them, instead of almost together */
+  stepped?: boolean;
 }
 
-const { phases, bars } = Astro.props;
+const { phases, bars, stepped = false } = Astro.props;
 ---
 
-<div class="chart" data-chart style={`--n: ${phases.length}`}>
+<div class="chart" data-chart style={`--n: ${phases.length}${stepped ? '; --step: 0.95s; --dur: 1.1s; --lead: 0.3s' : ''}`}>
   <div class="chart__plot">
     <span class="chart__grid" aria-hidden="true"></span>
     <ol class="chart__bars">
@@ -78,7 +80,7 @@ const { phases, bars } = Astro.props;
 
   [data-motion='go'] .bar {
     clip-path: inset(0 0 0 0 round calc(var(--case-bar-pill-h) / 2));
-    transition: clip-path 0.8s cubic-bezier(0.25, 1, 0.5, 1) calc(var(--i) * 0.12s);
+    transition: clip-path var(--dur, 0.8s) cubic-bezier(0.25, 1, 0.5, 1) calc(var(--lead, 0s) + var(--i) * var(--step, 0.12s));
   }
 
   .chart__phases {
