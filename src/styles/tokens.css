@@ -76,7 +76,7 @@
   /* ERMA (Storm360) brand colours, from the case in the Figma file */
   --erma-ink: #0d0d0d; /* text and headings (the design's black, a touch softer) */
   --erma-orange: #ff5000; /* the accent: markers, dotted pain boxes, the Solution card */
-  --erma-orange-text: #c23d00; /* the same orange, darkened to read as small text on the page */
+  --erma-orange-text: #ff5000; /* the accent as text: the same orange as the markers */
   --erma-yellow: #ffb600; /* the highlight, as the cyan is for OLX */
   --erma-blue: #054fb9;
   --erma-page: #f4f3ed; /* the page, as in the design */
