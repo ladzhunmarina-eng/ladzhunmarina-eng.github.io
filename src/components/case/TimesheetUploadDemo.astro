@@ -1,11 +1,13 @@
 ---
 import { Image } from 'astro:assets';
 import LogoShield from './LogoShield.astro';
-import upload from '../../assets/images/erma-ts-upload.png';
-import hover from '../../assets/images/erma-ts-hover.png';
-import loading from '../../assets/images/erma-ts-loading.png';
+import upload from '../../assets/images/erma-ts-default.png';
+import hover from '../../assets/images/erma-ts-hover-bg.png';
+import loading from '../../assets/images/erma-ts-loading-bg.png';
 import chip from '../../assets/images/erma-ts-chip.png';
 import bolt from '../../assets/images/erma-ts-bolt.png';
+import table from '../../assets/images/erma-ts-table.png';
+import oneday from '../../assets/images/erma-ts-oneday.png';
 
 interface Props {
   alt: string;
@@ -19,7 +21,18 @@ const H = 1025;
 const pct = (v: number, of: number) => (v / of) * 100;
 const logo = { left: 3.75, top: 2.54, width: 10.07, height: 4.78 };
 const company = { left: 0.5, top: 85, width: 13.5, height: 4 };
-const chipBox = `left:${pct(1098, W)}%;top:${pct(420, H)}%;width:${pct(186, W)}%;`; // the file being dragged, where it ends up over the drop zone
+const chipBox = `left:${pct(1098, W)}%;top:${pct(370, H)}%;width:${pct(186, W)}%;`; // the file being dragged, where it ends up over the drop zone
+// The files' progress bars once "One day timesheets" is on: the top of each row's bar group, the percent it reaches and the width of its fill (design pixels, on a 94px track)
+const bars = [
+  { top: 404, pct: 80, fill: 73 },
+  { top: 458, pct: 30, fill: 48 },
+  { top: 515, pct: 20, fill: 39 },
+  { top: 572, pct: 10, fill: 27 },
+  { top: 629, pct: 10, fill: 26 },
+  { top: 686, pct: 15, fill: 15 },
+  { top: 743, pct: 5, fill: 5 },
+  { top: 800, pct: 5, fill: 5 },
+];
 const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`; // the loader's bolt
 ---
 
@@ -28,6 +41,16 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
     <Image src={upload} alt={alt} widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
     <Image class="ts__layer ts__layer--hover" src={hover} alt="" widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
     <Image class="ts__layer ts__layer--loading" src={loading} alt="" widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
+    <Image class="ts__layer ts__layer--table" src={table} alt="" widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
+    <Image class="ts__layer ts__layer--oneday" src={oneday} alt="" widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
+    <ul class="ts__bars" aria-hidden="true">
+      {bars.map((bar, i) => (
+        <li class="ts__bar" style={`--top: ${pct(bar.top, H)}%; --fill: ${(bar.fill / 94) * 100}%; --i: ${i}`}>
+          <span class="ts__track"><span class="ts__fill"></span></span>
+          <span class="ts__pct"><span data-count={bar.pct}>{bar.pct}</span>%</span>
+        </li>
+      ))}
+    </ul>
     <Image class="ts__chip" src={chip} alt="" widths={[186, 372]} sizes="(max-width: 1023px) 13vw, 74px" quality={90} style={chipBox} />
     <Image class="ts__bolt" src={bolt} alt="" widths={[60, 120]} sizes="(max-width: 1023px) 4vw, 24px" quality={90} style={boltBox} />
     <LogoShield {...logo} />
@@ -66,13 +89,78 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
   }
 
   [data-over] .ts__screen :global(.ts__layer--hover),
-  [data-load] .ts__screen :global(.ts__layer--loading) {
+  [data-load] .ts__screen :global(.ts__layer--loading),
+  [data-table] .ts__screen :global(.ts__layer--table),
+  [data-oneday] .ts__screen :global(.ts__layer--oneday) {
     opacity: 1;
   }
 
-  /* hover is only the drop zone turning blue; the loader replaces it */
-  [data-load] .ts__screen :global(.ts__layer--hover) {
+  /* each screen replaces the one before it: the hover is only the drop zone turning blue, the loader and the table cover it */
+  [data-load] .ts__screen :global(.ts__layer--hover),
+  [data-table] .ts__screen :global(.ts__layer--loading),
+  [data-oneday] .ts__screen :global(.ts__layer--table) {
     opacity: 0;
+  }
+
+  [data-table] .ts__screen :global(.ts__layer--hover) {
+    opacity: 0;
+  }
+
+  /* The files' progress bars: they fill in turn, and the percents count up */
+  .ts__bars {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .ts__bar {
+    position: absolute;
+    left: 35.55%; /* 512 of 1440 */
+    top: var(--top);
+    width: 9.2%; /* the 94px track and the percent: 133px */
+    height: 1.756%; /* 18px */
+    opacity: 0;
+    transition: opacity 0.3s ease calc(var(--i) * 0.1s);
+  }
+
+  [data-oneday] .ts__bar {
+    opacity: 1;
+  }
+
+  .ts__track {
+    position: absolute;
+    left: 0;
+    top: 38.9%; /* 7px of 18 */
+    width: 70.7%; /* 94 of 133 */
+    height: 22.2%; /* 4px of 18 */
+    border-radius: 40px;
+    background: #eaeaea;
+    overflow: hidden;
+  }
+
+  .ts__fill {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: 40px;
+    background: #1da735;
+  }
+
+  [data-oneday] .ts__fill {
+    width: var(--fill);
+    transition: width 1.8s cubic-bezier(0.25, 1, 0.5, 1) calc(0.2s + var(--i) * 0.12s);
+  }
+
+  .ts__pct {
+    position: absolute;
+    left: 79.7%; /* 7px past the track, 107 of 133 */
+    top: 0;
+    font-size: 0.972cqw;
+    line-height: 1.75;
+    white-space: nowrap;
+    color: #000;
+    font-variant-numeric: tabular-nums;
   }
 
   /* the file being dragged in from below, to the drop zone */
@@ -119,6 +207,11 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
     animation: ts-pulse 1.1s ease-in-out infinite;
   }
 
+  [data-table] .ts__screen :global(.ts__bolt) {
+    opacity: 0;
+    animation: none;
+  }
+
   @keyframes ts-pulse {
     0%,
     100% {
@@ -130,6 +223,8 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .ts__bar,
+    .ts__fill,
     .ts__screen :global(.ts__layer),
     .ts__screen :global(.ts__chip),
     .ts__screen :global(.ts__bolt) {
@@ -151,7 +246,18 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
     let timers: number[] = [];
     let running = false;
     const at = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms));
-    const reset = () => ['data-chip', 'data-moved', 'data-over', 'data-drop', 'data-load'].forEach((name) => demo.removeAttribute(name));
+    const reset = () => ['data-chip', 'data-moved', 'data-over', 'data-drop', 'data-load', 'data-table', 'data-oneday'].forEach((name) => demo.removeAttribute(name));
+    const countUp = (el: HTMLElement, delay: number) => {
+      const target = Number(el.dataset.count);
+      const start = performance.now() + delay;
+      const step = (now: number) => {
+        const t = Math.min(1, Math.max(0, (now - start) / 1800));
+        el.textContent = String(Math.round(target * (1 - Math.pow(1 - t, 3))));
+        if (t < 1) requestAnimationFrame(step);
+      };
+      el.textContent = '0';
+      requestAnimationFrame(step);
+    };
     const stop = () => {
       running = false;
       timers.forEach(window.clearTimeout);
@@ -159,7 +265,8 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
       reset();
     };
 
-    // The drop zone waits, a file is dragged in from below, the zone turns blue, the file is dropped and the loader takes over.
+    // The drop zone waits, a file is dragged in from below, the zone turns blue, the file is dropped, the loader takes over,
+    // the table of files appears, "One day timesheets" is switched on and the files' progress bars fill.
     const play = () => {
       if (!running) return;
       reset();
@@ -168,8 +275,13 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
       at(2200, () => demo.setAttribute('data-over', ''));
       at(3600, () => demo.setAttribute('data-drop', ''));
       at(3700, () => demo.setAttribute('data-load', ''));
-      at(7000, reset);
-      at(8200, play);
+      at(6200, () => demo.setAttribute('data-table', ''));
+      at(8600, () => {
+        demo.setAttribute('data-oneday', '');
+        demo.querySelectorAll<HTMLElement>('[data-count]').forEach((el, i) => countUp(el, 200 + i * 120));
+      });
+      at(13200, reset);
+      at(14400, play);
     };
 
     new IntersectionObserver(
