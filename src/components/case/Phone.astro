@@ -1,0 +1,42 @@
+---
+import { Image } from 'astro:assets';
+
+/* A phone screen in a dark bezel. The screen is cropped from the top to the 390:844 frame, so a long screen shows its first screenful. */
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  sizes?: string;
+}
+
+const { src, alt, sizes = '(max-width: 1023px) 70vw, 260px' } = Astro.props;
+// A screen shorter than the phone keeps its proportions and sits at the top; a longer one is cropped.
+const short = src.width / src.height > 390 / 844;
+---
+
+<div class="phone">
+  <Image class:list={['phone__screen', { 'phone__screen--short': short }]} src={src} alt={alt} widths={[260, 390, 546]} sizes={sizes} quality={85} />
+</div>
+
+<style>
+  .phone {
+    aspect-ratio: 390 / 844;
+    padding: var(--space-8);
+    border-radius: 40px;
+    background: var(--sleep-ink);
+    box-shadow: 0 var(--space-16) var(--space-32) rgb(44 47 51 / 0.12);
+  }
+
+  .phone :global(.phone__screen) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 32px;
+    object-fit: cover;
+    object-position: top;
+    background: var(--color-white);
+  }
+
+  .phone :global(.phone__screen--short) {
+    object-fit: contain;
+  }
+</style>

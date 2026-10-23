@@ -7,7 +7,8 @@ import CaseNav from '../../components/case/CaseNav.astro';
 import Section from '../../components/case/Section.astro';
 import NoteCards from '../../components/case/NoteCards.astro';
 import PersonaCard from '../../components/case/PersonaCard.astro';
-import ScreenGallery from '../../components/case/ScreenGallery.astro';
+import PhoneStrip from '../../components/case/PhoneStrip.astro';
+import PhoneDecision from '../../components/case/PhoneDecision.astro';
 import ReviewCard from '../../components/case/ReviewCard.astro';
 import NextCase from '../../components/case/NextCase.astro';
 import heroImage from '../../assets/images/sleep-hero.png';
@@ -20,9 +21,14 @@ import trend from '../../assets/images/sleep-trend.png';
 import calendar from '../../assets/images/sleep-calendar.png';
 import { babySleepCase as study } from '../../data/cases/baby-sleep';
 
-const { goal, persona, screens, feedback } = study;
+const { goal, persona, screens, decisions, feedback } = study;
 const shots = { signup, plans, clients, tracker, trend, calendar };
 const gallery = screens.items.map((item) => ({ src: shots[item.key as keyof typeof shots], label: item.label, alt: item.alt }));
+const alts = Object.fromEntries(screens.items.map((item) => [item.key, item.alt]));
+const blocks = decisions.items.map((item) => ({
+  ...item,
+  phones: item.phones.map((key) => ({ src: shots[key as keyof typeof shots], alt: alts[key] })),
+}));
 ---
 
 <Layout title={study.seo.title} description={study.seo.description} current="work">
@@ -50,7 +56,13 @@ const gallery = screens.items.map((item) => ({ src: shots[item.key as keyof type
         </Section>
 
         <Section id="screens" eyebrow={screens.eyebrow} title={screens.title} lead={screens.lead}>
-          <ScreenGallery screens={gallery} />
+          <PhoneStrip screens={gallery} />
+        </Section>
+
+        <Section id="decisions" eyebrow={decisions.eyebrow} title={decisions.title} lead={decisions.lead}>
+          <div class="decisions">
+            {blocks.map((block, i) => <PhoneDecision index={i + 1} tags={block.tags} title={block.title} description={block.description} phones={block.phones} />)}
+          </div>
         </Section>
 
         <Section id="feedback" eyebrow={feedback.eyebrow} title={feedback.title}>
@@ -113,6 +125,12 @@ const gallery = screens.items.map((item) => ({ src: shots[item.key as keyof type
     flex-direction: column;
     gap: var(--case-section-gap);
     min-width: 0;
+  }
+
+  .decisions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-80);
   }
 
   @media (max-width: 1023px) {

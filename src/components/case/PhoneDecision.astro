@@ -1,0 +1,118 @@
+---
+import Phone from './Phone.astro';
+
+interface Props {
+  index: number;
+  tags: readonly string[];
+  title: string;
+  description: string;
+  phones: readonly { src: ImageMetadata; alt: string }[];
+}
+
+const { index, tags, title, description, phones } = Astro.props;
+---
+
+<article class:list={['decision', { 'decision--flip': index % 2 === 0 }]}>
+  <div class="decision__stage">
+    <div class="decision__phones">
+      {phones.map((phone) => (
+        <div class="decision__phone"><Phone src={phone.src} alt={phone.alt} /></div>
+      ))}
+    </div>
+  </div>
+
+  <div class="decision__text">
+    <ul class="decision__tags">
+      {tags.map((tag) => <li>{tag}</li>)}
+    </ul>
+    <h3 class="decision__title">{title}</h3>
+    <p class="decision__description">{description}</p>
+  </div>
+</article>
+
+<style>
+  .decision {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: var(--space-32);
+    align-items: center;
+  }
+
+  .decision--flip .decision__stage {
+    order: 2;
+  }
+
+  /* The phone stands on a lattice of soft circles, as on a shelf. */
+  .decision__stage {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-52) var(--space-24);
+    border-radius: var(--radius-card);
+    background-color: var(--sleep-mist);
+    background-image: radial-gradient(circle, var(--sleep-dots) 0 46%, transparent 47%);
+    background-size: 56px 56px;
+  }
+
+  .decision__phones {
+    display: flex;
+    gap: var(--space-16);
+    justify-content: center;
+  }
+
+  .decision__phone {
+    width: min(100%, 240px);
+  }
+
+  .decision__text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    min-width: 0;
+  }
+
+  .decision__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+  }
+
+  .decision__tags li {
+    padding: var(--space-4) var(--space-12);
+    border-radius: var(--radius-pill);
+    background: var(--case-pill-bg);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-snug);
+    color: var(--case-pill-text);
+  }
+
+  .decision__tags li:first-child {
+    background: var(--sleep-pill-blue);
+  }
+
+  .decision__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-case-h3);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-heading);
+    color: var(--color-ink);
+  }
+
+  .decision__description {
+    max-width: var(--case-measure);
+    font-size: var(--fs-18);
+    line-height: var(--lh-body);
+    color: var(--color-muted);
+  }
+
+  @media (max-width: 1023px) {
+    .decision {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .decision--flip .decision__stage {
+      order: 0;
+    }
+  }
+</style>

@@ -102,6 +102,8 @@
   --sleep-mist: #f1f4f9; /* the Consultant tint, chips and tracks */
   --sleep-sand: #e9e2d6; /* pills */
   --sleep-muted: #626870;
+  --sleep-pill-blue: #c3e3ee; /* the first tag of a decision */
+  --sleep-dots: #e6e9f1; /* the circle lattice behind a phone */
   --sleep-line: rgb(44 47 51 / 0.12);
 
   /* The seller-settings prototype (free delivery card), measured from the design */

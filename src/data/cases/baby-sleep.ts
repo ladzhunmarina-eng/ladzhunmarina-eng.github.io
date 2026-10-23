@@ -36,6 +36,7 @@ export const babySleepCase = {
     { id: 'goal', label: 'Goal' },
     { id: 'persona', label: 'Persona' },
     { id: 'screens', label: 'Screens' },
+    { id: 'decisions', label: 'Decisions' },
     { id: 'feedback', label: 'Feedback' },
   ],
 
@@ -102,7 +103,7 @@ export const babySleepCase = {
   screens: {
     eyebrow: 'Screens',
     title: 'From sign-up to the sleep trend.',
-    lead: 'Parents log sleep in a few taps and read it as a day, a trend or a calendar; consultants manage clients and see the same data.',
+    lead: 'Six of the screens, from sign-up to the sleep trend. Scroll sideways.',
     items: [
       { key: 'signup', label: 'Sign-up', alt: 'Sign-up screen: choose Parent or Consultant, or log in.' },
       { key: 'plans', label: 'Subscription plans', alt: 'Subscription plans: Basic and Premium, yearly or monthly, with what the plan includes.' },
@@ -110,6 +111,42 @@ export const babySleepCase = {
       { key: 'tracker', label: 'Sleep tracker', alt: 'Day view of sleep with totals, a night sleep block and a running timer.' },
       { key: 'trend', label: 'Trend view', alt: 'Weekly trend chart of day, night and total sleep with averages and totals.' },
       { key: 'calendar', label: 'Calendar view', alt: 'Calendar view of night and day sleep blocks across a week.' },
+    ],
+  },
+
+  decisions: {
+    eyebrow: 'Key decisions',
+    title: 'Four choices that shaped the app.',
+    lead: 'Parents log sleep in a few taps and read it as a day, a trend or a calendar; consultants manage clients and see the same data.',
+    items: [
+      {
+        tags: ['Onboarding', 'Roles'],
+        title: 'Two roles from the first tap',
+        description:
+          'Parent or consultant is the first choice, so each person lands in a flow built for them: a sleep diary for parents, a client list for experts.',
+        phones: ['signup'],
+      },
+      {
+        tags: ['Tracking', 'Timer'],
+        title: 'Log sleep without leaving the day',
+        description:
+          'The day view keeps totals on top, night and day sleep as blocks on a timeline, and a running timer within thumb reach.',
+        phones: ['tracker'],
+      },
+      {
+        tags: ['Analysis', 'Calendar'],
+        title: 'See the pattern, not just the trend',
+        description:
+          'The period view switches between a trend chart with averages and totals, and a calendar of sleep blocks, so a whole week reads at a glance.',
+        phones: ['trend', 'calendar'],
+      },
+      {
+        tags: ['Consultants', 'Clients'],
+        title: 'Every client and their diary status in one list',
+        description:
+          'Active and archived clients, whether their diary has started, the package they are on and its dates: everything an expert needs before opening a diary.',
+        phones: ['clients'],
+      },
     ],
   },
 
