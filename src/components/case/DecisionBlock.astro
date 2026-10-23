@@ -48,7 +48,8 @@ const hasMedia = Astro.slots.has('media');
     display: grid;
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     gap: var(--space-32);
-    align-items: start;
+    /* the text sits level with the middle of the mockup */
+    align-items: center;
   }
 
   .decision__head {
@@ -66,7 +67,7 @@ const hasMedia = Astro.slots.has('media');
     color: var(--case-accent);
   }
 
-  /* two soft pills in a row: the first in the accent tint, the second neutral */
+  /* two soft pills in a row: the first in the beige of the platform pills, the second in the peach */
   .decision__tags {
     display: flex;
     flex-wrap: wrap;
@@ -76,14 +77,14 @@ const hasMedia = Astro.slots.has('media');
   .decision__tag {
     padding: var(--space-4) var(--space-12);
     border-radius: var(--radius-pill);
-    background: var(--erma-tint);
+    background: var(--erma-peach);
     font-size: var(--fs-14);
     line-height: var(--lh-snug);
     color: var(--color-ink);
   }
 
   .decision__tag--accent {
-    background: var(--erma-orange-tint);
+    background: var(--erma-pill);
   }
 
   .decision__title {
