@@ -38,7 +38,6 @@ export const ermaCase = {
     { id: 'process', label: 'Process' },
     { id: 'decisions', label: 'Solution' },
     { id: 'outcome', label: 'Outcome' },
-    { id: 'retrospective', label: 'Retrospective' },
   ],
 
   problem: {
@@ -158,16 +157,6 @@ export const ermaCase = {
       { stage: 'Crew assembly', before: 'Phone rounds, rosters by hand', after: 'A roster where every yes, no and silence is tracked' },
       { stage: 'Timesheets', before: 'Paper timesheets', after: 'Uploaded in batches, checked for foreman, dates and signature' },
       { stage: 'Invoice', before: 'Invoice by hand', after: 'Built from signed timesheets on the event dashboard' },
-    ],
-  },
-
-  retrospective: {
-    eyebrow: 'Retrospective',
-    title: '[What I’d do differently.]',
-    columns: [
-      { title: 'What worked', items: ['[2–3 sentences.]'] },
-      { title: 'What I’d change', items: ['[2–3 sentences.]'] },
-      { title: 'What’s next', items: ['[2–3 sentences.]'] },
     ],
   },
 } as const;

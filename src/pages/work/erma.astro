@@ -8,7 +8,6 @@ import ChallengeCards from '../../components/case/ChallengeCards.astro';
 import ProcessChart from '../../components/case/ProcessChart.astro';
 import CasePhoto from '../../components/case/CasePhoto.astro';
 import QuoteCard from '../../components/case/QuoteCard.astro';
-import ColumnLists from '../../components/case/ColumnLists.astro';
 import DecisionBlock from '../../components/case/DecisionBlock.astro';
 import RosterMenuDemo from '../../components/case/RosterMenuDemo.astro';
 import ShotFrame from '../../components/case/ShotFrame.astro';
@@ -19,7 +18,7 @@ import TimesheetUploadDemo from '../../components/case/TimesheetUploadDemo.astro
 import NextCase from '../../components/case/NextCase.astro';
 import { ermaCase as study } from '../../data/cases/erma';
 
-const { problem, challenge, process, decisions, outcome, retrospective } = study;
+const { problem, challenge, process, decisions, outcome } = study;
 
 ---
 
@@ -93,10 +92,6 @@ const { problem, challenge, process, decisions, outcome, retrospective } = study
 
         <Section id="outcome" eyebrow={outcome.eyebrow} title={outcome.title} lead={outcome.lead}>
           <BeforeAfterCards cards={outcome.cards} />
-        </Section>
-
-        <Section id="retrospective" eyebrow={retrospective.eyebrow} title={retrospective.title}>
-          <ColumnLists columns={retrospective.columns} bullets={false} />
         </Section>
 
         <NextCase current="/work/erma" />
