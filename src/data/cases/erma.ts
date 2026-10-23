@@ -21,7 +21,7 @@ export const ermaCase = {
     tags: ['Rosters', 'Dashboards', 'Roles and permissions', 'Timesheets', 'Fleet management', 'Workflow'],
     areasLabel: 'My scope',
     eyebrow: 'Power utilities · Storm response',
-    title: 'Post-Storm Power Restoration Platform',
+    title: 'Post-Storm Power\nRestoration Platform', // the line breaks after Power
     lead: 'A multi-tenant platform that replaced phone-based crew callouts for U.S. utility contractors: several companies, about 15 roles, one 90-hour restoration window.',
     meta: [
       { label: 'Client', value: 'Vision Utilities, Inc.' },
