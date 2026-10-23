@@ -8,12 +8,12 @@ interface Props {
 const { phases, bars } = Astro.props;
 ---
 
-<div class="chart" style={`--n: ${phases.length}`}>
+<div class="chart" data-chart style={`--n: ${phases.length}`}>
   <div class="chart__plot">
     <span class="chart__grid" aria-hidden="true"></span>
     <ol class="chart__bars">
-      {bars.map((bar) => (
-        <li class="bar" style={`--start: ${bar.start}; --length: ${bar.length}`}>{bar.label}</li>
+      {bars.map((bar, index) => (
+        <li class="bar" style={`--start: ${bar.start}; --length: ${bar.length}; --i: ${index}`}>{bar.label}</li>
       ))}
     </ol>
   </div>
@@ -71,6 +71,16 @@ const { phases, bars } = Astro.props;
     color: var(--color-ink);
   }
 
+  /* Once in view, the bars are drawn in turn, each growing from its left edge. Without script or with reduced motion they are simply there. */
+  [data-motion='ready'] .bar {
+    clip-path: inset(0 100% 0 0 round calc(var(--case-bar-pill-h) / 2));
+  }
+
+  [data-motion='go'] .bar {
+    clip-path: inset(0 0 0 0 round calc(var(--case-bar-pill-h) / 2));
+    transition: clip-path 0.8s cubic-bezier(0.25, 1, 0.5, 1) calc(var(--i) * 0.12s);
+  }
+
   .chart__phases {
     display: grid;
     grid-template-columns: repeat(var(--n), minmax(0, 1fr));
@@ -105,3 +115,21 @@ const { phases, bars } = Astro.props;
     }
   }
 </style>
+
+<script>
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  document.querySelectorAll<HTMLElement>('[data-chart]').forEach((chart) => {
+    if (calm.matches || !('IntersectionObserver' in window)) return;
+    chart.dataset.motion = 'ready';
+    const seen = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        seen.disconnect();
+        chart.dataset.motion = 'go';
+      },
+      { threshold: 0.3 },
+    );
+    seen.observe(chart);
+  });
+</script>
