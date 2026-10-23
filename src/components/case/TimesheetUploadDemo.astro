@@ -6,7 +6,6 @@ import hover from '../../assets/images/erma-ts-hover-bg.png';
 import loading from '../../assets/images/erma-ts-loading-bg.png';
 import chip from '../../assets/images/erma-ts-chip.png';
 import bolt from '../../assets/images/erma-ts-bolt.png';
-import table from '../../assets/images/erma-ts-table.png';
 import oneday from '../../assets/images/erma-ts-oneday.png';
 
 interface Props {
@@ -41,7 +40,6 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
     <Image src={upload} alt={alt} widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
     <Image class="ts__layer ts__layer--hover" src={hover} alt="" widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
     <Image class="ts__layer ts__layer--loading" src={loading} alt="" widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
-    <Image class="ts__layer ts__layer--table" src={table} alt="" widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
     <Image class="ts__layer ts__layer--oneday" src={oneday} alt="" widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
     <ul class="ts__bars" aria-hidden="true">
       {bars.map((bar, i) => (
@@ -90,16 +88,13 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
 
   [data-over] .ts__screen :global(.ts__layer--hover),
   [data-load] .ts__screen :global(.ts__layer--loading),
-  [data-table] .ts__screen :global(.ts__layer--table),
   [data-oneday] .ts__screen :global(.ts__layer--oneday) {
     opacity: 1;
   }
 
-  /* each screen replaces the one before it: the hover is only the drop zone turning blue; the loader covers it, the bars screen covers the loader,
-     and the table of files, the last screen, covers the bars */
+  /* each screen replaces the one before it: the hover is only the drop zone turning blue; the loader covers it, the bars screen covers the loader */
   [data-load] .ts__screen :global(.ts__layer--hover),
-  [data-oneday] .ts__screen :global(.ts__layer--loading),
-  [data-table] .ts__screen :global(.ts__layer--oneday) {
+  [data-oneday] .ts__screen :global(.ts__layer--loading) {
     opacity: 0;
   }
 
@@ -121,7 +116,7 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
     transition: opacity 0.3s ease calc(var(--i) * 0.1s);
   }
 
-  [data-oneday]:not([data-table]) .ts__bar {
+  [data-oneday] .ts__bar {
     opacity: 1;
   }
 
@@ -243,7 +238,7 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
     let timers: number[] = [];
     let running = false;
     const at = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms));
-    const reset = () => ['data-chip', 'data-moved', 'data-over', 'data-drop', 'data-load', 'data-table', 'data-oneday'].forEach((name) => demo.removeAttribute(name));
+    const reset = () => ['data-chip', 'data-moved', 'data-over', 'data-drop', 'data-load', 'data-oneday'].forEach((name) => demo.removeAttribute(name));
     const countUp = (el: HTMLElement, delay: number) => {
       const target = Number(el.dataset.count);
       const start = performance.now() + delay;
@@ -263,7 +258,7 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
     };
 
     // The drop zone waits, a file is dragged in from below, the zone turns blue, the file is dropped, the loader takes over,
-    // the files' progress bars fill, and the table of files, the last screen, takes over.
+    // the files' progress bars fill.
     const play = () => {
       if (!running) return;
       reset();
@@ -276,9 +271,8 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
         demo.setAttribute('data-oneday', '');
         demo.querySelectorAll<HTMLElement>('[data-count]').forEach((el, i) => countUp(el, 200 + i * 120));
       });
-      at(10000, () => demo.setAttribute('data-table', ''));
-      at(13500, reset);
-      at(14700, play);
+      at(11200, reset);
+      at(12400, play);
     };
 
     new IntersectionObserver(
