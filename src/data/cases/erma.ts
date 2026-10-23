@@ -145,7 +145,7 @@ export const ermaCase = {
       tags: ['Roles and permissions', 'Multi-tenant'],
       title: 'Fifteen roles, one product',
       description: 'Each group sees its slice of the same event: ops the whole picture, the field their own roster, finance the money, the client their request.',
-      missing: 'Missing screen · Users / roles and permissions',
+      alt: 'Settings, Permissions tab: a table of permissions grouped into Users and Incident permissions, with a checkbox for each of four roles: System Admin, Business Manager, General Foreman and Lineman.',
     },
     timesheets: {
       index: '04',

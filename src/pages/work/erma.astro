@@ -16,6 +16,7 @@ import MissingScreen from '../../components/case/MissingScreen.astro';
 import DashboardWindow from '../../components/case/DashboardWindow.astro';
 import OutcomeCards from '../../components/case/OutcomeCards.astro';
 import quotePhoto from '../../assets/images/erma-quote.webp';
+import permissionsShot from '../../assets/images/erma-permissions.png';
 import vUpload from '../../assets/images/erma-v-upload.png';
 import vAttachment from '../../assets/images/erma-v-attachment.png';
 import NextCase from '../../components/case/NextCase.astro';
@@ -86,7 +87,9 @@ const { problem, challenge, process, decisions, outcome, retrospective } = study
               title={decisions.permissions.title}
               description={decisions.permissions.description}
             >
-              <MissingScreen slot="media" label={decisions.permissions.missing} />
+              <Fragment slot="media">
+                <ShotFrame src={permissionsShot} alt={decisions.permissions.alt} shield={{ left: 3.75, top: 2.54, width: 10.07, height: 4.78 }} />
+              </Fragment>
             </DecisionBlock>
 
             <DecisionBlock
