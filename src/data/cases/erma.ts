@@ -96,7 +96,7 @@ export const ermaCase = {
   decisions: {
     eyebrow: 'Solution',
     title: 'Key design decisions.',
-    lead: 'Four decisions that carried the business problem into the interface. Each one names the pain, the choice, the reason, and the trade-off.',
+    lead: 'Four decisions that carried the business problem into the interface.',
     map: {
       stages: ['Event', 'Roster', 'Assign', 'On site', 'Timesheets', 'Invoice'],
       bars: [
@@ -107,15 +107,11 @@ export const ermaCase = {
       ],
       legend: { stage: 'Fixes a specific stage', event: 'Holds the whole event together' },
     },
-    tradeoff: '[What you gave up, simplified or deferred, and why it was acceptable.]',
     roster: {
       index: '01',
-      title: 'Roster assembly instead of phone calls.',
-      lead: 'What used to be 20 phone calls is now a roster with three states: draft, active, closed.',
-      pain: 'Every callout started with the crew lead phoning N people one by one. Confirmations lived in his head.',
-      decision:
-        'A roster the crew lead builds by filtering people by skill, location, and availability. Each confirmation is tracked inside the roster; ops sees every roster of the event in one list, filtered by state.',
-      why: 'The bottleneck was never the call itself but the follow-up: who said yes, who went quiet. Making confirmation visible removes the second round of calls.',
+      tags: ['Rosters', 'Field ops'],
+      title: 'Confirmations you can see',
+      description: 'A crew lead builds the roster by skill, location and availability, and every yes, no and silence is tracked inside it. The second round of calls disappears.',
       listAlt: 'The My Rosters screen of an event: a grid of twelve roster cards, each with an ID, a name, a state tag (draft, pending approval, mobilized, activated, closed, demobilized) and a menu button.',
       detailAlt:
         'Inside a roster: two lists side by side, Available Support and the Roster, with checkboxes, an arrow to move the selected people across, and a person being dragged from one list to the other.',
@@ -125,11 +121,9 @@ export const ermaCase = {
     },
     dashboard: {
       index: '02',
-      title: 'One page per event, in the order the questions come up.',
-      pain: 'While crews were out, the state of an event lived in calls, spreadsheets and inboxes. Nobody could answer “are we staffed, where are the trucks, can we invoice yet” from one place.',
-      decision:
-        'An event dashboard that follows the lifecycle top to bottom: status and timeline, staffing, money, fleet, documents. Every number opens its source, and the utility gets a shareable link.',
-      why: 'A general foreman checks the page between calls. Lifecycle order puts the question he has right now near the top.',
+      tags: ['Dashboard', 'Ops'],
+      title: 'Questions in the order they come up',
+      description: 'Status, staffing, money, fleet and documents follow the event’s lifecycle. Every number opens its source.',
       parts: [
         { at: 171, title: 'Overview', text: 'Name, status, start and end dates, duration, utility company.' },
         { at: 335, title: 'Timeline', text: 'Hired, Activated, Closed, each with a timestamp.' },
@@ -146,27 +140,17 @@ export const ermaCase = {
     },
     permissions: {
       index: '03',
-      title: '[15 roles, one permission model.]',
-      lead: '[How 15 roles across several companies stayed one product instead of fifteen.]',
-      pain: '[Who could see and do what before, and where it broke.]',
-      decision: '[Role groups, permission matrix, a workspace per company: what you actually designed.]',
-      groups: [
-        '[Ops and dispatch: Event summary, all rosters and their states, fleet availability.]',
-        '[Field: Own roster and assignment, event details, own timesheets.]',
-        '[Finance and admin: Timesheets across rosters, invoices, workspace settings.]',
-        '[Client: Event status and crews assigned to their request.]',
-      ],
+      tags: ['Roles and permissions', 'Multi-tenant'],
+      title: 'Fifteen roles, one product',
+      description: 'Each group sees its slice of the same event: ops the whole picture, the field their own roster, finance the money, the client their request.',
       missing: 'Missing screen · Users / roles and permissions',
-      why: '[The reasoning behind the structure.]',
     },
     timesheets: {
       index: '04',
-      title: '[Unsigned timesheets are what delay the invoice.]',
-      lead: '[How hours logged on site turn into the client invoice without disputes.]',
-      pain: '[Timesheet errors turned into invoice disputes.]',
-      decision: '[Timesheet sign-off, then invoice upload with final amount and memo state.]',
+      tags: ['Timesheets', 'Invoicing'],
+      title: 'Sign-off before invoice',
+      description: '[How hours logged on site reach the invoice without disputes.]',
       missing: 'Missing screen · timesheet sign-off',
-      why: '[The reasoning.]',
       uploadAlt: 'The Upload Invoice dialog with a drop zone, a Final Amount field, a Memo and a Final + Submitted state, and Cancel and Save buttons.',
       attachmentAlt: 'An uploaded invoice: Invoice_20278.Pdf, final amount $23 000, marked Memo.',
     },

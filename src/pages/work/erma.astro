@@ -57,12 +57,9 @@ const { problem, challenge, process, decisions, outcome, retrospective } = study
             <DecisionBlock
               id="decision-roster"
               index={decisions.roster.index}
+              tags={decisions.roster.tags}
               title={decisions.roster.title}
-              lead={decisions.roster.lead}
-              pain={decisions.roster.pain}
-              decision={decisions.roster.decision}
-              why={decisions.roster.why}
-              tradeoff={decisions.tradeoff}
+              description={decisions.roster.description}
             >
               <Fragment slot="media">
                 <RosterMenuDemo alt={decisions.roster.listAlt} menuAlt={decisions.roster.menuAlt} detailAlt={decisions.roster.detailAlt} resourcesAlt={decisions.roster.resourcesAlt} />
@@ -72,11 +69,9 @@ const { problem, challenge, process, decisions, outcome, retrospective } = study
             <DecisionBlock
               id="decision-dashboard"
               index={decisions.dashboard.index}
+              tags={decisions.dashboard.tags}
               title={decisions.dashboard.title}
-              pain={decisions.dashboard.pain}
-              decision={decisions.dashboard.decision}
-              why={decisions.dashboard.why}
-              tradeoff={decisions.tradeoff}
+              description={decisions.dashboard.description}
             >
               <DashboardWindow blurLogo parts={decisions.dashboard.parts} />
             </DecisionBlock>
@@ -84,13 +79,9 @@ const { problem, challenge, process, decisions, outcome, retrospective } = study
             <DecisionBlock
               id="decision-permissions"
               index={decisions.permissions.index}
+              tags={decisions.permissions.tags}
               title={decisions.permissions.title}
-              lead={decisions.permissions.lead}
-              pain={decisions.permissions.pain}
-              decision={decisions.permissions.decision}
-              decisionList={decisions.permissions.groups}
-              why={decisions.permissions.why}
-              tradeoff={decisions.tradeoff}
+              description={decisions.permissions.description}
             >
               <MissingScreen slot="media" label={decisions.permissions.missing} />
             </DecisionBlock>
@@ -98,12 +89,9 @@ const { problem, challenge, process, decisions, outcome, retrospective } = study
             <DecisionBlock
               id="decision-timesheets"
               index={decisions.timesheets.index}
+              tags={decisions.timesheets.tags}
               title={decisions.timesheets.title}
-              lead={decisions.timesheets.lead}
-              pain={decisions.timesheets.pain}
-              decision={decisions.timesheets.decision}
-              why={decisions.timesheets.why}
-              tradeoff={decisions.tradeoff}
+              description={decisions.timesheets.description}
             >
               <Fragment slot="media">
                 <MissingScreen label={decisions.timesheets.missing} />

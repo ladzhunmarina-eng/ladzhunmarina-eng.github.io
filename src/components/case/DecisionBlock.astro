@@ -1,52 +1,31 @@
 ---
 interface Props {
-  /** The anchor the decisions map links to */
+  /** The anchor the Challenge section links to */
   id?: string;
   /** "01", "02": the number of the decision */
   index?: string;
+  /** Two small pills: the first in the accent tint, the second neutral */
+  tags?: readonly string[];
   title: string;
-  lead?: string;
-  pain?: string;
-  decision?: string;
-  /** A short list under the decision (draft notes) */
-  decisionList?: readonly string[];
-  why?: string;
-  tradeoff?: string;
+  description?: string;
 }
 
-const { id, index, title, lead, pain, decision, decisionList, why, tradeoff } = Astro.props;
-const steps = [
-  { label: 'Pain', text: pain },
-  { label: 'Decision', text: decision },
-  { label: 'Why', text: why },
-  { label: 'Trade-off', text: tradeoff },
-].filter((step) => step.text);
+const { id, index, tags = [], title, description } = Astro.props;
 const hasMedia = Astro.slots.has('media');
 ---
 
 <article id={id} class:list={['decision', { 'decision--wide': !hasMedia }]}>
-  <header class="decision__head">
-    {index && <p class="decision__index">{index}</p>}
-    <h3 class="decision__title">{title}</h3>
-    {lead && <p class="decision__lead">{lead}</p>}
-  </header>
-
   <div class="decision__body">
-    <dl class="decision__steps">
-      {steps.map((step) => (
-        <div>
-          <dt>{step.label}</dt>
-          <dd>
-            {step.text}
-            {step.label === 'Decision' && decisionList && (
-              <ul class="decision__list">
-                {decisionList.map((item) => <li>{item}</li>)}
-              </ul>
-            )}
-          </dd>
-        </div>
-      ))}
-    </dl>
+    <header class="decision__head">
+      {index && <p class="decision__index">{index}</p>}
+      {tags.length > 0 && (
+        <ul class="decision__tags" aria-label="Tags">
+          {tags.map((tag, i) => <li class:list={['decision__tag', { 'decision__tag--accent': i === 0 }]}>{tag}</li>)}
+        </ul>
+      )}
+      <h3 class="decision__title">{title}</h3>
+      {description && <p class="decision__description">{description}</p>}
+    </header>
     {hasMedia && (
       <div class="decision__media">
         <slot name="media" />
@@ -65,10 +44,17 @@ const hasMedia = Astro.slots.has('media');
     gap: var(--space-24);
   }
 
+  .decision__body {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--space-32);
+    align-items: start;
+  }
+
   .decision__head {
     display: flex;
     flex-direction: column;
-    gap: var(--space-8);
+    gap: var(--space-12);
     max-width: var(--case-measure);
   }
 
@@ -80,6 +66,26 @@ const hasMedia = Astro.slots.has('media');
     color: var(--case-accent);
   }
 
+  /* two soft pills in a row: the first in the accent tint, the second neutral */
+  .decision__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+  }
+
+  .decision__tag {
+    padding: var(--space-4) var(--space-12);
+    border-radius: var(--radius-pill);
+    background: var(--erma-tint);
+    font-size: var(--fs-14);
+    line-height: var(--lh-snug);
+    color: var(--color-ink);
+  }
+
+  .decision__tag--accent {
+    background: var(--erma-orange-tint);
+  }
+
   .decision__title {
     font-family: var(--font-display);
     font-size: var(--fs-case-h3);
@@ -89,45 +95,10 @@ const hasMedia = Astro.slots.has('media');
     color: var(--color-ink);
   }
 
-  .decision__lead {
+  .decision__description {
     font-size: var(--fs-18);
     line-height: var(--lh-body);
-    color: var(--color-ink);
-  }
-
-  .decision__body {
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: var(--space-32);
-    align-items: start;
-  }
-
-  .decision__steps {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-16);
-  }
-
-  .decision__steps dt {
-    margin-bottom: var(--space-4);
-    font-size: var(--fs-14);
-    font-weight: var(--weight-bold);
-    line-height: var(--lh-snug);
-    color: var(--case-accent);
-  }
-
-  .decision__steps dd {
-    margin: 0;
-    font-size: var(--fs-16);
-    line-height: var(--lh-body);
-    color: var(--color-ink);
-  }
-
-  .decision__list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-8);
-    margin-top: var(--space-12);
+    color: var(--color-muted);
   }
 
   .decision__media {
@@ -137,15 +108,9 @@ const hasMedia = Astro.slots.has('media');
     min-width: 0;
   }
 
-  /* no pictures beside it: the four steps run side by side */
+  /* no pictures beside it: the text takes the row */
   .decision--wide .decision__body {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .decision--wide .decision__steps {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(var(--case-card-min-wide), 1fr));
-    gap: var(--space-24);
   }
 
   @media (max-width: 1023px) {
