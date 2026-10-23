@@ -93,6 +93,17 @@
   --erma-muted: #666; /* labels and secondary text */
   --erma-photo-w: 320px; /* the persona's portrait */
 
+  /* Baby Sleep case: palette from its Figma "Fonts & Colors" (page, accent, ink, two tints) */
+  --sleep-ink: #2c2f33;
+  --sleep-page: #f6f3ee;
+  --sleep-accent: #3ea4c4;
+  --sleep-accent-text: #1a6f8c; /* the accent darkened for small text on the page (contrast 5:1) */
+  --sleep-lavender: #f5f5fd; /* the Parent tint */
+  --sleep-mist: #f1f4f9; /* the Consultant tint, chips and tracks */
+  --sleep-sand: #e9e2d6; /* pills */
+  --sleep-muted: #626870;
+  --sleep-line: rgb(44 47 51 / 0.12);
+
   /* The seller-settings prototype (free delivery card), measured from the design */
   --form-card-bg: #fafbfb;
   --form-card-line: #d8dfe0;
@@ -624,10 +635,44 @@
   --color-icon-bg: var(--erma-tint);
 }
 
+[data-case-palette='sleep'] {
+  --case-bg: var(--sleep-accent);
+  --case-accent: var(--sleep-accent-text);
+  --case-page: var(--sleep-page);
+  --case-line: var(--sleep-line);
+  --case-track: var(--sleep-mist);
+  --case-bar: var(--sleep-ink);
+  --case-strip-bg: var(--sleep-ink);
+  --case-strip-fg: var(--color-white);
+  --case-strip-value: var(--sleep-accent);
+  --case-on-bg: var(--sleep-ink);
+  --case-chip-text: var(--sleep-ink);
+  --case-glass: var(--sleep-mist);
+  --case-nav-current-bg: var(--sleep-mist);
+  --case-nav-dot-color: var(--sleep-accent);
+  --case-process-bar: var(--sleep-sand);
+  --case-phase-text: var(--sleep-muted);
+  --case-pill-bg: var(--sleep-sand);
+  --case-pill-text: var(--sleep-ink);
+  --case-label: var(--sleep-muted);
+  --case-hairline: var(--sleep-line);
+  --case-dark: var(--sleep-ink);
+  --case-dark-fg: var(--sleep-accent);
+  --case-hot: var(--sleep-accent); /* the highlighted (Solution) card */
+  --color-ink: var(--sleep-ink);
+  --color-muted: var(--sleep-muted);
+  --color-icon-bg: var(--sleep-mist);
+}
+
 /* The header and footer sit outside the case article, so a branded page reaches them from the root. */
 :root:has([data-case-palette='erma']) {
   --header-backing: var(--erma-page);
   --color-footer-accent: var(--erma-orange);
+}
+
+:root:has([data-case-palette='sleep']) {
+  --header-backing: var(--sleep-page);
+  --color-footer-accent: var(--sleep-accent);
 }
 
 :root:has([data-case-palette='olx']) {

@@ -1,0 +1,200 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  photo: ImageMetadata;
+  persona: {
+    name: string;
+    role: string;
+    facts: readonly { label: string; value: string }[];
+    biography: string;
+    groups: readonly { title: string; items: readonly string[] }[];
+    channels: readonly string[];
+    quote: string;
+    photoAlt: string;
+  };
+}
+
+const { photo, persona } = Astro.props;
+---
+
+<article class="persona" aria-label={persona.name}>
+  <div class="persona__photo">
+    <Image class="persona__image" src={photo} alt={persona.photoAlt} widths={[360, 720]} sizes="(max-width: 1023px) 100vw, 320px" quality={80} />
+  </div>
+
+  <div class="persona__body">
+    <header class="persona__head">
+      <h3 class="persona__name">{persona.name}</h3>
+      <p class="persona__role">{persona.role}</p>
+      <dl class="persona__facts">
+        {persona.facts.map((fact) => (
+          <div><dt>{fact.label}</dt><dd>{fact.value}</dd></div>
+        ))}
+      </dl>
+    </header>
+
+    <p class="persona__bio">{persona.biography}</p>
+
+    <div class="persona__groups">
+      {persona.groups.map((group) => (
+        <section class="persona__group">
+          <h4>{group.title}</h4>
+          <ul>{group.items.map((item) => <li>{item}</li>)}</ul>
+        </section>
+      ))}
+    </div>
+
+    <ul class="persona__channels" aria-label="Channels and devices">
+      {persona.channels.map((channel) => <li>{channel}</li>)}
+    </ul>
+
+    <blockquote class="persona__quote">{persona.quote}</blockquote>
+  </div>
+</article>
+
+<style>
+  .persona {
+    display: grid;
+    grid-template-columns: var(--erma-photo-w) minmax(0, 1fr);
+    gap: var(--space-32);
+    padding: var(--case-card-pad);
+    border: 1px solid var(--case-line);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+  }
+
+  .persona__photo {
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    background: var(--color-icon-bg);
+  }
+
+  .persona__photo :global(.persona__image) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .persona__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-20);
+    min-width: 0;
+  }
+
+  .persona__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-4) var(--space-16);
+  }
+
+  .persona__name {
+    font-family: var(--font-display);
+    font-size: var(--fs-24);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-heading);
+    color: var(--color-ink);
+  }
+
+  .persona__role {
+    font-size: var(--fs-16);
+    color: var(--case-accent);
+    font-weight: var(--weight-medium);
+  }
+
+  .persona__facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-16);
+    width: 100%;
+    font-size: var(--fs-14);
+    line-height: var(--lh-snug);
+    color: var(--color-muted);
+  }
+
+  .persona__facts div {
+    display: flex;
+    gap: var(--space-4);
+  }
+
+  .persona__facts dd {
+    margin: 0;
+    color: var(--color-ink);
+  }
+
+  .persona__bio {
+    font-size: var(--fs-16);
+    line-height: var(--lh-body);
+    color: var(--color-ink);
+  }
+
+  .persona__groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--case-card-min), 1fr));
+    gap: var(--space-20) var(--space-24);
+  }
+
+  .persona__group h4 {
+    margin-bottom: var(--space-8);
+    font-size: var(--fs-12);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--case-accent);
+  }
+
+  .persona__group ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    font-size: var(--fs-14);
+    line-height: var(--lh-snug);
+    color: var(--color-ink);
+  }
+
+  .persona__channels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+  }
+
+  .persona__channels li {
+    padding: var(--space-4) var(--space-12);
+    border-radius: var(--radius-pill);
+    background: var(--case-pill-bg);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-snug);
+    color: var(--case-pill-text);
+  }
+
+  .persona__quote {
+    margin: auto 0 0;
+    padding: var(--space-16) var(--space-20);
+    border-radius: var(--radius-card);
+    background: var(--case-glass);
+    font-family: var(--font-display);
+    font-size: var(--fs-18);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-tight);
+    color: var(--color-ink);
+  }
+
+  @media (max-width: 1023px) {
+    .persona {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .persona__photo {
+      aspect-ratio: 4 / 3;
+    }
+
+    .persona__photo :global(.persona__image) {
+      object-position: top;
+    }
+  }
+</style>

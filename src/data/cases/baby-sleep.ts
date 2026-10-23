@@ -1,0 +1,125 @@
+/*
+ * Baby Sleep Tracking Mobile App case study: content only, no layout.
+ * Lives in src/data/cases/baby-sleep.ts and is rendered by src/pages/work/baby-sleep.astro.
+ *
+ * The structure follows the "Baby Sleep" frame in the Figma file (node 70:69484), arranged like the ERMA case.
+ * Anything in [square brackets] is a placeholder that stays visible on the page until it is filled in.
+ */
+
+export const babySleepCase = {
+  slug: 'baby-sleep',
+  theme: 'lilac', // the fallback accent; the page uses its brand palette (see tokens.css)
+
+  seo: {
+    title: 'Baby Sleep Tracking Mobile App — Marina, Product Designer',
+    description:
+      'A mobile app for tracking baby sleep that connects parents with sleep experts: routine analysis, record keeping and easy communication.',
+  },
+
+  hero: {
+    tags: ['Mobile app', 'Two user roles', 'Sleep diary', 'Trends and calendar', 'Subscriptions'],
+    areasLabel: 'My scope',
+    eyebrow: 'Parenting · Sleep consulting',
+    title: 'Baby Sleep Tracking\nMobile App',
+    lead: 'A mobile app for tracking baby sleep that connects parents with sleep experts, offering routine analysis, record keeping, and easy communication to improve sleep quality.',
+    meta: [
+      { label: 'Client', value: 'Sleep Consultant' },
+      { label: 'Industry', value: 'B2C' },
+      { label: 'Country', value: 'Ukraine' },
+      { label: 'Year', value: '2024' },
+    ],
+    focus: [] as string[],
+    image: 'Two phones: the sign-up screen for parents and consultants, and a baby profile with the sleep diary calendar.',
+  },
+
+  nav: [
+    { id: 'goal', label: 'Goal' },
+    { id: 'persona', label: 'Persona' },
+    { id: 'screens', label: 'Screens' },
+    { id: 'feedback', label: 'Feedback' },
+  ],
+
+  goal: {
+    eyebrow: 'Goal and challenge',
+    title: 'One app for the parent who tracks and the expert who advises.',
+    lead: 'The app starts from two roles with different needs, so the first decision was to build for both at once.',
+    cards: [
+      {
+        title: 'Objective',
+        text: 'Develop an app that helps parents track their baby’s sleep patterns and work together with sleep consultants to improve the child’s routine.',
+      },
+      {
+        title: 'Challenges',
+        text: 'Balancing the needs of parents and consultants, ensuring accurate data tracking, and creating a simple way to share insights and progress.',
+      },
+      {
+        title: 'Solution',
+        text: 'A collaborative mobile platform with sleep tracking, notes, and direct communication tools that connect parents and experts to build healthier sleep habits for babies.',
+        highlight: true,
+      },
+    ],
+  },
+
+  persona: {
+    eyebrow: 'User persona',
+    title: 'Two roles in the system: sleep expert and parent.',
+    lead: 'Each role has its own goals and needs. The parent persona drove the tracking flows.',
+    card: {
+      name: 'Anna Smith',
+      role: 'First-time mom',
+      facts: [
+        { label: 'Age', value: '29' },
+        { label: 'Location', value: 'Lviv, Ukraine' },
+      ],
+      biography:
+        'Anna is a young mother who recently gave birth to her first child. She is adjusting to a new lifestyle filled with sleepless nights, feeding schedules, and daily challenges of parenthood. Anna is proactive and seeks reliable tools that can help her track her baby’s sleep patterns, understand routines, and connect with trusted experts for guidance. She values clear communication, reassurance, and actionable advice.',
+      groups: [
+        { title: 'Values', items: ['Care and safety of the baby', 'Trustworthy information', 'Emotional support and guidance'] },
+        {
+          title: 'Goals',
+          items: [
+            'Track and analyze her baby’s sleep schedule',
+            'Receive expert recommendations for healthier sleep patterns',
+            'Reduce stress and feel more confident as a parent',
+          ],
+        },
+        {
+          title: 'Pain points',
+          items: [
+            'Lack of knowledge about baby sleep cycles',
+            'Feeling overwhelmed and exhausted',
+            'Difficulty finding reliable expert support',
+            'Confusion about how to adjust baby’s routine',
+          ],
+        },
+      ],
+      channels: ['Mobile app', 'Chat / messaging', 'Video calls'],
+      quote: '“I just want to help my baby sleep better and feel less stressed myself.”',
+      photoAlt: 'A young mother in a white dress holding her smiling baby',
+    },
+  },
+
+  screens: {
+    eyebrow: 'Screens',
+    title: 'From sign-up to the sleep trend.',
+    lead: 'Parents log sleep in a few taps and read it as a day, a trend or a calendar; consultants manage clients and see the same data.',
+    items: [
+      { key: 'signup', label: 'Sign-up', alt: 'Sign-up screen: choose Parent or Consultant, or log in.' },
+      { key: 'plans', label: 'Subscription plans', alt: 'Subscription plans: Basic and Premium, yearly or monthly, with what the plan includes.' },
+      { key: 'clients', label: 'Clients', alt: 'Consultant’s client list with diary status, package and dates.' },
+      { key: 'tracker', label: 'Sleep tracker', alt: 'Day view of sleep with totals, a night sleep block and a running timer.' },
+      { key: 'trend', label: 'Trend view', alt: 'Weekly trend chart of day, night and total sleep with averages and totals.' },
+      { key: 'calendar', label: 'Calendar view', alt: 'Calendar view of night and day sleep blocks across a week.' },
+    ],
+  },
+
+  feedback: {
+    eyebrow: 'Feedback',
+    title: 'Overall rate: 5 ★',
+    review: {
+      heading: 'Total game changer!',
+      text: 'We switched from a different app to this one and it was so far the best decision. The app is very intuitive, the UX is superb, doesn’t have too much information at once so you can get overwhelmed and lost. A separate thank you for a calendar-alike view. It gives a great insight to the sleep patterns rather than a typical trend that such apps offer. Totally recommend! 🔥',
+      source: 'App review · 5 stars · terebara, 17 Jan',
+    },
+  },
+};

@@ -1,0 +1,129 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import CaseBack from '../../components/case/CaseBack.astro';
+import CaseHero from '../../components/case/CaseHero.astro';
+import CaseNav from '../../components/case/CaseNav.astro';
+import Section from '../../components/case/Section.astro';
+import NoteCards from '../../components/case/NoteCards.astro';
+import PersonaCard from '../../components/case/PersonaCard.astro';
+import ScreenGallery from '../../components/case/ScreenGallery.astro';
+import ReviewCard from '../../components/case/ReviewCard.astro';
+import NextCase from '../../components/case/NextCase.astro';
+import heroImage from '../../assets/images/sleep-hero.png';
+import personaPhoto from '../../assets/images/sleep-persona.png';
+import signup from '../../assets/images/sleep-signup.png';
+import plans from '../../assets/images/sleep-plans.png';
+import clients from '../../assets/images/sleep-clients.png';
+import tracker from '../../assets/images/sleep-tracker.png';
+import trend from '../../assets/images/sleep-trend.png';
+import calendar from '../../assets/images/sleep-calendar.png';
+import { babySleepCase as study } from '../../data/cases/baby-sleep';
+
+const { goal, persona, screens, feedback } = study;
+const shots = { signup, plans, clients, tracker, trend, calendar };
+const gallery = screens.items.map((item) => ({ src: shots[item.key as keyof typeof shots], label: item.label, alt: item.alt }));
+---
+
+<Layout title={study.seo.title} description={study.seo.description} current="work">
+  <article class="case" data-case-palette="sleep">
+    <div class="case__container case__top">
+      <div class="case__intro">
+        <CaseBack />
+        <CaseHero hero={study.hero} />
+      </div>
+      <div class="showcase">
+        <Image class="showcase__image" src={heroImage} alt={study.hero.image} widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} loading="eager" />
+      </div>
+    </div>
+
+    <div class="case__container case__main">
+      <CaseNav items={study.nav} />
+
+      <div class="case__sections">
+        <Section id="goal" eyebrow={goal.eyebrow} title={goal.title} lead={goal.lead}>
+          <NoteCards cards={goal.cards} />
+        </Section>
+
+        <Section id="persona" eyebrow={persona.eyebrow} title={persona.title} lead={persona.lead}>
+          <PersonaCard photo={personaPhoto} persona={persona.card} />
+        </Section>
+
+        <Section id="screens" eyebrow={screens.eyebrow} title={screens.title} lead={screens.lead}>
+          <ScreenGallery screens={gallery} />
+        </Section>
+
+        <Section id="feedback" eyebrow={feedback.eyebrow} title={feedback.title}>
+          <ReviewCard heading={feedback.review.heading} text={feedback.review.text} source={feedback.review.source} />
+        </Section>
+
+        <NextCase current="/work/baby-sleep" />
+      </div>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .case {
+    background: var(--case-page);
+  }
+
+  .case__container {
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .case__top {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-56);
+    padding-top: calc(var(--header-h) + var(--space-8) + var(--case-top-shift));
+  }
+
+  .case__intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  /* The two phones sit on a panel the width of the column. */
+  .showcase {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-32);
+    border-radius: var(--radius-card);
+    background: var(--sleep-mist);
+  }
+
+  .showcase :global(.showcase__image) {
+    width: min(100%, 560px);
+    height: auto;
+  }
+
+  .case__main {
+    display: grid;
+    grid-template-columns: var(--case-nav-w) minmax(0, 1fr);
+    gap: var(--case-gap);
+    padding-block: var(--case-section-gap) var(--space-144);
+  }
+
+  .case__sections {
+    display: flex;
+    flex-direction: column;
+    gap: var(--case-section-gap);
+    min-width: 0;
+  }
+
+  @media (max-width: 1023px) {
+    .case__main {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-32);
+      padding-block: var(--space-56) var(--space-92);
+    }
+
+    .case__sections {
+      gap: var(--space-80);
+    }
+  }
+</style>
