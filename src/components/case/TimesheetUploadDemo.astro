@@ -95,14 +95,11 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
     opacity: 1;
   }
 
-  /* each screen replaces the one before it: the hover is only the drop zone turning blue, the loader and the table cover it */
+  /* each screen replaces the one before it: the hover is only the drop zone turning blue; the loader covers it, the bars screen covers the loader,
+     and the table of files, the last screen, covers the bars */
   [data-load] .ts__screen :global(.ts__layer--hover),
-  [data-table] .ts__screen :global(.ts__layer--loading),
-  [data-oneday] .ts__screen :global(.ts__layer--table) {
-    opacity: 0;
-  }
-
-  [data-table] .ts__screen :global(.ts__layer--hover) {
+  [data-oneday] .ts__screen :global(.ts__layer--loading),
+  [data-table] .ts__screen :global(.ts__layer--oneday) {
     opacity: 0;
   }
 
@@ -124,7 +121,7 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
     transition: opacity 0.3s ease calc(var(--i) * 0.1s);
   }
 
-  [data-oneday] .ts__bar {
+  [data-oneday]:not([data-table]) .ts__bar {
     opacity: 1;
   }
 
@@ -207,7 +204,7 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
     animation: ts-pulse 1.1s ease-in-out infinite;
   }
 
-  [data-table] .ts__screen :global(.ts__bolt) {
+  [data-oneday] .ts__screen :global(.ts__bolt) {
     opacity: 0;
     animation: none;
   }
@@ -266,7 +263,7 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
     };
 
     // The drop zone waits, a file is dragged in from below, the zone turns blue, the file is dropped, the loader takes over,
-    // the table of files appears, "One day timesheets" is switched on and the files' progress bars fill.
+    // the files' progress bars fill, and the table of files, the last screen, takes over.
     const play = () => {
       if (!running) return;
       reset();
@@ -275,13 +272,13 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
       at(2200, () => demo.setAttribute('data-over', ''));
       at(3600, () => demo.setAttribute('data-drop', ''));
       at(3700, () => demo.setAttribute('data-load', ''));
-      at(6200, () => demo.setAttribute('data-table', ''));
-      at(8600, () => {
+      at(6200, () => {
         demo.setAttribute('data-oneday', '');
         demo.querySelectorAll<HTMLElement>('[data-count]').forEach((el, i) => countUp(el, 200 + i * 120));
       });
-      at(13200, reset);
-      at(14400, play);
+      at(10000, () => demo.setAttribute('data-table', ''));
+      at(13500, reset);
+      at(14700, play);
     };
 
     new IntersectionObserver(
