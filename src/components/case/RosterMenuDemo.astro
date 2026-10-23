@@ -22,6 +22,7 @@ const cards = names.map((name, i) => ({
   width: (264 / 1440) * 100,
   height: (138 / 1025) * 100,
 }));
+const status = { left: 20.07, top: 44.39, width: 5, height: 2.34 }; // the status chip of the first card, 72 x 24 over the 45 x 24 "draft"
 const back = { left: 19.5, top: 2.2, width: 6.5, height: 4.4 }; // "Back" in the roster page
 
 // Everything is a share of the 1440 x 1025 screen (the picture's own size in the design)
@@ -43,6 +44,8 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
       <button class="demo__card" type="button" style={box(card)} data-card aria-label={`Open the roster ${card.name}`}></button>
     ))}
 
+    <span class="demo__status" style={box(status)} aria-hidden="true">activated</span>
+
     <div class="demo__page" aria-hidden="true" inert>
       <Image src={detail} alt={detailAlt} widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
       <LogoShield {...logo} />
@@ -52,6 +55,7 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
 
     <div class="demo__menu" id="roster-menu" style={box(popup)} role="group" aria-label="Roster menu">
       <Image src={menu} alt={menuAlt} widths={[251, 502]} sizes="(max-width: 1023px) 18vw, 112px" quality={90} />
+      <button class="demo__option" type="button" aria-label="Change status to activated"></button>
     </div>
 
     <span class="demo__cursor" aria-hidden="true">
@@ -62,7 +66,7 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
       <span class="demo__ring" aria-hidden="true"></span>
     </button>
   </div>
-  <figcaption class="demo__hint">Click the dots on a roster card for its menu, or the card itself to step inside.</figcaption>
+  <figcaption class="demo__hint">Click the dots on a roster card for its menu (try “activated”), or the card itself to step inside.</figcaption>
 </figure>
 
 <style>
@@ -74,6 +78,7 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
   }
 
   .demo__screen {
+    container-type: inline-size;
     position: relative;
     overflow: hidden;
     border: 1px solid var(--case-line);
@@ -85,6 +90,57 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
     display: block;
     width: 100%;
     height: auto;
+  }
+
+  /* The new status of the first card: the "draft" chip is covered by an "activated" one, as in the design */
+  .demo__status {
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding-left: 0.833cqw; /* 12 of the 1440px design */
+    border-radius: 0.28cqw;
+    background: #c8dcfa;
+    font-size: 0.694cqw;
+    line-height: 1;
+    color: #000;
+    opacity: 0;
+    transform: scale(0.9);
+    transform-origin: left center;
+    pointer-events: none;
+    transition:
+      opacity 0.25s ease,
+      transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  [data-activated] .demo__status {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* "activated" in the menu's "Change status to" row */
+  .demo__option {
+    position: absolute;
+    left: 10.36%;
+    top: 84%;
+    width: 28.7%;
+    height: 7.2%;
+    padding: 0;
+    border: 0;
+    border-radius: var(--space-4);
+    background: transparent;
+    cursor: pointer;
+    transition: box-shadow 0.15s ease;
+  }
+
+  .demo__option:hover {
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.3);
+  }
+
+  .demo__option:focus-visible {
+    outline: 2px solid var(--erma-ink);
+    outline-offset: 2px;
   }
 
   /* Each roster card is a quiet button over the picture */
@@ -231,6 +287,12 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
     top: 36.8%;
   }
 
+  /* on "activated" in the menu */
+  .demo__cursor[data-at-chip] {
+    left: 24.8%;
+    top: 60.8%;
+  }
+
   /* on the second card, then on "Back" in the roster page */
   .demo__cursor[data-at-card] {
     left: 47%;
@@ -269,6 +331,8 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
 
     .demo__menu,
     .demo__spot,
+    .demo__status,
+    .demo__option,
     .demo__page,
     .demo__card {
       transition: none;
@@ -309,6 +373,12 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
       demo.setAttribute('data-touched', '');
       setMenu(!demo.hasAttribute('data-open'));
     });
+    const setStatus = (on: boolean) => demo.toggleAttribute('data-activated', on);
+    demo.querySelector('.demo__option')?.addEventListener('click', () => {
+      demo.setAttribute('data-touched', '');
+      setStatus(true);
+      setMenu(false);
+    });
     demo.querySelectorAll<HTMLElement>('[data-card]').forEach((card) =>
       card.addEventListener('click', () => {
         demo.setAttribute('data-touched', '');
@@ -345,8 +415,8 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
     let timers: number[] = [];
     let running = false;
     const at = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms));
-    const place = (where: 'spot' | 'card' | 'back' | null) => {
-      ['spot', 'card', 'back'].forEach((name) => cursor.toggleAttribute(`data-at-${name}`, name === where));
+    const place = (where: 'spot' | 'chip' | 'card' | 'back' | null) => {
+      ['spot', 'chip', 'card', 'back'].forEach((name) => cursor.toggleAttribute(`data-at-${name}`, name === where));
     };
     const click = (then: () => void) => {
       cursor.setAttribute('data-press', '');
@@ -370,26 +440,34 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
       if (!running || demo.hasAttribute('data-touched')) return stop();
       setMenu(false);
       setPage(false);
+      setStatus(false);
       at(300, () => cursor.setAttribute('data-show', ''));
       at(700, () => place('spot'));
       at(2000, () => click(() => setMenu(true)));
-      at(5300, () => setMenu(false));
-      at(5700, () => place('card'));
-      at(7000, () => click(() => setPage(true)));
-      at(8600, () => place('back'));
-      at(10200, () => click(() => setPage(false)));
-      at(10900, () => cursor.removeAttribute('data-show'));
-      // back to the start while it is invisible, without gliding there
-      at(11400, () => {
+      at(3300, () => place('chip'));
+      at(4600, () =>
+        click(() => {
+          setStatus(true);
+          setMenu(false);
+        }),
+      );
+      at(5600, () => place('card'));
+      at(6900, () => click(() => setPage(true)));
+      at(8500, () => place('back'));
+      at(10100, () => click(() => setPage(false)));
+      at(10800, () => cursor.removeAttribute('data-show'));
+      // back to the start while it is invisible, without gliding there; the card goes back to "draft"
+      at(11300, () => {
         cursor.setAttribute('data-jump', '');
         place(null);
         void cursor.offsetWidth;
         cursor.removeAttribute('data-jump');
+        setStatus(false);
       });
-      at(12400, play);
+      at(12300, play);
     };
     spot.addEventListener('click', stop);
-    demo.querySelectorAll('[data-card], .demo__back').forEach((el) => el.addEventListener('click', stop));
+    demo.querySelectorAll('[data-card], .demo__back, .demo__option').forEach((el) => el.addEventListener('click', stop));
 
     new IntersectionObserver(
       ([entry]) => {
@@ -400,6 +478,7 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
           stop();
           setMenu(false);
           setPage(false);
+          setStatus(false);
         }
       },
       { threshold: 0.5 },
