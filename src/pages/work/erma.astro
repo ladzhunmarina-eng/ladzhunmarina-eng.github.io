@@ -13,7 +13,7 @@ import DecisionBlock from '../../components/case/DecisionBlock.astro';
 import RosterMenuDemo from '../../components/case/RosterMenuDemo.astro';
 import ShotFrame from '../../components/case/ShotFrame.astro';
 import DashboardWindow from '../../components/case/DashboardWindow.astro';
-import OutcomeCards from '../../components/case/OutcomeCards.astro';
+import BeforeAfterCards from '../../components/case/BeforeAfterCards.astro';
 import quotePhoto from '../../assets/images/erma-quote.webp';
 import TimesheetUploadDemo from '../../components/case/TimesheetUploadDemo.astro';
 import NextCase from '../../components/case/NextCase.astro';
@@ -92,7 +92,7 @@ const { problem, challenge, process, decisions, outcome, retrospective } = study
         </Section>
 
         <Section id="outcome" eyebrow={outcome.eyebrow} title={outcome.title} lead={outcome.lead}>
-          <OutcomeCards cards={outcome.cards} />
+          <BeforeAfterCards cards={outcome.cards} />
         </Section>
 
         <Section id="retrospective" eyebrow={retrospective.eyebrow} title={retrospective.title}>

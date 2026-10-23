@@ -152,13 +152,12 @@ export const ermaCase = {
 
   outcome: {
     eyebrow: 'Outcome',
-    title: '[What changed.]',
-    lead: '[One line on where the product is today.]',
+    title: 'What the callout no longer needs.',
+    lead: '[Product is in development.]',
     cards: [
-      { label: 'Status', value: '[Shipped]', note: '[In production since 20XX]' },
-      { label: 'Adoption', value: '[N companies]', note: '[N storm events run on the platform]' },
-      { label: 'Process', value: '[Phone rounds → roster states]', note: '[What disappeared from the callout]' },
-      { label: 'Client', value: '[“…”]', note: '[Feedback from the client]' },
+      { stage: 'Crew assembly', before: 'Phone rounds, rosters by hand', after: 'A roster where every yes, no and silence is tracked' },
+      { stage: 'Timesheets', before: 'Paper timesheets', after: 'Uploaded in batches, checked for foreman, dates and signature' },
+      { stage: 'Invoice', before: 'Invoice by hand', after: '[Built from signed timesheets on the event dashboard: verify]' },
     ],
   },
 

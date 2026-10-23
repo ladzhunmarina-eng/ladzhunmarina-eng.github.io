@@ -1,0 +1,89 @@
+---
+interface Card {
+  /** The stage of the job the card is about */
+  stage: string;
+  before: string;
+  after: string;
+}
+
+interface Props {
+  cards: readonly Card[];
+}
+
+const { cards } = Astro.props;
+---
+
+<ul class="cards">
+  {cards.map((card) => (
+    <li class="card">
+      <p class="card__stage">{card.stage}</p>
+      <dl class="card__rows">
+        <div>
+          <dt>Before</dt>
+          <dd class="card__before">{card.before}</dd>
+        </div>
+        <div>
+          <dt>After</dt>
+          <dd class="card__after">{card.after}</dd>
+        </div>
+      </dl>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--case-card-min), 1fr));
+    gap: var(--space-16);
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    padding: var(--case-card-pad);
+    border: 1px solid var(--case-line);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+  }
+
+  .card__stage {
+    font-size: var(--fs-12);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-snug);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--case-accent);
+  }
+
+  .card__rows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .card__rows dt {
+    margin-bottom: var(--space-4);
+    font-size: var(--fs-12);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-snug);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .card__rows dd {
+    margin: 0;
+    font-size: var(--fs-16);
+    line-height: var(--lh-body);
+  }
+
+  .card__before {
+    color: var(--color-muted);
+  }
+
+  .card__after {
+    color: var(--color-ink);
+  }
+</style>
