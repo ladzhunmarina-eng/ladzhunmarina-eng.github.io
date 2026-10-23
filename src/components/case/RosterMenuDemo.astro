@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import LogoShield from './LogoShield.astro';
 import base from '../../assets/images/erma-rosters-base.png';
 import menu from '../../assets/images/erma-rosters-menu.png';
-import resources from '../../assets/images/erma-resources-screen.png';
+import resources from '../../assets/images/erma-resources-tabs.png';
 import detail from '../../assets/images/erma-roster-page.png';
 import newRow from '../../assets/images/erma-roster-newrow.png';
 import dragRow from '../../assets/images/erma-roster-dragrow.png';
@@ -44,7 +44,7 @@ const inner = (b: { left: number; top: number; width: number; height: number }, 
   `width:${(W / (b.width * W / 100)) * 100}%;left:${-(x / (b.width * W / 100)) * 100}%;top:${-(y / (b.height * H / 100)) * 100}%;`;
 // The tabs: "Resources" on the rosters list, and "My Roster" on the Resources screen that follows
 const tabResources = { left: pct(280, W), top: pct(205, H), width: pct(96, W), height: pct(38, H) };
-const tabRosters = { left: pct(385, W), top: pct(205, H), width: pct(92, W), height: pct(38, H) };
+const tabRosters = { left: pct(385, W), top: pct(205, H), width: pct(100, W), height: pct(38, H) };
 const back = { left: 19.5, top: 2.2, width: 6.5, height: 4.4 }; // "Back" in the roster page
 
 // Everything is a share of the 1440 x 1025 screen (the picture's own size in the design)
