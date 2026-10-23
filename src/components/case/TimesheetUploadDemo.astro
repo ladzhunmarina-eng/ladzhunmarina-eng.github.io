@@ -6,7 +6,7 @@ import hover from '../../assets/images/erma-ts-hover-bg.png';
 import loading from '../../assets/images/erma-ts-loading-bg.png';
 import chip from '../../assets/images/erma-ts-chip.png';
 import bolt from '../../assets/images/erma-ts-bolt.png';
-import oneday from '../../assets/images/erma-ts-oneday.png';
+import oneday from '../../assets/images/erma-ts-bars-bg.png';
 
 interface Props {
   alt: string;
@@ -21,16 +21,16 @@ const pct = (v: number, of: number) => (v / of) * 100;
 const logo = { left: 3.75, top: 2.54, width: 10.07, height: 4.78 };
 const company = { left: 0.5, top: 85, width: 13.5, height: 4 };
 const chipBox = `left:${pct(1098, W)}%;top:${pct(370, H)}%;width:${pct(186, W)}%;`; // the file being dragged, where it ends up over the drop zone
-// The files' progress bars once "One day timesheets" is on: the top of each row's bar group, the percent it reaches and the width of its fill (design pixels, on a 94px track)
+// The files' progress bars: the top of each row's bar group, the percent it reaches, the width of its fill (design pixels, on a 94px track) and where its percent starts
 const bars = [
-  { top: 404, pct: 80, fill: 73 },
-  { top: 458, pct: 30, fill: 48 },
-  { top: 515, pct: 20, fill: 39 },
-  { top: 572, pct: 10, fill: 27 },
-  { top: 629, pct: 10, fill: 26 },
-  { top: 686, pct: 15, fill: 15 },
-  { top: 743, pct: 5, fill: 5 },
-  { top: 800, pct: 5, fill: 5 },
+  { top: 332, pct: 80, fill: 73, tx: 634 },
+  { top: 392, pct: 30, fill: 48, tx: 634 },
+  { top: 446, pct: 20, fill: 39, tx: 634 },
+  { top: 504, pct: 10, fill: 27, tx: 636 },
+  { top: 562, pct: 10, fill: 26, tx: 636 },
+  { top: 617, pct: 15, fill: 15, tx: 636 },
+  { top: 675, pct: 5, fill: 5, tx: 638 },
+  { top: 733, pct: 5, fill: 5, tx: 638 },
 ];
 const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`; // the loader's bolt
 ---
@@ -43,7 +43,7 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
     <Image class="ts__layer ts__layer--oneday" src={oneday} alt="" widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
     <ul class="ts__bars" aria-hidden="true">
       {bars.map((bar, i) => (
-        <li class="ts__bar" style={`--top: ${pct(bar.top, H)}%; --fill: ${(bar.fill / 94) * 100}%; --i: ${i}`}>
+        <li class="ts__bar" style={`--top: ${pct(bar.top, H)}%; --fill: ${(bar.fill / 94) * 100}%; --tx: ${((bar.tx - 527) / 133) * 100}%; --i: ${i}`}>
           <span class="ts__track"><span class="ts__fill"></span></span>
           <span class="ts__pct"><span data-count={bar.pct}>{bar.pct}</span>%</span>
         </li>
@@ -108,7 +108,7 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
 
   .ts__bar {
     position: absolute;
-    left: 35.55%; /* 512 of 1440 */
+    left: 36.6%; /* 527 of 1440 */
     top: var(--top);
     width: 9.2%; /* the 94px track and the percent: 133px */
     height: 1.756%; /* 18px */
@@ -146,7 +146,7 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
 
   .ts__pct {
     position: absolute;
-    left: 79.7%; /* 7px past the track, 107 of 133 */
+    left: var(--tx);
     top: 0;
     font-size: 0.972cqw;
     line-height: 1.75;
