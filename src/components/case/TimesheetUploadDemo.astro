@@ -1,0 +1,187 @@
+---
+import { Image } from 'astro:assets';
+import LogoShield from './LogoShield.astro';
+import upload from '../../assets/images/erma-ts-upload.png';
+import hover from '../../assets/images/erma-ts-hover.png';
+import loading from '../../assets/images/erma-ts-loading.png';
+import chip from '../../assets/images/erma-ts-chip.png';
+import bolt from '../../assets/images/erma-ts-bolt.png';
+
+interface Props {
+  alt: string;
+}
+
+const { alt } = Astro.props;
+
+// Everything is a share of the 1440 x 1025 screen (the picture's own size in the design)
+const W = 1440;
+const H = 1025;
+const pct = (v: number, of: number) => (v / of) * 100;
+const logo = { left: 3.75, top: 2.54, width: 10.07, height: 4.78 };
+const company = { left: 0.5, top: 85, width: 13.5, height: 4 };
+const chipBox = `left:${pct(1098, W)}%;top:${pct(420, H)}%;width:${pct(186, W)}%;`; // the file being dragged, where it ends up over the drop zone
+const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`; // the loader's bolt
+---
+
+<figure class="ts" data-ts>
+  <div class="ts__screen">
+    <Image src={upload} alt={alt} widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
+    <Image class="ts__layer ts__layer--hover" src={hover} alt="" widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
+    <Image class="ts__layer ts__layer--loading" src={loading} alt="" widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
+    <Image class="ts__chip" src={chip} alt="" widths={[186, 372]} sizes="(max-width: 1023px) 13vw, 74px" quality={90} style={chipBox} />
+    <Image class="ts__bolt" src={bolt} alt="" widths={[60, 120]} sizes="(max-width: 1023px) 4vw, 24px" quality={90} style={boltBox} />
+    <LogoShield {...logo} />
+    <LogoShield {...company} />
+  </div>
+</figure>
+
+<style>
+  .ts {
+    margin: 0;
+  }
+
+  .ts__screen {
+    container-type: inline-size;
+    position: relative;
+    aspect-ratio: 1440 / 1025;
+    overflow: hidden;
+    border: 1px solid var(--case-line);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+  }
+
+  .ts__screen :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+  }
+
+  /* The next screens lie over the first and fade in */
+  .ts__screen :global(.ts__layer) {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+
+  [data-over] .ts__screen :global(.ts__layer--hover),
+  [data-load] .ts__screen :global(.ts__layer--loading) {
+    opacity: 1;
+  }
+
+  /* hover is only the drop zone turning blue; the loader replaces it */
+  [data-load] .ts__screen :global(.ts__layer--hover) {
+    opacity: 0;
+  }
+
+  /* the file being dragged in from below, to the drop zone */
+  .ts__screen :global(.ts__chip) {
+    position: absolute;
+    z-index: 2;
+    height: auto;
+    opacity: 0;
+    transform: translate(4.17cqw, 20.83cqw); /* 60px right and 300px down in the 1440px design */
+    filter: drop-shadow(0 6px 10px rgb(0 0 0 / 0.18));
+  }
+
+  [data-chip] .ts__screen :global(.ts__chip) {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+
+  [data-moved] .ts__screen :global(.ts__chip) {
+    transform: none;
+    transition:
+      transform 1.3s cubic-bezier(0.45, 0, 0.2, 1),
+      opacity 0.3s ease;
+  }
+
+  [data-drop] .ts__screen :global(.ts__chip) {
+    opacity: 0;
+    transform: scale(0.9);
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
+  }
+
+  /* the bolt over the loader breathes while the files upload */
+  .ts__screen :global(.ts__bolt) {
+    position: absolute;
+    z-index: 2;
+    height: auto;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+
+  [data-load] .ts__screen :global(.ts__bolt) {
+    opacity: 1;
+    animation: ts-pulse 1.1s ease-in-out infinite;
+  }
+
+  @keyframes ts-pulse {
+    0%,
+    100% {
+      transform: scale(0.88);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ts__screen :global(.ts__layer),
+    .ts__screen :global(.ts__chip),
+    .ts__screen :global(.ts__bolt) {
+      transition: none;
+    }
+
+    [data-load] .ts__screen :global(.ts__bolt) {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  document.querySelectorAll<HTMLElement>('[data-ts]').forEach((demo) => {
+    if (calm.matches || !('IntersectionObserver' in window)) return;
+
+    let timers: number[] = [];
+    let running = false;
+    const at = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms));
+    const reset = () => ['data-chip', 'data-moved', 'data-over', 'data-drop', 'data-load'].forEach((name) => demo.removeAttribute(name));
+    const stop = () => {
+      running = false;
+      timers.forEach(window.clearTimeout);
+      timers = [];
+      reset();
+    };
+
+    // The drop zone waits, a file is dragged in from below, the zone turns blue, the file is dropped and the loader takes over.
+    const play = () => {
+      if (!running) return;
+      reset();
+      at(1200, () => demo.setAttribute('data-chip', ''));
+      at(1500, () => demo.setAttribute('data-moved', ''));
+      at(2200, () => demo.setAttribute('data-over', ''));
+      at(3600, () => demo.setAttribute('data-drop', ''));
+      at(3700, () => demo.setAttribute('data-load', ''));
+      at(7000, reset);
+      at(8200, play);
+    };
+
+    new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !running) {
+          running = true;
+          play();
+        } else if (!entry.isIntersecting && running) {
+          stop();
+        }
+      },
+      { threshold: 0.5 },
+    ).observe(demo);
+  });
+</script>
