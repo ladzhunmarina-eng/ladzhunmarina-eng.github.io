@@ -121,7 +121,7 @@ export const ermaCase = {
         'Inside a roster: two lists side by side, Available Support and the Roster, with checkboxes, an arrow to move the selected people across, and a person being dragged from one list to the other.',
       menuAlt: 'The roster menu: Transfer to, Split Roster, Generate Timesheet, Delete, and Change status to, with an activated option.',
       resourcesAlt:
-        'The Resources table of a roster: linemen with an invite status, a decline reason and an employment type, and filters for Linemen, Support and Fleet.',
+        'The Resources tab of an event: Linemen, Support and Fleet toggles, a legend for invite status, and a table of people with favorite, invite, invite status, declined, employment type and email.',
     },
     dashboard: {
       index: '02',

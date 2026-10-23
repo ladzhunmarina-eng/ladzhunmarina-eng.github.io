@@ -15,7 +15,6 @@ import ShotFrame from '../../components/case/ShotFrame.astro';
 import MissingScreen from '../../components/case/MissingScreen.astro';
 import DashboardWindow from '../../components/case/DashboardWindow.astro';
 import OutcomeCards from '../../components/case/OutcomeCards.astro';
-import rosterResources from '../../assets/images/erma-roster-resources.png';
 import quotePhoto from '../../assets/images/erma-quote.webp';
 import vUpload from '../../assets/images/erma-v-upload.png';
 import vAttachment from '../../assets/images/erma-v-attachment.png';
@@ -24,8 +23,6 @@ import { ermaCase as study } from '../../data/cases/erma';
 
 const { problem, challenge, process, decisions, outcome, retrospective } = study;
 
-// The product logo in the corner of the roster screens, blurred (its bounds plus a margin, as a share of the picture)
-const logo = { left: 4.37, top: 2.64, width: 11.9, height: 4.58 };
 ---
 
 <Layout title={study.seo.title} description={study.seo.description} current="work">
@@ -68,8 +65,7 @@ const logo = { left: 4.37, top: 2.64, width: 11.9, height: 4.58 };
               tradeoff={decisions.tradeoff}
             >
               <Fragment slot="media">
-                <RosterMenuDemo alt={decisions.roster.listAlt} menuAlt={decisions.roster.menuAlt} detailAlt={decisions.roster.detailAlt} />
-                <ShotFrame src={rosterResources} alt={decisions.roster.resourcesAlt} shield={logo} />
+                <RosterMenuDemo alt={decisions.roster.listAlt} menuAlt={decisions.roster.menuAlt} detailAlt={decisions.roster.detailAlt} resourcesAlt={decisions.roster.resourcesAlt} />
               </Fragment>
             </DecisionBlock>
 
