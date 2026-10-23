@@ -4,7 +4,7 @@ import LogoShield from './LogoShield.astro';
 import base from '../../assets/images/erma-rosters-active.png';
 import menu from '../../assets/images/erma-rosters-menu.png';
 import resources from '../../assets/images/erma-resources-event.png';
-import detail from '../../assets/images/erma-roster-page.png';
+import detail from '../../assets/images/erma-roster-inside.png';
 import newRow from '../../assets/images/erma-roster-newrow.png';
 import dragRow from '../../assets/images/erma-roster-dragrow.png';
 import HandGrab from '../../assets/icons/hand-grab.svg';
@@ -40,8 +40,11 @@ const rowIn = { left: pct(861, W), top: pct(647, H), width: pct(552, W), height:
 const shiftL = { left: pct(276, W), top: pct(763, H), width: pct(550, W), height: pct(108, H) };
 const coverL = { left: pct(276, W), top: pct(871, H), width: pct(550, W), height: pct(57, H) };
 const shiftR = { left: pct(861, W), top: pct(704, H), width: pct(552, W), height: pct(224, H) };
-const inner = (b: { left: number; top: number; width: number; height: number }, x: number, y: number) =>
-  `width:${(W / (b.width * W / 100)) * 100}%;left:${-(x / (b.width * W / 100)) * 100}%;top:${-(y / (b.height * H / 100)) * 100}%;`;
+const inner = (b: { left: number; top: number; width: number; height: number }, x: number, y: number) => {
+  const w = (b.width * W) / 100; // the box in pixels of the 1440 x 1025 design
+  const h = (b.height * H) / 100;
+  return `width:${(W / w) * 100}%;height:${(H / h) * 100}%;left:${-(x / w) * 100}%;top:${-(y / h) * 100}%;`;
+};
 // The tabs: "Resources" on the rosters list, and "My Roster" on the Resources screen that follows
 const tabResources = { left: pct(280, W), top: pct(205, H), width: pct(96, W), height: pct(38, H) };
 const tabRosters = { left: pct(385, W), top: pct(205, H), width: pct(100, W), height: pct(38, H) };
@@ -127,6 +130,7 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
   }
 
   .demo__screen {
+    aspect-ratio: 1440 / 1025;
     -webkit-user-select: none;
     user-select: none;
     container-type: inline-size;
@@ -141,7 +145,8 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
     -webkit-user-drag: none;
     display: block;
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: fill;
   }
 
   /* The new status of the first card: the "draft" chip is covered by an "activated" one, as in the design */
@@ -375,7 +380,7 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
   .demo__page :global(.demo__shift-img) {
     position: absolute;
     max-width: none;
-    height: auto;
+    object-fit: fill;
     transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
