@@ -21,17 +21,8 @@ const pct = (v: number, of: number) => (v / of) * 100;
 const logo = { left: 3.75, top: 2.54, width: 10.07, height: 4.78 };
 const company = { left: 0.5, top: 85, width: 13.5, height: 4 };
 const chipBox = `left:${pct(1098, W)}%;top:${pct(370, H)}%;width:${pct(186, W)}%;`; // the file being dragged, where it ends up over the drop zone
-// The files' progress bars: the top of each row's bar group, the percent it reaches, the width of its fill (design pixels, on a 94px track) and where its percent starts
-const bars = [
-  { top: 332, pct: 80, fill: 73, tx: 634 },
-  { top: 392, pct: 30, fill: 48, tx: 634 },
-  { top: 446, pct: 20, fill: 39, tx: 634 },
-  { top: 504, pct: 10, fill: 27, tx: 636 },
-  { top: 562, pct: 10, fill: 26, tx: 636 },
-  { top: 617, pct: 15, fill: 15, tx: 636 },
-  { top: 675, pct: 5, fill: 5, tx: 638 },
-  { top: 733, pct: 5, fill: 5, tx: 638 },
-];
+// The files' progress bars, each filling to 100%: the top of its row's bar group, the percent it reaches, the width of its fill (design pixels, the whole 94px track) and where its percent starts
+const bars = [332, 392, 446, 504, 562, 617, 675, 733].map((top) => ({ top, pct: 100, fill: 94, tx: 634 }));
 const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`; // the loader's bolt
 ---
 
@@ -271,8 +262,8 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
         demo.setAttribute('data-oneday', '');
         demo.querySelectorAll<HTMLElement>('[data-count]').forEach((el, i) => countUp(el, 200 + i * 120));
       });
-      at(11200, reset);
-      at(12400, play);
+      at(12200, reset);
+      at(13400, play);
     };
 
     new IntersectionObserver(
