@@ -3,7 +3,9 @@ import { Image } from 'astro:assets';
 import LogoShield from './LogoShield.astro';
 import base from '../../assets/images/erma-rosters-base.png';
 import menu from '../../assets/images/erma-rosters-menu.png';
-import detail from '../../assets/images/erma-roster-detail.png';
+import detail from '../../assets/images/erma-roster-page.png';
+import dragRow from '../../assets/images/erma-roster-dragrow.png';
+import HandGrab from '../../assets/icons/hand-grab.svg';
 
 interface Props {
   alt: string;
@@ -23,6 +25,20 @@ const cards = names.map((name, i) => ({
   height: (138 / 1025) * 100,
 }));
 const status = { left: 20.07, top: 44.39, width: 5, height: 2.34 }; // the status chip of the first card, 72 x 24 over the 45 x 24 "draft"
+// Inside a roster (the same 1440 x 1025 screen): the person who gets dragged, the slot he leaves and the slot he lands in
+const W = 1440;
+const H = 1025;
+const pct = (v: number, of: number) => (v / of) * 100;
+const grab = { left: pct(276, W), top: pct(763, H), width: pct(550, W), height: pct(57, H) }; // his row in "Available Support"
+const sprite = { left: pct(264, W), top: pct(753, H), width: pct(579, W) }; // the lifted row with its shadow, at rest
+const dropLine = { left: pct(862, W), top: pct(646, H), width: pct(550, W) };
+const rowIn = { left: pct(861, W), top: pct(647, H), width: pct(552, W), height: pct(57, H) }; // the new row in the roster
+// What closes up or opens down once he has moved: the picture itself, shifted by one row (57px)
+const shiftL = { left: pct(276, W), top: pct(763, H), width: pct(550, W), height: pct(108, H) };
+const coverL = { left: pct(276, W), top: pct(871, H), width: pct(550, W), height: pct(57, H) };
+const shiftR = { left: pct(861, W), top: pct(704, H), width: pct(552, W), height: pct(224, H) };
+const inner = (b: { left: number; top: number; width: number; height: number }, x: number, y: number) =>
+  `width:${(W / (b.width * W / 100)) * 100}%;left:${-(x / (b.width * W / 100)) * 100}%;top:${-(y / (b.height * H / 100)) * 100}%;`;
 const back = { left: 19.5, top: 2.2, width: 6.5, height: 4.4 }; // "Back" in the roster page
 
 // Everything is a share of the 1440 x 1025 screen (the picture's own size in the design)
@@ -50,6 +66,27 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
       <Image src={detail} alt={detailAlt} widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
       <LogoShield {...logo} />
       <LogoShield {...company} />
+
+      <!-- the roster's lists change as the person is moved: the gap he leaves, the line he is dropped on, the new row, and the rest shifting by one row -->
+      <div class="demo__shift demo__shift--l" style={box(shiftL)}>
+        <Image class="demo__shift-img" src={detail} alt="" widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} style={inner(shiftL, 276, 763)} />
+      </div>
+      <div class="demo__cover" style={box(coverL)}></div>
+      <div class="demo__shift demo__shift--r" style={box(shiftR)}>
+        <Image class="demo__shift-img" src={detail} alt="" widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} style={inner(shiftR, 861, 704)} />
+      </div>
+      <div class="demo__gap" style={box(grab)}></div>
+      <div class="demo__row" style={box(rowIn)}>
+        <span class="demo__row-check"></span>
+        <span class="demo__row-last">Dauda</span>
+        <span class="demo__row-first">Jason</span>
+        <span class="demo__row-invite">On behalf</span>
+        <span class="demo__row-class">Lineman<svg viewBox="0 0 8 4" width="8" height="4" aria-hidden="true"><path d="M0 0h8L4 4z" fill="#000" /></svg></span>
+      </div>
+      <span class="demo__line" style={box(dropLine)}></span>
+      <Image class="demo__sprite" src={dragRow} alt="" widths={[579, 1158]} sizes="(max-width: 1023px) 40vw, 260px" quality={90} style={box(sprite)} />
+      <button class="demo__grab" type="button" style={box(grab)} aria-label="Move Jason Dauda into the roster"></button>
+
       <button class="demo__back" type="button" style={box(back)} aria-label="Back to the rosters"></button>
     </div>
 
@@ -59,14 +96,15 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
     </div>
 
     <span class="demo__cursor" aria-hidden="true">
-      <svg viewBox="0 0 24 24" width="24" height="24"><path d="M5 3v16.5l4.4-4.1 3.1 6.9 2.9-1.3-3.1-6.8 6-.5L5 3z" fill="#fff" stroke="#0d0d0d" stroke-width="1.4" stroke-linejoin="round" /></svg>
+      <svg class="demo__arrow" viewBox="0 0 24 24" width="24" height="24"><path d="M5 3v16.5l4.4-4.1 3.1 6.9 2.9-1.3-3.1-6.8 6-.5L5 3z" fill="#fff" stroke="#0d0d0d" stroke-width="1.4" stroke-linejoin="round" /></svg>
+      <HandGrab class="demo__hand" aria-hidden="true" />
     </span>
 
     <button class="demo__spot" type="button" style={box(spot)} aria-haspopup="true" aria-expanded="false" aria-controls="roster-menu" aria-label="Open the menu of the first roster">
       <span class="demo__ring" aria-hidden="true"></span>
     </button>
   </div>
-  <figcaption class="demo__hint">Click the dots on a roster card for its menu (try “activated”), or the card itself to step inside.</figcaption>
+  <figcaption class="demo__hint">Click the dots on a roster card for its menu (try “activated”), or the card itself to step inside and drag a person into the roster.</figcaption>
 </figure>
 
 <style>
@@ -318,6 +356,211 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
     }
   }
 
+
+  /* Inside the roster: a person is dragged from "Available Support" into the roster. The page is the picture; what changes is laid over it. */
+  .demo__page :global(.demo__shift-img) {
+    position: absolute;
+    max-width: none;
+    height: auto;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .demo__shift {
+    position: absolute;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  [data-dropped] .demo__shift--l :global(.demo__shift-img) {
+    transform: translateY(-3.958cqw); /* 57 of the 1440px design */
+  }
+
+  [data-dropped] .demo__shift--r :global(.demo__shift-img) {
+    transform: translateY(3.958cqw);
+  }
+
+  .demo__cover {
+    position: absolute;
+    z-index: 1;
+    display: none;
+    background: var(--color-white);
+  }
+
+  [data-dropped] .demo__cover {
+    display: block;
+  }
+
+  /* the gap he leaves in the list while he is in the air */
+  .demo__gap {
+    position: absolute;
+    z-index: 2;
+    display: none;
+    background: #f9f9f9;
+  }
+
+  [data-lifted]:not([data-dropped]) .demo__gap {
+    display: block;
+  }
+
+  .demo__line {
+    position: absolute;
+    z-index: 3;
+    height: 0.139cqw; /* 2 of 1440 */
+    background: #ff5000;
+    opacity: 0;
+  }
+
+  [data-line]:not([data-dropped]) .demo__line {
+    opacity: 1;
+  }
+
+  /* the lifted row, with its shadow; --dx and --dy are how far it has travelled, in pixels of the 1440px design */
+  .demo__page :global(.demo__sprite) {
+    position: absolute;
+    z-index: 4;
+    max-width: none;
+    height: auto;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(calc(var(--dx, 0) / 14.4 * 1cqw), calc(var(--dy, 0) / 14.4 * 1cqw));
+    transition:
+      transform 1.1s cubic-bezier(0.45, 0, 0.2, 1),
+      opacity 0.2s ease;
+  }
+
+  [data-lifted]:not([data-dropped]) .demo__page :global(.demo__sprite) {
+    opacity: 1;
+  }
+
+  [data-dragging] .demo__page :global(.demo__sprite) {
+    transition: opacity 0.2s ease;
+  }
+
+  /* the new row in the roster: "Dauda Jason, On behalf, Lineman", laid out like its neighbours */
+  .demo__row {
+    position: absolute;
+    z-index: 2;
+    box-sizing: border-box;
+    border-bottom: 1px solid #eaeaea;
+    background: var(--color-white);
+    font-size: 0.972cqw;
+    line-height: 1;
+    color: #1e1e1e;
+    opacity: 0;
+    transition: opacity 0.3s ease 0.15s;
+  }
+
+  [data-dropped] .demo__row {
+    opacity: 1;
+  }
+
+  .demo__row > * {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .demo__row-check {
+    left: 1.25cqw;
+    width: 1.667cqw;
+    height: 1.667cqw;
+    box-sizing: border-box;
+    border: 1px solid #cfcfcf;
+    border-radius: 0.28cqw;
+  }
+
+  .demo__row-last {
+    left: 4.03cqw;
+  }
+
+  .demo__row-first {
+    left: 9.58cqw;
+  }
+
+  .demo__row-invite {
+    left: 16.3cqw;
+    padding: 0.35cqw 0.7cqw;
+    border-radius: 0.28cqw;
+    background: #ffeec4;
+    font-size: 0.833cqw;
+    color: #ff5000;
+  }
+
+  .demo__row-class {
+    left: 23.2cqw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    width: 6.9cqw;
+    height: 2.22cqw;
+    padding-inline: 0.7cqw;
+    border-radius: 0.28cqw;
+    background: #f9f9f9;
+    color: #000;
+  }
+
+  .demo__row-class svg {
+    width: 0.56cqw;
+    height: auto;
+  }
+
+  /* the grip over his row: drag it with the mouse, or press it */
+  .demo__grab {
+    position: absolute;
+    z-index: 5;
+    padding: 0;
+    border: 0;
+    border-radius: var(--space-4);
+    background: transparent;
+    cursor: grab;
+    touch-action: none;
+  }
+
+  .demo__grab:hover {
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.2);
+  }
+
+  .demo__grab:focus-visible {
+    outline: 2px solid var(--erma-ink);
+    outline-offset: 2px;
+  }
+
+  [data-lifted] .demo__grab {
+    cursor: grabbing;
+  }
+
+  [data-dropped] .demo__grab {
+    display: none;
+  }
+
+  /* the pointer turns into a hand while it carries the row */
+  .demo__cursor :global(.demo__hand) {
+    display: none;
+    width: 23px;
+    height: 24px;
+    margin: -4px 0 0 -8px;
+  }
+
+  .demo__cursor[data-grab] .demo__arrow {
+    display: none;
+  }
+
+  .demo__cursor[data-grab] :global(.demo__hand) {
+    display: block;
+  }
+
+  .demo__cursor[data-at-grab] {
+    left: 46.4%;
+    top: 76.3%;
+  }
+
+  .demo__cursor[data-at-drop] {
+    left: 87.4%;
+    top: 65%;
+    transition-duration: 1.1s;
+  }
+
   .demo__hint {
     font-size: var(--fs-12);
     line-height: var(--lh-snug);
@@ -329,6 +572,9 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
       display: none;
     }
 
+    .demo__page :global(.demo__sprite),
+    .demo__shift :global(.demo__shift-img),
+    .demo__row,
     .demo__menu,
     .demo__spot,
     .demo__status,
@@ -359,7 +605,18 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
       spot.setAttribute('aria-expanded', String(open));
       menu.toggleAttribute('inert', !open);
     };
+    // The person who gets dragged into the roster: --dx and --dy are his travel, in pixels of the 1440px design
+    const DROP = { dx: 584, dy: -116 };
+    const setTravel = (dx: number, dy: number) => {
+      demo.style.setProperty('--dx', String(dx));
+      demo.style.setProperty('--dy', String(dy));
+    };
+    const resetDrag = () => {
+      ['data-lifted', 'data-line', 'data-dropped', 'data-dragging'].forEach((name) => demo.removeAttribute(name));
+      setTravel(0, 0);
+    };
     const setPage = (show: boolean) => {
+      resetDrag();
       demo.toggleAttribute('data-page', show);
       page.toggleAttribute('inert', !show);
       page.setAttribute('aria-hidden', String(!show));
@@ -386,6 +643,64 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
         setPage(true);
       }),
     );
+    const grab = demo.querySelector<HTMLElement>('.demo__grab');
+    const drop = () => {
+      demo.removeAttribute('data-line');
+      demo.setAttribute('data-dropped', '');
+    };
+    // a click or a key press moves him for you; a mouse drag moves him where you take him
+    const autoMove = () => {
+      demo.setAttribute('data-lifted', '');
+      window.setTimeout(() => setTravel(DROP.dx, DROP.dy), 250);
+      window.setTimeout(() => demo.setAttribute('data-line', ''), 1100);
+      window.setTimeout(drop, 1500);
+    };
+    if (grab) {
+      let from: { x: number; y: number; scale: number; moved: boolean } | null = null;
+      const overRoster = (event: PointerEvent) => {
+        const rect = screen.getBoundingClientRect();
+        const x = ((event.clientX - rect.left) / rect.width) * 1440;
+        return x > 862 && x < 1413;
+      };
+      grab.addEventListener('pointerdown', (event) => {
+        demo.setAttribute('data-touched', '');
+        grab.setPointerCapture(event.pointerId);
+        from = { x: event.clientX, y: event.clientY, scale: screen.getBoundingClientRect().width / 1440, moved: false };
+      });
+      grab.addEventListener('pointermove', (event) => {
+        if (!from) return;
+        const dx = (event.clientX - from.x) / from.scale;
+        const dy = (event.clientY - from.y) / from.scale;
+        if (!from.moved && Math.hypot(dx, dy) < 6) return;
+        from.moved = true;
+        demo.setAttribute('data-lifted', '');
+        demo.setAttribute('data-dragging', '');
+        setTravel(dx, dy);
+        demo.toggleAttribute('data-line', overRoster(event));
+      });
+      grab.addEventListener('pointerup', (event) => {
+        if (!from) return;
+        const { moved } = from;
+        from = null;
+        demo.removeAttribute('data-dragging');
+        if (!moved) return;
+        if (overRoster(event)) {
+          setTravel(DROP.dx, DROP.dy);
+          window.setTimeout(drop, 250);
+        } else {
+          demo.removeAttribute('data-line');
+          setTravel(0, 0);
+          window.setTimeout(() => demo.removeAttribute('data-lifted'), 300);
+        }
+      });
+      grab.addEventListener('click', (event) => {
+        // a plain click or a key press, not the end of a drag
+        if (event.detail === 0 || event.detail === 1) {
+          if (!demo.hasAttribute('data-lifted') && !demo.hasAttribute('data-dropped')) autoMove();
+        }
+      });
+    }
+
     demo.querySelector('.demo__back')?.addEventListener('click', () => {
       demo.setAttribute('data-touched', '');
       setPage(false);
@@ -415,8 +730,8 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
     let timers: number[] = [];
     let running = false;
     const at = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms));
-    const place = (where: 'spot' | 'chip' | 'card' | 'back' | null) => {
-      ['spot', 'chip', 'card', 'back'].forEach((name) => cursor.toggleAttribute(`data-at-${name}`, name === where));
+    const place = (where: 'spot' | 'chip' | 'card' | 'grab' | 'drop' | 'back' | null) => {
+      ['spot', 'chip', 'card', 'grab', 'drop', 'back'].forEach((name) => cursor.toggleAttribute(`data-at-${name}`, name === where));
     };
     const click = (then: () => void) => {
       cursor.setAttribute('data-press', '');
@@ -434,6 +749,7 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
       timers = [];
       cursor.removeAttribute('data-show');
       cursor.removeAttribute('data-press');
+      cursor.removeAttribute('data-grab');
       place(null);
     };
     const play = () => {
@@ -453,20 +769,40 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
       );
       at(5600, () => place('card'));
       at(6900, () => click(() => setPage(true)));
-      at(8500, () => place('back'));
-      at(10100, () => click(() => setPage(false)));
-      at(10800, () => cursor.removeAttribute('data-show'));
+      // inside the roster: the pointer takes a person from the left list and carries him across
+      at(7900, () => place('grab'));
+      at(9100, () => {
+        cursor.setAttribute('data-press', '');
+        at(150, () => {
+          cursor.removeAttribute('data-press');
+          cursor.setAttribute('data-grab', '');
+          demo.setAttribute('data-lifted', '');
+        });
+      });
+      at(9500, () => {
+        place('drop');
+        setTravel(DROP.dx, DROP.dy);
+      });
+      at(10400, () => demo.setAttribute('data-line', ''));
+      at(10700, () => {
+        cursor.removeAttribute('data-grab');
+        drop();
+      });
+      at(11900, () => place('back'));
+      at(13500, () => click(() => setPage(false)));
+      at(14200, () => cursor.removeAttribute('data-show'));
       // back to the start while it is invisible, without gliding there; the card goes back to "draft"
-      at(11300, () => {
+      at(14700, () => {
         cursor.setAttribute('data-jump', '');
         place(null);
         void cursor.offsetWidth;
         cursor.removeAttribute('data-jump');
         setStatus(false);
       });
-      at(12300, play);
+      at(15700, play);
     };
     spot.addEventListener('click', stop);
+    grab?.addEventListener('pointerdown', stop);
     demo.querySelectorAll('[data-card], .demo__back, .demo__option').forEach((el) => el.addEventListener('click', stop));
 
     new IntersectionObserver(
