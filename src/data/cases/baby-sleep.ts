@@ -151,12 +151,35 @@ export const babySleepCase = {
   },
 
   feedback: {
-    eyebrow: 'Feedback',
-    title: 'Overall rate: 5 ★',
-    review: {
-      heading: 'Total game changer!',
-      text: 'We switched from a different app to this one and it was so far the best decision. The app is very intuitive, the UX is superb, doesn’t have too much information at once so you can get overwhelmed and lost. A separate thank you for a calendar-alike view. It gives a great insight to the sleep patterns rather than a typical trend that such apps offer. Totally recommend! 🔥',
-      source: 'App review · 5 stars · terebara, 17 Jan',
-    },
+    eyebrow: 'App Store reviews',
+    title: 'Parents noticed how clear it is.',
+    rating: { score: '5.0', label: '32 App Store ratings' },
+    reviews: [
+      {
+        title: 'Finally a comprehensive baby sleep log app, that actually helps',
+        text: 'This is not the first baby sleep app that I used, but definitely the best. It clearly shows the length of activity windows, totals for sleep and day activity. You don’t need to calculate anything in your head when you need to check daily numbers. Amazingly UX friendly.',
+        author: 'Kateryna_se',
+        date: '27 Feb',
+      },
+      {
+        title: 'Total game changer!',
+        text: 'We switched from a different app to this one and it was so far the best decision. The app is very intuitive, the UX is superb, doesn’t have too much information at once so you can get overwhelmed and lost. A separate thank you for a calendar-alike view. It gives a great insight to the sleep patterns rather than a typical trend that such apps offer. Totally recommend! 🔥',
+        author: 'terebara',
+        date: '1y ago',
+      },
+      {
+        title: 'Invaluable Tool for New Parents',
+        text: 'As a new parent, tracking my baby’s sleep was overwhelming—until I started using this app. It’s simple, reliable, and extremely helpful. Logging sleep times takes seconds, and the visual stats help me understand my child’s sleep patterns better. The averages and schedule insights have been especially useful in finding a healthy routine. It’s also a great way to share accurate data with our sleep consultant. Highly recommend for any parent trying to improve their baby’s sleep habits.',
+        author: 'psaikevy',
+        date: '1y ago',
+      },
+      {
+        // The review is in Ukrainian, as written on the App Store; its title is cut off in the screenshot, so none is shown.
+        text: 'Додаток зручний у користуванні, з досить простим для користувача інтерфейсом та цікавими функціями. Зручно трекати час та писати замітки щодо сну малечі.',
+        author: 'likaoas',
+        date: '21 Sep',
+        lang: 'uk',
+      },
+    ],
   },
 };

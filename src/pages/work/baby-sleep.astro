@@ -9,7 +9,7 @@ import NoteCards from '../../components/case/NoteCards.astro';
 import PersonaCard from '../../components/case/PersonaCard.astro';
 import PhoneStrip from '../../components/case/PhoneStrip.astro';
 import PhoneDecision from '../../components/case/PhoneDecision.astro';
-import ReviewCard from '../../components/case/ReviewCard.astro';
+import Reviews from '../../components/case/Reviews.astro';
 import NextCase from '../../components/case/NextCase.astro';
 import heroImage from '../../assets/images/sleep-hero.png';
 import personaPhoto from '../../assets/images/sleep-persona.png';
@@ -66,7 +66,7 @@ const blocks = decisions.items.map((item) => ({
         </Section>
 
         <Section id="feedback" eyebrow={feedback.eyebrow} title={feedback.title}>
-          <ReviewCard heading={feedback.review.heading} text={feedback.review.text} source={feedback.review.source} />
+          <Reviews rating={feedback.rating} reviews={feedback.reviews} />
         </Section>
 
         <NextCase current="/work/baby-sleep" />
