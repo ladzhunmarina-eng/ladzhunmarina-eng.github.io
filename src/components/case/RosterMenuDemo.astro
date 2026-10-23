@@ -1,0 +1,178 @@
+---
+import { Image } from 'astro:assets';
+import LogoShield from './LogoShield.astro';
+import base from '../../assets/images/erma-rosters-base.png';
+import menu from '../../assets/images/erma-rosters-menu.png';
+
+interface Props {
+  alt: string;
+  menuAlt: string;
+}
+
+const { alt, menuAlt } = Astro.props;
+
+// Everything is a share of the 1440 x 1025 screen (the picture's own size in the design)
+const spot = { left: 34.65, top: 35.02, width: 2.5, height: 3.51 }; // the dots on the first roster card
+const popup = { left: 20.97, top: 32.78, width: 17.43 }; // the menu with its shadow
+const logo = { left: 3.75, top: 2.54, width: 10.07, height: 4.78 };
+const company = { left: 0.5, top: 85, width: 13.5, height: 4 };
+const box = (b: { left: number; top: number; width: number; height?: number }) =>
+  `left:${b.left}%;top:${b.top}%;width:${b.width}%;${b.height ? `height:${b.height}%;` : ''}`;
+---
+
+<figure class="demo" data-roster-menu>
+  <div class="demo__screen">
+    <Image src={base} alt={alt} widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
+    <LogoShield {...logo} />
+    <LogoShield {...company} />
+
+    <div class="demo__menu" id="roster-menu" style={box(popup)} role="group" aria-label="Roster menu">
+      <Image src={menu} alt={menuAlt} widths={[251, 502]} sizes="(max-width: 1023px) 18vw, 112px" quality={90} />
+    </div>
+
+    <button class="demo__spot" type="button" style={box(spot)} aria-haspopup="true" aria-expanded="false" aria-controls="roster-menu" aria-label="Open the menu of the first roster">
+      <span class="demo__ring" aria-hidden="true"></span>
+    </button>
+  </div>
+  <figcaption class="demo__hint">Click the dots on a roster card to open its menu.</figcaption>
+</figure>
+
+<style>
+  .demo {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .demo__screen {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--case-line);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+  }
+
+  .demo__screen :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .demo__menu {
+    position: absolute;
+    z-index: 3;
+    transform-origin: top right;
+    transition:
+      opacity 0.2s ease,
+      transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  /* Closed: the menu waits, scaled down at the dots it grows from. Without script it simply stays open. */
+  [data-ready] .demo__menu {
+    opacity: 0;
+    transform: scale(0.94);
+    pointer-events: none;
+  }
+
+  [data-open] .demo__menu {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  /* The dots of the first card: a quiet round button over them, with a ring that invites the click until it happens */
+  .demo__spot {
+    position: absolute;
+    z-index: 4;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+
+  .demo__spot:hover {
+    background: rgb(0 0 0 / 0.06);
+  }
+
+  .demo__spot:focus-visible {
+    outline: 2px solid var(--erma-ink);
+    outline-offset: 2px;
+  }
+
+  .demo__ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  [data-ready]:not([data-touched]) .demo__ring {
+    animation: spot-ring 2s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  }
+
+  @keyframes spot-ring {
+    from {
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--erma-orange) 70%, transparent);
+    }
+    70%,
+    to {
+      box-shadow: 0 0 0 10px transparent;
+    }
+  }
+
+  .demo__hint {
+    font-size: var(--fs-12);
+    line-height: var(--lh-snug);
+    color: var(--color-muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .demo__menu,
+    .demo__spot {
+      transition: none;
+    }
+
+    [data-ready]:not([data-touched]) .demo__ring {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-roster-menu]').forEach((demo) => {
+    const spot = demo.querySelector<HTMLButtonElement>('.demo__spot');
+    const menu = demo.querySelector<HTMLElement>('.demo__menu');
+    if (!spot || !menu) return;
+
+    const set = (open: boolean) => {
+      demo.toggleAttribute('data-open', open);
+      spot.setAttribute('aria-expanded', String(open));
+      menu.toggleAttribute('inert', !open);
+    };
+
+    demo.setAttribute('data-ready', '');
+    set(false);
+
+    spot.addEventListener('click', () => {
+      demo.setAttribute('data-touched', '');
+      set(!demo.hasAttribute('data-open'));
+    });
+    document.addEventListener('click', (event) => {
+      if (demo.hasAttribute('data-open') && !demo.querySelector('.demo__screen')?.contains(event.target as Node)) set(false);
+    });
+    // a click on the picture, outside the menu and the dots, also closes it
+    demo.querySelector('.demo__screen')?.addEventListener('click', (event) => {
+      const target = event.target as Element;
+      if (demo.hasAttribute('data-open') && !target.closest('.demo__menu, .demo__spot')) set(false);
+    });
+    demo.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && demo.hasAttribute('data-open')) {
+        set(false);
+        spot.focus();
+      }
+    });
+  });
+</script>

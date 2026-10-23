@@ -116,7 +116,8 @@ export const ermaCase = {
       decision:
         'A roster the crew lead builds by filtering people by skill, location, and availability. Each confirmation is tracked inside the roster; ops sees every roster of the event in one list, filtered by state.',
       why: 'The bottleneck was never the call itself but the follow-up: who said yes, who went quiet. Making confirmation visible removes the second round of calls.',
-      listAlt: 'The My Rosters screen of an event: a grid of roster cards, each with an ID, a name, and a state tag (draft, mobilized, activated).',
+      listAlt: 'The My Rosters screen of an event: a grid of twelve roster cards, each with an ID, a name, a state tag (draft, pending approval, mobilized, activated, closed, demobilized) and a menu button.',
+      menuAlt: 'The roster menu: Transfer to, Split Roster, Generate Timesheet, Delete, and Change status to, with an activated option.',
       resourcesAlt:
         'The Resources table of a roster: linemen with an invite status, a decline reason and an employment type, and filters for Linemen, Support and Fleet.',
     },
