@@ -879,28 +879,23 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
         cursor.removeAttribute('data-grab');
         drop();
       });
-      // the person is in the roster: the pointer opens the roster's Overview, looks, and comes back to the FTEs
-      at(11700, () => place('overview-tab'));
-      at(13000, () => click(() => setOverview(true)));
-      at(15200, () => place('ftes-tab'));
-      at(16500, () => click(() => setOverview(false)));
-      at(17600, () => place('back'));
-      at(19200, () => click(() => setPage(false)));
+      at(11900, () => place('back'));
+      at(13500, () => click(() => setPage(false)));
       // back on the list, the pointer opens the Resources tab, looks, and comes back to the rosters
-      at(20200, () => place('tab-resources'));
-      at(21500, () => click(() => setResources(true)));
-      at(23100, () => place('tab-rosters'));
-      at(24600, () => click(() => setResources(false)));
-      at(25400, () => cursor.removeAttribute('data-show'));
+      at(14500, () => place('tab-resources'));
+      at(15800, () => click(() => setResources(true)));
+      at(17400, () => place('tab-rosters'));
+      at(18900, () => click(() => setResources(false)));
+      at(19700, () => cursor.removeAttribute('data-show'));
       // back to the start while it is invisible, without gliding there; the card goes back to "draft"
-      at(25900, () => {
+      at(20200, () => {
         cursor.setAttribute('data-jump', '');
         place(null);
         void cursor.offsetWidth;
         cursor.removeAttribute('data-jump');
         setStatus(false);
       });
-      at(26900, play);
+      at(21200, play);
     };
     spot.addEventListener('click', stop);
     grab?.addEventListener('pointerdown', stop);
