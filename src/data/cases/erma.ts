@@ -110,7 +110,7 @@ export const ermaCase = {
     roster: {
       index: '01',
       tags: ['Rosters', 'Field ops'],
-      title: 'Confirmations you can see',
+      title: 'Roster assembly instead of phone calls.',
       description: 'A crew lead builds the roster by skill, location and availability, and every yes, no and silence is tracked inside it. The second round of calls disappears.',
       listAlt: 'The My Rosters screen of an event: a grid of twelve roster cards, each with an ID, a name, a state tag (draft, pending approval, mobilized, activated, closed, demobilized) and a menu button.',
       detailAlt:
