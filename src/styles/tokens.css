@@ -95,7 +95,7 @@
 
   /* Baby Sleep case: palette from its Figma "Fonts & Colors" (page, accent, ink, two tints) */
   --sleep-ink: #2c2f33;
-  --sleep-page: #f6f3ee;
+  --sleep-page: #f9f9fc;
   --sleep-accent: #3ea4c4;
   --sleep-accent-text: #1a6f8c; /* the accent darkened for small text on the page (contrast 5:1) */
   --sleep-lavender: #f5f5fd; /* the Parent tint */
