@@ -19,7 +19,6 @@ const W = 1440;
 const H = 1025;
 const pct = (v: number, of: number) => (v / of) * 100;
 const logo = { left: 3.75, top: 2.54, width: 10.07, height: 4.78 };
-const company = { left: 0.5, top: 85, width: 13.5, height: 4 };
 const chipBox = `left:${pct(1098, W)}%;top:${pct(370, H)}%;width:${pct(186, W)}%;`; // the file being dragged, where it ends up over the drop zone
 // The files' progress bars, each filling to 100%: the top of its row's bar group, the percent it reaches, the width of its fill (design pixels, the whole 94px track) and where its percent starts
 const barTops = [332, 392, 446, 504, 562, 617, 675, 733, 791, 849, 907];
@@ -74,7 +73,6 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
     <Image class="ts__chip" src={chip} alt="" widths={[186, 372]} sizes="(max-width: 1023px) 13vw, 130px" quality={90} style={chipBox} />
     <Image class="ts__bolt" src={bolt} alt="" widths={[60, 120]} sizes="(max-width: 1023px) 4vw, 42px" quality={90} style={boltBox} />
     <LogoShield {...logo} />
-    <LogoShield {...company} />
   </div>
 </figure>
 

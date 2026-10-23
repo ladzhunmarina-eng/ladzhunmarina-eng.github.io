@@ -59,7 +59,6 @@ const back = { left: 19.5, top: 2.2, width: 6.5, height: 4.4 }; // "Back" in the
 const spot = { left: 34.65, top: 35.02, width: 2.5, height: 3.51 }; // the dots on the first roster card
 const popup = { left: 20.97, top: 32.78, width: 17.43 }; // the menu with its shadow
 const logo = { left: 3.75, top: 2.54, width: 10.07, height: 4.78 };
-const company = { left: 0.5, top: 85, width: 13.5, height: 4 };
 const box = (b: { left: number; top: number; width: number; height?: number }) =>
   `left:${b.left}%;top:${b.top}%;width:${b.width}%;${b.height ? `height:${b.height}%;` : ''}`;
 ---
@@ -68,7 +67,6 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
   <div class="demo__screen">
     <Image src={base} alt={alt} widths={[640, 1008, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} />
     <LogoShield {...logo} />
-    <LogoShield {...company} />
 
     <button class="demo__tab demo__tab--resources" type="button" style={box(tabResources)} aria-label="Resources"></button>
 
@@ -81,7 +79,6 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
     <div class="demo__page" aria-hidden="true" inert>
       <Image src={detail} alt={detailAlt} widths={[640, 1008, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} />
       <LogoShield {...logo} />
-      <LogoShield {...company} />
 
       <!-- the roster's lists change as the person is moved: the gap he leaves, the line he is dropped on, the new row, and the rest shifting by one row -->
       <div class="demo__shift demo__shift--l" style={box(shiftL)}>
@@ -106,14 +103,12 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
     <div class="demo__overview" aria-hidden="true" inert>
       <Image src={overviewShot} alt={overviewAlt} widths={[640, 1008, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} />
       <LogoShield {...logo} />
-      <LogoShield {...company} />
       <button class="demo__tab demo__tab--ftes" type="button" style={box(tabFtes)} aria-label="FTEs"></button>
     </div>
 
     <div class="demo__resources" aria-hidden="true" inert>
       <Image src={resources} alt={resourcesAlt} widths={[640, 1008, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} />
       <LogoShield {...logo} />
-      <LogoShield {...company} />
       <button class="demo__tab demo__tab--rosters" type="button" style={box(tabRosters)} aria-label="My Roster"></button>
     </div>
 
