@@ -4,6 +4,7 @@ import LogoShield from './LogoShield.astro';
 import base from '../../assets/images/erma-rosters-base.png';
 import menu from '../../assets/images/erma-rosters-menu.png';
 import detail from '../../assets/images/erma-roster-page.png';
+import newRow from '../../assets/images/erma-roster-newrow.png';
 import dragRow from '../../assets/images/erma-roster-dragrow.png';
 import HandGrab from '../../assets/icons/hand-grab.svg';
 
@@ -77,11 +78,7 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
       </div>
       <div class="demo__gap" style={box(grab)}></div>
       <div class="demo__row" style={box(rowIn)}>
-        <span class="demo__row-check"></span>
-        <span class="demo__row-last">Dauda</span>
-        <span class="demo__row-first">Jason</span>
-        <span class="demo__row-invite">On behalf</span>
-        <span class="demo__row-class">Lineman<svg viewBox="0 0 8 4" width="8" height="4" aria-hidden="true"><path d="M0 0h8L4 4z" fill="#000" /></svg></span>
+        <Image src={newRow} alt="" widths={[552, 1104]} sizes="(max-width: 1023px) 38vw, 245px" quality={90} />
       </div>
       <span class="demo__line" style={box(dropLine)}></span>
       <Image class="demo__sprite" src={dragRow} alt="" widths={[579, 1158]} sizes="(max-width: 1023px) 40vw, 260px" quality={90} style={box(sprite)} />
@@ -116,6 +113,8 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
   }
 
   .demo__screen {
+    -webkit-user-select: none;
+    user-select: none;
     container-type: inline-size;
     position: relative;
     overflow: hidden;
@@ -125,6 +124,7 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
   }
 
   .demo__screen :global(img) {
+    -webkit-user-drag: none;
     display: block;
     width: 100%;
     height: auto;
@@ -436,73 +436,22 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
     transition: opacity 0.2s ease;
   }
 
-  /* the new row in the roster: "Dauda Jason, On behalf, Lineman", laid out like its neighbours */
+  /* the new row in the roster, cut from the design like its neighbours: "Dauda Jason, On behalf, Lineman" */
   .demo__row {
     position: absolute;
     z-index: 2;
-    box-sizing: border-box;
-    border-bottom: 1px solid #eaeaea;
-    background: var(--color-white);
-    font-size: 0.972cqw;
-    line-height: 1;
-    color: #1e1e1e;
     opacity: 0;
     transition: opacity 0.3s ease 0.15s;
   }
 
+  .demo__row :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
   [data-dropped] .demo__row {
     opacity: 1;
-  }
-
-  .demo__row > * {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  .demo__row-check {
-    left: 1.25cqw;
-    width: 1.667cqw;
-    height: 1.667cqw;
-    box-sizing: border-box;
-    border: 1px solid #cfcfcf;
-    border-radius: 0.28cqw;
-  }
-
-  .demo__row-last {
-    left: 4.03cqw;
-  }
-
-  .demo__row-first {
-    left: 9.58cqw;
-  }
-
-  .demo__row-invite {
-    left: 16.3cqw;
-    padding: 0.35cqw 0.7cqw;
-    border-radius: 0.28cqw;
-    background: #ffeec4;
-    font-size: 0.833cqw;
-    color: #ff5000;
-  }
-
-  .demo__row-class {
-    left: 23.2cqw;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-sizing: border-box;
-    width: 6.9cqw;
-    height: 2.22cqw;
-    padding-inline: 0.7cqw;
-    border-radius: 0.28cqw;
-    background: #f9f9f9;
-    color: #000;
-  }
-
-  .demo__row-class svg {
-    width: 0.56cqw;
-    height: auto;
   }
 
   /* the grip over his row: drag it with the mouse, or press it */
