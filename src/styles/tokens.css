@@ -627,7 +627,7 @@
 /* The header and footer sit outside the case article, so a branded page reaches them from the root. */
 :root:has([data-case-palette='erma']) {
   --header-backing: var(--erma-page);
-  --color-footer-accent: var(--erma-yellow);
+  --color-footer-accent: var(--erma-orange);
 }
 
 :root:has([data-case-palette='olx']) {
