@@ -152,7 +152,8 @@ export const ermaCase = {
   outcome: {
     eyebrow: 'Outcome',
     title: 'What the callout no longer needs.',
-    lead: '[Product is in development.]',
+    lead: 'Product is in development.',
+    next: 'Next: after launch, track time to an active roster against the 90-hour window, and time to signed timesheets.',
     cards: [
       { icon: 'users', stage: 'Crew assembly', before: 'Phone rounds, rosters by hand', after: 'A roster where every yes, no and silence is tracked' },
       { icon: 'file', stage: 'Timesheets', before: 'Paper timesheets', after: 'Uploaded in batches, checked for foreman, dates and signature' },

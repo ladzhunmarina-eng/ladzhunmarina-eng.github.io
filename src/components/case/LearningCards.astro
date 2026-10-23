@@ -1,4 +1,6 @@
 ---
+import NextBanner from './NextBanner.astro';
+
 interface Props {
   items: readonly { title: string; text: string }[];
   next?: string;
@@ -17,7 +19,7 @@ const { items, next } = Astro.props;
       </li>
     ))}
   </ol>
-  {next && <p class="learnings__next">{next}</p>}
+  {next && <NextBanner>{next}</NextBanner>}
 </div>
 
 <style>
@@ -63,15 +65,5 @@ const { items, next } = Astro.props;
   .learning__text {
     font-size: var(--fs-16);
     line-height: var(--lh-body);
-  }
-
-  .learnings__next {
-    padding: var(--space-20) var(--space-24);
-    border-radius: var(--radius-card);
-    background: var(--case-dark);
-    font-size: var(--fs-18);
-    font-weight: var(--weight-medium);
-    line-height: var(--lh-body);
-    color: var(--color-white);
   }
 </style>

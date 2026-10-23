@@ -12,6 +12,7 @@ import DecisionBlock from '../../components/case/DecisionBlock.astro';
 import RosterMenuDemo from '../../components/case/RosterMenuDemo.astro';
 import ShotFrame from '../../components/case/ShotFrame.astro';
 import DashboardWindow from '../../components/case/DashboardWindow.astro';
+import NextBanner from '../../components/case/NextBanner.astro';
 import BeforeAfterCards from '../../components/case/BeforeAfterCards.astro';
 import quotePhoto from '../../assets/images/erma-quote.webp';
 import TimesheetUploadDemo from '../../components/case/TimesheetUploadDemo.astro';
@@ -91,6 +92,7 @@ const { problem, challenge, process, decisions, outcome } = study;
 
         <Section id="outcome" eyebrow={outcome.eyebrow} title={outcome.title} lead={outcome.lead}>
           <BeforeAfterCards cards={outcome.cards} />
+          <NextBanner>{outcome.next}</NextBanner>
         </Section>
 
         <NextCase current="/work/erma" />
