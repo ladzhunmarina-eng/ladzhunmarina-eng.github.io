@@ -8,7 +8,7 @@ interface Props {
 const { question, groups, insight } = Astro.props;
 ---
 
-<div class="survey">
+<div class="survey" data-survey>
   <p class="survey__question">“{question}”</p>
 
   <div class="survey__groups">
@@ -19,11 +19,11 @@ const { question, groups, insight } = Astro.props;
           <p class="group__n">n = {group.n}</p>
         </header>
         <ul class="group__rows">
-          {group.rows.map(([label, pct]) => (
-            <li class="bar" style={`--pct: ${pct}%`}>
+          {group.rows.map(([label, pct], index) => (
+            <li class="bar" style={`--pct: ${pct}%; --i: ${index}`}>
               <span class="bar__label">{label}</span>
               <span class="bar__track" aria-hidden="true"><span class="bar__fill"></span></span>
-              <span class="bar__value">{pct}%</span>
+              <span class="bar__value"><span data-count={pct}>{pct}</span>%</span>
             </li>
           ))}
         </ul>
@@ -133,6 +133,20 @@ const { question, groups, insight } = Astro.props;
     background: var(--case-bar);
   }
 
+  /* Once in view, the bars fill from the left in turn and the numbers count up. Without script or with reduced motion they are simply there. */
+  [data-motion='ready'] .bar__fill {
+    clip-path: inset(0 100% 0 0 round var(--radius-pill));
+  }
+
+  [data-motion='go'] .bar__fill {
+    clip-path: inset(0 0 0 0 round var(--radius-pill));
+    transition: clip-path 0.9s cubic-bezier(0.25, 1, 0.5, 1) calc(var(--i) * 0.1s);
+  }
+
+  .bar__value {
+    font-variant-numeric: tabular-nums;
+  }
+
   .group__note {
     padding-top: var(--space-12);
     border-top: 1px solid var(--case-line);
@@ -151,3 +165,37 @@ const { question, groups, insight } = Astro.props;
     color: var(--color-ink);
   }
 </style>
+
+<script>
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const countUp = (el: HTMLElement, delay: number) => {
+    const target = Number(el.dataset.count);
+    const start = performance.now() + delay;
+    const step = (now: number) => {
+      const t = Math.min(1, Math.max(0, (now - start) / 900));
+      el.textContent = String(Math.round(target * (1 - Math.pow(1 - t, 4))));
+      if (t < 1) requestAnimationFrame(step);
+    };
+    el.textContent = '0';
+    requestAnimationFrame(step);
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-survey]').forEach((survey) => {
+    if (calm.matches || !('IntersectionObserver' in window)) return;
+    survey.dataset.motion = 'ready';
+    const seen = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        seen.disconnect();
+        survey.dataset.motion = 'go';
+        survey.querySelectorAll<HTMLElement>('.bar').forEach((bar) => {
+          const el = bar.querySelector<HTMLElement>('[data-count]');
+          if (el) countUp(el, Number(getComputedStyle(bar).getPropertyValue('--i')) * 100);
+        });
+      },
+      { threshold: 0.4 },
+    );
+    seen.observe(survey);
+  });
+</script>
