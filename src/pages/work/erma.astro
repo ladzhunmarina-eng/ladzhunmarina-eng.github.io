@@ -15,10 +15,7 @@ import ShotFrame from '../../components/case/ShotFrame.astro';
 import DashboardWindow from '../../components/case/DashboardWindow.astro';
 import OutcomeCards from '../../components/case/OutcomeCards.astro';
 import quotePhoto from '../../assets/images/erma-quote.webp';
-import tsPreview from '../../assets/images/erma-ts-preview.png';
-import tsErrors from '../../assets/images/erma-ts-errors.png';
-import vUpload from '../../assets/images/erma-v-upload.png';
-import vAttachment from '../../assets/images/erma-v-attachment.png';
+import tsUpload from '../../assets/images/erma-ts-upload.png';
 import NextCase from '../../components/case/NextCase.astro';
 import { ermaCase as study } from '../../data/cases/erma';
 
@@ -91,10 +88,7 @@ const { problem, challenge, process, decisions, outcome, retrospective } = study
               description={decisions.timesheets.description}
             >
               <Fragment slot="media">
-                <ShotFrame src={tsPreview} alt={decisions.timesheets.previewAlt} shields={[logoBox, companyBox]} />
-                <ShotFrame src={tsErrors} alt={decisions.timesheets.errorsAlt} />
-                <ShotFrame src={vUpload} alt={decisions.timesheets.uploadAlt} />
-                <ShotFrame src={vAttachment} alt={decisions.timesheets.attachmentAlt} />
+                <ShotFrame src={tsUpload} alt={decisions.timesheets.alt} shields={[logoBox, companyBox]} />
               </Fragment>
             </DecisionBlock>
           </div>

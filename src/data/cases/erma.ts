@@ -146,10 +146,7 @@ export const ermaCase = {
       title: 'Timesheets checked at upload, not at invoicing.',
       description:
         'A foreman drops a batch of timesheet files. Each file is matched to a foreman, dates and signature status, and errors are flagged before anything reaches the invoice.',
-      previewAlt: 'Timesheet upload review: each uploaded file mapped to a foreman, start and end dates, and signed or not signed status before upload.',
-      errorsAlt: 'Validation state: only lines with errors shown, with inline messages for missing fields and invalid dates.',
-      uploadAlt: 'The Upload Invoice dialog with a drop zone, a Final Amount field, a Memo and a Final + Submitted state, and Cancel and Save buttons.',
-      attachmentAlt: 'An uploaded invoice: Invoice_20278.Pdf, final amount $23 000, marked Memo.',
+      alt: 'Timesheets Upload: a drop zone to browse or drag and drop up to 500 timesheet files at once, PDF, JPG, PNG, DOC, XLSX, XLSM or CSV, up to 50 MB each.',
     },
   },
 
