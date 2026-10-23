@@ -72,8 +72,11 @@ const { problem, challenge, process, decisions, outcome, retrospective } = study
               tags={decisions.dashboard.tags}
               title={decisions.dashboard.title}
               description={decisions.dashboard.description}
+              mediaFirst
             >
-              <DashboardWindow blurLogo parts={decisions.dashboard.parts} />
+              <Fragment slot="media">
+                <DashboardWindow blurLogo parts={decisions.dashboard.parts} />
+              </Fragment>
             </DecisionBlock>
 
             <DecisionBlock

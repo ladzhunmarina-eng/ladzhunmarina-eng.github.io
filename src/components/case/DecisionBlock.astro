@@ -8,13 +8,15 @@ interface Props {
   tags?: readonly string[];
   title: string;
   description?: string;
+  /** The mockup on the left and the text on the right (wide screens) */
+  mediaFirst?: boolean;
 }
 
-const { id, index, tags = [], title, description } = Astro.props;
+const { id, index, tags = [], title, description, mediaFirst = false } = Astro.props;
 const hasMedia = Astro.slots.has('media');
 ---
 
-<article id={id} class:list={['decision', { 'decision--wide': !hasMedia }]}>
+<article id={id} class:list={['decision', { 'decision--wide': !hasMedia, 'decision--flip': mediaFirst }]}>
   <div class="decision__body">
     <header class="decision__head">
       {index && <p class="decision__index">{index}</p>}
@@ -112,6 +114,17 @@ const hasMedia = Astro.slots.has('media');
   /* no pictures beside it: the text takes the row */
   .decision--wide .decision__body {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* mockup on the left, text on the right: the same proportions mirrored */
+  @media (min-width: 1024px) {
+    .decision--flip .decision__body {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    }
+
+    .decision--flip .decision__media {
+      order: -1;
+    }
   }
 
   @media (max-width: 1023px) {
