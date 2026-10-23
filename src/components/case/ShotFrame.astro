@@ -7,14 +7,17 @@ interface Props {
   alt: string;
   /** Blur the product logo in the corner: the box, as percentages of the picture (left, top, width, height) */
   shield?: { left: number; top: number; width: number; height: number };
+  /** More than one blur, for a screen with the logo and the company name */
+  shields?: readonly { left: number; top: number; width: number; height: number }[];
 }
 
-const { src, alt, shield } = Astro.props;
+const { src, alt, shield, shields = [] } = Astro.props;
 ---
 
 <figure class="shot">
   <Image src={src} alt={alt} widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
   {shield && <LogoShield {...shield} />}
+  {shields.map((box) => <LogoShield {...box} />)}
 </figure>
 
 <style>

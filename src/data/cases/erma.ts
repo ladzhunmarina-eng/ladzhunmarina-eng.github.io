@@ -96,7 +96,7 @@ export const ermaCase = {
   decisions: {
     eyebrow: 'Solution',
     title: 'Key design decisions.',
-    lead: 'Four decisions that carried the business problem into the interface.',
+    lead: 'Three decisions that carried the business problem into the interface.',
     map: {
       stages: ['Event', 'Roster', 'Assign', 'On site', 'Timesheets', 'Invoice'],
       bars: [
@@ -140,19 +140,14 @@ export const ermaCase = {
         },
       ],
     },
-    permissions: {
-      index: '03',
-      tags: ['Roles and permissions', 'Multi-tenant'],
-      title: 'Fifteen roles, one product',
-      description: 'Each group sees its slice of the same event: ops the whole picture, the field their own roster, finance the money, the client their request.',
-      alt: 'Settings, Permissions tab: a table of permissions grouped into Users and Incident permissions, with a checkbox for each of four roles: System Admin, Business Manager, General Foreman and Lineman.',
-    },
     timesheets: {
-      index: '04',
-      tags: ['Timesheets', 'Invoicing'],
-      title: 'Sign-off before invoice',
-      description: '[How hours logged on site reach the invoice without disputes.]',
-      missing: 'Missing screen · timesheet sign-off',
+      index: '03',
+      tags: ['Timesheets', 'Bulk upload'],
+      title: 'Timesheets checked at upload, not at invoicing.',
+      description:
+        'A foreman drops a batch of timesheet files. Each file is matched to a foreman, dates and signature status, and errors are flagged before anything reaches the invoice.',
+      previewAlt: 'Timesheet upload review: each uploaded file mapped to a foreman, start and end dates, and signed or not signed status before upload.',
+      errorsAlt: 'Validation state: only lines with errors shown, with inline messages for missing fields and invalid dates.',
       uploadAlt: 'The Upload Invoice dialog with a drop zone, a Final Amount field, a Memo and a Final + Submitted state, and Cancel and Save buttons.',
       attachmentAlt: 'An uploaded invoice: Invoice_20278.Pdf, final amount $23 000, marked Memo.',
     },
