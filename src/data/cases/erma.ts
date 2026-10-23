@@ -36,7 +36,7 @@ export const ermaCase = {
     { id: 'problem', label: 'Problem' },
     { id: 'challenge', label: 'Challenge' },
     { id: 'process', label: 'Process' },
-    { id: 'decisions', label: 'Decisions' },
+    { id: 'decisions', label: 'Solution' },
     { id: 'outcome', label: 'Outcome' },
     { id: 'retrospective', label: 'Retrospective' },
   ],
@@ -94,7 +94,7 @@ export const ermaCase = {
   },
 
   decisions: {
-    eyebrow: 'Decisions',
+    eyebrow: 'Solution',
     title: 'Key design decisions.',
     lead: 'Four decisions that carried the business problem into the interface. Each one names the pain, the choice, the reason, and the trade-off.',
     map: {
