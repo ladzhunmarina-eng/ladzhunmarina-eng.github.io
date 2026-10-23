@@ -157,7 +157,7 @@ export const ermaCase = {
     cards: [
       { stage: 'Crew assembly', before: 'Phone rounds, rosters by hand', after: 'A roster where every yes, no and silence is tracked' },
       { stage: 'Timesheets', before: 'Paper timesheets', after: 'Uploaded in batches, checked for foreman, dates and signature' },
-      { stage: 'Invoice', before: 'Invoice by hand', after: '[Built from signed timesheets on the event dashboard: verify]' },
+      { stage: 'Invoice', before: 'Invoice by hand', after: 'Built from signed timesheets on the event dashboard' },
     ],
   },
 
