@@ -12,7 +12,7 @@ interface Props {
 const { image, imageAlt, umux, responses, painPoints } = Astro.props;
 ---
 
-<div class="maze">
+<div class="maze" data-maze>
   <div class="maze__shot">
     <Image class="maze__image" src={image} alt={imageAlt} widths={[604, 1208]} sizes="(max-width: 1023px) 100vw, 604px" quality={85} />
   </div>
@@ -20,7 +20,7 @@ const { image, imageAlt, umux, responses, painPoints } = Astro.props;
   <div class="maze__cards">
     <section class="card" aria-label={umux.label}>
       <p class="score">
-        <span class="score__value">{umux.score}</span>
+        <span class="score__value" data-count={umux.score}>{umux.score}</span>
         <span class="score__label">{umux.label}</span>
       </p>
       <div class="gauge" role="img" aria-label={`Score ${umux.score} out of 100; the threshold is ${umux.threshold}`}>
@@ -37,7 +37,7 @@ const { image, imageAlt, umux, responses, painPoints } = Astro.props;
 
     <section class="card card--responses" aria-label="Responses">
       <p class="count">
-        <span class="score__value">{responses.count}</span>
+        <span class="score__value" data-count={responses.count}>{responses.count}</span>
         <span class="score__label">{responses.label}</span>
       </p>
       <ul class="countries">
@@ -160,6 +160,20 @@ const { image, imageAlt, umux, responses, painPoints } = Astro.props;
     background: var(--case-dark-fg);
   }
 
+  /* Once in view, the gauge fills from the left and the numbers count up. Without script or with reduced motion they are simply there. */
+  [data-motion='ready'] .gauge__fill {
+    clip-path: inset(0 100% 0 0 round var(--radius-pill));
+  }
+
+  [data-motion='go'] .gauge__fill {
+    clip-path: inset(0 0 0 0 round var(--radius-pill));
+    transition: clip-path 1.2s cubic-bezier(0.25, 1, 0.5, 1) 0.2s;
+  }
+
+  .score__value {
+    font-variant-numeric: tabular-nums;
+  }
+
   .verdict {
     display: flex;
     justify-content: space-between;
@@ -240,3 +254,35 @@ const { image, imageAlt, umux, responses, painPoints } = Astro.props;
     }
   }
 </style>
+
+<script>
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const countUp = (el: HTMLElement, delay: number) => {
+    const target = Number(el.dataset.count);
+    const start = performance.now() + delay;
+    const step = (now: number) => {
+      const t = Math.min(1, Math.max(0, (now - start) / 1200));
+      el.textContent = String(Math.round(target * (1 - Math.pow(1 - t, 4))));
+      if (t < 1) requestAnimationFrame(step);
+    };
+    el.textContent = '0';
+    requestAnimationFrame(step);
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-maze]').forEach((maze) => {
+    if (calm.matches || !('IntersectionObserver' in window)) return;
+    maze.dataset.motion = 'ready';
+    maze.querySelectorAll<HTMLElement>('[data-count]').forEach((el) => (el.textContent = '0'));
+    const seen = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        seen.disconnect();
+        maze.dataset.motion = 'go';
+        maze.querySelectorAll<HTMLElement>('[data-count]').forEach((el, index) => countUp(el, 200 + index * 150));
+      },
+      { threshold: 0.5 },
+    );
+    seen.observe(maze);
+  });
+</script>
