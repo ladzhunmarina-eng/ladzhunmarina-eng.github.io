@@ -66,7 +66,7 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
 
 <figure class="demo" data-roster-menu>
   <div class="demo__screen">
-    <Image src={base} alt={alt} widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
+    <Image src={base} alt={alt} widths={[640, 1008, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} />
     <LogoShield {...logo} />
     <LogoShield {...company} />
 
@@ -79,24 +79,24 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
     <span class="demo__status" style={box(status)} aria-hidden="true">activated</span>
 
     <div class="demo__page" aria-hidden="true" inert>
-      <Image src={detail} alt={detailAlt} widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
+      <Image src={detail} alt={detailAlt} widths={[640, 1008, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} />
       <LogoShield {...logo} />
       <LogoShield {...company} />
 
       <!-- the roster's lists change as the person is moved: the gap he leaves, the line he is dropped on, the new row, and the rest shifting by one row -->
       <div class="demo__shift demo__shift--l" style={box(shiftL)}>
-        <Image class="demo__shift-img" src={detail} alt="" widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} style={inner(shiftL, 276, 763)} />
+        <Image class="demo__shift-img" src={detail} alt="" widths={[640, 1008, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} style={inner(shiftL, 276, 763)} />
       </div>
       <div class="demo__cover" style={box(coverL)}></div>
       <div class="demo__shift demo__shift--r" style={box(shiftR)}>
-        <Image class="demo__shift-img" src={detail} alt="" widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} style={inner(shiftR, 861, 704)} />
+        <Image class="demo__shift-img" src={detail} alt="" widths={[640, 1008, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} style={inner(shiftR, 861, 704)} />
       </div>
       <div class="demo__gap" style={box(grab)}></div>
       <div class="demo__row" style={box(rowIn)}>
-        <Image src={newRow} alt="" widths={[552, 1104]} sizes="(max-width: 1023px) 38vw, 245px" quality={90} />
+        <Image src={newRow} alt="" widths={[552, 1104]} sizes="(max-width: 1023px) 38vw, 386px" quality={90} />
       </div>
       <span class="demo__line" style={box(dropLine)}></span>
-      <Image class="demo__sprite" src={dragRow} alt="" widths={[579, 1158]} sizes="(max-width: 1023px) 40vw, 260px" quality={90} style={box(sprite)} />
+      <Image class="demo__sprite" src={dragRow} alt="" widths={[579, 1158]} sizes="(max-width: 1023px) 40vw, 405px" quality={90} style={box(sprite)} />
       <button class="demo__grab" type="button" style={box(grab)} aria-label="Move Jason Dauda into the roster"></button>
 
       <button class="demo__tab demo__tab--overview" type="button" style={box(tabOverview)} aria-label="Overview"></button>
@@ -104,21 +104,21 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
     </div>
 
     <div class="demo__overview" aria-hidden="true" inert>
-      <Image src={overviewShot} alt={overviewAlt} widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
+      <Image src={overviewShot} alt={overviewAlt} widths={[640, 1008, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} />
       <LogoShield {...logo} />
       <LogoShield {...company} />
       <button class="demo__tab demo__tab--ftes" type="button" style={box(tabFtes)} aria-label="FTEs"></button>
     </div>
 
     <div class="demo__resources" aria-hidden="true" inert>
-      <Image src={resources} alt={resourcesAlt} widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
+      <Image src={resources} alt={resourcesAlt} widths={[640, 1008, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} />
       <LogoShield {...logo} />
       <LogoShield {...company} />
       <button class="demo__tab demo__tab--rosters" type="button" style={box(tabRosters)} aria-label="My Roster"></button>
     </div>
 
     <div class="demo__menu" id="roster-menu" style={box(popup)} role="group" aria-label="Roster menu">
-      <Image src={menu} alt={menuAlt} widths={[251, 502]} sizes="(max-width: 1023px) 18vw, 112px" quality={90} />
+      <Image src={menu} alt={menuAlt} widths={[251, 502]} sizes="(max-width: 1023px) 18vw, 176px" quality={90} />
       <button class="demo__option" type="button" aria-label="Change status to activated"></button>
     </div>
 

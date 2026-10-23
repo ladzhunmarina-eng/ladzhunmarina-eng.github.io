@@ -28,10 +28,10 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
 
 <figure class="ts" data-ts>
   <div class="ts__screen">
-    <Image src={upload} alt={alt} widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
-    <Image class="ts__layer ts__layer--hover" src={hover} alt="" widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
-    <Image class="ts__layer ts__layer--loading" src={loading} alt="" widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
-    <Image class="ts__layer ts__layer--oneday" src={oneday} alt="" widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
+    <Image src={upload} alt={alt} widths={[640, 1008, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} />
+    <Image class="ts__layer ts__layer--hover" src={hover} alt="" widths={[640, 1008, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} />
+    <Image class="ts__layer ts__layer--loading" src={loading} alt="" widths={[640, 1008, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} />
+    <Image class="ts__layer ts__layer--oneday" src={oneday} alt="" widths={[640, 1008, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} />
     <ul class="ts__bars" aria-hidden="true">
       {bars.map((bar, i) => (
         <li class="ts__bar" style={`--top: ${pct(bar.top, H)}%; --fill: ${(bar.fill / 94) * 100}%; --tx: ${((bar.tx - 527) / 133) * 100}%; --i: ${i}`}>
@@ -40,8 +40,8 @@ const boltBox = `left:${pct(816, W)}%;top:${pct(462, H)}%;width:${pct(60, W)}%;`
         </li>
       ))}
     </ul>
-    <Image class="ts__chip" src={chip} alt="" widths={[186, 372]} sizes="(max-width: 1023px) 13vw, 74px" quality={90} style={chipBox} />
-    <Image class="ts__bolt" src={bolt} alt="" widths={[60, 120]} sizes="(max-width: 1023px) 4vw, 24px" quality={90} style={boltBox} />
+    <Image class="ts__chip" src={chip} alt="" widths={[186, 372]} sizes="(max-width: 1023px) 13vw, 130px" quality={90} style={chipBox} />
+    <Image class="ts__bolt" src={bolt} alt="" widths={[60, 120]} sizes="(max-width: 1023px) 4vw, 42px" quality={90} style={boltBox} />
     <LogoShield {...logo} />
     <LogoShield {...company} />
   </div>

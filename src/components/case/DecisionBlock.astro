@@ -8,15 +8,13 @@ interface Props {
   tags?: readonly string[];
   title: string;
   description?: string;
-  /** The mockup on the left and the text on the right (wide screens) */
-  mediaFirst?: boolean;
 }
 
-const { id, index, tags = [], title, description, mediaFirst = false } = Astro.props;
+const { id, index, tags = [], title, description } = Astro.props;
 const hasMedia = Astro.slots.has('media');
 ---
 
-<article id={id} class:list={['decision', { 'decision--wide': !hasMedia, 'decision--flip': mediaFirst }]}>
+<article id={id} class:list={['decision', { 'decision--wide': !hasMedia }]}>
   <div class="decision__body">
     <header class="decision__head">
       {index && <p class="decision__index">{index}</p>}
@@ -46,12 +44,11 @@ const hasMedia = Astro.slots.has('media');
     gap: var(--space-24);
   }
 
+  /* the text, then the mockup across the whole column */
   .decision__body {
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    display: flex;
+    flex-direction: column;
     gap: var(--space-32);
-    /* the text sits level with the middle of the mockup */
-    align-items: center;
   }
 
   .decision__head {
@@ -111,25 +108,5 @@ const hasMedia = Astro.slots.has('media');
     min-width: 0;
   }
 
-  /* no pictures beside it: the text takes the row */
-  .decision--wide .decision__body {
-    grid-template-columns: minmax(0, 1fr);
-  }
 
-  /* mockup on the left, text on the right: the same proportions mirrored */
-  @media (min-width: 1024px) {
-    .decision--flip .decision__body {
-      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    }
-
-    .decision--flip .decision__media {
-      order: -1;
-    }
-  }
-
-  @media (max-width: 1023px) {
-    .decision__body {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
 </style>
