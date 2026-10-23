@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import LogoShield from './LogoShield.astro';
 import base from '../../assets/images/erma-rosters-menu4.png';
 import menu from '../../assets/images/erma-rosters-menu.png';
+import overviewShot from '../../assets/images/erma-roster-overview.png';
 import resources from '../../assets/images/erma-resources-menu4.png';
 import detail from '../../assets/images/erma-roster-side.png';
 import newRow from '../../assets/images/erma-roster-newrow.png';
@@ -14,9 +15,10 @@ interface Props {
   menuAlt: string;
   detailAlt: string;
   resourcesAlt: string;
+  overviewAlt: string;
 }
 
-const { alt, menuAlt, detailAlt, resourcesAlt } = Astro.props;
+const { alt, menuAlt, detailAlt, resourcesAlt, overviewAlt } = Astro.props;
 
 // The twelve roster cards, as shares of the screen (cards are 264 x 138 at x 277, 568, 859, 1150 and y 353, 518, 683 of 1440 x 1025)
 const names = ['London — James', 'Bristol — Emily', 'Manchester — Oliver', 'Leeds — Sophie', 'Cambridge — Amelia', 'Oxford — Daniel', 'Brighton — Charlotte', 'Liverpool — Thomas', 'Bath — Grace', 'York — William', 'Cardiff — Lucy', 'Edinburgh — Henry'];
@@ -48,6 +50,9 @@ const inner = (b: { left: number; top: number; width: number; height: number }, 
 // The tabs: "Resources" on the rosters list, and "My Roster" on the Resources screen that follows
 const tabResources = { left: pct(280, W), top: pct(205, H), width: pct(96, W), height: pct(38, H) };
 const tabRosters = { left: pct(385, W), top: pct(205, H), width: pct(100, W), height: pct(38, H) };
+// The roster's own tabs: "Overview" on the page you drag in, and "FTEs 8" on the Overview page
+const tabOverview = { left: pct(277, W), top: pct(186, H), width: pct(97, W), height: pct(48, H) };
+const tabFtes = { left: pct(377, W), top: pct(166, H), width: pct(75, W), height: pct(48, H) };
 const back = { left: 19.5, top: 2.2, width: 6.5, height: 4.4 }; // "Back" in the roster page
 
 // Everything is a share of the 1440 x 1025 screen (the picture's own size in the design)
@@ -94,7 +99,15 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
       <Image class="demo__sprite" src={dragRow} alt="" widths={[579, 1158]} sizes="(max-width: 1023px) 40vw, 260px" quality={90} style={box(sprite)} />
       <button class="demo__grab" type="button" style={box(grab)} aria-label="Move Jason Dauda into the roster"></button>
 
+      <button class="demo__tab demo__tab--overview" type="button" style={box(tabOverview)} aria-label="Overview"></button>
       <button class="demo__back" type="button" style={box(back)} aria-label="Back to the rosters"></button>
+    </div>
+
+    <div class="demo__overview" aria-hidden="true" inert>
+      <Image src={overviewShot} alt={overviewAlt} widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} />
+      <LogoShield {...logo} />
+      <LogoShield {...company} />
+      <button class="demo__tab demo__tab--ftes" type="button" style={box(tabFtes)} aria-label="FTEs"></button>
     </div>
 
     <div class="demo__resources" aria-hidden="true" inert>
@@ -528,6 +541,36 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
     transition-duration: 1.1s;
   }
 
+  /* The roster's Overview page: laid over the roster page when its tab is opened */
+  .demo__overview {
+    position: absolute;
+    inset: 0;
+    z-index: 7;
+    opacity: 0;
+    pointer-events: none;
+    background: var(--color-white);
+    transition: opacity 0.35s ease;
+  }
+
+  [data-overview] .demo__overview {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .demo__tab--overview {
+    z-index: 6;
+  }
+
+  .demo__cursor[data-at-overview-tab] {
+    left: 22.2%;
+    top: 20%;
+  }
+
+  .demo__cursor[data-at-ftes-tab] {
+    left: 28.4%;
+    top: 18.3%;
+  }
+
   /* The Resources screen: the same picture size, laid over the list when its tab is opened */
   .demo__resources {
     position: absolute;
@@ -582,6 +625,7 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
       display: none;
     }
 
+    .demo__overview,
     .demo__resources,
     .demo__page :global(.demo__sprite),
     .demo__shift :global(.demo__shift-img),
@@ -628,6 +672,7 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
     };
     const setPage = (show: boolean) => {
       resetDrag();
+      demo.removeAttribute('data-overview');
       demo.toggleAttribute('data-page', show);
       page.toggleAttribute('inert', !show);
       page.setAttribute('aria-hidden', String(!show));
@@ -654,6 +699,21 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
         setPage(true);
       }),
     );
+    const overviewLayer = demo.querySelector<HTMLElement>('.demo__overview');
+    const setOverview = (show: boolean) => {
+      demo.toggleAttribute('data-overview', show);
+      overviewLayer?.toggleAttribute('inert', !show);
+      overviewLayer?.setAttribute('aria-hidden', String(!show));
+    };
+    setOverview(false);
+    demo.querySelector('.demo__tab--overview')?.addEventListener('click', () => {
+      demo.setAttribute('data-touched', '');
+      setOverview(true);
+    });
+    demo.querySelector('.demo__tab--ftes')?.addEventListener('click', () => {
+      demo.setAttribute('data-touched', '');
+      setOverview(false);
+    });
     const resourcesLayer = demo.querySelector<HTMLElement>('.demo__resources');
     const setResources = (show: boolean) => {
       demo.toggleAttribute('data-resources', show);
@@ -743,6 +803,7 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
     demo.addEventListener('keydown', (event) => {
       if (event.key !== 'Escape') return;
       if (demo.hasAttribute('data-resources')) setResources(false);
+      else if (demo.hasAttribute('data-overview')) setOverview(false);
       else if (demo.hasAttribute('data-page')) setPage(false);
       else if (demo.hasAttribute('data-open')) {
         setMenu(false);
@@ -758,8 +819,8 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
     let timers: number[] = [];
     let running = false;
     const at = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms));
-    const place = (where: 'spot' | 'chip' | 'card' | 'grab' | 'drop' | 'back' | 'tab-resources' | 'tab-rosters' | null) => {
-      ['spot', 'chip', 'card', 'grab', 'drop', 'back', 'tab-resources', 'tab-rosters'].forEach((name) => cursor.toggleAttribute(`data-at-${name}`, name === where));
+    const place = (where: 'spot' | 'chip' | 'card' | 'grab' | 'drop' | 'back' | 'overview-tab' | 'ftes-tab' | 'tab-resources' | 'tab-rosters' | null) => {
+      ['spot', 'chip', 'card', 'grab', 'drop', 'back', 'overview-tab', 'ftes-tab', 'tab-resources', 'tab-rosters'].forEach((name) => cursor.toggleAttribute(`data-at-${name}`, name === where));
     };
     const click = (then: () => void) => {
       cursor.setAttribute('data-press', '');
@@ -784,6 +845,7 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
       if (!running || demo.hasAttribute('data-touched')) return stop();
       setMenu(false);
       setPage(false);
+      setOverview(false);
       setResources(false);
       setStatus(false);
       at(300, () => cursor.setAttribute('data-show', ''));
@@ -817,23 +879,28 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
         cursor.removeAttribute('data-grab');
         drop();
       });
-      at(11900, () => place('back'));
-      at(13500, () => click(() => setPage(false)));
+      // the person is in the roster: the pointer opens the roster's Overview, looks, and comes back to the FTEs
+      at(11700, () => place('overview-tab'));
+      at(13000, () => click(() => setOverview(true)));
+      at(15200, () => place('ftes-tab'));
+      at(16500, () => click(() => setOverview(false)));
+      at(17600, () => place('back'));
+      at(19200, () => click(() => setPage(false)));
       // back on the list, the pointer opens the Resources tab, looks, and comes back to the rosters
-      at(14500, () => place('tab-resources'));
-      at(15800, () => click(() => setResources(true)));
-      at(17400, () => place('tab-rosters'));
-      at(18900, () => click(() => setResources(false)));
-      at(19700, () => cursor.removeAttribute('data-show'));
+      at(20200, () => place('tab-resources'));
+      at(21500, () => click(() => setResources(true)));
+      at(23100, () => place('tab-rosters'));
+      at(24600, () => click(() => setResources(false)));
+      at(25400, () => cursor.removeAttribute('data-show'));
       // back to the start while it is invisible, without gliding there; the card goes back to "draft"
-      at(20200, () => {
+      at(25900, () => {
         cursor.setAttribute('data-jump', '');
         place(null);
         void cursor.offsetWidth;
         cursor.removeAttribute('data-jump');
         setStatus(false);
       });
-      at(21200, play);
+      at(26900, play);
     };
     spot.addEventListener('click', stop);
     grab?.addEventListener('pointerdown', stop);
@@ -848,6 +915,7 @@ const box = (b: { left: number; top: number; width: number; height?: number }) =
           stop();
           setMenu(false);
           setPage(false);
+          setOverview(false);
           setResources(false);
           setStatus(false);
         }

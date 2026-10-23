@@ -115,6 +115,8 @@ export const ermaCase = {
       listAlt: 'The My Rosters screen of an event: a grid of twelve roster cards, each with an ID, a name, a state tag (draft, pending approval, mobilized, activated, closed, demobilized) and a menu button.',
       detailAlt:
         'Inside a roster: two lists side by side, Available Support and the Roster, with checkboxes, an arrow to move the selected people across, and a person being dragged from one list to the other.',
+      overviewAlt:
+        'The roster Overview tab: a general info card with roster ID, display name, status, leaving from, start day and show up time, then empty Equipment and FTEs cards and a Contacts card.',
       menuAlt: 'The roster menu: Transfer to, Split Roster, Generate Timesheet, Delete, and Change status to, with an activated option.',
       resourcesAlt:
         'The Resources tab of an event: Linemen, Support and Fleet toggles, a legend for invite status, and a table of people with favorite, invite, invite status, declined, employment type and email.',
