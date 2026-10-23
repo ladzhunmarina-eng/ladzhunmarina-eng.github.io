@@ -20,7 +20,7 @@ interface Props {
 const { variants, metrics = [], verify = false } = Astro.props;
 ---
 
-<ul class="variants">
+<ul class="variants" data-variants>
   {variants.map((variant) => (
     <li class="variant" style={`--mark: var(--case-variant-${variant.id.toLowerCase()}, var(--case-variant-a))`}>
       <div class="variant__head">
@@ -105,6 +105,38 @@ const { variants, metrics = [], verify = false } = Astro.props;
     color: var(--case-on-bg);
   }
 
+  /* When the cards come into view the badge pops in and sends out two soft rings, then settles. */
+  [data-motion='ready'] .variant__badge {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  [data-motion='go'] .variant__badge {
+    animation:
+      badge-in 0.6s cubic-bezier(0.25, 1, 0.5, 1) 0.4s both,
+      badge-ring 1.4s cubic-bezier(0.25, 1, 0.5, 1) 0.9s 2;
+  }
+
+  @keyframes badge-in {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes badge-ring {
+    from {
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--case-bg) 70%, transparent);
+    }
+    to {
+      box-shadow: 0 0 0 var(--space-14) transparent;
+    }
+  }
+
   /* The button as it looked in that variant */
   .variant__button {
     display: flex;
@@ -171,3 +203,21 @@ const { variants, metrics = [], verify = false } = Astro.props;
     color: var(--color-ink);
   }
 </style>
+
+<script>
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  document.querySelectorAll<HTMLElement>('[data-variants]').forEach((variants) => {
+    if (calm.matches || !('IntersectionObserver' in window) || !variants.querySelector('.variant__badge')) return;
+    variants.dataset.motion = 'ready';
+    const seen = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        seen.disconnect();
+        variants.dataset.motion = 'go';
+      },
+      { threshold: 0.6 },
+    );
+    seen.observe(variants);
+  });
+</script>
