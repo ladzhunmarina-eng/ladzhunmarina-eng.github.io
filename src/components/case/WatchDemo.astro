@@ -23,7 +23,7 @@ const screens = [
   {
     src: stop,
     alt: 'Anna, sleeping since 12:00, with a Stop sleep button.',
-    fields: [{ id: 'clock', box: [30, 105, 138, 34] as const, timer: true, fontSize: 24 }],
+    fields: [{ id: 'clock', box: [40, 104, 118, 36] as const, timer: true, fontSize: 26 }],
   },
   { src: stopped, alt: 'A green check and the word Stopped.' },
 ];
@@ -33,7 +33,7 @@ const tour = [
   [{ move: [100, 150] }, { wait: 300 }, { tap: [100, 67] }], // pick Anna
   [{ move: [99, 130] }, { wait: 400 }, { tap: [99, 198] }], // Start sleep
   [{ move: [145, 70] }, { wait: 300 }, { tap: [145, 111] }, { wait: 500 }, { move: [99, 170] }, { wait: 200 }, { tap: [99, 198] }], // set the time, Save
-  [{ move: [99, 160] }, { wait: 300 }, { count: 'clock', from: [4, 19, 0], secs: 3 }, { tap: [99, 198] }], // the clock runs, then Stop sleep
+  [{ move: [99, 160] }, { wait: 300 }, { count: 'clock', from: [4, 19, 0], secs: 3, compact: true }, { tap: [99, 198] }], // the clock runs, then Stop sleep
   [{ move: [99, 130] }, { wait: 1600 }], // Stopped
 ] satisfies Step[][];
 ---

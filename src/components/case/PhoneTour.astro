@@ -10,7 +10,7 @@ export type Step =
   | { move: [number, number] }
   | { tap: [number, number] }
   | { type: string; text: string }
-  | { count: string; from: [number, number, number]; secs: number }
+  | { count: string; from: [number, number, number]; secs: number; compact?: boolean }
   | { scroll: number; show?: number }
   | { pop: string; for: number }
   | { wait: number };
@@ -217,6 +217,13 @@ const y = (v: number) => `${(v / H) * 100}%`;
     color: var(--color-white);
   }
 
+  .onb__type :global(.onb__sec) {
+    margin-left: 0.12em;
+    font-size: 0.5em;
+    font-weight: 500;
+    opacity: 0.7;
+  }
+
   .onb__type--multiline {
     align-items: flex-start;
     padding-top: calc(10 / var(--w) * 100cqw);
@@ -308,7 +315,7 @@ const y = (v: number) => `${(v / H) * 100}%`;
     | { move: [number, number] }
     | { tap: [number, number] }
     | { type: string; text: string }
-    | { count: string; from: [number, number, number]; secs: number }
+    | { count: string; from: [number, number, number]; secs: number; compact?: boolean }
     | { scroll: number; show?: number }
     | { pop: string; for: number }
     | { wait: number };
@@ -416,7 +423,11 @@ const y = (v: number) => `${(v / H) * 100}%`;
               clock.classList.add('is-on');
               let [h, m, sec] = step.from;
               for (let n = 0; n <= step.secs && alive(); n += 1) {
-                clock.textContent = `${h}:${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+                const mm = String(m).padStart(2, '0');
+                const ss = String(sec).padStart(2, '0');
+                // compact: the clock keeps its h:mm and the seconds run small beside it
+                if (step.compact) clock.innerHTML = `${h}:${mm}<span class="onb__sec">:${ss}</span>`;
+                else clock.textContent = `${h}:${mm}:${ss}`;
                 sec += 1;
                 if (sec === 60) {
                   sec = 0;
