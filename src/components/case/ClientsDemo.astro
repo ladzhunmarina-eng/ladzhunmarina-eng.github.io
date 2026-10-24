@@ -1,0 +1,37 @@
+---
+import PhoneTour from './PhoneTour.astro';
+import type { Step } from './PhoneTour.astro';
+import empty from '../../assets/images/cli-1-empty.png';
+import share from '../../assets/images/cli-2-share.png';
+import list from '../../assets/images/cli-3-list.png';
+
+/* Adding a client, played by itself: the empty list, the invite link, and the client list once they have signed up. */
+interface Props {
+  alt: string;
+}
+
+const { alt } = Astro.props;
+
+const screens = [
+  { src: empty, alt },
+  { src: share, alt: 'Share invite link: a link that invites the client to download the app, with Instagram, Telegram and share buttons.' },
+  { src: list, alt: 'Active clients with their diary status, package and dates.' },
+];
+
+const tour = [
+  [{ move: [190, 520] }, { wait: 400 }, { tap: [192, 600] }], // add a client
+  [
+    { move: [250, 700] },
+    { wait: 400 },
+    { tap: [336, 707] }, // copy the link
+    { wait: 500 },
+    { move: [194, 783] },
+    { wait: 250 },
+    { tap: [194, 783] }, // send it
+    { wait: 800 },
+  ],
+  [{ move: [300, 201] }, { wait: 700 }, { move: [150, 420] }, { wait: 1600 }], // the client has signed up and shows in the list
+] satisfies Step[][];
+---
+
+<PhoneTour screens={screens} tour={tour} start={[300, 420]} />
