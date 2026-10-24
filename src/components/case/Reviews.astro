@@ -4,7 +4,8 @@ interface Review {
   text: string;
   author: string;
   date: string;
-  lang?: string;
+  /** The review was written in another language and is shown translated */
+  translated?: boolean;
 }
 interface Props {
   rating: { score: string; label: string };
@@ -25,11 +26,11 @@ const { rating, reviews } = Astro.props;
 
   <ul class="reviews">
     {reviews.map((review) => (
-      <li class="review" lang={review.lang}>
+      <li class="review">
         <span class="review__mark" aria-hidden="true">“</span>
         {review.title && <h3 class="review__title">{review.title}</h3>}
         <blockquote class="review__text">{review.text}</blockquote>
-        <p class="review__source">{review.author} · App Store · {review.date}</p>
+        <p class="review__source">{review.author} · App Store · {review.date}{review.translated && ' · translated from Ukrainian'}</p>
       </li>
     ))}
   </ul>

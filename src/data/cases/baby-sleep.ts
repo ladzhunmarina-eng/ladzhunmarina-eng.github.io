@@ -181,11 +181,11 @@ export const babySleepCase = {
         date: '1y ago',
       },
       {
-        // The review is in Ukrainian, as written on the App Store; its title is cut off in the screenshot, so none is shown.
-        text: 'Додаток зручний у користуванні, з досить простим для користувача інтерфейсом та цікавими функціями. Зручно трекати час та писати замітки щодо сну малечі.',
+        // Written in Ukrainian on the App Store; shown here in English, and marked as translated.
+        text: 'The app is easy to use, with a fairly simple, user-friendly interface and interesting features. It’s convenient to track time and write notes about the baby’s sleep.',
         author: 'likaoas',
         date: '21 Sep',
-        lang: 'uk',
+        translated: true,
       },
     ],
   },
