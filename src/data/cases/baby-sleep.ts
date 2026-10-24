@@ -38,7 +38,6 @@ export const babySleepCase = {
     { id: 'process', label: 'Process' },
     { id: 'screens', label: 'Screens' },
     { id: 'decisions', label: 'Decisions' },
-    { id: 'watch', label: 'Apple Watch' },
     { id: 'feedback', label: 'Feedback' },
   ],
 
@@ -138,7 +137,7 @@ export const babySleepCase = {
 
   decisions: {
     eyebrow: 'Key decisions',
-    title: 'Four choices that shaped the app.',
+    title: 'Five choices that shaped the app.',
     lead: 'Parents log sleep in a few taps and read it as a day, a trend or a calendar; consultants manage clients and see the same data.',
     items: [
       {
@@ -173,17 +172,15 @@ export const babySleepCase = {
         phones: [] as string[],
         demo: 'clients',
       },
+      {
+        tags: ['Apple Watch', 'Quick actions'],
+        title: 'Start and stop a sleep from the wrist',
+        description:
+          'Open the app, pick the child if there are two, and start the sleep with one tap, setting the time on two wheels if needed. The clock runs on the wrist; Stop sleep ends it, and a green check confirms it.',
+        phones: [] as string[],
+        demo: 'watch',
+      },
     ],
-  },
-
-  watch: {
-    eyebrow: 'Apple Watch',
-    title: 'The main function on the wrist, too.',
-    lead: 'Starting and stopping a sleep is the thing parents do most, often in the dark with a baby in their arms. So it works from the watch without taking the phone out.',
-    tags: ['Apple Watch', 'Quick actions'],
-    blockTitle: 'Start and stop a sleep from the wrist',
-    description:
-      'Open the app, pick the child if there are two, and start the sleep with one tap, setting the time on two wheels if needed. The clock runs on the wrist; Stop sleep ends it, and a green check confirms it.',
   },
 
   feedback: {

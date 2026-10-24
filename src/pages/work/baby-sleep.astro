@@ -28,10 +28,13 @@ import trend from '../../assets/images/sleep-trend.png';
 import calendar from '../../assets/images/sleep-calendar.png';
 import { babySleepCase as study } from '../../data/cases/baby-sleep';
 
-const { goal, persona, process, screens, decisions, watch, feedback } = study;
+const { goal, persona, process, screens, decisions, feedback } = study;
 const shots = { signup, plans, clients, tracker, trend, calendar };
 const gallery = screens.items.map((item) => ({ src: shots[item.key as keyof typeof shots], label: item.label, alt: item.alt }));
-const alts = Object.fromEntries(screens.items.map((item) => [item.key, item.alt]));
+const alts: Record<string, string> = {
+  ...Object.fromEntries(screens.items.map((item) => [item.key, item.alt])),
+  watch: 'The Apple Watch home screen with the app icon.',
+};
 const blocks = decisions.items.map((item) => ({
   ...item,
   phones: item.phones.map((key) => ({ src: shots[key as keyof typeof shots], alt: alts[key] })),
@@ -79,6 +82,11 @@ const blocks = decisions.items.map((item) => ({
                     <OnboardingDemo alt={alts.signup} />
                   </div>
                 )}
+                {block.demo === 'watch' && (
+                  <div class="demo demo--watch">
+                    <WatchDemo alt={alts.watch} />
+                  </div>
+                )}
                 {block.demo === 'clients' && (
                   <div class="demo">
                     <ClientsDemo alt={alts.clients} />
@@ -97,14 +105,6 @@ const blocks = decisions.items.map((item) => ({
               </PhoneDecision>
             ))}
           </div>
-        </Section>
-
-        <Section id="watch" eyebrow={watch.eyebrow} title={watch.title} lead={watch.lead}>
-          <PhoneDecision index={1} tags={watch.tags} title={watch.blockTitle} description={watch.description}>
-            <div class="demo demo--watch">
-              <WatchDemo alt="The Apple Watch home screen with the app icon." />
-            </div>
-          </PhoneDecision>
         </Section>
 
         <Section id="feedback" eyebrow={feedback.eyebrow} title={feedback.title}>
