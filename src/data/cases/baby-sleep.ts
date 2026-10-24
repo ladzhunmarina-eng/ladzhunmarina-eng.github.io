@@ -132,7 +132,7 @@ export const babySleepCase = {
       { key: 'settings', alt: 'Settings: the subscription with a Free plan, profile, password, day sleep range, time zone, sleep details and language.' },
       { key: 'plan', alt: 'Change plan: the Premium plan at $4.99 a month with its features and a Try 7 days for free button.' },
       { key: 'empty', alt: 'The consultant’s empty client list with a sleeping baby and a button to add a client.' },
-      { key: 'child', alt: 'Edit a child: photo, name, gender, birthday and whether the baby was premature.' },
+      { key: 'child', alt: 'Edit a child: photo, name, gender, birthday, whether the baby was premature, and a Save button.' },
       { key: 'trendA', alt: 'Weekly statistics as a trend chart of day, night and total sleep with averages.' },
       { key: 'share', alt: 'Share Sleep Diary: add a consultant by email or find a verified one.' },
       { key: 'archived', alt: 'The Archived tab of the client list: an open box and “No archived clients”.' },
