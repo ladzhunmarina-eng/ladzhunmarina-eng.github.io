@@ -55,14 +55,15 @@ const tour = [
     position: relative;
     aspect-ratio: 640 / 820;
     overflow: hidden;
-    border-radius: var(--radius-card);
-    background: #e1e1e1;
   }
 
+  /* The picture's grey backdrop is brightened to white and multiplied onto the page, so only the watch and its soft shadow remain. */
   .mock :global(.mock__photo) {
     display: block;
     width: 100%;
     height: 100%;
+    filter: brightness(1.14);
+    mix-blend-mode: multiply;
   }
 
   .mock__screen {
