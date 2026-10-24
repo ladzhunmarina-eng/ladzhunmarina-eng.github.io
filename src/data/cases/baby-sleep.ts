@@ -183,7 +183,7 @@ export const babySleepCase = {
     tags: ['Apple Watch', 'Quick actions'],
     blockTitle: 'Start and stop a sleep from the wrist',
     description:
-      'Open the app, pick the child if there are two, and start the sleep with one tap. The clock runs on the wrist; Stop sleep ends it, and a green check confirms it.',
+      'Open the app, pick the child if there are two, and start the sleep with one tap, setting the time on two wheels if needed. The clock runs on the wrist; Stop sleep ends it, and a green check confirms it.',
   },
 
   feedback: {
