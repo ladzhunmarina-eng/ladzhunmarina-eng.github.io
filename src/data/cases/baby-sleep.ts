@@ -65,39 +65,62 @@ export const babySleepCase = {
     eyebrow: 'User persona',
     title: 'Two roles in the system: sleep expert and parent.',
     lead: 'Each role has its own goals and needs. The parent persona drove the tracking flows.',
-    card: {
-      name: 'Anna Smith',
-      role: 'First-time mom',
-      facts: [
-        { label: 'Age', value: '29' },
-        { label: 'Location', value: 'Lviv, Ukraine' },
-      ],
-      biography:
-        'Anna is a young mother who recently gave birth to her first child. She is adjusting to a new lifestyle filled with sleepless nights, feeding schedules, and daily challenges of parenthood. Anna is proactive and seeks reliable tools that can help her track her baby’s sleep patterns, understand routines, and connect with trusted experts for guidance. She values clear communication, reassurance, and actionable advice.',
-      groups: [
-        { title: 'Values', items: ['Care and safety of the baby', 'Trustworthy information', 'Emotional support and guidance'] },
-        {
-          title: 'Goals',
-          items: [
-            'Track and analyze her baby’s sleep schedule',
-            'Receive expert recommendations for healthier sleep patterns',
-            'Reduce stress and feel more confident as a parent',
-          ],
-        },
-        {
-          title: 'Pain points',
-          items: [
-            'Lack of knowledge about baby sleep cycles',
-            'Feeling overwhelmed and exhausted',
-            'Difficulty finding reliable expert support',
-            'Confusion about how to adjust baby’s routine',
-          ],
-        },
-      ],
-      channels: ['Mobile app', 'Chat / messaging', 'Video calls'],
-      quote: '“I just want to help my baby sleep better and feel less stressed myself.”',
-      photoAlt: 'A young mother in a white dress holding her smiling baby',
-    },
+    cards: [
+      {
+        photo: 'parent',
+        name: 'Anna Smith',
+        role: 'First-time mom',
+        facts: [
+          { label: 'Age', value: '29' },
+          { label: 'Location', value: 'Lviv, Ukraine' },
+        ],
+        biography:
+          'Recently became a mom and is still adjusting to sleepless nights and shifting routines. Wants a simple way to track her baby’s sleep and get advice from someone she can trust.',
+        groups: [
+          { title: 'Values', items: ['Baby’s safety and wellbeing', 'Trustworthy, clear advice', 'Emotional support'] },
+          {
+            title: 'Goals',
+            items: ['Understand her baby’s sleep patterns', 'Get recommendations she can act on', 'Feel more confident as a parent'],
+          },
+          {
+            title: 'Pain points',
+            items: ['Doesn’t understand sleep cycles', 'Overwhelmed and exhausted', 'Hard to find a reliable expert'],
+          },
+        ],
+        channels: ['Mobile app', 'Chat', 'Video calls'],
+        quote: '“I just want to help my baby sleep better and feel less stressed myself.”',
+        photoAlt: 'A young mother in a white dress holding her smiling baby',
+      },
+      {
+        photo: 'expert',
+        name: 'Olena Kovalenko',
+        role: 'Certified sleep consultant',
+        facts: [
+          { label: 'Age', value: '36' },
+          { label: 'Location', value: 'Kyiv, Ukraine' },
+        ],
+        biography:
+          'Works remotely with 15 to 20 families at a time. Spends more time piecing together scattered sleep logs than actually helping parents.',
+        groups: [
+          { title: 'Values', items: ['Evidence-based approach', 'Accurate, consistent data', 'Lasting results for families'] },
+          {
+            title: 'Goals',
+            items: ['See a family’s sleep patterns at a glance', 'Give recommendations faster', 'Track progress between sessions'],
+          },
+          {
+            title: 'Pain points',
+            items: [
+              'Logs arrive as screenshots, notes and voice messages',
+              'Gaps and inconsistencies in parent records',
+              'Clients scattered across messengers and email',
+            ],
+          },
+        ],
+        channels: ['Shared sleep diary', 'Chat', 'Video calls'],
+        quote: '“Give me a clean diary, and I can help a family in one session.”',
+        photoAlt: 'Olena Kovalenko, sleep consultant',
+      },
+    ],
   },
 
   screens: {

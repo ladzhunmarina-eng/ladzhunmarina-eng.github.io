@@ -13,6 +13,8 @@ import Reviews from '../../components/case/Reviews.astro';
 import NextCase from '../../components/case/NextCase.astro';
 import heroImage from '../../assets/images/sleep-hero.png';
 import personaPhoto from '../../assets/images/sleep-persona.png';
+// TODO: replace with the real photo of the expert persona (same size as the parent's portrait).
+import expertPhoto from '../../assets/images/persona-expert.jpg';
 import signup from '../../assets/images/sleep-signup.png';
 import plans from '../../assets/images/sleep-plans.png';
 import clients from '../../assets/images/sleep-clients.png';
@@ -52,7 +54,9 @@ const blocks = decisions.items.map((item) => ({
         </Section>
 
         <Section id="persona" eyebrow={persona.eyebrow} title={persona.title} lead={persona.lead}>
-          <PersonaCard photo={personaPhoto} persona={persona.card} />
+          <div class="personas">
+            {persona.cards.map((card) => <PersonaCard photo={card.photo === 'expert' ? expertPhoto : personaPhoto} persona={card} />)}
+          </div>
         </Section>
 
         <Section id="screens" eyebrow={screens.eyebrow} title={screens.title} lead={screens.lead}>
@@ -125,6 +129,12 @@ const blocks = decisions.items.map((item) => ({
     flex-direction: column;
     gap: var(--case-section-gap);
     min-width: 0;
+  }
+
+  .personas {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
   }
 
   .decisions {
