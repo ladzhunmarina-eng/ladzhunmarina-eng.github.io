@@ -90,7 +90,7 @@ const { id, pill, title, lead, screens } = Astro.props;
 
   .showcase__arrow {
     position: absolute;
-    bottom: calc(-1 * var(--space-42));
+    bottom: -10px;
     width: 120px;
     height: 130px;
     color: var(--case-bg);
@@ -98,12 +98,12 @@ const { id, pill, title, lead, screens } = Astro.props;
 
   /* One hand-drawn curve, mirrored for the left side */
   .showcase__arrow--left {
-    left: -90px;
+    left: 30px;
     transform: scaleX(-1);
   }
 
   .showcase__arrow--right {
-    right: -90px;
+    right: 0;
   }
 
   .showcase__rail {
