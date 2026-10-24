@@ -21,13 +21,13 @@ const { id, pill, title, lead, screens } = Astro.props;
     <h2 class="showcase__title" id={id ? `${id}-title` : undefined}>{title}</h2>
     <p class="showcase__lead">{lead}</p>
 
-    <svg class="showcase__arrow showcase__arrow--left" viewBox="0 0 120 120" fill="none" aria-hidden="true">
-      <path d="M104 6C58 14 30 46 14 98" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
-      <path d="M4 82 14 100 32 92" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    <svg class="showcase__arrow showcase__arrow--left" viewBox="0 0 210 210" fill="none" aria-hidden="true">
+      <path d="M10 16C58 18 88 54 110 112C126 152 142 180 172 188" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M178 172C194 173 198 187 168 193" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
-    <svg class="showcase__arrow showcase__arrow--right" viewBox="0 0 120 120" fill="none" aria-hidden="true">
-      <path d="M16 6C62 14 90 46 106 98" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
-      <path d="M116 82 106 100 88 92" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    <svg class="showcase__arrow showcase__arrow--right" viewBox="0 0 210 210" fill="none" aria-hidden="true">
+      <path d="M10 16C58 18 88 54 110 112C126 152 142 180 172 188" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M178 172C194 173 198 187 168 193" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
   </div>
 
@@ -91,18 +91,20 @@ const { id, pill, title, lead, screens } = Astro.props;
 
   .showcase__arrow {
     position: absolute;
-    bottom: calc(-1 * var(--space-36));
-    width: 110px;
-    height: 110px;
+    bottom: calc(-1 * var(--space-42));
+    width: 120px;
+    height: 120px;
     color: var(--case-bg);
   }
 
+  /* One hand-drawn curve, mirrored for the left side */
   .showcase__arrow--left {
-    left: -80px;
+    left: -90px;
+    transform: scaleX(-1);
   }
 
   .showcase__arrow--right {
-    right: -80px;
+    right: -90px;
   }
 
   .showcase__rail {
