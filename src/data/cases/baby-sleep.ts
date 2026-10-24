@@ -63,7 +63,7 @@ export const babySleepCase = {
 
   persona: {
     eyebrow: 'User persona',
-    title: 'Two roles in the system: sleep expert and parent.',
+    title: 'Two roles in the system: parent and sleep expert.',
     lead: 'Each role has its own goals and needs. The parent persona drove the tracking flows.',
     cards: [
       {
@@ -74,20 +74,11 @@ export const babySleepCase = {
           { label: 'Age', value: '29' },
           { label: 'Location', value: 'Lviv, Ukraine' },
         ],
-        biography:
-          'Recently became a mom and is still adjusting to sleepless nights and shifting routines. Wants a simple way to track her baby’s sleep and get advice from someone she can trust.',
+        biography: 'Wants a simple way to track her baby’s sleep and get advice from someone she can trust.',
         groups: [
-          { title: 'Values', items: ['Baby’s safety and wellbeing', 'Trustworthy, clear advice', 'Emotional support'] },
-          {
-            title: 'Goals',
-            items: ['Understand her baby’s sleep patterns', 'Get recommendations she can act on', 'Feel more confident as a parent'],
-          },
-          {
-            title: 'Pain points',
-            items: ['Doesn’t understand sleep cycles', 'Overwhelmed and exhausted', 'Hard to find a reliable expert'],
-          },
+          { title: 'Goals', items: ['Understand her baby’s sleep patterns', 'Get recommendations she can act on'] },
+          { title: 'Pain points', items: ['Doesn’t understand sleep cycles', 'Hard to find a reliable expert'] },
         ],
-        channels: ['Mobile app', 'Chat', 'Video calls'],
         quote: '“I just want to help my baby sleep better and feel less stressed myself.”',
         photoAlt: 'A young mother in a white dress holding her smiling baby',
       },
@@ -99,24 +90,11 @@ export const babySleepCase = {
           { label: 'Age', value: '36' },
           { label: 'Location', value: 'Kyiv, Ukraine' },
         ],
-        biography:
-          'Works remotely with 15 to 20 families at a time. Spends more time piecing together scattered sleep logs than actually helping parents.',
+        biography: 'Spends more time piecing together scattered sleep logs than actually helping parents.',
         groups: [
-          { title: 'Values', items: ['Evidence-based approach', 'Accurate, consistent data', 'Lasting results for families'] },
-          {
-            title: 'Goals',
-            items: ['See a family’s sleep patterns at a glance', 'Give recommendations faster', 'Track progress between sessions'],
-          },
-          {
-            title: 'Pain points',
-            items: [
-              'Logs arrive as screenshots, notes and voice messages',
-              'Gaps and inconsistencies in parent records',
-              'Clients scattered across messengers and email',
-            ],
-          },
+          { title: 'Goals', items: ['See a family’s sleep patterns at a glance', 'Give recommendations faster'] },
+          { title: 'Pain points', items: ['Logs arrive as screenshots, notes and voice messages', 'Clients scattered across messengers and email'] },
         ],
-        channels: ['Shared sleep diary', 'Chat', 'Video calls'],
         quote: '“Give me a clean diary, and I can help a family in one session.”',
         photoAlt: 'Olena Kovalenko, sleep consultant',
       },

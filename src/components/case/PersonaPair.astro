@@ -1,0 +1,176 @@
+---
+import { Image } from 'astro:assets';
+
+interface Persona {
+  photo: ImageMetadata;
+  name: string;
+  role: string;
+  facts: readonly { label: string; value: string }[];
+  biography: string;
+  groups: readonly { title: string; items: readonly string[] }[];
+  quote: string;
+  photoAlt: string;
+}
+interface Props {
+  personas: readonly Persona[];
+}
+
+const { personas } = Astro.props;
+---
+
+<div class="pair">
+  {personas.map((persona) => (
+    <article class="persona" aria-label={persona.name}>
+      <header class="persona__head">
+        <Image class="persona__photo" src={persona.photo} alt={persona.photoAlt} widths={[96, 192]} sizes="96px" quality={80} />
+        <div class="persona__who">
+          <h3 class="persona__name">{persona.name}</h3>
+          <p class="persona__role">{persona.role}</p>
+          <dl class="persona__facts">
+            {persona.facts.map((fact) => (
+              <div><dt>{fact.label}</dt><dd>{fact.value}</dd></div>
+            ))}
+          </dl>
+        </div>
+      </header>
+
+      <p class="persona__bio">{persona.biography}</p>
+
+      {persona.groups.map((group) => (
+        <section class="persona__group">
+          <h4>{group.title}</h4>
+          <ul>{group.items.map((item) => <li>{item}</li>)}</ul>
+        </section>
+      ))}
+
+      <blockquote class="persona__quote">{persona.quote}</blockquote>
+    </article>
+  ))}
+</div>
+
+<style>
+  /* Both people on one plane: one panel, two columns, a hairline between them. */
+  .pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border: 1px solid var(--case-line);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+  }
+
+  .persona {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    padding: var(--case-card-pad);
+    min-width: 0;
+  }
+
+  .persona + .persona {
+    border-left: 1px solid var(--case-line);
+  }
+
+  .persona__head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+  }
+
+  .persona__head :global(.persona__photo) {
+    flex: none;
+    width: 96px;
+    height: 96px;
+    border-radius: var(--radius-card);
+    object-fit: cover;
+    object-position: 50% 15%;
+    background: var(--color-icon-bg);
+  }
+
+  .persona__who {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    min-width: 0;
+  }
+
+  .persona__name {
+    font-family: var(--font-display);
+    font-size: var(--fs-24);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-heading);
+    color: var(--color-ink);
+  }
+
+  .persona__role {
+    font-size: var(--fs-16);
+    font-weight: var(--weight-medium);
+    color: var(--case-accent);
+  }
+
+  .persona__facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-16);
+    font-size: var(--fs-14);
+    line-height: var(--lh-snug);
+    color: var(--color-muted);
+  }
+
+  .persona__facts div {
+    display: flex;
+    gap: var(--space-4);
+  }
+
+  .persona__facts dd {
+    margin: 0;
+    color: var(--color-ink);
+  }
+
+  .persona__bio {
+    font-size: var(--fs-16);
+    line-height: var(--lh-body);
+    color: var(--color-ink);
+  }
+
+  .persona__group h4 {
+    margin-bottom: var(--space-8);
+    font-size: var(--fs-12);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--ls-eyebrow);
+    text-transform: uppercase;
+    color: var(--case-accent);
+  }
+
+  .persona__group ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    font-size: var(--fs-14);
+    line-height: var(--lh-snug);
+    color: var(--color-ink);
+  }
+
+  .persona__quote {
+    margin: auto 0 0;
+    padding: var(--space-16) var(--space-20);
+    border-radius: var(--radius-card);
+    background: var(--case-glass);
+    font-family: var(--font-display);
+    font-size: var(--fs-18);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-tight);
+    color: var(--color-ink);
+  }
+
+  @media (max-width: 1023px) {
+    .pair {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .persona + .persona {
+      border-top: 1px solid var(--case-line);
+      border-left: 0;
+    }
+  }
+</style>

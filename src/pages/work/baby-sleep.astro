@@ -6,7 +6,7 @@ import CaseHero from '../../components/case/CaseHero.astro';
 import CaseNav from '../../components/case/CaseNav.astro';
 import Section from '../../components/case/Section.astro';
 import NoteCards from '../../components/case/NoteCards.astro';
-import PersonaCard from '../../components/case/PersonaCard.astro';
+import PersonaPair from '../../components/case/PersonaPair.astro';
 import PhoneStrip from '../../components/case/PhoneStrip.astro';
 import PhoneDecision from '../../components/case/PhoneDecision.astro';
 import Reviews from '../../components/case/Reviews.astro';
@@ -54,9 +54,7 @@ const blocks = decisions.items.map((item) => ({
         </Section>
 
         <Section id="persona" eyebrow={persona.eyebrow} title={persona.title} lead={persona.lead}>
-          <div class="personas">
-            {persona.cards.map((card) => <PersonaCard photo={card.photo === 'expert' ? expertPhoto : personaPhoto} persona={card} />)}
-          </div>
+          <PersonaPair personas={persona.cards.map((card) => ({ ...card, photo: card.photo === 'expert' ? expertPhoto : personaPhoto }))} />
         </Section>
 
         <Section id="screens" eyebrow={screens.eyebrow} title={screens.title} lead={screens.lead}>
@@ -129,12 +127,6 @@ const blocks = decisions.items.map((item) => ({
     flex-direction: column;
     gap: var(--case-section-gap);
     min-width: 0;
-  }
-
-  .personas {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-16);
   }
 
   .decisions {
