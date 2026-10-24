@@ -59,7 +59,6 @@ export const babySleepCase = {
         icon: 'check' as const,
         title: 'Solution',
         text: 'A collaborative mobile platform with sleep tracking, notes, and direct communication tools that connect parents and experts to build healthier sleep habits for babies.',
-        highlight: true,
       },
     ],
   },
