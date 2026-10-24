@@ -7,12 +7,13 @@ import ThemePhone from './ThemePhone.astro';
 interface Props {
   id?: string;
   eyebrow: string;
+  tags: readonly string[];
   title: string;
   lead: string;
   alts: { light: string; dark: string };
 }
 
-const { id, eyebrow, title, lead, alts } = Astro.props;
+const { id, eyebrow, tags, title, lead, alts } = Astro.props;
 ---
 
 <section class="theme-block" id={id} aria-labelledby={id ? `${id}-title` : undefined}>
@@ -24,6 +25,9 @@ const { id, eyebrow, title, lead, alts } = Astro.props;
   <div class="theme-block__side">
   <div class="theme-block__copy">
     <p class="theme-block__eyebrow">{eyebrow}</p>
+    <ul class="theme-block__tags">
+      {tags.map((tag) => <li>{tag}</li>)}
+    </ul>
     <h2 class="theme-block__title" id={id ? `${id}-title` : undefined}>{title}</h2>
     <p class="theme-block__lead">{lead}</p>
   </div>
@@ -71,6 +75,27 @@ const { id, eyebrow, title, lead, alts } = Astro.props;
     letter-spacing: var(--ls-eyebrow);
     text-transform: uppercase;
     color: var(--case-accent);
+  }
+
+  /* The tags, as on every key decision: the first in blue, the others in sand */
+  .theme-block__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+  }
+
+  .theme-block__tags li {
+    padding: var(--space-4) var(--space-12);
+    border-radius: var(--radius-pill);
+    background: var(--case-pill-bg);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-snug);
+    color: var(--case-pill-text);
+  }
+
+  .theme-block__tags li:first-child {
+    background: var(--sleep-pill-blue);
   }
 
   .theme-block__title {

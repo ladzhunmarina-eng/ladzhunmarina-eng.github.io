@@ -187,6 +187,7 @@ export const babySleepCase = {
 
   theme: {
     eyebrow: 'Light and dark theme',
+    tags: ['Light theme', 'Dark theme'],
     title: 'Light and dark were designed as one system.',
     lead: 'Both themes share one layout and one illustration, so a parent sees the same screen by day and at night.',
     alts: {
