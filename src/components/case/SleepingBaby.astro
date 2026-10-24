@@ -1,0 +1,144 @@
+---
+import { Image } from 'astro:assets';
+import cloud from '../../assets/images/baby-cloud.png';
+import body from '../../assets/images/baby-body.png';
+import starA from '../../assets/images/baby-star-a.png';
+import starB from '../../assets/images/baby-star-b.png';
+import starC from '../../assets/images/baby-star-c.png';
+import zBig from '../../assets/images/baby-z-big.png';
+import zSmall from '../../assets/images/baby-z-small.png';
+
+/*
+ * The sleeping baby of the empty clients list, redrawn in layers and animated as in the Figma prototype:
+ * the baby breathes, the cloud sinks a little, the Z's float up one after another, the stars twinkle.
+ * It covers the baked-in picture; the box is the illustration's group in the 390 x 844 screen (135 x 135 at 124.5, 276).
+ */
+const layers = [
+  { src: cloud, name: 'cloud' },
+  { src: body, name: 'body' },
+  { src: starA, name: 'star-a' },
+  { src: starB, name: 'star-b' },
+  { src: starC, name: 'star-c' },
+  { src: zSmall, name: 'z-small' },
+  { src: zBig, name: 'z-big' },
+];
+---
+
+<div class="baby" aria-hidden="true">
+  {layers.map((layer) => (
+    <Image class:list={['baby__layer', `baby__layer--${layer.name}`]} src={layer.src} alt="" widths={[135, 270, 540]} sizes="135px" quality={90} />
+  ))}
+</div>
+
+<style>
+  .baby {
+    position: absolute;
+    left: calc(124.5 / 390 * 100%);
+    top: calc(276 / 844 * 100%);
+    width: calc(135 / 390 * 100%);
+    aspect-ratio: 1;
+    /* white over the picture's own, static baby */
+    background: var(--color-white);
+    box-shadow: 0 0 0 2px var(--color-white);
+    pointer-events: none;
+  }
+
+  .baby :global(.baby__layer) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .baby :global(.baby__layer--body) {
+      animation: baby-breath 3s ease-in-out infinite;
+    }
+
+    .baby :global(.baby__layer--cloud) {
+      animation: baby-cloud 3s ease-in-out infinite;
+    }
+
+    .baby :global(.baby__layer--z-small) {
+      animation: baby-z-small 3s ease-in-out infinite;
+    }
+
+    .baby :global(.baby__layer--z-big) {
+      animation: baby-z-big 3s ease-in-out infinite;
+    }
+
+    .baby :global(.baby__layer--star-a) {
+      transform-origin: 82.6% 92.4%;
+      animation: baby-twinkle 1.5s ease-in-out -0.75s infinite;
+    }
+
+    .baby :global(.baby__layer--star-b) {
+      transform-origin: 39.1% 25.9%;
+      animation: baby-twinkle 1.5s ease-in-out infinite;
+    }
+
+    .baby :global(.baby__layer--star-c) {
+      transform-origin: 24% 94.6%;
+      animation: baby-twinkle 1s ease-in-out infinite;
+    }
+  }
+
+  @keyframes baby-breath {
+    50% {
+      transform: translateY(-1.85%);
+    }
+  }
+
+  @keyframes baby-cloud {
+    50% {
+      transform: translateY(0.9%);
+    }
+  }
+
+  @keyframes baby-twinkle {
+    0%,
+    100% {
+      opacity: 0.35;
+      transform: scale(0.7);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+  }
+
+  /* The Z's rise and fade; the big one starts a beat after the small one. */
+  @keyframes baby-z-small {
+    0% {
+      opacity: 0;
+      transform: translateY(4.4%);
+    }
+    17% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 1;
+    }
+    70%,
+    100% {
+      opacity: 0;
+      transform: translateY(-7.4%);
+    }
+  }
+
+  @keyframes baby-z-big {
+    0%,
+    30% {
+      opacity: 0;
+      transform: translateY(4.4%);
+    }
+    47%,
+    80% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-7.4%);
+    }
+  }
+</style>

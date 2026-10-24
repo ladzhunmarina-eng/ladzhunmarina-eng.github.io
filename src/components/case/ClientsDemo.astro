@@ -1,5 +1,6 @@
 ---
 import PhoneTour from './PhoneTour.astro';
+import SleepingBaby from './SleepingBaby.astro';
 import type { Step } from './PhoneTour.astro';
 import empty from '../../assets/images/cli-1-empty.png';
 import share from '../../assets/images/cli-2-share.png';
@@ -34,4 +35,6 @@ const tour = [
 ] satisfies Step[][];
 ---
 
-<PhoneTour screens={screens} tour={tour} start={[300, 420]} />
+<PhoneTour screens={screens} tour={tour} start={[300, 420]}>
+  <SleepingBaby slot="screen-0" />
+</PhoneTour>

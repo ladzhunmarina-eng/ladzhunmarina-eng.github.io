@@ -51,6 +51,7 @@ const y = (v: number) => `${(v / H) * 100}%`;
             <Image src={src} alt={i === 0 || !screen.tall ? screen.alt : ''} widths={[280, 390, 546]} sizes="280px" quality={85} loading={i === 0 ? 'eager' : 'lazy'} />
           ))}
         </div>
+        <slot name={`screen-${i}`} />
         {screen.fields?.map((field) => (
           <span class:list={['onb__type', { 'onb__type--multiline': field.multiline, 'onb__type--timer': field.timer }]} data-type={field.id} style={`left:${x(field.box[0])};top:${y(field.box[1])};width:${x(field.box[2])};height:${y(field.box[3])}`}></span>
         ))}
