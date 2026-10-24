@@ -6,7 +6,7 @@ import { reviews } from '../data/content';
 const { featured, others, linkedin } = reviews;
 ---
 
-<section class="reviews" id="reviews" aria-labelledby="reviews-title">
+<section class="reviews" id="reviews" aria-labelledby="reviews-title" data-reviews>
   <div class="reviews__inner">
     <h2 id="reviews-title" class="visually-hidden">Wall of Love</h2>
 
@@ -135,4 +135,132 @@ const { featured, others, linkedin } = reviews;
       grid-template-columns: minmax(0, 1fr);
     }
   }
+
+  /* The asterisk between name and role turns slowly, and a photo leans a little when pointed at. */
+  .author__dot {
+    display: inline-block;
+  }
+
+  .author__photo {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .author:hover .author__photo {
+    transform: rotate(-4deg) scale(1.06);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    [data-motion='go'] .feature .author__dot {
+      animation: reviews-spin 9s linear infinite;
+    }
+
+    /* Before the section is seen the pieces wait just below their places; then they come up one after another:
+       the author, the headline word by word (with "priceless" highlighted), the two notes, the button. */
+    [data-motion='ready'] :global(.w),
+    [data-motion='ready'] .feature .author,
+    [data-motion='ready'] .note,
+    [data-motion='ready'] .reviews__more {
+      opacity: 0;
+      transform: translateY(0.45em);
+    }
+
+    [data-motion='ready'] .note,
+    [data-motion='ready'] .reviews__more {
+      transform: translateY(var(--space-20));
+    }
+
+    [data-motion='ready'] .author__photo {
+      transform: scale(0.6) rotate(-8deg);
+    }
+
+    [data-motion='go'] :global(.w),
+    [data-motion='go'] .feature .author,
+    [data-motion='go'] .note,
+    [data-motion='go'] .reviews__more {
+      opacity: 1;
+      transform: none;
+      transition:
+        opacity 0.6s ease-out,
+        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-motion='go'] .feature .author {
+      transition-delay: 0.05s;
+    }
+
+    [data-motion='go'] :global(.w) {
+      transition-delay: calc(0.3s + var(--i) * 45ms);
+    }
+
+    [data-motion='go'] .note {
+      transition-delay: calc(1.1s + var(--n) * 0.18s);
+    }
+
+    [data-motion='go'] .reviews__more {
+      transition-delay: 1.6s;
+    }
+
+    [data-motion='go'] .author__photo {
+      transform: none;
+      transition-delay: 0.1s;
+    }
+
+    /* A marker stroke sweeps under the word */
+    :global(.w--mark) {
+      background: linear-gradient(color-mix(in srgb, var(--color-nav-active) 30%, transparent), color-mix(in srgb, var(--color-nav-active) 30%, transparent)) 0 88% / 0% 0.32em no-repeat;
+    }
+
+    [data-motion='go'] :global(.w--mark) {
+      background-size: 100% 0.32em;
+      transition:
+        opacity 0.6s ease-out,
+        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+        background-size 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1s;
+    }
+  }
+
+  @keyframes reviews-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 </style>
+
+<script>
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  document.querySelectorAll<HTMLElement>('[data-reviews]').forEach((section) => {
+    if (calm.matches || !('IntersectionObserver' in window)) return;
+
+    // The headline's words become pieces that can come up one by one; the text itself stays as it was.
+    const quote = section.querySelector<HTMLElement>('.feature__quote p');
+    if (quote) {
+      const text = quote.textContent ?? '';
+      quote.setAttribute('aria-label', text);
+      quote.textContent = '';
+      text.split(' ').forEach((word, index, all) => {
+        const piece = document.createElement('span');
+        piece.className = /^priceless$/i.test(word) ? 'w w--mark' : 'w';
+        piece.style.setProperty('--i', String(index));
+        piece.style.display = 'inline-block';
+        piece.setAttribute('aria-hidden', 'true');
+        piece.textContent = word;
+        quote.append(piece);
+        if (index < all.length - 1) quote.append(' ');
+      });
+    }
+
+    section.querySelectorAll<HTMLElement>('.note').forEach((note, index) => note.style.setProperty('--n', String(index)));
+
+    section.dataset.motion = 'ready';
+    const seen = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        seen.disconnect();
+        section.dataset.motion = 'go';
+      },
+      { threshold: 0.3 },
+    );
+    seen.observe(section);
+  });
+</script>
