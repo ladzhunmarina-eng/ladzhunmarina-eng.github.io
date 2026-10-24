@@ -168,7 +168,7 @@ export const babySleepCase = {
         tags: ['Consultants', 'Clients'],
         title: 'Every client and their diary status in one list',
         description:
-          'An expert invites a client with a link from the empty list. Once they sign up, they appear with their diary status, the package they are on and its dates: everything needed before opening a diary.',
+          'An expert invites a client with a link from the empty list. Once they sign up, they appear with their diary status, the package they are on and its dates: everything needed before opening a diary, and one tap opens the client’s profile with her day.',
         phones: [] as string[],
         demo: 'clients',
       },
