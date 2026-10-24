@@ -10,12 +10,13 @@ export type Step =
   | { move: [number, number] }
   | { tap: [number, number] }
   | { type: string; text: string }
+  | { count: string; from: [number, number, number]; secs: number }
   | { wait: number };
 
 interface Screen {
   src: ImageMetadata;
   alt: string;
-  fields?: readonly { id: string; box: readonly [number, number, number, number]; multiline?: boolean }[];
+  fields?: readonly { id: string; box: readonly [number, number, number, number]; multiline?: boolean; timer?: boolean }[];
 }
 interface Props {
   screens: readonly Screen[];
@@ -39,7 +40,7 @@ const y = (v: number) => `${(v / H) * 100}%`;
       <div class:list={['onb__screen', { 'is-on': i === 0 }]} data-screen={i}>
         <Image src={screen.src} alt={screen.alt} widths={[280, 390, 546]} sizes="280px" quality={85} loading={i === 0 ? 'eager' : 'lazy'} />
         {screen.fields?.map((field) => (
-          <span class:list={['onb__type', { 'onb__type--multiline': field.multiline }]} data-type={field.id} style={`left:${x(field.box[0])};top:${y(field.box[1])};width:${x(field.box[2])};height:${y(field.box[3])}`}></span>
+          <span class:list={['onb__type', { 'onb__type--multiline': field.multiline, 'onb__type--timer': field.timer }]} data-type={field.id} style={`left:${x(field.box[0])};top:${y(field.box[1])};width:${x(field.box[2])};height:${y(field.box[3])}`}></span>
         ))}
       </div>
     ))}
@@ -102,6 +103,18 @@ const y = (v: number) => `${(v / H) * 100}%`;
     color: var(--sleep-ink);
     opacity: 0;
     white-space: nowrap;
+  }
+
+  /* A running clock drawn over the one in the picture, in the same dark plate */
+  .onb__type--timer {
+    justify-content: center;
+    padding-left: 0;
+    border-radius: 0;
+    background: var(--sleep-ink);
+    font-size: calc(34 / 390 * 100cqw);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-white);
   }
 
   .onb__type--multiline {
@@ -198,6 +211,7 @@ const y = (v: number) => `${(v / H) * 100}%`;
     | { move: [number, number] }
     | { tap: [number, number] }
     | { type: string; text: string }
+    | { count: string; from: [number, number, number]; secs: number }
     | { wait: number };
 
   const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -265,6 +279,24 @@ const y = (v: number) => `${(v / H) * 100}%`;
               await tap(step.tap);
             } else if ('wait' in step) {
               await sleep(step.wait);
+            } else if ('count' in step) {
+              // seconds tick on a clock: h:mm:ss
+              const clock = root.querySelector<HTMLElement>(`[data-type="${step.count}"]`)!;
+              clock.classList.add('is-on');
+              let [h, m, sec] = step.from;
+              for (let n = 0; n <= step.secs && alive(); n += 1) {
+                clock.textContent = `${h}:${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+                sec += 1;
+                if (sec === 60) {
+                  sec = 0;
+                  m += 1;
+                }
+                if (m === 60) {
+                  m = 0;
+                  h += 1;
+                }
+                await sleep(1000);
+              }
             } else {
               const field = root.querySelector<HTMLElement>(`[data-type="${step.type}"]`)!;
               field.classList.add('is-on');

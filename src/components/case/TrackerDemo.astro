@@ -17,7 +17,7 @@ const screens = [
   { src: idle, alt },
   { src: add, alt: 'Add Sleep: start and end time, day or night sleep, and details.', fields: [{ id: 'note', box: [17, 382, 356, 40] as const, multiline: true }] },
   { src: running, alt: 'The day view with a running sleep timer and a stop button.' },
-  { src: lock, alt: 'The lock screen with the running sleep and a Stop button.' },
+  { src: lock, alt: 'The lock screen with the running sleep and a Stop button.', fields: [{ id: 'clock', box: [118, 648, 154, 46] as const, timer: true }] },
 ];
 
 const tour = [
@@ -31,7 +31,7 @@ const tour = [
     { tap: [195, 786] }, // Save
   ],
   [{ move: [250, 500] }, { wait: 1500 }], // the timer runs; the phone is locked
-  [{ move: [195, 560] }, { wait: 600 }, { tap: [330, 661] }], // Stop
+  [{ move: [195, 560] }, { wait: 400 }, { count: 'clock', from: [4, 19, 0], secs: 4 }, { tap: [330, 661] }], // the seconds run, then Stop
 ] satisfies Step[][];
 ---
 
