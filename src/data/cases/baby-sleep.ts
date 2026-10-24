@@ -126,8 +126,9 @@ export const babySleepCase = {
         tags: ['Onboarding', 'Roles'],
         title: 'Two roles from the first tap',
         description:
-          'Parent or consultant is the first choice, so each person lands in a flow built for them: a sleep diary for parents, a client list for experts.',
-        phones: ['signup'],
+          'Parent or consultant is the first choice, so each person lands in a flow built for them. For parents it continues with an account, an email check, the child’s name and birthday, and an optional photo.',
+        phones: [] as string[],
+        demo: 'onboarding',
       },
       {
         tags: ['Tracking', 'Timer'],

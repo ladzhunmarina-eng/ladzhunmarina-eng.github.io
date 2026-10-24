@@ -1,0 +1,306 @@
+---
+import { Image } from 'astro:assets';
+import start from '../../assets/images/onb-1-start.png';
+import signup from '../../assets/images/onb-2-signup.png';
+import email from '../../assets/images/onb-3-email.png';
+import congrats from '../../assets/images/onb-4-congrats.png';
+import child from '../../assets/images/onb-5-child.png';
+import birthday from '../../assets/images/onb-6-birthday.png';
+import photo from '../../assets/images/onb-7-photo.png';
+
+/*
+ * The parent onboarding, played by itself: a finger taps through seven screens of the app.
+ * Coordinates are in the design's own pixels (390 x 844) and become shares of the phone.
+ */
+interface Props {
+  alt: string;
+}
+
+const { alt } = Astro.props;
+
+const W = 390;
+const H = 844;
+const x = (v: number) => `${(v / W) * 100}%`;
+const y = (v: number) => `${(v / H) * 100}%`;
+
+const screens = [
+  { src: start, alt: 'Sign-up start: choose Parent or Consultant, or log in.' },
+  { src: signup, alt: 'Sign up as Parent: full name, email, password and timezone.', fields: [{ id: 'email', box: [17, 255, 357, 46] }, { id: 'password', box: [17, 343, 357, 46] }] },
+  { src: email, alt: 'Verify your email: a link was sent to the address.' },
+  { src: congrats, alt: 'Congratulations, you are registered. Let’s start.' },
+  { src: child, alt: 'The child’s name and gender.' },
+  { src: birthday, alt: 'The child’s birthday and whether they were premature.' },
+  { src: photo, alt: 'Last step: add a favourite photo, or skip it for now.' },
+];
+---
+
+<figure class="onb" data-onboarding>
+  <div class="onb__phone">
+    {screens.map((screen, i) => (
+      <div class:list={['onb__screen', { 'is-on': i === 0 }]} data-screen={i}>
+        <Image src={screen.src} alt={i === 0 ? alt : screen.alt} widths={[280, 390, 546]} sizes="280px" quality={85} loading={i === 0 ? 'eager' : 'lazy'} />
+        {screen.fields?.map((field) => (
+          <span class="onb__type" data-type={field.id} style={`left:${x(field.box[0])};top:${y(field.box[1])};width:${x(field.box[2])};height:${y(field.box[3])}`}></span>
+        ))}
+      </div>
+    ))}
+    <span class="onb__finger" data-finger aria-hidden="true"><span class="onb__ripple"></span></span>
+  </div>
+  <ol class="onb__dots" aria-hidden="true">
+    {screens.map((_, i) => <li class:list={['onb__dot', { 'is-on': i === 0 }]}></li>)}
+  </ol>
+</figure>
+
+<style>
+  .onb {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-16);
+    margin: 0;
+  }
+
+  .onb__phone {
+    container-type: inline-size;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 390 / 844;
+    overflow: hidden;
+    border-radius: 32px;
+    background: var(--color-white);
+    box-shadow: 0 var(--space-16) var(--space-32) rgb(44 47 51 / 0.12);
+  }
+
+  .onb__screen {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+
+  .onb__screen.is-on {
+    opacity: 1;
+  }
+
+  .onb__screen :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* What the finger "types" covers the field's placeholder */
+  .onb__type {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    padding-left: calc(19 / 390 * 100cqw);
+    border-radius: calc(10 / 390 * 100cqw);
+    background: var(--color-white);
+    font-family: Inter, system-ui, sans-serif;
+    font-size: calc(16 / 390 * 100cqw);
+    color: var(--sleep-ink);
+    opacity: 0;
+    white-space: nowrap;
+  }
+
+  .onb__type.is-on {
+    opacity: 1;
+  }
+
+  .onb__finger {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(34 / 390 * 100cqw);
+    height: calc(34 / 390 * 100cqw);
+    margin: calc(-17 / 390 * 100cqw) 0 0 calc(-17 / 390 * 100cqw);
+    border: 2px solid var(--color-white);
+    border-radius: 50%;
+    background: rgb(44 47 51 / 0.35);
+    box-shadow: 0 2px 8px rgb(44 47 51 / 0.3);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate3d(50cqw, 120cqw, 0);
+    transition: transform 0.8s cubic-bezier(0.45, 0, 0.25, 1), opacity 0.3s ease;
+  }
+
+  .onb__finger.is-on {
+    opacity: 1;
+  }
+
+  .onb__finger.is-down {
+    scale: 0.85;
+  }
+
+  .onb__ripple {
+    position: absolute;
+    inset: calc(-2px);
+    border: 2px solid var(--sleep-accent);
+    border-radius: 50%;
+    opacity: 0;
+  }
+
+  .onb__finger.is-tap .onb__ripple {
+    animation: onb-ripple 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  @keyframes onb-ripple {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(2.2);
+    }
+  }
+
+  .onb__dots {
+    display: flex;
+    gap: var(--space-8);
+  }
+
+  .onb__dot {
+    width: var(--space-8);
+    height: var(--space-8);
+    border-radius: 50%;
+    background: var(--case-line);
+    transition: background-color 0.3s ease, width 0.3s ease;
+  }
+
+  .onb__dot.is-on {
+    width: var(--space-24);
+    border-radius: var(--radius-pill);
+    background: var(--case-accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .onb__screen,
+    .onb__finger,
+    .onb__dot {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const W = 390;
+  const H = 844;
+
+  // One entry per screen: what the finger does there, in design pixels.
+  type Step =
+    | { move: [number, number] }
+    | { tap: [number, number] }
+    | { type: string; text: string }
+    | { wait: number };
+
+  const tour: Step[][] = [
+    [{ move: [150, 420] }, { wait: 500 }, { tap: [190, 415] }], // Sign up as Parent
+    [
+      { move: [190, 280] },
+      { tap: [190, 280] },
+      { type: 'email', text: 'ladzhunmarina@gmail.com' },
+      { move: [190, 366] },
+      { tap: [190, 366] },
+      { type: 'password', text: '••••••••' },
+      { move: [195, 562] },
+      { wait: 400 },
+      { tap: [195, 562] },
+    ],
+    [{ move: [195, 330] }, { wait: 2200 }], // the link is clicked off screen
+    [{ move: [195, 700] }, { tap: [195, 787] }], // Let's start
+    [{ move: [195, 700] }, { wait: 900 }, { tap: [195, 787] }], // Next
+    [{ move: [195, 700] }, { wait: 900 }, { tap: [195, 787] }], // Next
+    [{ move: [195, 640] }, { wait: 700 }, { tap: [195, 709] }], // Skip for now
+  ];
+
+  const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  document.querySelectorAll<HTMLElement>('[data-onboarding]').forEach((root) => {
+    if (calm.matches || !('IntersectionObserver' in window)) return;
+
+    const phone = root.querySelector<HTMLElement>('.onb__phone')!;
+    const finger = root.querySelector<HTMLElement>('[data-finger]')!;
+    const screens = [...root.querySelectorAll<HTMLElement>('.onb__screen')];
+    const dots = [...root.querySelectorAll<HTMLElement>('.onb__dot')];
+    const typed = [...root.querySelectorAll<HTMLElement>('[data-type]')];
+    let run = 0;
+
+    const show = (i: number) => {
+      screens.forEach((s, n) => s.classList.toggle('is-on', n === i));
+      dots.forEach((d, n) => d.classList.toggle('is-on', n === i));
+    };
+
+    const place = ([px, py]: [number, number]) => {
+      const w = phone.clientWidth;
+      finger.style.transform = `translate3d(${(px / W) * w}px, ${(py / H) * (w * H / W)}px, 0)`;
+    };
+
+    const tap = async (at: [number, number]) => {
+      place(at);
+      await sleep(850);
+      finger.classList.add('is-down');
+      await sleep(120);
+      finger.classList.remove('is-down');
+      finger.classList.remove('is-tap');
+      void finger.offsetWidth;
+      finger.classList.add('is-tap');
+      await sleep(260);
+    };
+
+    const play = async (id: number) => {
+      const alive = () => id === run;
+      while (alive()) {
+        typed.forEach((t) => {
+          t.textContent = '';
+          t.classList.remove('is-on');
+        });
+        show(0);
+        finger.classList.remove('is-on');
+        await sleep(900);
+        for (let i = 0; i < tour.length && alive(); i += 1) {
+          show(i);
+          if (i === 0) {
+            finger.style.transition = 'none';
+            place([260, 330]);
+            void finger.offsetWidth;
+            finger.style.transition = '';
+          }
+          finger.classList.add('is-on');
+          await sleep(i === 0 ? 400 : 700);
+          for (const step of tour[i]) {
+            if (!alive()) return;
+            if ('move' in step) {
+              place(step.move);
+              await sleep(850);
+            } else if ('tap' in step) {
+              await tap(step.tap);
+            } else if ('wait' in step) {
+              await sleep(step.wait);
+            } else {
+              const field = root.querySelector<HTMLElement>(`[data-type="${step.type}"]`)!;
+              field.classList.add('is-on');
+              for (let c = 1; c <= step.text.length && alive(); c += 1) {
+                field.textContent = step.text.slice(0, c);
+                await sleep(70);
+              }
+              await sleep(300);
+            }
+          }
+          await sleep(250);
+        }
+        await sleep(1400);
+      }
+    };
+
+    const seen = new IntersectionObserver(
+      ([entry]) => {
+        run += 1;
+        if (entry.isIntersecting) play(run);
+      },
+      { threshold: 0.5 },
+    );
+    seen.observe(root);
+  });
+</script>

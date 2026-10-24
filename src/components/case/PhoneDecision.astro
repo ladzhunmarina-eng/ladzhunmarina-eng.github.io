@@ -6,15 +6,16 @@ interface Props {
   tags: readonly string[];
   title: string;
   description: string;
-  phones: readonly { src: ImageMetadata; alt: string }[];
+  phones?: readonly { src: ImageMetadata; alt: string }[];
 }
 
-const { index, tags, title, description, phones } = Astro.props;
+const { index, tags, title, description, phones = [] } = Astro.props;
 ---
 
 <article class:list={['decision', { 'decision--flip': index % 2 === 0 }]}>
   <div class="decision__stage">
     <div class="decision__phones">
+      <slot />
       {phones.map((phone) => (
         <div class="decision__phone"><Phone src={phone.src} alt={phone.alt} /></div>
       ))}

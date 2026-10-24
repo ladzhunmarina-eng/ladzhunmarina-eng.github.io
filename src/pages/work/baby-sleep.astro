@@ -9,6 +9,7 @@ import NoteCards from '../../components/case/NoteCards.astro';
 import PersonaPair from '../../components/case/PersonaPair.astro';
 import PhoneStrip from '../../components/case/PhoneStrip.astro';
 import PhoneDecision from '../../components/case/PhoneDecision.astro';
+import OnboardingDemo from '../../components/case/OnboardingDemo.astro';
 import Reviews from '../../components/case/Reviews.astro';
 import NextCase from '../../components/case/NextCase.astro';
 import heroImage from '../../assets/images/sleep-hero.png';
@@ -62,7 +63,15 @@ const blocks = decisions.items.map((item) => ({
 
         <Section id="decisions" eyebrow={decisions.eyebrow} title={decisions.title} lead={decisions.lead}>
           <div class="decisions">
-            {blocks.map((block, i) => <PhoneDecision index={i + 1} tags={block.tags} title={block.title} description={block.description} phones={block.phones} />)}
+            {blocks.map((block, i) => (
+              <PhoneDecision index={i + 1} tags={block.tags} title={block.title} description={block.description} phones={block.phones}>
+                {block.demo === 'onboarding' && (
+                  <div class="demo">
+                    <OnboardingDemo alt={alts.signup} />
+                  </div>
+                )}
+              </PhoneDecision>
+            ))}
           </div>
         </Section>
 
@@ -126,6 +135,11 @@ const blocks = decisions.items.map((item) => ({
     flex-direction: column;
     gap: var(--case-section-gap);
     min-width: 0;
+  }
+
+  .demo {
+    width: 280px;
+    max-width: 100%;
   }
 
   .decisions {
