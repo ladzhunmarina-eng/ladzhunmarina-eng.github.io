@@ -15,6 +15,7 @@ import TrackerDemo from '../../components/case/TrackerDemo.astro';
 import StatsDemo from '../../components/case/StatsDemo.astro';
 import WatchDemo from '../../components/case/WatchDemo.astro';
 import ClientsDemo from '../../components/case/ClientsDemo.astro';
+import ThemeShowcase from '../../components/case/ThemeShowcase.astro';
 import Reviews from '../../components/case/Reviews.astro';
 import NextCase from '../../components/case/NextCase.astro';
 import heroImage from '../../assets/images/sleep-hero.png';
@@ -28,7 +29,7 @@ import trend from '../../assets/images/sleep-trend.png';
 import calendar from '../../assets/images/sleep-calendar.png';
 import { babySleepCase as study } from '../../data/cases/baby-sleep';
 
-const { goal, persona, process, screens, decisions, feedback } = study;
+const { goal, persona, process, screens, decisions, theme, feedback } = study;
 const shots = { signup, plans, clients, tracker, trend, calendar };
 const gallery = screens.items.map((item) => ({ src: shots[item.key as keyof typeof shots], label: item.label, alt: item.alt }));
 const alts: Record<string, string> = {
@@ -102,6 +103,8 @@ const blocks = decisions.items.map((item) => ({
             ))}
           </div>
         </Section>
+
+        <ThemeShowcase id="theme" eyebrow={theme.eyebrow} title={theme.title} lead={theme.lead} light={theme.light} dark={theme.dark} alts={theme.alts} />
 
         <Section id="feedback" eyebrow={feedback.eyebrow} title={feedback.title}>
           <Reviews rating={feedback.rating} reviews={feedback.reviews} />

@@ -1,0 +1,213 @@
+---
+import { Image } from 'astro:assets';
+import darkBg from '../../assets/images/theme-dark-bg.png';
+import darkCloudA from '../../assets/images/theme-dark-cloud-a.png';
+import darkCloudB from '../../assets/images/theme-dark-cloud-b.png';
+import darkRocket from '../../assets/images/theme-dark-rocket.png';
+import darkFlame from '../../assets/images/theme-dark-flame.png';
+import darkFar from '../../assets/images/theme-dark-far.png';
+import darkNear from '../../assets/images/theme-dark-near.png';
+import lightBg from '../../assets/images/theme-light-bg.png';
+import lightCloudA from '../../assets/images/theme-light-cloud-a.png';
+import lightCloudB from '../../assets/images/theme-light-cloud-b.png';
+import lightClouds from '../../assets/images/theme-light-clouds.png';
+import lightRocket from '../../assets/images/theme-light-rocket.png';
+import lightFlame from '../../assets/images/theme-light-flame.png';
+import lightScreen from '../../assets/images/theme-light-screen.png';
+import darkScreen from '../../assets/images/theme-dark-screen.png';
+
+/*
+ * The "A fresh update is ready" screen in light and dark, with its illustration drawn in layers and animated as in the Figma prototype:
+ * the bottle rocket bobs, its flame flickers, the cloud banks drift, small clouds float across, the stars twinkle.
+ * The layers cover the top 475px of the 390 x 844 screen and hide the picture's own static illustration.
+ */
+interface Props {
+  theme: 'light' | 'dark';
+  alt: string;
+}
+
+const { theme, alt } = Astro.props;
+
+const dark = theme === 'dark';
+const screen = dark ? darkScreen : lightScreen;
+const sky = {
+  bg: dark ? darkBg : lightBg,
+  cloudA: dark ? darkCloudA : lightCloudA,
+  cloudB: dark ? darkCloudB : lightCloudB,
+  rocket: dark ? darkRocket : lightRocket,
+  flame: dark ? darkFlame : lightFlame,
+};
+// the stars, in design pixels on the 390 x 475 sky: x, y, size
+const stars = [
+  [68, 109, 5],
+  [300, 80, 4],
+  [320, 150, 5],
+  [93, 231, 4],
+];
+---
+
+<div class:list={['theme', `theme--${theme}`]}>
+  <Image class="theme__screen" src={screen} alt={alt} widths={[280, 390, 546]} sizes="260px" quality={85} />
+
+  <div class="sky" aria-hidden="true">
+    <Image class="sky__layer" src={sky.bg} alt="" widths={[390, 780]} sizes="260px" quality={90} />
+    {stars.map(([x, y, size], i) => (
+      <span class="sky__star" style={`left:${(x / 390) * 100}%;top:${(y / 475) * 100}%;width:${(size / 390) * 100}%;--i:${i}`}></span>
+    ))}
+    <Image class="sky__layer sky__layer--cloud-a" src={sky.cloudA} alt="" widths={[390, 780]} sizes="260px" quality={90} />
+    <Image class="sky__layer sky__layer--cloud-b" src={sky.cloudB} alt="" widths={[390, 780]} sizes="260px" quality={90} />
+    <div class="sky__ship">
+      <Image class="sky__layer" src={sky.rocket} alt="" widths={[390, 780]} sizes="260px" quality={90} />
+      <Image class="sky__layer sky__flame" src={sky.flame} alt="" widths={[390, 780]} sizes="260px" quality={90} />
+    </div>
+    {dark ? (
+      <>
+        <Image class="sky__layer sky__layer--far" src={darkFar} alt="" widths={[390, 780]} sizes="260px" quality={90} />
+        <Image class="sky__layer sky__layer--near" src={darkNear} alt="" widths={[390, 780]} sizes="260px" quality={90} />
+      </>
+    ) : (
+      <Image class="sky__layer sky__layer--far" src={lightClouds} alt="" widths={[390, 780]} sizes="260px" quality={90} />
+    )}
+  </div>
+</div>
+
+<style>
+  .theme {
+    container-type: inline-size;
+    position: relative;
+    aspect-ratio: 390 / 844;
+    overflow: hidden;
+    border-radius: 32px;
+    background: var(--color-white);
+    box-shadow: 0 var(--space-16) var(--space-32) rgb(0 0 0 / 0.25);
+  }
+
+  .theme :global(.theme__screen) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .sky {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    aspect-ratio: 390 / 475;
+    overflow: hidden;
+  }
+
+  .sky :global(.sky__layer) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .sky__ship {
+    position: absolute;
+    inset: 0;
+  }
+
+  .sky__star {
+    position: absolute;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--color-white);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* One breath of 2.4s: the ship rises 10px and settles; the flame goes with it and flickers. */
+    .sky__ship {
+      animation: sky-bob 2.4s ease-in-out infinite;
+    }
+
+    .sky :global(.sky__flame) {
+      transform-origin: 50.3% 64%;
+      animation: sky-flicker 0.8s ease-in-out infinite;
+    }
+
+    .sky :global(.sky__layer--far) {
+      animation: sky-far 4.8s ease-in-out infinite;
+    }
+
+    .sky :global(.sky__layer--near) {
+      animation: sky-near 4.8s ease-in-out infinite;
+    }
+
+    /* The two small clouds float right across the sky at the same slow speed, and start over off screen. */
+    .sky :global(.sky__layer--cloud-a) {
+      animation: sky-cloud-a 19.2s linear -13.96s infinite;
+    }
+
+    .sky :global(.sky__layer--cloud-b) {
+      animation: sky-cloud-b 19.2s linear -2.62s infinite;
+    }
+
+    .sky__star {
+      animation: sky-twinkle 2.4s linear calc(var(--i) * -0.6s) infinite;
+    }
+  }
+
+  @keyframes sky-bob {
+    50% {
+      transform: translateY(-2.1%);
+    }
+  }
+
+  @keyframes sky-flicker {
+    0%,
+    100% {
+      transform: scale(1, 1);
+    }
+    25% {
+      transform: scale(0.92, 1.2);
+    }
+    50% {
+      transform: scale(1, 0.9);
+    }
+    75% {
+      transform: scale(0.92, 1.15);
+    }
+  }
+
+  @keyframes sky-far {
+    50% {
+      transform: translateX(-2.05%);
+    }
+  }
+
+  @keyframes sky-near {
+    50% {
+      transform: translateX(2.05%);
+    }
+  }
+
+  @keyframes sky-cloud-a {
+    from {
+      transform: translateX(-80.5%);
+    }
+    to {
+      transform: translateX(30.3%);
+    }
+  }
+
+  @keyframes sky-cloud-b {
+    from {
+      transform: translateX(-15.1%);
+    }
+    to {
+      transform: translateX(95.6%);
+    }
+  }
+
+  @keyframes sky-twinkle {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.2;
+    }
+  }
+</style>
