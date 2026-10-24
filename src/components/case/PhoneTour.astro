@@ -19,6 +19,8 @@ interface Screen {
   src: ImageMetadata | readonly ImageMetadata[];
   /** A screen taller than the phone: it scrolls inside it */
   tall?: boolean;
+  /** The top of this screen stays fixed while it scrolls: a picture and the height in design pixels to keep */
+  head?: { src: ImageMetadata; height: number };
   alt: string;
   fields?: readonly { id: string; box: readonly [number, number, number, number]; multiline?: boolean; timer?: boolean }[];
 }
@@ -51,6 +53,11 @@ const y = (v: number) => `${(v / H) * 100}%`;
             <Image src={src} alt={i === 0 || !screen.tall ? screen.alt : ''} widths={[280, 390, 546]} sizes="280px" quality={85} loading={i === 0 ? 'eager' : 'lazy'} />
           ))}
         </div>
+        {screen.head && (
+          <div class="onb__head onb__head--screen" aria-hidden="true" style={`aspect-ratio: 390 / ${screen.head.height}`}>
+            <Image src={screen.head.src} alt="" widths={[280, 560]} sizes="280px" quality={90} />
+          </div>
+        )}
         <slot name={`screen-${i}`} />
         {screen.fields?.map((field) => (
           <span class:list={['onb__type', { 'onb__type--multiline': field.multiline, 'onb__type--timer': field.timer }]} data-type={field.id} style={`left:${x(field.box[0])};top:${y(field.box[1])};width:${x(field.box[2])};height:${y(field.box[3])}`}></span>

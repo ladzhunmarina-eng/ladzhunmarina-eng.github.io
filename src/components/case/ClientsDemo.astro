@@ -21,7 +21,7 @@ const screens = [
   { src: share, alt: 'Share invite link: a link that invites the client to download the app, with Instagram, Telegram and share buttons.' },
   { src: list, alt: 'Active clients with their diary status, package and dates.' },
   { src: profile, alt: 'A client’s profile: the baby’s photo, name and age, the parent, and the diary with its Day and Period views and the totals open.' },
-  { src: [dayA, dayB] as const, tall: true, alt: 'The client’s day: totals, the first sleep and its details.' },
+  { src: [dayA, dayB] as const, tall: true, head: { src: dayA, height: 149 }, alt: 'The client’s day: totals, the first sleep and its details.' },
 ];
 
 const tour = [
