@@ -22,18 +22,26 @@ import heroImage from '../../assets/images/sleep-hero.png';
 import personaPhoto from '../../assets/images/sleep-persona.png';
 import expertPhoto from '../../assets/images/persona-expert.webp';
 import signup from '../../assets/images/sleep-signup.png';
-import plans from '../../assets/images/sleep-plans.png';
-import clients from '../../assets/images/sleep-clients.png';
-import tracker from '../../assets/images/sleep-tracker.png';
-import trend from '../../assets/images/sleep-trend.png';
-import calendar from '../../assets/images/sleep-calendar.png';
+import settings from '../../assets/images/car-01.png';
+import plan from '../../assets/images/car-02.png';
+import empty from '../../assets/images/car-03.png';
+import child from '../../assets/images/car-04.png';
+import trendA from '../../assets/images/car-05.png';
+import share from '../../assets/images/car-06.png';
+import archived from '../../assets/images/car-07.png';
+import calendar from '../../assets/images/car-08.png';
+import trendB from '../../assets/images/car-09.png';
+import tracker from '../../assets/images/car-10.png';
 import { babySleepCase as study } from '../../data/cases/baby-sleep';
 
 const { goal, persona, process, screens, decisions, theme, feedback } = study;
-const shots = { signup, plans, clients, tracker, trend, calendar };
-const gallery = screens.items.map((item) => ({ src: shots[item.key as keyof typeof shots], label: item.label, alt: item.alt }));
+const shots = { signup, settings, plan, empty, child, trendA, share, archived, calendar, trendB, tracker };
+const gallery = screens.items.map((item) => ({ src: shots[item.key as keyof typeof shots], alt: item.alt }));
 const alts: Record<string, string> = {
-  ...Object.fromEntries(screens.items.map((item) => [item.key, item.alt])),
+  signup: 'Sign-up start: choose Parent or Consultant, or log in.',
+  tracker: 'The day view of sleep with totals, a night sleep block and a start button.',
+  clients: 'The consultant’s empty client list with a sleeping baby and a button to add a client.',
+  trend: 'Weekly statistics as a trend chart of day, night and total sleep with averages.',
   watch: 'The Apple Watch home screen with the app icon.',
 };
 const blocks = decisions.items.map((item) => ({
