@@ -36,9 +36,9 @@ export const babySleepCase = {
     { id: 'goal', label: 'Goal' },
     { id: 'persona', label: 'Persona' },
     { id: 'process', label: 'Process' },
-    { id: 'screens', label: 'Screens' },
     { id: 'decisions', label: 'Decisions' },
     { id: 'feedback', label: 'Feedback' },
+    { id: 'screens', label: 'Screens' },
   ],
 
   goal: {
@@ -123,8 +123,9 @@ export const babySleepCase = {
 
   screens: {
     eyebrow: 'Screens',
+    pill: 'Selected screens',
     title: 'From sign-up to the sleep trend.',
-    lead: 'Six of the screens, from sign-up to the sleep trend. Scroll sideways.',
+    lead: 'Six of the screens, in the order a parent meets them.',
     items: [
       { key: 'signup', label: 'Sign-up', alt: 'Sign-up screen: choose Parent or Consultant, or log in.' },
       { key: 'plans', label: 'Subscription plans', alt: 'Subscription plans: Basic and Premium, yearly or monthly, with what the plan includes.' },

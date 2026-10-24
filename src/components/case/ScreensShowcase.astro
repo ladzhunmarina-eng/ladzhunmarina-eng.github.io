@@ -1,0 +1,164 @@
+---
+import Phone from './Phone.astro';
+
+/*
+ * The last block of a mobile case: a centred heading with two arrows pointing down, and a full-width row of phones that drifts sideways and is cut off by the edges of the page.
+ */
+interface Props {
+  id?: string;
+  pill: string;
+  title: string;
+  lead: string;
+  screens: readonly { src: ImageMetadata; alt: string }[];
+}
+
+const { id, pill, title, lead, screens } = Astro.props;
+---
+
+<section class="showcase" id={id} aria-labelledby={id ? `${id}-title` : undefined}>
+  <div class="showcase__head">
+    <p class="showcase__pill">{pill}</p>
+    <h2 class="showcase__title" id={id ? `${id}-title` : undefined}>{title}</h2>
+    <p class="showcase__lead">{lead}</p>
+
+    <svg class="showcase__arrow showcase__arrow--left" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+      <path d="M104 6C58 14 30 46 14 98" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+      <path d="M4 82 14 100 32 92" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+    <svg class="showcase__arrow showcase__arrow--right" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+      <path d="M16 6C62 14 90 46 106 98" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+      <path d="M116 82 106 100 88 92" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </div>
+
+  <div class="showcase__rail" role="region" aria-label="Screens, scroll sideways" tabindex="0">
+    <ul class="showcase__track">
+      {screens.map((screen) => (
+        <li class="showcase__item"><Phone src={screen.src} alt={screen.alt} sizes="260px" /></li>
+      ))}
+      {/* a second copy so the row can drift without a gap; hidden from assistive tech */}
+      {screens.map((screen) => (
+        <li class="showcase__item showcase__item--copy" aria-hidden="true"><Phone src={screen.src} alt="" sizes="260px" /></li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .showcase {
+    padding-block: var(--space-92) var(--space-80);
+    background: var(--case-track);
+    overflow: hidden;
+  }
+
+  .showcase__head {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-12);
+    max-width: 720px;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+    text-align: center;
+  }
+
+  .showcase__pill {
+    padding: var(--space-4) var(--space-12);
+    border-radius: var(--radius-pill);
+    background: var(--sleep-pill-blue);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-medium);
+    line-height: var(--lh-snug);
+    color: var(--case-pill-text);
+  }
+
+  .showcase__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-case-title);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-heading);
+    color: var(--color-ink);
+  }
+
+  .showcase__lead {
+    max-width: 30ch;
+    font-size: var(--fs-18);
+    line-height: var(--lh-body);
+    color: var(--color-muted);
+  }
+
+  .showcase__arrow {
+    position: absolute;
+    bottom: calc(-1 * var(--space-36));
+    width: 110px;
+    height: 110px;
+    color: var(--case-bg);
+  }
+
+  .showcase__arrow--left {
+    left: -80px;
+  }
+
+  .showcase__arrow--right {
+    right: -80px;
+  }
+
+  .showcase__rail {
+    margin-top: var(--space-56);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .showcase__rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .showcase__track {
+    display: flex;
+    gap: var(--space-24);
+    width: max-content;
+    padding-inline: var(--space-12);
+    padding-bottom: var(--space-24);
+  }
+
+  .showcase__item {
+    flex: none;
+    width: 260px;
+  }
+
+  /* The row drifts left and starts over where the second copy begins; hovering or focusing it holds it still. */
+  @media (prefers-reduced-motion: no-preference) {
+    .showcase__track {
+      animation: showcase-drift 48s linear infinite;
+    }
+
+    .showcase__rail:hover .showcase__track,
+    .showcase__rail:focus-within .showcase__track {
+      animation-play-state: paused;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .showcase__item--copy {
+      display: none;
+    }
+  }
+
+  @keyframes showcase-drift {
+    to {
+      transform: translateX(calc(-50% - var(--space-12)));
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .showcase {
+      padding-block: var(--space-64);
+    }
+
+    .showcase__arrow {
+      display: none;
+    }
+  }
+</style>

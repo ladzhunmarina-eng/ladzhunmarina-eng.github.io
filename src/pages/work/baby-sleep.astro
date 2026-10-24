@@ -8,7 +8,7 @@ import Section from '../../components/case/Section.astro';
 import NoteCards from '../../components/case/NoteCards.astro';
 import ProcessChart from '../../components/case/ProcessChart.astro';
 import PersonaPair from '../../components/case/PersonaPair.astro';
-import PhoneStrip from '../../components/case/PhoneStrip.astro';
+import ScreensShowcase from '../../components/case/ScreensShowcase.astro';
 import PhoneDecision from '../../components/case/PhoneDecision.astro';
 import OnboardingDemo from '../../components/case/OnboardingDemo.astro';
 import TrackerDemo from '../../components/case/TrackerDemo.astro';
@@ -69,10 +69,6 @@ const blocks = decisions.items.map((item) => ({
           <ProcessChart phases={process.phases} bars={process.bars} stepped />
         </Section>
 
-        <Section id="screens" eyebrow={screens.eyebrow} title={screens.title} lead={screens.lead}>
-          <PhoneStrip screens={gallery} />
-        </Section>
-
         <Section id="decisions" eyebrow={decisions.eyebrow} title={decisions.title} lead={decisions.lead}>
           <div class="decisions">
             {blocks.map((block, i) => (
@@ -111,8 +107,13 @@ const blocks = decisions.items.map((item) => ({
           <Reviews rating={feedback.rating} reviews={feedback.reviews} />
         </Section>
 
-        <NextCase current="/work/baby-sleep" />
       </div>
+    </div>
+
+    <ScreensShowcase id="screens" pill={screens.pill} title={screens.title} lead={screens.lead} screens={gallery} />
+
+    <div class="case__container case__after">
+      <NextCase current="/work/baby-sleep" />
     </div>
   </article>
 </Layout>
@@ -159,7 +160,13 @@ const blocks = decisions.items.map((item) => ({
     display: grid;
     grid-template-columns: var(--case-nav-w) minmax(0, 1fr);
     gap: var(--case-gap);
+    padding-block: var(--case-section-gap);
+  }
+
+  /* The next case sits under the content column, as it did inside it */
+  .case__after {
     padding-block: var(--case-section-gap) var(--space-144);
+    padding-left: calc(var(--gutter) + var(--case-nav-w) + var(--case-gap));
   }
 
   .case__sections {
@@ -194,6 +201,11 @@ const blocks = decisions.items.map((item) => ({
 
     .case__sections {
       gap: var(--space-80);
+    }
+
+    .case__after {
+      padding-block: var(--space-56) var(--space-92);
+      padding-left: var(--gutter);
     }
   }
 </style>
