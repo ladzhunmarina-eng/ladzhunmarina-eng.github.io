@@ -651,7 +651,7 @@
   --case-glass: var(--sleep-pill-blue); /* the At a glance card: the same blue as the first tag of a decision */
   --case-nav-current-bg: var(--sleep-mist);
   --case-nav-dot-color: var(--sleep-accent);
-  --case-process-bar: var(--sleep-sand);
+  --case-process-bar: var(--sleep-pill-blue);
   --case-phase-text: var(--sleep-muted);
   --case-grid: var(--sleep-line); /* the lines of the process chart */
   --case-pill-bg: var(--sleep-sand);
