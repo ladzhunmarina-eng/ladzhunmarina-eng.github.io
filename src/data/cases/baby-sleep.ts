@@ -199,11 +199,10 @@ export const babySleepCase = {
         date: '1y ago',
       },
       {
-        // Written in Ukrainian on the App Store; shown here in English, and marked as translated.
-        text: 'The app is easy to use, with a fairly simple, user-friendly interface and interesting features. It’s convenient to track time and write notes about the baby’s sleep.',
-        author: 'likaoas',
-        date: '21 Sep',
-        translated: true,
+        title: 'Wonderful app for me as a parent',
+        text: 'We share the same parent account with my wife and thus are able to track our daughter’s sleep at the same time. Our consultant was able to quickly address our sleep training issues, seeing our activities real time. We had plenty of night wake-ups, so addressing the sleep schedule was the main goal with our consultant, and app helped there a lot. Much more convenient than separately tracking in other available apps and then manually moving the data to a spreadsheet that our consultant used before.',
+        author: 'Sasha Rem',
+        date: '1y ago',
       },
     ],
   },
