@@ -37,7 +37,7 @@ const tour = [
     { wait: 800 },
   ],
   [{ move: [300, 201] }, { wait: 600 }, { move: [190, 300] }, { wait: 300 }, { tap: [190, 300] }], // the client has signed up: open her card
-  [{ move: [300, 520] }, { wait: 900 }, { move: [108, 427] }, { wait: 300 }, { tap: [108, 427] }], // the totals are open; on to the day
+  [{ move: [200, 560] }, { wait: 900 }, { scroll: 234, show: 4 }], // no tap: the page scrolls, the photo folds away into the compact header (the next screen)
   [{ move: [200, 520] }, { wait: 500 }, { scroll: 560 }, { wait: 500 }, { scroll: 1171 }, { wait: 1200 }], // the day, down to the details
 ] satisfies Step[][];
 ---
