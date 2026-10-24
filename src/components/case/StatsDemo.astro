@@ -1,0 +1,49 @@
+---
+import PhoneTour from './PhoneTour.astro';
+import type { Step } from './PhoneTour.astro';
+import dayA from '../../assets/images/stat-1-day-a.png';
+import dayB from '../../assets/images/stat-1-day-b.png';
+import week from '../../assets/images/stat-2-week.png';
+import trend from '../../assets/images/stat-3-trend.png';
+
+/* The statistics, played by itself: the day with its totals and details, the week as a calendar, then as a trend. The long screens scroll inside the phone. */
+interface Props {
+  alt: string;
+}
+
+const { alt } = Astro.props;
+
+const screens = [
+  { src: [dayA, dayB] as const, tall: true, alt },
+  { src: week, tall: true, alt: 'Statistics for the week as a calendar of night and day sleep blocks.' },
+  { src: trend, tall: true, alt: 'Statistics for the week as a trend chart with averages and a legend.' },
+];
+
+const tour = [
+  [
+    { move: [200, 520] },
+    { wait: 500 },
+    { scroll: 560 }, // the totals and the first sleep
+    { wait: 500 },
+    { scroll: 1180 }, // its details
+    { wait: 900 },
+    { scroll: 0 },
+    { move: [282, 138] },
+    { wait: 200 },
+    { tap: [282, 138] }, // Week
+  ],
+  [
+    { move: [200, 520] },
+    { wait: 500 },
+    { scroll: 315 }, // the calendar to its end
+    { wait: 900 },
+    { scroll: 0 },
+    { move: [355, 275] },
+    { wait: 200 },
+    { tap: [355, 275] }, // the trend
+  ],
+  [{ move: [200, 520] }, { wait: 500 }, { scroll: 246 }, { wait: 1400 }],
+] satisfies Step[][];
+---
+
+<PhoneTour screens={screens} tour={tour} start={[300, 500]} />

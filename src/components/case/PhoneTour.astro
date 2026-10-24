@@ -11,10 +11,14 @@ export type Step =
   | { tap: [number, number] }
   | { type: string; text: string }
   | { count: string; from: [number, number, number]; secs: number }
+  | { scroll: number }
   | { wait: number };
 
 interface Screen {
-  src: ImageMetadata;
+  /** One picture, or several stacked one above the other for a long screen */
+  src: ImageMetadata | readonly ImageMetadata[];
+  /** A screen taller than the phone: it scrolls inside it */
+  tall?: boolean;
   alt: string;
   fields?: readonly { id: string; box: readonly [number, number, number, number]; multiline?: boolean; timer?: boolean }[];
 }
@@ -38,7 +42,11 @@ const y = (v: number) => `${(v / H) * 100}%`;
   <div class="onb__phone">
     {screens.map((screen, i) => (
       <div class:list={['onb__screen', { 'is-on': i === 0 }]} data-screen={i}>
-        <Image src={screen.src} alt={screen.alt} widths={[280, 390, 546]} sizes="280px" quality={85} loading={i === 0 ? 'eager' : 'lazy'} />
+        <div class:list={['onb__page', { 'onb__page--tall': screen.tall }]} data-page>
+          {(Array.isArray(screen.src) ? screen.src : [screen.src]).map((src) => (
+            <Image src={src} alt={i === 0 || !screen.tall ? screen.alt : ''} widths={[280, 390, 546]} sizes="280px" quality={85} loading={i === 0 ? 'eager' : 'lazy'} />
+          ))}
+        </div>
         {screen.fields?.map((field) => (
           <span class:list={['onb__type', { 'onb__type--multiline': field.multiline, 'onb__type--timer': field.timer }]} data-type={field.id} style={`left:${x(field.box[0])};top:${y(field.box[1])};width:${x(field.box[2])};height:${y(field.box[3])}`}></span>
         ))}
@@ -82,12 +90,27 @@ const y = (v: number) => `${(v / H) * 100}%`;
     opacity: 1;
   }
 
+  .onb__page {
+    width: 100%;
+    height: 100%;
+    will-change: transform;
+  }
+
   .onb__screen :global(img) {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: top;
+  }
+
+  .onb__page--tall {
+    height: auto;
+  }
+
+  .onb__page--tall :global(img) {
+    height: auto;
+    object-fit: fill;
   }
 
   /* What the finger "types" covers the field's placeholder */
@@ -212,6 +235,7 @@ const y = (v: number) => `${(v / H) * 100}%`;
     | { tap: [number, number] }
     | { type: string; text: string }
     | { count: string; from: [number, number, number]; secs: number }
+    | { scroll: number }
     | { wait: number };
 
   const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -228,7 +252,26 @@ const y = (v: number) => `${(v / H) * 100}%`;
     const typed = [...root.querySelectorAll<HTMLElement>('[data-type]')];
     let run = 0;
 
+    const pages = [...root.querySelectorAll<HTMLElement>('[data-page]')];
+
+    const scrollTo = async (page: HTMLElement, to: number) => {
+      const w = phone.clientWidth;
+      const from = Number(page.dataset.at ?? 0);
+      const ms = Math.max(500, Math.abs(to - from) * 1.5);
+      page.dataset.at = String(to);
+      page.style.transition = `transform ${ms}ms cubic-bezier(0.45, 0, 0.25, 1)`;
+      page.style.transform = `translate3d(0, ${-(to / W) * w}px, 0)`;
+      await sleep(ms);
+    };
+
     const show = (i: number) => {
+      pages.forEach((page, n) => {
+        if (n === i) {
+          page.style.transition = 'none';
+          page.style.transform = 'translate3d(0, 0, 0)';
+          page.dataset.at = '0';
+        }
+      });
       screens.forEach((s, n) => s.classList.toggle('is-on', n === i));
       dots.forEach((d, n) => d.classList.toggle('is-on', n === i));
     };
@@ -279,6 +322,8 @@ const y = (v: number) => `${(v / H) * 100}%`;
               await tap(step.tap);
             } else if ('wait' in step) {
               await sleep(step.wait);
+            } else if ('scroll' in step) {
+              await scrollTo(pages[i], step.scroll);
             } else if ('count' in step) {
               // seconds tick on a clock: h:mm:ss
               const clock = root.querySelector<HTMLElement>(`[data-type="${step.count}"]`)!;

@@ -142,8 +142,9 @@ export const babySleepCase = {
         tags: ['Analysis', 'Calendar'],
         title: 'See the pattern, not just the trend',
         description:
-          'The period view switches between a trend chart with averages and totals, and a calendar of sleep blocks, so a whole week reads at a glance.',
-        phones: ['trend', 'calendar'],
+          'The day opens its totals and each sleep’s details; the week switches between a calendar of sleep blocks and a trend chart with averages, so a whole week reads at a glance.',
+        phones: [] as string[],
+        demo: 'stats',
       },
       {
         tags: ['Consultants', 'Clients'],
