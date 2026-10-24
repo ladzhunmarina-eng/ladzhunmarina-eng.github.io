@@ -4,6 +4,7 @@ import SleepingBaby from './SleepingBaby.astro';
 import type { Step } from './PhoneTour.astro';
 import empty from '../../assets/images/cli-1-empty.png';
 import share from '../../assets/images/cli-2-share.png';
+import copied from '../../assets/images/cli-copied.png';
 import list from '../../assets/images/cli-3-list.png';
 import profile from '../../assets/images/cli-5-profile-totals.png';
 import dayA from '../../assets/images/cli-4-day-a.png';
@@ -18,7 +19,7 @@ const { alt } = Astro.props;
 
 const screens = [
   { src: empty, alt },
-  { src: share, alt: 'Share invite link: a link that invites the client to download the app, with Instagram, Telegram and share buttons.' },
+  { src: share, pops: [{ id: 'copied', src: copied, box: [161, 462, 72, 28] as const, alt: 'Copied!' }], alt: 'Share invite link: a link that invites the client to download the app, with Instagram, Telegram and share buttons.' },
   { src: list, alt: 'Active clients with their diary status, package and dates.' },
   { src: profile, alt: 'A client’s profile: the baby’s photo, name and age, the parent, and the diary with its Day and Period views and the totals open.' },
   { src: [dayA, dayB] as const, tall: true, head: { src: dayA, height: 149 }, alt: 'The client’s day: totals, the first sleep and its details.' },
@@ -30,7 +31,7 @@ const tour = [
     { move: [250, 700] },
     { wait: 400 },
     { tap: [336, 707] }, // copy the link
-    { wait: 500 },
+    { pop: 'copied', for: 1300 }, // the green "Copied!" tag
     { move: [194, 783] },
     { wait: 250 },
     { tap: [194, 783] }, // send it

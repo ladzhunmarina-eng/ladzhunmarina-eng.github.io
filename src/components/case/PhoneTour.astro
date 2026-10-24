@@ -12,6 +12,7 @@ export type Step =
   | { type: string; text: string }
   | { count: string; from: [number, number, number]; secs: number }
   | { scroll: number; show?: number }
+  | { pop: string; for: number }
   | { wait: number };
 
 interface Screen {
@@ -21,6 +22,8 @@ interface Screen {
   tall?: boolean;
   /** The top of this screen stays fixed while it scrolls: a picture and the height in design pixels to keep */
   head?: { src: ImageMetadata; height: number };
+  /** Small pictures that pop in for a moment (a "Copied!" tag): where they sit, in design pixels */
+  pops?: readonly { id: string; src: ImageMetadata; box: readonly [number, number, number, number]; alt?: string }[];
   alt: string;
   fields?: readonly { id: string; box: readonly [number, number, number, number]; multiline?: boolean; timer?: boolean }[];
 }
@@ -58,6 +61,9 @@ const y = (v: number) => `${(v / H) * 100}%`;
             <Image src={screen.head.src} alt="" widths={[280, 560]} sizes="280px" quality={90} />
           </div>
         )}
+        {screen.pops?.map((pop) => (
+          <Image class="onb__pop" src={pop.src} alt={pop.alt ?? ''} data-pop={pop.id} widths={[96, 192, 288]} sizes="96px" quality={90} style={`left:${x(pop.box[0])};top:${y(pop.box[1])};width:${x(pop.box[2])}`} />
+        ))}
         <slot name={`screen-${i}`} />
         {screen.fields?.map((field) => (
           <span class:list={['onb__type', { 'onb__type--multiline': field.multiline, 'onb__type--timer': field.timer }]} data-type={field.id} style={`left:${x(field.box[0])};top:${y(field.box[1])};width:${x(field.box[2])};height:${y(field.box[3])}`}></span>
@@ -174,6 +180,21 @@ const y = (v: number) => `${(v / H) * 100}%`;
   }
 
   /* A running clock drawn over the one in the picture, in the same dark plate */
+  /* A tag that pops in, stays a moment, and fades */
+  .onb__screen :global(.onb__pop) {
+    position: absolute;
+    height: auto;
+    opacity: 0;
+    transform: translateY(4px) scale(0.9);
+    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+    pointer-events: none;
+  }
+
+  .onb__screen :global(.onb__pop.is-on) {
+    opacity: 1;
+    transform: none;
+  }
+
   .onb__type--timer {
     justify-content: center;
     padding-left: 0;
@@ -281,6 +302,7 @@ const y = (v: number) => `${(v / H) * 100}%`;
     | { type: string; text: string }
     | { count: string; from: [number, number, number]; secs: number }
     | { scroll: number; show?: number }
+    | { pop: string; for: number }
     | { wait: number };
 
   const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -347,6 +369,7 @@ const y = (v: number) => `${(v / H) * 100}%`;
           t.textContent = '';
           t.classList.remove('is-on');
         });
+        root.querySelectorAll('[data-pop]').forEach((p) => p.classList.remove('is-on'));
         show(0);
         finger.classList.remove('is-on');
         await sleep(500);
@@ -369,6 +392,12 @@ const y = (v: number) => `${(v / H) * 100}%`;
               await tap(step.tap);
             } else if ('wait' in step) {
               await sleep(step.wait);
+            } else if ('pop' in step) {
+              const tag = root.querySelector<HTMLElement>(`[data-pop="${step.pop}"]`)!;
+              tag.classList.add('is-on');
+              await sleep(step.for);
+              tag.classList.remove('is-on');
+              await sleep(250);
             } else if ('scroll' in step) {
               await scrollTo(pages[i], step.scroll, step.show);
             } else if ('count' in step) {
