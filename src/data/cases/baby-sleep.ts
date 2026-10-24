@@ -35,6 +35,7 @@ export const babySleepCase = {
   nav: [
     { id: 'goal', label: 'Goal' },
     { id: 'persona', label: 'Persona' },
+    { id: 'process', label: 'Process' },
     { id: 'screens', label: 'Screens' },
     { id: 'decisions', label: 'Decisions' },
     { id: 'feedback', label: 'Feedback' },
@@ -100,6 +101,23 @@ export const babySleepCase = {
         quote: '“Give me a clean diary, and I can help a family in one session.”',
         photoAlt: 'Olena Kovalenko, sleep consultant',
       },
+    ],
+  },
+
+  process: {
+    eyebrow: 'Process',
+    title: 'From the problem to the handoff.',
+    phases: ['Frame', 'Explore', 'Define', 'Design', 'Validate', 'Handoff'],
+    // start and length are in pixels on a 960px-wide chart; the chart turns them into percentages
+    bars: [
+      { label: 'Framing the problem', start: 0, length: 330 },
+      { label: 'User surveys', start: 100, length: 330 },
+      { label: 'User interviews', start: 200, length: 330 },
+      { label: 'Competitor analysis', start: 300, length: 330 },
+      { label: 'Flows & behavioural patterns', start: 430, length: 380 },
+      { label: 'Prototype', start: 560, length: 300 },
+      { label: 'Test & validate', start: 650, length: 310 },
+      { label: 'Handoff', start: 790, length: 170 },
     ],
   },
 

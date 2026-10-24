@@ -653,6 +653,7 @@
   --case-nav-dot-color: var(--sleep-accent);
   --case-process-bar: var(--sleep-sand);
   --case-phase-text: var(--sleep-muted);
+  --case-grid: var(--sleep-line); /* the lines of the process chart */
   --case-pill-bg: var(--sleep-sand);
   --case-pill-text: var(--sleep-ink);
   --case-label: var(--sleep-muted);

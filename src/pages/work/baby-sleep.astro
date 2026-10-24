@@ -6,6 +6,7 @@ import CaseHero from '../../components/case/CaseHero.astro';
 import CaseNav from '../../components/case/CaseNav.astro';
 import Section from '../../components/case/Section.astro';
 import NoteCards from '../../components/case/NoteCards.astro';
+import ProcessChart from '../../components/case/ProcessChart.astro';
 import PersonaPair from '../../components/case/PersonaPair.astro';
 import PhoneStrip from '../../components/case/PhoneStrip.astro';
 import PhoneDecision from '../../components/case/PhoneDecision.astro';
@@ -26,7 +27,7 @@ import trend from '../../assets/images/sleep-trend.png';
 import calendar from '../../assets/images/sleep-calendar.png';
 import { babySleepCase as study } from '../../data/cases/baby-sleep';
 
-const { goal, persona, screens, decisions, feedback } = study;
+const { goal, persona, process, screens, decisions, feedback } = study;
 const shots = { signup, plans, clients, tracker, trend, calendar };
 const gallery = screens.items.map((item) => ({ src: shots[item.key as keyof typeof shots], label: item.label, alt: item.alt }));
 const alts = Object.fromEntries(screens.items.map((item) => [item.key, item.alt]));
@@ -58,6 +59,10 @@ const blocks = decisions.items.map((item) => ({
 
         <Section id="persona" eyebrow={persona.eyebrow} title={persona.title} lead={persona.lead}>
           <PersonaPair personas={persona.cards.map((card) => ({ ...card, photo: card.photo === 'expert' ? expertPhoto : personaPhoto }))} />
+        </Section>
+
+        <Section id="process" eyebrow={process.eyebrow} title={process.title}>
+          <ProcessChart phases={process.phases} bars={process.bars} stepped />
         </Section>
 
         <Section id="screens" eyebrow={screens.eyebrow} title={screens.title} lead={screens.lead}>
