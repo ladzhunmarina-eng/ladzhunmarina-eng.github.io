@@ -13,6 +13,7 @@ import PhoneDecision from '../../components/case/PhoneDecision.astro';
 import OnboardingDemo from '../../components/case/OnboardingDemo.astro';
 import TrackerDemo from '../../components/case/TrackerDemo.astro';
 import StatsDemo from '../../components/case/StatsDemo.astro';
+import WatchDemo from '../../components/case/WatchDemo.astro';
 import ClientsDemo from '../../components/case/ClientsDemo.astro';
 import Reviews from '../../components/case/Reviews.astro';
 import NextCase from '../../components/case/NextCase.astro';
@@ -27,7 +28,7 @@ import trend from '../../assets/images/sleep-trend.png';
 import calendar from '../../assets/images/sleep-calendar.png';
 import { babySleepCase as study } from '../../data/cases/baby-sleep';
 
-const { goal, persona, process, screens, decisions, feedback } = study;
+const { goal, persona, process, screens, decisions, watch, feedback } = study;
 const shots = { signup, plans, clients, tracker, trend, calendar };
 const gallery = screens.items.map((item) => ({ src: shots[item.key as keyof typeof shots], label: item.label, alt: item.alt }));
 const alts = Object.fromEntries(screens.items.map((item) => [item.key, item.alt]));
@@ -98,6 +99,14 @@ const blocks = decisions.items.map((item) => ({
           </div>
         </Section>
 
+        <Section id="watch" eyebrow={watch.eyebrow} title={watch.title} lead={watch.lead}>
+          <PhoneDecision index={1} tags={watch.tags} title={watch.blockTitle} description={watch.description}>
+            <div class="demo demo--watch">
+              <WatchDemo alt="The Apple Watch home screen with the app icon." />
+            </div>
+          </PhoneDecision>
+        </Section>
+
         <Section id="feedback" eyebrow={feedback.eyebrow} title={feedback.title}>
           <Reviews rating={feedback.rating} reviews={feedback.reviews} />
         </Section>
@@ -162,6 +171,11 @@ const blocks = decisions.items.map((item) => ({
 
   .demo {
     width: 280px;
+    max-width: 100%;
+  }
+
+  .demo--watch {
+    width: 220px;
     max-width: 100%;
   }
 

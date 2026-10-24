@@ -1,0 +1,38 @@
+---
+import PhoneTour from './PhoneTour.astro';
+import type { Step } from './PhoneTour.astro';
+import home from '../../assets/images/watch-1-home.png';
+import children from '../../assets/images/watch-2-children.png';
+import start from '../../assets/images/watch-3-start.png';
+import stop from '../../assets/images/watch-4-stop.png';
+import stopped from '../../assets/images/watch-5-stopped.png';
+
+/* The main function on the wrist, played by itself: open the app, pick the child, start the sleep, watch the clock, stop it. Coordinates are in the watch screen's own 198 x 242. */
+interface Props {
+  alt: string;
+}
+
+const { alt } = Astro.props;
+
+const screens = [
+  { src: home, alt },
+  { src: children, alt: 'Select a child: Anna, awake since 8:06, and Teo, sleeping since 12:00.' },
+  { src: start, alt: 'Anna, awake for 3:50, with a Start sleep button.' },
+  {
+    src: stop,
+    alt: 'Anna, sleeping since 12:00, with a Stop sleep button.',
+    fields: [{ id: 'clock', box: [30, 104, 138, 40] as const, timer: true, fontSize: 24 }],
+  },
+  { src: stopped, alt: 'A green check and the word Stopped.' },
+];
+
+const tour = [
+  [{ move: [150, 60] }, { wait: 300 }, { tap: [99, 128] }], // open the app
+  [{ move: [100, 150] }, { wait: 300 }, { tap: [100, 67] }], // pick Anna
+  [{ move: [99, 130] }, { wait: 400 }, { tap: [99, 198] }], // Start sleep
+  [{ move: [99, 160] }, { wait: 300 }, { count: 'clock', from: [4, 19, 0], secs: 3 }, { tap: [99, 198] }], // the clock runs, then Stop sleep
+  [{ move: [99, 130] }, { wait: 1600 }], // Stopped
+] satisfies Step[][];
+---
+
+<PhoneTour screens={screens} tour={tour} start={[150, 180]} size={[198, 242]} variant="watch" />

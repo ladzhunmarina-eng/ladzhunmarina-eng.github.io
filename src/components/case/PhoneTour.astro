@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 
 /*
  * A phone that plays a flow by itself: a finger taps through the screens and "types" into fields.
- * Coordinates are in the design's own pixels (390 x 844) and become shares of the phone.
+ * Coordinates are in the design's own pixels (390 x 844 for a phone, 198 x 242 for a watch) and become shares of the device.
  * The flow is a list of steps per screen: move, tap, type, wait.
  */
 export type Step =
@@ -25,7 +25,7 @@ interface Screen {
   /** Small pictures that pop in for a moment (a "Copied!" tag): where they sit, in design pixels */
   pops?: readonly { id: string; src: ImageMetadata; box: readonly [number, number, number, number]; alt?: string }[];
   alt: string;
-  fields?: readonly { id: string; box: readonly [number, number, number, number]; multiline?: boolean; timer?: boolean }[];
+  fields?: readonly { id: string; box: readonly [number, number, number, number]; multiline?: boolean; timer?: boolean; fontSize?: number }[];
 }
 interface Props {
   screens: readonly Screen[];
@@ -36,19 +36,21 @@ interface Props {
   dock?: ImageMetadata;
   /** A picture of the screen whose top 92px stay fixed above the scrolling screens (the status bar and title) */
   head?: ImageMetadata;
+  /** The screen's size in design pixels */
+  size?: [number, number];
+  variant?: 'phone' | 'watch';
 }
 
-const { screens, tour, start = [260, 330], dock, head } = Astro.props;
+const { screens, tour, start = [260, 330], dock, head, size = [390, 844], variant = 'phone' } = Astro.props;
 
-const W = 390;
-const H = 844;
+const [W, H] = size;
 const x = (v: number) => `${(v / W) * 100}%`;
 const y = (v: number) => `${(v / H) * 100}%`;
 ---
 
 
-<figure class="onb" data-onboarding data-tour={JSON.stringify(tour)} data-start={JSON.stringify(start)}>
-  <div class="onb__phone">
+<figure class="onb" data-onboarding data-tour={JSON.stringify(tour)} data-start={JSON.stringify(start)} data-w={W} data-h={H} style={`--w: ${W}; --h: ${H}`}>
+  <div class:list={['onb__phone', { 'onb__phone--watch': variant === 'watch' }]}>
     {screens.map((screen, i) => (
       <div class:list={['onb__screen', { 'is-on': i === 0 }]} data-screen={i}>
         <div class:list={['onb__page', { 'onb__page--tall': screen.tall }]} data-page>
@@ -57,7 +59,7 @@ const y = (v: number) => `${(v / H) * 100}%`;
           ))}
         </div>
         {screen.head && (
-          <div class="onb__head onb__head--screen" aria-hidden="true" style={`aspect-ratio: 390 / ${screen.head.height}`}>
+          <div class="onb__head onb__head--screen" aria-hidden="true" style={`aspect-ratio: ${W} / ${screen.head.height}`}>
             <Image src={screen.head.src} alt="" widths={[280, 560]} sizes="280px" quality={90} />
           </div>
         )}
@@ -66,7 +68,7 @@ const y = (v: number) => `${(v / H) * 100}%`;
         ))}
         <slot name={`screen-${i}`} />
         {screen.fields?.map((field) => (
-          <span class:list={['onb__type', { 'onb__type--multiline': field.multiline, 'onb__type--timer': field.timer }]} data-type={field.id} style={`left:${x(field.box[0])};top:${y(field.box[1])};width:${x(field.box[2])};height:${y(field.box[3])}`}></span>
+          <span class:list={['onb__type', { 'onb__type--multiline': field.multiline, 'onb__type--timer': field.timer }]} data-type={field.id} style={`left:${x(field.box[0])};top:${y(field.box[1])};width:${x(field.box[2])};height:${y(field.box[3])}${field.fontSize ? `;font-size:calc(${field.fontSize} / var(--w) * 100cqw)` : ''}`}></span>
         ))}
       </div>
     ))}
@@ -96,11 +98,19 @@ const y = (v: number) => `${(v / H) * 100}%`;
     container-type: inline-size;
     position: relative;
     width: 100%;
-    aspect-ratio: 390 / 844;
+    aspect-ratio: var(--w) / var(--h);
     overflow: hidden;
     border-radius: 32px;
     background: var(--color-white);
     box-shadow: 0 var(--space-16) var(--space-32) rgb(44 47 51 / 0.12);
+  }
+
+  /* A watch: a black glass with a ring around it */
+  .onb__phone--watch {
+    --finger: 18;
+    border-radius: 22% / 18%;
+    background: #000;
+    box-shadow: 0 0 0 6px #25282c, 0 0 0 7px #4a4e55, 0 var(--space-16) var(--space-32) rgb(44 47 51 / 0.2);
   }
 
   .onb__screen {
@@ -134,7 +144,7 @@ const y = (v: number) => `${(v / H) * 100}%`;
     top: 0;
     left: 0;
     width: 100%;
-    aspect-ratio: 390 / 92;
+    aspect-ratio: var(--w) / 92;
     overflow: hidden;
     background: var(--color-white);
     pointer-events: none;
@@ -148,9 +158,9 @@ const y = (v: number) => `${(v / H) * 100}%`;
 
   .onb__phone :global(.onb__dock) {
     position: absolute;
-    left: calc(16 / 390 * 100%);
+    left: calc(16 / var(--w) * 100%);
     bottom: 0;
-    width: calc(358 / 390 * 100%);
+    width: calc(358 / var(--w) * 100%);
     height: auto;
     pointer-events: none;
   }
@@ -169,11 +179,11 @@ const y = (v: number) => `${(v / H) * 100}%`;
     position: absolute;
     display: flex;
     align-items: center;
-    padding-left: calc(19 / 390 * 100cqw);
-    border-radius: calc(10 / 390 * 100cqw);
+    padding-left: calc(19 / var(--w) * 100cqw);
+    border-radius: calc(10 / var(--w) * 100cqw);
     background: var(--color-white);
     font-family: Inter, system-ui, sans-serif;
-    font-size: calc(16 / 390 * 100cqw);
+    font-size: calc(16 / var(--w) * 100cqw);
     color: var(--sleep-ink);
     opacity: 0;
     white-space: nowrap;
@@ -200,7 +210,7 @@ const y = (v: number) => `${(v / H) * 100}%`;
     padding-left: 0;
     border-radius: 0;
     background: var(--sleep-ink);
-    font-size: calc(34 / 390 * 100cqw);
+    font-size: calc(34 / var(--w) * 100cqw);
     font-weight: 600;
     font-variant-numeric: tabular-nums;
     color: var(--color-white);
@@ -208,7 +218,7 @@ const y = (v: number) => `${(v / H) * 100}%`;
 
   .onb__type--multiline {
     align-items: flex-start;
-    padding-top: calc(10 / 390 * 100cqw);
+    padding-top: calc(10 / var(--w) * 100cqw);
   }
 
   .onb__type.is-on {
@@ -219,9 +229,9 @@ const y = (v: number) => `${(v / H) * 100}%`;
     position: absolute;
     top: 0;
     left: 0;
-    width: calc(34 / 390 * 100cqw);
-    height: calc(34 / 390 * 100cqw);
-    margin: calc(-17 / 390 * 100cqw) 0 0 calc(-17 / 390 * 100cqw);
+    width: calc(var(--finger, 34) / var(--w) * 100cqw);
+    height: calc(var(--finger, 34) / var(--w) * 100cqw);
+    margin: calc(var(--finger, 34) / -2 / var(--w) * 100cqw) 0 0 calc(var(--finger, 34) / -2 / var(--w) * 100cqw);
     border: 2px solid var(--color-white);
     border-radius: 50%;
     background: rgb(44 47 51 / 0.35);
@@ -293,9 +303,6 @@ const y = (v: number) => `${(v / H) * 100}%`;
 
 <script>
   const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const W = 390;
-  const H = 844;
-
   type Step =
     | { move: [number, number] }
     | { tap: [number, number] }
@@ -310,6 +317,8 @@ const y = (v: number) => `${(v / H) * 100}%`;
   document.querySelectorAll<HTMLElement>('[data-onboarding]').forEach((root) => {
     if (calm.matches || !('IntersectionObserver' in window)) return;
 
+    const W = Number(root.dataset.w ?? 390);
+    const H = Number(root.dataset.h ?? 844);
     const tour: Step[][] = JSON.parse(root.dataset.tour ?? '[]');
     const start: [number, number] = JSON.parse(root.dataset.start ?? '[260,330]');
     const phone = root.querySelector<HTMLElement>('.onb__phone')!;
