@@ -90,10 +90,10 @@ export const babySleepCase = {
           { label: 'Age', value: '36' },
           { label: 'Location', value: 'Kyiv, Ukraine' },
         ],
-        biography: 'Spends more time piecing together scattered sleep logs than actually helping parents.',
+        biography: 'Enters every family’s sleep data into an Excel sheet by hand to spot trends and write summaries.',
         groups: [
-          { title: 'Goals', items: ['See a family’s sleep patterns at a glance', 'Give recommendations faster'] },
-          { title: 'Pain points', items: ['Logs arrive as screenshots, notes and voice messages', 'Clients scattered across messengers and email'] },
+          { title: 'Goals', items: ['See trends and summaries without building them by hand', 'Give recommendations faster'] },
+          { title: 'Pain points', items: ['Manual data entry into Excel for every client', 'Trends and summaries take hours to put together'] },
         ],
         quote: '“Give me a clean diary, and I can help a family in one session.”',
         photoAlt: 'Olena Kovalenko, sleep consultant',
