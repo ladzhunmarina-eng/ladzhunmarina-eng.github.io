@@ -1,0 +1,126 @@
+---
+import { Image } from 'astro:assets';
+
+/*
+ * A screen recording inside a device frame, for case-study pages.
+ *
+ * The frame is a picture with a transparent screen; the video sits underneath it and is clipped to the
+ * screen's rounded corners. It plays only while at least 40% of it is on screen, and pauses when it leaves.
+ * With reduced motion it never plays: the poster stays.
+ *
+ * The video files come from scripts/encode-video.sh (public/videos/<name>.mp4, .webm and -poster.webp).
+ * `screen` says where the display is inside the frame picture, as a share of it, and how round its corners are
+ * (`radius` is a share of the frame's width).
+ */
+interface Props {
+  /** The device frame: a PNG or WebP with a transparent screen */
+  frame: ImageMetadata;
+  /** Video files, as URLs: the .webm is tried first, the .mp4 is the fallback */
+  video: { webm: string; mp4: string; poster: string };
+  /** One short line about the flow the video shows */
+  caption: string;
+  screen?: { left: number; top: number; width: number; height: number; radius: number };
+}
+
+const { frame, video, caption, screen = { left: 4, top: 2, width: 92, height: 96, radius: 12 } } = Astro.props;
+const box = `--l: ${screen.left}%; --t: ${screen.top}%; --w: ${screen.width}%; --h: ${screen.height}%; --r: ${screen.radius}`;
+---
+
+<figure class="device" data-device-video style={box}>
+  <div class="device__body">
+    <div class="device__screen">
+      <video class="device__video" muted loop playsinline preload="metadata" poster={video.poster} aria-hidden="true" tabindex="-1">
+        <source src={video.webm} type="video/webm" />
+        <source src={video.mp4} type="video/mp4" />
+      </video>
+    </div>
+    <Image class="device__frame" src={frame} alt="" widths={[390, 780]} sizes="(max-width: 1023px) 60vw, 390px" quality={90} />
+  </div>
+  <figcaption class="device__caption">{caption}</figcaption>
+</figure>
+
+<style>
+  .device {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-16);
+    margin: 0;
+  }
+
+  .device__body {
+    container-type: inline-size;
+    position: relative;
+    width: 100%;
+  }
+
+  /* The picture of the frame is what sizes the whole device; the screen is laid out inside it. */
+  .device__body :global(.device__frame) {
+    position: relative;
+    z-index: 2;
+    display: block;
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+  }
+
+  .device__screen {
+    position: absolute;
+    z-index: 1;
+    left: var(--l);
+    top: var(--t);
+    width: var(--w);
+    height: var(--h);
+    overflow: hidden;
+    border-radius: calc(var(--r) * 1cqw);
+  }
+
+  .device__video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+  }
+
+  .device__caption {
+    max-width: 30ch;
+    text-align: center;
+    font-size: var(--fs-14);
+    line-height: var(--lh-snug);
+    color: var(--color-muted);
+  }
+</style>
+
+<script>
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  document.querySelectorAll<HTMLElement>('[data-device-video]').forEach((device) => {
+    const video = device.querySelector<HTMLVideoElement>('video');
+    if (!video) return;
+
+    const play = () => {
+      // a browser may refuse to start a video on its own (battery saver, say); the poster simply stays
+      video.play().catch(() => {});
+    };
+
+    let visible = false;
+    const sync = () => {
+      if (visible && !calm.matches) play();
+      else video.pause();
+    };
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(
+        ([entry]) => {
+          visible = entry.isIntersecting;
+          sync();
+        },
+        { threshold: 0.4 },
+      ).observe(video);
+    }
+
+    // The visitor can switch reduced motion on or off while the page is open
+    calm.addEventListener('change', sync);
+  });
+</script>
