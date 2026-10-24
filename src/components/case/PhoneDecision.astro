@@ -42,15 +42,9 @@ const { index, tags, title, description, phones } = Astro.props;
     order: 2;
   }
 
-  /* The phone stands on a lattice of soft circles, as on a shelf. */
   .decision__stage {
     display: flex;
     justify-content: center;
-    padding: var(--space-52) var(--space-24);
-    border-radius: var(--radius-card);
-    background-color: var(--sleep-mist);
-    background-image: radial-gradient(circle, var(--sleep-dots) 0 46%, transparent 47%);
-    background-size: 56px 56px;
   }
 
   .decision__phones {
