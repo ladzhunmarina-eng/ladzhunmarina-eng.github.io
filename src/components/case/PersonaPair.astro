@@ -18,7 +18,7 @@ interface Props {
 const { personas } = Astro.props;
 ---
 
-<div class="pair">
+<div class:list={['pair', { 'pair--single': personas.length === 1 }]} style={`--n: ${personas.length}`}>
   {personas.map((persona) => (
     <article class="persona" aria-label={persona.name}>
       <header class="persona__head">
@@ -36,12 +36,14 @@ const { personas } = Astro.props;
 
       <p class="persona__bio">{persona.biography}</p>
 
-      {persona.groups.map((group) => (
-        <section class="persona__group">
-          <h4>{group.title}</h4>
-          <ul>{group.items.map((item) => <li>{item}</li>)}</ul>
-        </section>
-      ))}
+      <div class="persona__groups">
+        {persona.groups.map((group) => (
+          <section class="persona__group">
+            <h4>{group.title}</h4>
+            <ul>{group.items.map((item) => <li>{item}</li>)}</ul>
+          </section>
+        ))}
+      </div>
 
       <blockquote class="persona__quote">{persona.quote}</blockquote>
     </article>
@@ -52,7 +54,7 @@ const { personas } = Astro.props;
   /* Both people on one plane: one panel, two columns, a hairline between them. */
   .pair {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--n, 2), minmax(0, 1fr));
     border: 1px solid var(--case-line);
     border-radius: var(--radius-card);
     background: var(--color-white);
@@ -133,6 +135,22 @@ const { personas } = Astro.props;
     color: var(--color-ink);
   }
 
+  .persona__groups {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  /* One person has the whole row: values, goals and pain points sit side by side. */
+  .pair--single .persona__groups {
+    flex-direction: row;
+    gap: var(--space-32);
+  }
+
+  .pair--single .persona__group {
+    flex: 1;
+  }
+
   .persona__group h4 {
     margin-bottom: var(--space-8);
     font-size: var(--fs-12);
@@ -177,6 +195,10 @@ const { personas } = Astro.props;
   }
 
   @media (max-width: 1023px) {
+    .pair--single .persona__groups {
+      flex-direction: column;
+    }
+
     .pair {
       grid-template-columns: minmax(0, 1fr);
     }

@@ -1,0 +1,60 @@
+---
+import { Image } from 'astro:assets';
+
+/*
+ * A bento of screens on a 12-column grid: each tile says how many columns (and rows) it spans.
+ * Below 1024px every tile takes the whole row.
+ */
+interface Tile {
+  src: ImageMetadata;
+  alt: string;
+  cols: number;
+  rows?: number;
+}
+interface Props {
+  tiles: readonly Tile[];
+}
+
+const { tiles } = Astro.props;
+---
+
+<ul class="grid">
+  {tiles.map((tile) => (
+    <li class="tile" style={`--cols: ${tile.cols}; --rows: ${tile.rows ?? 1}`}>
+      <Image class="tile__image" src={tile.src} alt={tile.alt} widths={[480, 720, 1008, 1512]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} />
+    </li>
+  ))}
+</ul>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--space-16);
+    align-items: stretch;
+  }
+
+  .tile {
+    grid-column: span var(--cols);
+    grid-row: span var(--rows);
+    overflow: hidden;
+    border: 1px solid var(--case-line);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+  }
+
+  .tile :global(.tile__image) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: top;
+  }
+
+  @media (max-width: 1023px) {
+    .tile {
+      grid-column: 1 / -1;
+      grid-row: auto;
+    }
+  }
+</style>

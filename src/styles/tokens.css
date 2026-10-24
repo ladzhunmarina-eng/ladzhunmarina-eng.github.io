@@ -94,6 +94,15 @@
   --erma-photo-w: 320px; /* the persona's portrait */
 
   /* Baby Sleep case: palette from its Figma "Fonts & Colors" (page, accent, ink, two tints) */
+  /* Cloutboost case: the brand's purple and orange, with its neutrals (from the design's Fonts & Colors) */
+  --cb-ink: #000000;
+  --cb-page: #f9f9f9;
+  --cb-purple: #4319ee;
+  --cb-orange: #fa4a21;
+  --cb-tint: #ece8fd;
+  --cb-line: rgb(0 0 0 / 0.1);
+  --cb-muted: #666666;
+
   --sleep-ink: #2c2f33;
   --sleep-page: #f9f9fc;
   --sleep-accent: #3ea4c4;
@@ -636,6 +645,36 @@
   --color-icon-bg: var(--erma-tint);
 }
 
+[data-case-palette='cloutboost'] {
+  --case-bg: var(--cb-tint);
+  --case-accent: var(--cb-purple);
+  --case-page: var(--cb-page);
+  --case-line: var(--cb-line);
+  --case-track: var(--cb-tint);
+  --case-bar: var(--cb-purple);
+  --case-strip-bg: var(--cb-ink);
+  --case-strip-fg: var(--color-white);
+  --case-strip-value: var(--cb-orange);
+  --case-on-bg: var(--cb-ink);
+  --case-chip-text: var(--cb-ink);
+  --case-glass: var(--cb-tint);
+  --case-nav-current-bg: var(--cb-tint);
+  --case-nav-dot-color: var(--cb-purple);
+  --case-process-bar: var(--cb-tint);
+  --case-phase-text: var(--cb-muted);
+  --case-pill-bg: var(--cb-tint);
+  --case-pill-text: var(--cb-ink);
+  --case-label: var(--cb-muted);
+  --case-hairline: var(--cb-line);
+  --case-dark: var(--cb-ink);
+  --case-dark-fg: var(--cb-orange);
+  --case-icon-bg: var(--cb-tint);
+  --case-icon-fg: var(--cb-purple);
+  --color-ink: var(--cb-ink);
+  --color-muted: var(--cb-muted);
+  --color-icon-bg: var(--cb-tint);
+}
+
 [data-case-palette='sleep'] {
   --case-bg: var(--sleep-accent);
   --case-accent: var(--sleep-accent-text);
@@ -672,6 +711,11 @@
 :root:has([data-case-palette='erma']) {
   --header-backing: var(--erma-page);
   --color-footer-accent: var(--erma-orange);
+}
+
+:root:has([data-case-palette='cloutboost']) {
+  --header-backing: var(--cb-page);
+  --color-footer-accent: var(--cb-purple);
 }
 
 :root:has([data-case-palette='sleep']) {

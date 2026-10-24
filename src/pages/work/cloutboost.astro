@@ -1,0 +1,142 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import CaseBack from '../../components/case/CaseBack.astro';
+import CaseHero from '../../components/case/CaseHero.astro';
+import CaseNav from '../../components/case/CaseNav.astro';
+import Section from '../../components/case/Section.astro';
+import NoteCards from '../../components/case/NoteCards.astro';
+import PersonaPair from '../../components/case/PersonaPair.astro';
+import VisualGrid from '../../components/case/VisualGrid.astro';
+import NextCase from '../../components/case/NextCase.astro';
+import heroImage from '../../assets/images/cb-hero.png';
+import anna from '../../assets/images/cb-persona.png';
+import channel from '../../assets/images/cb-v01-channel.png';
+import building from '../../assets/images/cb-v02-building.png';
+import views from '../../assets/images/cb-v03-views.png';
+import performance from '../../assets/images/cb-v04-performance.png';
+import email from '../../assets/images/cb-v05-email.png';
+import importFile from '../../assets/images/cb-v06-import.png';
+import comments from '../../assets/images/cb-v07-comments.png';
+import empty from '../../assets/images/cb-v08-empty.png';
+import filters from '../../assets/images/cb-v09-filters.png';
+import table from '../../assets/images/cb-v10-table.png';
+import { cloutboostCase as study } from '../../data/cases/cloutboost';
+
+const { goal, persona, visuals } = study;
+const shots = { channel, building, views, performance, email, import: importFile, comments, empty, filters, table };
+const tiles = visuals.tiles.map((tile) => ({ src: shots[tile.key as keyof typeof shots], alt: tile.alt, cols: tile.cols, rows: tile.rows }));
+const personas = persona.cards.map((card) => ({ ...card, photo: anna }));
+---
+
+<Layout title={study.seo.title} description={study.seo.description} current="work">
+  <article class="case" data-case-palette="cloutboost">
+    <div class="case__container case__top">
+      <div class="case__intro">
+        <CaseBack />
+        <CaseHero hero={study.hero} />
+      </div>
+      <div class="cover">
+        <Image class="cover__image" src={heroImage} alt={study.hero.image} widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} loading="eager" />
+      </div>
+    </div>
+
+    <div class="case__container case__main">
+      <CaseNav items={study.nav} />
+
+      <div class="case__sections">
+        <Section id="goal" eyebrow={goal.eyebrow} title={goal.title} lead={goal.lead}>
+          <NoteCards cards={goal.cards} />
+        </Section>
+
+        <Section id="persona" eyebrow={persona.eyebrow} title={persona.title}>
+          <PersonaPair personas={personas} />
+        </Section>
+
+        <Section id="visuals" eyebrow={visuals.eyebrow} title={visuals.title}>
+          <VisualGrid tiles={tiles} />
+        </Section>
+      </div>
+    </div>
+
+    <div class="case__container case__after">
+      <NextCase current="/work/cloutboost" />
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .case {
+    background: var(--case-page);
+  }
+
+  .case__container {
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .case__top {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-56);
+    padding-top: calc(var(--header-h) + var(--space-8) + var(--case-top-shift));
+  }
+
+  .case__intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  /* The dashboard sits on a soft lilac panel the width of the column. */
+  .cover {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-32);
+    border-radius: var(--radius-card);
+    background: var(--cb-tint);
+  }
+
+  .cover :global(.cover__image) {
+    width: min(100%, 760px);
+    height: auto;
+  }
+
+  .case__main {
+    display: grid;
+    grid-template-columns: var(--case-nav-w) minmax(0, 1fr);
+    gap: var(--case-gap);
+    padding-block: var(--case-section-gap);
+  }
+
+  .case__sections {
+    display: flex;
+    flex-direction: column;
+    gap: var(--case-section-gap);
+    min-width: 0;
+  }
+
+  /* The next case sits under the content column */
+  .case__after {
+    padding-block: 0 var(--space-144);
+    padding-left: calc(var(--gutter) + var(--case-nav-w) + var(--case-gap));
+  }
+
+  @media (max-width: 1023px) {
+    .case__main {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-32);
+      padding-block: var(--space-56) var(--space-56);
+    }
+
+    .case__sections {
+      gap: var(--space-80);
+    }
+
+    .case__after {
+      padding-block: 0 var(--space-92);
+      padding-left: var(--gutter);
+    }
+  }
+</style>

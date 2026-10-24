@@ -1,5 +1,5 @@
 import card1 from '../assets/images/card1.png';
-import card2 from '../assets/images/card2.png';
+import card2 from '../assets/images/card2-cloutboost.png';
 import card3 from '../assets/images/card3.png';
 import card4 from '../assets/images/card4.png';
 import review1 from '../assets/images/review-1.png';
@@ -45,14 +45,14 @@ export const work = [
   {
     number: '02',
     theme: 'cream',
-    category: 'B2B',
-    title: 'Service Marketplace Platform',
-    href: '#',
+    category: 'Web app',
+    title: 'Data-Driven Influencer Marketing Platform',
+    href: '/work/cloutboost',
     description:
-      'Designed a platform connecting clients with professionals across 400+ services, with intuitive interfaces for requests, discovery, and communication.',
+      'Solution that helps brands discover gaming and lifestyle creators, manage influencer campaigns, and maximize ROI through analytics and performance tracking.',
     image: card2,
-    alt: 'Analytics dashboard of a service marketplace for professionals, next to a mobile profile screen.',
-    place: { left: '14.27%', top: '15.94%', width: '75.50%', height: '84.06%' },
+    alt: 'Cloutboost campaign report dashboard with key numbers and a performance chart, next to an empty-state card saying no report has been generated.',
+    place: { left: '14.6%', top: '16.4%', width: '64%', height: '83.6%' },
     bleed: true, // the screenshot runs off the bottom of the panel
   },
   {
