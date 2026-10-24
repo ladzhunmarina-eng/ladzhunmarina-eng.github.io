@@ -32,10 +32,10 @@ const { id, eyebrow, title, lead, alts } = Astro.props;
 </section>
 
 <style>
-  /* On the page itself, no panel: the two phones stand edge to edge on the left, the words and the two cards on the right. */
+  /* On the page itself, no panel: the words on the left, the two phones edge to edge on the right. */
   .theme-block {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) auto;
     gap: var(--space-32);
     align-items: start;
     scroll-margin-top: calc(var(--header-h) + var(--space-24));
@@ -44,6 +44,7 @@ const { id, eyebrow, title, lead, alts } = Astro.props;
   .theme-block__stage {
     display: flex;
     gap: var(--space-12);
+    order: 2;
   }
 
   .theme-block__phone {
@@ -96,6 +97,7 @@ const { id, eyebrow, title, lead, alts } = Astro.props;
 
     .theme-block__stage {
       justify-content: center;
+      order: 0;
     }
 
     .theme-block__phone {
