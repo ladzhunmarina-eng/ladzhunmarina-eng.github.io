@@ -38,10 +38,13 @@ interface Props {
   head?: ImageMetadata;
   /** The screen's size in design pixels */
   size?: [number, number];
-  variant?: 'phone' | 'watch';
+  /** 'plain' has no frame at all, for a screen that sits inside a mockup picture */
+  variant?: 'phone' | 'watch' | 'plain';
+  /** The step dots under the device */
+  dots?: boolean;
 }
 
-const { screens, tour, start = [260, 330], dock, head, size = [390, 844], variant = 'phone' } = Astro.props;
+const { screens, tour, start = [260, 330], dock, head, size = [390, 844], variant = 'phone', dots = true } = Astro.props;
 
 const [W, H] = size;
 const x = (v: number) => `${(v / W) * 100}%`;
@@ -50,7 +53,7 @@ const y = (v: number) => `${(v / H) * 100}%`;
 
 
 <figure class="onb" data-onboarding data-tour={JSON.stringify(tour)} data-start={JSON.stringify(start)} data-w={W} data-h={H} style={`--w: ${W}; --h: ${H}`}>
-  <div class:list={['onb__phone', { 'onb__phone--watch': variant === 'watch' }]}>
+  <div class:list={['onb__phone', { 'onb__phone--watch': variant === 'watch', 'onb__phone--plain': variant === 'plain' }]}>
     {screens.map((screen, i) => (
       <div class:list={['onb__screen', { 'is-on': i === 0 }]} data-screen={i}>
         <div class:list={['onb__page', { 'onb__page--tall': screen.tall }]} data-page>
@@ -80,9 +83,11 @@ const y = (v: number) => `${(v / H) * 100}%`;
     {dock && <Image class="onb__dock" src={dock} alt="" widths={[280, 560]} sizes="260px" quality={90} />}
     <span class="onb__finger" data-finger aria-hidden="true"><span class="onb__ripple"></span></span>
   </div>
-  <ol class="onb__dots" aria-hidden="true">
-    {screens.map((_, i) => <li class:list={['onb__dot', { 'is-on': i === 0 }]}></li>)}
-  </ol>
+  {dots && (
+    <ol class="onb__dots" aria-hidden="true">
+      {screens.map((_, i) => <li class:list={['onb__dot', { 'is-on': i === 0 }]}></li>)}
+    </ol>
+  )}
 </figure>
 
 <style>
@@ -112,6 +117,14 @@ const y = (v: number) => `${(v / H) * 100}%`;
     border-radius: 22% / 18%;
     background: #000;
     box-shadow: 0 0 0 6px #25282c, 0 0 0 7px #4a4e55, 0 var(--space-16) var(--space-32) rgb(44 47 51 / 0.2);
+  }
+
+  .onb__phone--plain {
+    --finger: 18;
+    --timer-bg: #000;
+    border-radius: 0;
+    background: #000;
+    box-shadow: none;
   }
 
   .onb__screen {
