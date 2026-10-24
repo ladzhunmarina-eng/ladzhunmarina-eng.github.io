@@ -24,9 +24,11 @@ import darkScreen from '../../assets/images/theme-dark-screen.png';
 interface Props {
   theme: 'light' | 'dark';
   alt: string;
+  /** When two phones stand edge to edge, only their outer corners are rounded */
+  side?: 'left' | 'right';
 }
 
-const { theme, alt } = Astro.props;
+const { theme, alt, side } = Astro.props;
 
 const dark = theme === 'dark';
 const screen = dark ? darkScreen : lightScreen;
@@ -46,7 +48,7 @@ const stars = [
 ];
 ---
 
-<div class:list={['theme', `theme--${theme}`]}>
+<div class:list={['theme', `theme--${theme}`, { 'theme--left': side === 'left', 'theme--right': side === 'right' }]}>
   <Image class="theme__screen" src={screen} alt={alt} widths={[280, 390, 546]} sizes="260px" quality={85} />
 
   <div class="sky" aria-hidden="true">
@@ -79,7 +81,14 @@ const stars = [
     overflow: hidden;
     border-radius: 32px;
     background: var(--color-white);
-    box-shadow: 0 var(--space-16) var(--space-32) rgb(0 0 0 / 0.25);
+  }
+
+  .theme--left {
+    border-radius: 32px 0 0 32px;
+  }
+
+  .theme--right {
+    border-radius: 0 32px 32px 0;
   }
 
   .theme :global(.theme__screen) {
