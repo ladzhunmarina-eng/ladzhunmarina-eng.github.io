@@ -1,5 +1,6 @@
 ---
 interface Card {
+  icon?: 'target' | 'scale' | 'check';
   title: string;
   text: string;
   /** The card that carries the answer: drawn in the highlight colour */
@@ -16,6 +17,31 @@ const { cards } = Astro.props;
 <ul class="notes">
   {cards.map((card) => (
     <li class:list={['note', { 'note--hot': card.highlight }]}>
+      {card.icon && (
+        <span class="note__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            {card.icon === 'target' && (
+              <>
+                <circle cx="12" cy="12" r="9" />
+                <circle cx="12" cy="12" r="5" />
+                <circle cx="12" cy="12" r="1" />
+              </>
+            )}
+            {card.icon === 'scale' && (
+              <>
+                <path d="M12 4v16M8 20h8M5 7h14" />
+                <path d="m5 7-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0z" />
+              </>
+            )}
+            {card.icon === 'check' && (
+              <>
+                <circle cx="12" cy="12" r="9" />
+                <path d="m8 12.5 2.8 2.8L16 9.5" />
+              </>
+            )}
+          </svg>
+        </span>
+      )}
       <h3 class="note__title">{card.title}</h3>
       <p class="note__text">{card.text}</p>
     </li>
@@ -42,6 +68,22 @@ const { cards } = Astro.props;
   .note--hot {
     border-color: transparent;
     background: var(--case-hot, var(--erma-orange));
+  }
+
+  .note__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: var(--space-44);
+    height: var(--space-44);
+    border-radius: var(--radius-person);
+    background: var(--case-icon-bg, var(--erma-orange-tint));
+    color: var(--case-icon-fg, var(--erma-orange-text));
+  }
+
+  .note--hot .note__icon {
+    background: var(--color-white);
   }
 
   .note__title {

@@ -46,14 +46,17 @@ export const babySleepCase = {
     lead: 'The app starts from two roles with different needs, so the first decision was to build for both at once.',
     cards: [
       {
+        icon: 'target' as const,
         title: 'Objective',
         text: 'Develop an app that helps parents track their baby’s sleep patterns and work together with sleep consultants to improve the child’s routine.',
       },
       {
+        icon: 'scale' as const,
         title: 'Challenges',
         text: 'Balancing the needs of parents and consultants, ensuring accurate data tracking, and creating a simple way to share insights and progress.',
       },
       {
+        icon: 'check' as const,
         title: 'Solution',
         text: 'A collaborative mobile platform with sleep tracking, notes, and direct communication tools that connect parents and experts to build healthier sleep habits for babies.',
         highlight: true,

@@ -660,6 +660,8 @@
   --case-hairline: var(--sleep-line);
   --case-dark: var(--sleep-ink);
   --case-dark-fg: var(--sleep-accent);
+  --case-icon-bg: var(--sleep-pill-blue); /* the icon squares on the cards */
+  --case-icon-fg: var(--sleep-accent-text);
   --case-hot: var(--sleep-accent); /* the highlighted (Solution) card */
   --color-ink: var(--sleep-ink);
   --color-muted: var(--sleep-muted);
