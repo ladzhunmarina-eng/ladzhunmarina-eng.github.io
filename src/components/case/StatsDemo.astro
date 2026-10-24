@@ -3,8 +3,9 @@ import PhoneTour from './PhoneTour.astro';
 import type { Step } from './PhoneTour.astro';
 import dayA from '../../assets/images/stat-1-day-a.png';
 import dayB from '../../assets/images/stat-1-day-b.png';
-import week from '../../assets/images/stat-2-week.png';
-import trend from '../../assets/images/stat-3-trend.png';
+import week from '../../assets/images/stat-2-week-nonav.png';
+import nav from '../../assets/images/stat-nav.png';
+import trend from '../../assets/images/stat-3-trend-nonav.png';
 
 /* The statistics, played by itself: the day with its totals and details, the week as a calendar, then as a trend. The long screens scroll inside the phone. */
 interface Props {
@@ -46,4 +47,4 @@ const tour = [
 ] satisfies Step[][];
 ---
 
-<PhoneTour screens={screens} tour={tour} start={[300, 500]} />
+<PhoneTour screens={screens} tour={tour} start={[300, 500]} dock={nav} />

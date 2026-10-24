@@ -27,9 +27,11 @@ interface Props {
   tour: readonly (readonly Step[])[];
   /** Where the finger starts, in design pixels */
   start?: [number, number];
+  /** A bar fixed to the bottom of the phone while the screens scroll behind it (358 x 89 in the design) */
+  dock?: ImageMetadata;
 }
 
-const { screens, tour, start = [260, 330] } = Astro.props;
+const { screens, tour, start = [260, 330], dock } = Astro.props;
 
 const W = 390;
 const H = 844;
@@ -52,6 +54,7 @@ const y = (v: number) => `${(v / H) * 100}%`;
         ))}
       </div>
     ))}
+    {dock && <Image class="onb__dock" src={dock} alt="" widths={[280, 560]} sizes="260px" quality={90} />}
     <span class="onb__finger" data-finger aria-hidden="true"><span class="onb__ripple"></span></span>
   </div>
   <ol class="onb__dots" aria-hidden="true">
@@ -102,6 +105,15 @@ const y = (v: number) => `${(v / H) * 100}%`;
     height: 100%;
     object-fit: cover;
     object-position: top;
+  }
+
+  .onb__phone :global(.onb__dock) {
+    position: absolute;
+    left: calc(16 / 390 * 100%);
+    bottom: 0;
+    width: calc(358 / 390 * 100%);
+    height: auto;
+    pointer-events: none;
   }
 
   .onb__page--tall {
