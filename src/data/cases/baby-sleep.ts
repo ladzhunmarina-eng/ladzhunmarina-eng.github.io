@@ -189,8 +189,6 @@ export const babySleepCase = {
     eyebrow: 'Light and dark theme',
     title: 'Light and dark were designed as one system.',
     lead: 'Both themes share one layout and one illustration, so a parent sees the same screen by day and at night.',
-    light: { title: 'Light theme', text: 'A soft lavender sky and white surfaces for daytime use.' },
-    dark: { title: 'Dark theme', text: 'Deep blue-grey surfaces, so the screen is easy on the eyes in a dark nursery.' },
     alts: {
       light: 'The update screen in the light theme: a bottle-shaped rocket over clouds, “A fresh update is ready” and an Update now button.',
       dark: 'The same update screen in the dark theme, on a dark blue-grey sky.',
