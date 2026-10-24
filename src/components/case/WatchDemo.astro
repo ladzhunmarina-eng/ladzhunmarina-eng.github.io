@@ -5,7 +5,7 @@ import home from '../../assets/images/watch-1-home.png';
 import children from '../../assets/images/watch-2-children.png';
 import start from '../../assets/images/watch-3-start.png';
 import time from '../../assets/images/watch-3b-time.png';
-import stop from '../../assets/images/watch-4-stop.png';
+import stop from '../../assets/images/watch-4-stop-timer.png';
 import stopped from '../../assets/images/watch-5-stopped.png';
 
 /* The main function on the wrist, played by itself: open the app, pick the child, start the sleep, set the time, watch the clock, stop it. Coordinates are in the watch screen's own 198 x 242. */
@@ -33,7 +33,7 @@ const tour = [
   [{ move: [100, 150] }, { wait: 300 }, { tap: [100, 67] }], // pick Anna
   [{ move: [99, 130] }, { wait: 400 }, { tap: [99, 198] }], // Start sleep
   [{ move: [145, 70] }, { wait: 300 }, { tap: [145, 111] }, { wait: 500 }, { move: [99, 170] }, { wait: 200 }, { tap: [99, 198] }], // set the time, Save
-  [{ move: [99, 160] }, { wait: 300 }, { count: 'clock', from: [4, 19, 0], secs: 3, compact: true }, { tap: [99, 198] }], // the clock runs, then Stop sleep
+  [{ move: [99, 160] }, { wait: 300 }, { count: 'clock', from: [0, 0, 1], secs: 5, format: 'ms' }, { tap: [99, 198] }], // the clock runs, then Stop sleep
   [{ move: [99, 130] }, { wait: 1600 }], // Stopped
 ] satisfies Step[][];
 ---

@@ -10,7 +10,7 @@ export type Step =
   | { move: [number, number] }
   | { tap: [number, number] }
   | { type: string; text: string }
-  | { count: string; from: [number, number, number]; secs: number; compact?: boolean }
+  | { count: string; from: [number, number, number]; secs: number; compact?: boolean; format?: 'ms' }
   | { scroll: number; show?: number }
   | { pop: string; for: number }
   | { wait: number };
@@ -315,7 +315,7 @@ const y = (v: number) => `${(v / H) * 100}%`;
     | { move: [number, number] }
     | { tap: [number, number] }
     | { type: string; text: string }
-    | { count: string; from: [number, number, number]; secs: number; compact?: boolean }
+    | { count: string; from: [number, number, number]; secs: number; compact?: boolean; format?: 'ms' }
     | { scroll: number; show?: number }
     | { pop: string; for: number }
     | { wait: number };
@@ -426,7 +426,8 @@ const y = (v: number) => `${(v / H) * 100}%`;
                 const mm = String(m).padStart(2, '0');
                 const ss = String(sec).padStart(2, '0');
                 // compact: the clock keeps its h:mm and the seconds run small beside it
-                if (step.compact) clock.innerHTML = `${h}:${mm}<span class="onb__sec">:${ss}</span>`;
+                if (step.format === 'ms') clock.textContent = `${mm}:${ss}`;
+                else if (step.compact) clock.innerHTML = `${h}:${mm}<span class="onb__sec">:${ss}</span>`;
                 else clock.textContent = `${h}:${mm}:${ss}`;
                 sec += 1;
                 if (sec === 60) {
