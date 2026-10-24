@@ -61,12 +61,12 @@ const blocks = decisions.items.map((item) => ({
           <NoteCards cards={goal.cards} />
         </Section>
 
-        <Section id="persona" eyebrow={persona.eyebrow} title={persona.title} lead={persona.lead}>
-          <PersonaPair personas={persona.cards.map((card) => ({ ...card, photo: card.photo === 'expert' ? expertPhoto : personaPhoto }))} />
-        </Section>
-
         <Section id="process" eyebrow={process.eyebrow} title={process.title}>
           <ProcessChart phases={process.phases} bars={process.bars} stepped />
+        </Section>
+
+        <Section id="persona" eyebrow={persona.eyebrow} title={persona.title} lead={persona.lead}>
+          <PersonaPair personas={persona.cards.map((card) => ({ ...card, photo: card.photo === 'expert' ? expertPhoto : personaPhoto }))} />
         </Section>
 
         <Section id="decisions" eyebrow={decisions.eyebrow} title={decisions.title} lead={decisions.lead}>

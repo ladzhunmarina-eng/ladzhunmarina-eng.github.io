@@ -34,8 +34,8 @@ export const babySleepCase = {
 
   nav: [
     { id: 'goal', label: 'Goal' },
-    { id: 'persona', label: 'Persona' },
     { id: 'process', label: 'Process' },
+    { id: 'persona', label: 'Persona' },
     { id: 'decisions', label: 'Decisions' },
     { id: 'feedback', label: 'Feedback' },
     { id: 'screens', label: 'Screens' },
