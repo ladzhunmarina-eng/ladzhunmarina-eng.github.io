@@ -5,7 +5,7 @@ import type { Step } from './PhoneTour.astro';
 import empty from '../../assets/images/cli-1-empty.png';
 import share from '../../assets/images/cli-2-share.png';
 import list from '../../assets/images/cli-3-list.png';
-import profile from '../../assets/images/cli-5-profile.png';
+import profile from '../../assets/images/cli-5-profile-totals.png';
 import dayA from '../../assets/images/cli-4-day-a.png';
 import dayB from '../../assets/images/cli-4-day-b.png';
 
@@ -20,7 +20,7 @@ const screens = [
   { src: empty, alt },
   { src: share, alt: 'Share invite link: a link that invites the client to download the app, with Instagram, Telegram and share buttons.' },
   { src: list, alt: 'Active clients with their diary status, package and dates.' },
-  { src: profile, alt: 'A client’s profile: the baby’s photo, name and age, the parent, and the diary with its Day and Period views.' },
+  { src: profile, alt: 'A client’s profile: the baby’s photo, name and age, the parent, and the diary with its Day and Period views and the totals open.' },
   { src: [dayA, dayB] as const, tall: true, alt: 'The client’s day: totals, the first sleep and its details.' },
 ];
 
@@ -37,7 +37,7 @@ const tour = [
     { wait: 800 },
   ],
   [{ move: [300, 201] }, { wait: 600 }, { move: [190, 300] }, { wait: 300 }, { tap: [190, 300] }], // the client has signed up: open her card
-  [{ move: [300, 480] }, { wait: 500 }, { tap: [341, 588] }], // show the totals
+  [{ move: [300, 520] }, { wait: 900 }, { move: [108, 427] }, { wait: 300 }, { tap: [108, 427] }], // the totals are open; on to the day
   [{ move: [200, 520] }, { wait: 500 }, { scroll: 560 }, { wait: 500 }, { scroll: 1171 }, { wait: 1200 }], // the day, down to the details
 ] satisfies Step[][];
 ---
