@@ -1,0 +1,38 @@
+---
+import PhoneTour from './PhoneTour.astro';
+import type { Step } from './PhoneTour.astro';
+import idle from '../../assets/images/trk-1-idle.png';
+import add from '../../assets/images/trk-2-add.png';
+import running from '../../assets/images/trk-3-running.png';
+import lock from '../../assets/images/trk-4-lock.png';
+
+/* Logging a sleep, played by itself: start from the timeline, add details, let the timer run, stop it from the lock screen. */
+interface Props {
+  alt: string;
+}
+
+const { alt } = Astro.props;
+
+const screens = [
+  { src: idle, alt },
+  { src: add, alt: 'Add Sleep: start and end time, day or night sleep, and details.', fields: [{ id: 'note', box: [17, 382, 356, 40] as const, multiline: true }] },
+  { src: running, alt: 'The day view with a running sleep timer and a stop button.' },
+  { src: lock, alt: 'The lock screen with the running sleep and a Stop button.' },
+];
+
+const tour = [
+  [{ move: [250, 520] }, { wait: 400 }, { tap: [344, 677] }], // start a sleep
+  [
+    { move: [190, 400] },
+    { tap: [190, 400] },
+    { type: 'note', text: 'Fell asleep after the bedtime story' },
+    { move: [195, 786] },
+    { wait: 250 },
+    { tap: [195, 786] }, // Save
+  ],
+  [{ move: [250, 500] }, { wait: 1500 }], // the timer runs; the phone is locked
+  [{ move: [195, 560] }, { wait: 600 }, { tap: [330, 661] }], // Stop
+] satisfies Step[][];
+---
+
+<PhoneTour screens={screens} tour={tour} start={[300, 560]} />

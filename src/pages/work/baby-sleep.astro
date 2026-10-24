@@ -10,6 +10,7 @@ import PersonaPair from '../../components/case/PersonaPair.astro';
 import PhoneStrip from '../../components/case/PhoneStrip.astro';
 import PhoneDecision from '../../components/case/PhoneDecision.astro';
 import OnboardingDemo from '../../components/case/OnboardingDemo.astro';
+import TrackerDemo from '../../components/case/TrackerDemo.astro';
 import Reviews from '../../components/case/Reviews.astro';
 import NextCase from '../../components/case/NextCase.astro';
 import heroImage from '../../assets/images/sleep-hero.png';
@@ -68,6 +69,11 @@ const blocks = decisions.items.map((item) => ({
                 {block.demo === 'onboarding' && (
                   <div class="demo">
                     <OnboardingDemo alt={alts.signup} />
+                  </div>
+                )}
+                {block.demo === 'tracker' && (
+                  <div class="demo">
+                    <TrackerDemo alt={alts.tracker} />
                   </div>
                 )}
               </PhoneDecision>

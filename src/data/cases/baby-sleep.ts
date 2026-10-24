@@ -134,8 +134,9 @@ export const babySleepCase = {
         tags: ['Tracking', 'Timer'],
         title: 'Log sleep without leaving the day',
         description:
-          'The day view keeps totals on top, night and day sleep as blocks on a timeline, and a running timer within thumb reach.',
-        phones: ['tracker'],
+          'Start a sleep from the timeline, add a note, and stop the running timer from the lock screen without opening the app. Totals and sleep blocks stay on the day view.',
+        phones: [] as string[],
+        demo: 'tracker',
       },
       {
         tags: ['Analysis', 'Calendar'],
