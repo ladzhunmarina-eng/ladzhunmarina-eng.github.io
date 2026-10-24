@@ -108,6 +108,7 @@ const y = (v: number) => `${(v / H) * 100}%`;
   /* A watch: a black glass with a ring around it */
   .onb__phone--watch {
     --finger: 18;
+    --timer-bg: #000;
     border-radius: 22% / 18%;
     background: #000;
     box-shadow: 0 0 0 6px #25282c, 0 0 0 7px #4a4e55, 0 var(--space-16) var(--space-32) rgb(44 47 51 / 0.2);
@@ -209,7 +210,7 @@ const y = (v: number) => `${(v / H) * 100}%`;
     justify-content: center;
     padding-left: 0;
     border-radius: 0;
-    background: var(--sleep-ink);
+    background: var(--timer-bg, var(--sleep-ink));
     font-size: calc(34 / var(--w) * 100cqw);
     font-weight: 600;
     font-variant-numeric: tabular-nums;
