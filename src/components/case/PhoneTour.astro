@@ -29,9 +29,11 @@ interface Props {
   start?: [number, number];
   /** A bar fixed to the bottom of the phone while the screens scroll behind it (358 x 89 in the design) */
   dock?: ImageMetadata;
+  /** A picture of the screen whose top 92px stay fixed above the scrolling screens (the status bar and title) */
+  head?: ImageMetadata;
 }
 
-const { screens, tour, start = [260, 330], dock } = Astro.props;
+const { screens, tour, start = [260, 330], dock, head } = Astro.props;
 
 const W = 390;
 const H = 844;
@@ -54,6 +56,11 @@ const y = (v: number) => `${(v / H) * 100}%`;
         ))}
       </div>
     ))}
+    {head && (
+      <div class="onb__head" aria-hidden="true">
+        <Image src={head} alt="" widths={[280, 560]} sizes="280px" quality={90} />
+      </div>
+    )}
     {dock && <Image class="onb__dock" src={dock} alt="" widths={[280, 560]} sizes="260px" quality={90} />}
     <span class="onb__finger" data-finger aria-hidden="true"><span class="onb__ripple"></span></span>
   </div>
@@ -105,6 +112,24 @@ const y = (v: number) => `${(v / H) * 100}%`;
     height: 100%;
     object-fit: cover;
     object-position: top;
+  }
+
+  /* The top of the screen stays put: the picture's own top 92px of 390 wide, over a white plate */
+  .onb__head {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    aspect-ratio: 390 / 92;
+    overflow: hidden;
+    background: var(--color-white);
+    pointer-events: none;
+  }
+
+  .onb__head :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 
   .onb__phone :global(.onb__dock) {
