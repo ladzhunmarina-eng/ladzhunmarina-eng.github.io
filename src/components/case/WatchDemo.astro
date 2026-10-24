@@ -64,6 +64,11 @@ const tour = [
     height: 100%;
     filter: brightness(1.14);
     mix-blend-mode: multiply;
+    /* the shadow runs on past the crop: fade it out instead of cutting it */
+    -webkit-mask-image: linear-gradient(to right, #000 74%, transparent 100%), linear-gradient(to bottom, #000 90%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to right, #000 74%, transparent 100%), linear-gradient(to bottom, #000 90%, transparent 100%);
+    mask-composite: intersect;
   }
 
   .mock__screen {
