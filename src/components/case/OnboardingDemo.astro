@@ -121,7 +121,7 @@ const screens = [
     opacity: 0;
     pointer-events: none;
     transform: translate3d(50cqw, 120cqw, 0);
-    transition: transform 0.8s cubic-bezier(0.45, 0, 0.25, 1), opacity 0.3s ease;
+    transition: transform 0.55s cubic-bezier(0.45, 0, 0.25, 1), opacity 0.3s ease;
   }
 
   .onb__finger.is-on {
@@ -196,7 +196,7 @@ const screens = [
     | { wait: number };
 
   const tour: Step[][] = [
-    [{ move: [150, 420] }, { wait: 500 }, { tap: [190, 415] }], // Sign up as Parent
+    [{ move: [150, 420] }, { wait: 300 }, { tap: [190, 415] }], // Sign up as Parent
     [
       { move: [190, 280] },
       { tap: [190, 280] },
@@ -205,14 +205,14 @@ const screens = [
       { tap: [190, 366] },
       { type: 'password', text: '••••••••' },
       { move: [195, 562] },
-      { wait: 400 },
+      { wait: 250 },
       { tap: [195, 562] },
     ],
-    [{ move: [195, 330] }, { wait: 2200 }], // the link is clicked off screen
+    [{ move: [195, 330] }, { wait: 1500 }], // the link is clicked off screen
     [{ move: [195, 700] }, { tap: [195, 787] }], // Let's start
-    [{ move: [195, 700] }, { wait: 900 }, { tap: [195, 787] }], // Next
-    [{ move: [195, 700] }, { wait: 900 }, { tap: [195, 787] }], // Next
-    [{ move: [195, 640] }, { wait: 700 }, { tap: [195, 709] }], // Skip for now
+    [{ move: [195, 700] }, { wait: 500 }, { tap: [195, 787] }], // Next
+    [{ move: [195, 700] }, { wait: 500 }, { tap: [195, 787] }], // Next
+    [{ move: [195, 640] }, { wait: 450 }, { tap: [195, 709] }], // Skip for now
   ];
 
   const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -239,7 +239,7 @@ const screens = [
 
     const tap = async (at: [number, number]) => {
       place(at);
-      await sleep(850);
+      await sleep(600);
       finger.classList.add('is-down');
       await sleep(120);
       finger.classList.remove('is-down');
@@ -258,7 +258,7 @@ const screens = [
         });
         show(0);
         finger.classList.remove('is-on');
-        await sleep(900);
+        await sleep(500);
         for (let i = 0; i < tour.length && alive(); i += 1) {
           show(i);
           if (i === 0) {
@@ -268,12 +268,12 @@ const screens = [
             finger.style.transition = '';
           }
           finger.classList.add('is-on');
-          await sleep(i === 0 ? 400 : 700);
+          await sleep(i === 0 ? 250 : 450);
           for (const step of tour[i]) {
             if (!alive()) return;
             if ('move' in step) {
               place(step.move);
-              await sleep(850);
+              await sleep(600);
             } else if ('tap' in step) {
               await tap(step.tap);
             } else if ('wait' in step) {
@@ -283,14 +283,14 @@ const screens = [
               field.classList.add('is-on');
               for (let c = 1; c <= step.text.length && alive(); c += 1) {
                 field.textContent = step.text.slice(0, c);
-                await sleep(70);
+                await sleep(45);
               }
-              await sleep(300);
+              await sleep(200);
             }
           }
-          await sleep(250);
+          await sleep(150);
         }
-        await sleep(1400);
+        await sleep(1000);
       }
     };
 
