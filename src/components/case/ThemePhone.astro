@@ -105,10 +105,11 @@ const stars = [
   }
 
   /* The cloud banks are a little wider than the sky, so drifting never shows a gap at their edges. */
-  .sky :global(.sky__layer--far),
-  .sky :global(.sky__layer--near) {
+  .sky :global(.sky__layer.sky__layer--far),
+  .sky :global(.sky__layer.sky__layer--near) {
     inset: 0 auto 0 -3%;
     width: 106%;
+    max-width: none;
   }
 
   .sky__ship {
