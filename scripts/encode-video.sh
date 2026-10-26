@@ -46,9 +46,17 @@ ffmpeg -hide_banner -loglevel error -y -i "$input" -an -vf "$scale" \
   "$out/$name.webm"
 
 echo "→ $out/$name-poster.webp"
-ffmpeg -hide_banner -loglevel error -y -i "$input" -an -vf "$scale" -frames:v 1 \
-  -c:v libwebp -quality 80 \
-  "$out/$name-poster.webp"
+if ffmpeg -hide_banner -encoders 2>/dev/null | grep -q libwebp; then
+  ffmpeg -hide_banner -loglevel error -y -i "$input" -an -vf "$scale" -frames:v 1 \
+    -c:v libwebp -quality 80 \
+    "$out/$name-poster.webp"
+else
+  # Some ffmpeg builds (Homebrew's among them) have no WebP encoder: take the frame as PNG and let sharp convert it
+  frame="$(mktemp -t poster).png"
+  ffmpeg -hide_banner -loglevel error -y -i "$input" -an -vf "$scale" -frames:v 1 "$frame"
+  node -e "require('sharp')(process.argv[1]).webp({ quality: 80 }).toFile(process.argv[2])" "$frame" "$out/$name-poster.webp"
+  rm -f "$frame"
+fi
 
 echo "Done."
 ls -lh "$out/$name.mp4" "$out/$name.webm" "$out/$name-poster.webp"
