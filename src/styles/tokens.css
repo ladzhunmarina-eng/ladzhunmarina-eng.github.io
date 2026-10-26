@@ -308,7 +308,7 @@
   --cert-w: 324px;
   --cert-h: 215px;
   --cert-pad-x: 38px; /* logo and text start this far from the card's left edge */
-  --cert-radius: 23px;
+  --cert-radius: var(--radius-block);
   --font-card: var(--font-body);
 
   /* ---------- Case study pages ---------- */
@@ -348,15 +348,15 @@
   --case-art-w-small: 240px; /* ...and under it on narrow screens */
   --spark-h: 44px; /* a small line chart */
   --case-entry-ratio: 1008 / 645; /* the entry-point test panel */
-  --radius-glass: 24px; /* the hero card */
-  --radius-glass-inner: 16px; /* the card inside it */
+  --radius-glass: var(--radius-block); /* the hero card */
+  --radius-glass-inner: var(--radius-block); /* the card inside it */
   --case-glass-blur: 50px;
   --case-glass-blur-inner: 4px;
 
   /* ---------- Contact card ---------- */
   --contact-w: 352px;
   --contact-edge: 16px;
-  --contact-radius: 24px;
+  --contact-radius: var(--radius-block);
   --contact-row-radius: var(--radius-button); /* fully rounded, like the buttons */
   --contact-pad: 24px;
   --contact-pad-top: 56px;
@@ -402,12 +402,15 @@
   --drop-stagger: 0.14s;
 
   /* ---------- Radii ---------- */
+  /* One radius for every card, panel, photo and nested block on every page */
+  --radius-block: 24px;
   --radius-focus: 8px;
-  --radius-card: 20px;
-  --radius-person: 12px; /* the participant cards */
-  --radius-photo: 23px;
+  --radius-card: var(--radius-block);
+  --radius-person: var(--radius-block); /* the participant cards */
+  --radius-photo: var(--radius-block);
   --radius-avatar: 30px;
-  --radius-panel: 40px;
+  --radius-panel: var(--radius-block);
+  --radius-icon: 12px; /* the small 44px icon tiles: at 24px they would turn into circles */
   --radius-pill: 40px;
   --radius-button: 68px;
 
@@ -446,7 +449,6 @@
     --space-303: 120px;
     --fs-24: 20px;
     --fs-32: 28px;
-    --radius-panel: 24px;
     --nav-top: 16px;
     --nav-pad-x: 20px;
     --nav-pad-y: 10px;
