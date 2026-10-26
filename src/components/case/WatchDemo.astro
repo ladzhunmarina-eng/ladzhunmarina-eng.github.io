@@ -28,13 +28,14 @@ const screens = [
   { src: stopped, alt: 'A green check and the word Stopped.' },
 ];
 
+/* The finger goes straight to each target: no detours that would send it one way and then back */
 const tour = [
-  [{ move: [150, 60] }, { wait: 300 }, { tap: [99, 128] }], // open the app
-  [{ move: [100, 150] }, { wait: 300 }, { tap: [100, 67] }], // pick Anna
-  [{ move: [99, 130] }, { wait: 400 }, { tap: [99, 198] }], // Start sleep
-  [{ move: [145, 70] }, { wait: 300 }, { tap: [145, 111] }, { wait: 500 }, { move: [99, 170] }, { wait: 200 }, { tap: [99, 198] }], // set the time, Save
-  [{ move: [99, 160] }, { wait: 300 }, { count: 'clock', from: [0, 0, 1], secs: 5, format: 'ms' }, { tap: [99, 198] }], // the clock runs, then Stop sleep
-  [{ move: [99, 130] }, { wait: 1600 }], // Stopped
+  [{ wait: 500 }, { tap: [99, 128] }], // open the app
+  [{ wait: 500 }, { tap: [100, 67] }], // pick Anna
+  [{ wait: 600 }, { tap: [99, 198] }], // Start sleep
+  [{ wait: 900 }, { tap: [99, 198] }], // the time is already set: straight to Save
+  [{ wait: 300 }, { count: 'clock', from: [0, 0, 1], secs: 5, format: 'ms' }, { tap: [99, 198] }], // the finger rests on Stop sleep while the clock runs, then taps it
+  [{ move: [99, 150] }, { wait: 1600 }], // Stopped
 ] satisfies Step[][];
 ---
 

@@ -62,7 +62,7 @@ const y = (v: number) => `${(v / H) * 100}%`;
           ))}
         </div>
         {screen.head && (
-          <div class="onb__head onb__head--screen" aria-hidden="true" style={`aspect-ratio: ${W} / ${screen.head.height}`}>
+          <div class="onb__head onb__head--screen" aria-hidden="true" style={`height: calc(${screen.head.height} / var(--w) * 100cqw)`}>
             <Image src={screen.head.src} alt="" widths={[280, 560]} sizes="280px" quality={90} />
           </div>
         )}
@@ -151,13 +151,15 @@ const y = (v: number) => `${(v / H) * 100}%`;
     object-position: top;
   }
 
-  /* The top of the screen stays put: the picture's own top 92px of 390 wide, over a white plate */
+  /* The top of the screen stays put: the picture's own top 92px of 390 wide, over a white plate.
+     The height is set outright, not by aspect-ratio: Safari lets the picture inside stretch an aspect-ratio box to its
+     full height, which laid the whole screenshot over the phone. */
   .onb__head {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    aspect-ratio: var(--w) / 92;
+    height: calc(92 / var(--w) * 100cqw);
     overflow: hidden;
     background: var(--color-white);
     pointer-events: none;
@@ -258,8 +260,10 @@ const y = (v: number) => `${(v / H) * 100}%`;
     box-shadow: 0 2px 8px rgb(44 47 51 / 0.3);
     opacity: 0;
     pointer-events: none;
-    transform: translate3d(50cqw, 120cqw, 0);
-    transition: transform 0.55s cubic-bezier(0.45, 0, 0.25, 1), opacity 0.3s ease;
+    /* Placed with `translate`, not `transform`: the press's `scale` applies before `transform` and would shrink the
+       finger's offset as well, so every tap jerked it towards the top left corner and back */
+    translate: 50cqw 120cqw;
+    transition: translate 0.55s cubic-bezier(0.45, 0, 0.25, 1), opacity 0.3s ease, scale 0.12s ease-out;
   }
 
   .onb__finger.is-on {
@@ -336,6 +340,10 @@ const y = (v: number) => `${(v / H) * 100}%`;
 
   document.querySelectorAll<HTMLElement>('[data-onboarding]').forEach((root) => {
     if (calm.matches || !('IntersectionObserver' in window)) return;
+    // One tour per phone: if the script runs again (a hot reload while editing), a second loop would fight the first
+    // over the screens and the dots
+    if (root.dataset.tourStarted === 'true') return;
+    root.dataset.tourStarted = 'true';
 
     const W = Number(root.dataset.w ?? 390);
     const H = Number(root.dataset.h ?? 844);
@@ -376,7 +384,7 @@ const y = (v: number) => `${(v / H) * 100}%`;
 
     const place = ([px, py]: [number, number]) => {
       const w = phone.clientWidth;
-      finger.style.transform = `translate3d(${(px / W) * w}px, ${(py / H) * (w * H / W)}px, 0)`;
+      finger.style.translate = `${(px / W) * w}px ${(py / H) * (w * H / W)}px`;
     };
 
     const tap = async (at: [number, number]) => {
@@ -412,10 +420,13 @@ const y = (v: number) => `${(v / H) * 100}%`;
           }
           finger.classList.add('is-on');
           await sleep(i === 0 ? 250 : 450);
-          for (const step of tour[i]) {
+          for (const [k, step] of tour[i].entries()) {
             if (!alive()) return;
             if ('move' in step) {
-              place(step.move);
+              // A move that only leads up to a tap is a detour: the finger would stop there and set off again, often
+              // back the way it came. It waits in place instead and then goes straight to the tap.
+              const ahead = tour[i].slice(k + 1).find((s) => !('wait' in s));
+              if (!(ahead && 'tap' in ahead)) place(step.move);
               await sleep(600);
             } else if ('tap' in step) {
               await tap(step.tap);
