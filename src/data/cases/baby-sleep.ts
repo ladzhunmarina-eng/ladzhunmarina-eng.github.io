@@ -8,7 +8,6 @@
 
 export const babySleepCase = {
   slug: 'baby-sleep',
-  theme: 'lilac', // the fallback accent; the page uses its brand palette (see tokens.css)
 
   seo: {
     title: 'Baby Sleep Tracking Mobile App — Marina, Product Designer',
