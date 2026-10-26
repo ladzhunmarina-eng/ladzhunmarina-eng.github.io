@@ -58,7 +58,9 @@ const blocks = decisions.items.map((item) => ({
         <CaseHero hero={study.hero} />
       </div>
       <div class="showcase">
-        <Image class="showcase__image" src={heroImage} alt={study.hero.image} widths={[640, 960, 1280]} sizes="(max-width: 1023px) 100vw, 640px" quality={85} loading="eager" />
+        <div class="showcase__phones">
+          <Image class="showcase__image" src={heroImage} alt={study.hero.image} widths={[580, 870, 1138]} sizes="(max-width: 1023px) 116vw, 580px" quality={85} loading="eager" />
+        </div>
       </div>
     </div>
 
@@ -162,8 +164,20 @@ const blocks = decisions.items.map((item) => ({
     background: var(--sleep-mist);
   }
 
+  /* The phones' own 491 x 584 box from the Figma; the picture is larger by the Start page's soft shadow, which spills
+     past the box (77px left, 74px up, of 569 x 665) and is let out over the panel */
+  .showcase__phones {
+    position: relative;
+    width: min(100%, 491px);
+    aspect-ratio: 491 / 584;
+  }
+
   .showcase :global(.showcase__image) {
-    width: min(100%, 500px);
+    position: absolute;
+    top: -12.72%;
+    left: -15.742%;
+    width: 115.86%;
+    max-width: none;
     height: auto;
   }
 

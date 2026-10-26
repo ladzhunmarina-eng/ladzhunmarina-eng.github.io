@@ -89,6 +89,7 @@ const titleId = id && title ? `${id}-title` : undefined;
     line-height: var(--lh-tight);
     color: var(--color-ink);
     letter-spacing: var(--ls-display);
+    white-space: pre-line; /* a \n in the title breaks the line there, as in the case heroes */
   }
 
   .section__lead {

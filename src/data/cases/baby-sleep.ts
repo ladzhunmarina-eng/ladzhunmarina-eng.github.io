@@ -67,7 +67,7 @@ export const babySleepCase = {
 
   persona: {
     eyebrow: 'User persona',
-    title: 'Two roles in the system: parent and sleep expert.',
+    title: 'Two roles in the system:\nparent and sleep expert.',
     lead: 'Each role has its own goals and needs. The parent persona drove the tracking flows.',
     cards: [
       {
