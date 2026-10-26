@@ -46,10 +46,10 @@ export const work = [
     number: '02',
     theme: 'cream',
     category: 'Web app',
-    title: 'Data-Driven Influencer Marketing Platform',
+    title: 'Gaming Influencer Marketing Platform',
     href: '/work/cloutboost',
     description:
-      'Solution that helps brands discover gaming and lifestyle creators, manage influencer campaigns, and maximize ROI through analytics and performance tracking.',
+      'A web platform where game publishers and Cloutboost’s campaign team find the right YouTube and Twitch creators, run outreach, and see what each creator delivered for the money.',
     image: card2,
     alt: 'Cloutboost campaign report dashboard with key numbers and a performance chart, next to an empty-state card saying no report has been generated.',
     place: { left: '14.6%', top: '16.4%', width: '64%', height: '83.6%' },

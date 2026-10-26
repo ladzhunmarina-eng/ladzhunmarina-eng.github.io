@@ -10,25 +10,25 @@ export const cloutboostCase = {
   theme: 'cream', // the fallback accent; the page uses its brand palette (see tokens.css)
 
   seo: {
-    title: 'Data-Driven Influencer Marketing Platform — Marina, Product Designer',
+    title: 'Gaming Influencer Marketing Platform — Marina, Product Designer',
     description:
-      'A platform that helps brands discover gaming and lifestyle creators, manage influencer campaigns, and maximize ROI through analytics and performance tracking.',
+      'A web platform where game publishers and Cloutboost’s campaign team find the right YouTube and Twitch creators, run outreach, and see what each creator delivered for the money.',
   },
 
   hero: {
-    tags: ['Web'],
-    areasLabel: 'Platform',
+    tags: ['Web app', 'Creator discovery', 'Filters and scores', 'Outreach', 'Comments', 'Campaign reports'],
+    areasLabel: 'My scope',
     eyebrow: 'Influencer marketing · Gaming',
-    title: 'Data-Driven Influencer\nMarketing Platform',
-    lead: 'Solution that helps brands discover gaming and lifestyle creators, manage influencer campaigns, and maximize ROI through analytics and performance tracking.',
+    title: 'Gaming Influencer\nMarketing Platform',
+    lead: 'A web platform where game publishers and Cloutboost’s campaign team find the right YouTube and Twitch creators, run outreach, and see what each creator delivered for the money.',
     meta: [
-      { label: 'Client', value: 'Cloutboost' },
-      { label: 'Industry', value: 'B2B2C' },
+      { label: 'Industry', value: 'Influencer marketing · Gaming' },
+      { label: 'Model', value: 'B2B SaaS + managed service' },
       { label: 'Country', value: 'USA' },
-      { label: 'Year', value: '2024' },
+      { label: 'Year', value: '2021' },
     ],
     focus: [] as string[],
-    image: 'The Cloutboost campaign report: general info, key numbers, a campaign performance chart and a card saying no report has been generated.',
+    image: 'The Cloutboost campaign report: general info, key numbers, campaign performance over time, views and true reach by creator, engagement and CPM, and a table of every video with its price and views.',
   },
 
   nav: [
@@ -39,23 +39,23 @@ export const cloutboostCase = {
 
   goal: {
     eyebrow: 'Goal and challenge',
-    title: 'Finding the right creators, and proving what they deliver.',
-    lead: 'A brand wants creators who fit its audience and numbers that show the campaign worked. The platform covers both.',
+    title: 'Finding the right creators, and proving what they delivered.',
+    lead: 'Game publishers pay creators for reach. Before a campaign they need channels that fit their game; after it, numbers that justify the spend. Without a tool, both live in spreadsheets, inboxes and chats.',
     cards: [
       {
         icon: 'target' as const,
-        title: 'Objective',
-        text: 'Build a platform that connects brands with gaming and lifestyle creators to run data-driven influencer marketing campaigns.',
+        title: 'Business goal',
+        text: 'Turn Cloutboost’s creator database and campaign process into one product: a workspace for its campaign managers, a window into the campaign for clients, and a subscription tool for publishers who run campaigns themselves.',
       },
       {
         icon: 'scale' as const,
-        title: 'Challenges',
-        text: 'Finding the right creators, ensuring transparent collaboration, and measuring real campaign performance across platforms.',
+        title: 'Problem',
+        text: 'Follower counts don’t show whether a channel fits a game. Outreach to dozens of creators runs through personal inboxes. Results are collected by hand across YouTube and Twitch, and reports go stale soon after launch.',
       },
       {
         icon: 'check' as const,
         title: 'Solution',
-        text: 'An AI-powered platform with advanced creator discovery, campaign management, and ROI tracking tools to optimize influencer partnerships.',
+        text: 'Discovery built on gaming-specific signals: shorts ratio, upload frequency, recent activity and channel scores. Outreach sent from the platform, with every thread tied to its campaign. A campaign report that refreshes from platform data and shows views, true reach, engagement, CPM and cost per video.',
       },
     ],
   },
@@ -73,38 +73,68 @@ export const cloutboostCase = {
           { label: 'Location', value: 'Berlin, Germany' },
         ],
         biography:
-          'Anna Williams is a marketing professional with 6+ years of experience in the gaming industry. She specializes in influencer marketing, focusing on recruiting, evaluating, and managing creators who can drive awareness and engagement for new game launches.',
+          'Anna leads influencer marketing at a mid-size game publisher. Before a launch she builds a shortlist of channels whose audience plays games like hers. After it, she has to show leadership what the budget bought.',
         groups: [
-          { title: 'Values', items: ['Efficiency', 'Creativity', 'Measurable results'] },
           {
             title: 'Goals',
-            items: ['Find and recruit relevant influencers quickly', 'Track campaign performance effectively'],
+            items: ['Build a relevant creator shortlist fast', 'Keep outreach, comments and approvals in one place', 'Show results per creator in numbers leadership trusts'],
           },
           {
             title: 'Pain points',
-            items: ['Difficulty in identifying authentic and relevant influencers', 'Manual and time-consuming performance tracking'],
+            items: ['Follower counts say nothing about fit with the game', 'Follow-ups and replies tracked by hand', 'Reports assembled manually and outdated within weeks'],
           },
         ],
         quote: '“I need to quickly find the right influencers who match my game’s audience and prove their impact with clear data.”',
         photoAlt: 'Anna Williams, influencer marketing manager, smiling in front of an orange wall and a window',
       },
     ],
+    alsoUsedBy: 'Cloutboost campaign managers, who run outreach and prepare reports for clients.',
   },
 
+  /*
+   * The screens in the order of the work: find creators, reach out, talk it over, report. Each group spans part of a
+   * 12-column row (Reach out and Collaborate share one), and its tiles span part of the group's own 12 columns.
+   */
   visuals: {
     eyebrow: 'Visuals',
-    title: 'Discovery, reports and outreach in one place.',
-    tiles: [
-      { key: 'channel', cols: 12, alt: 'A YouTube channel card: subscribers, total videos, views and likes, and three channel scores.' },
-      { key: 'building', cols: 8, alt: 'The “Building Your Report” loading state with a report illustration.' },
-      { key: 'views', cols: 4, alt: 'A views donut chart by influencer, with a legend of their numbers.' },
-      { key: 'performance', cols: 12, alt: 'Campaign key numbers and a line chart of video views over four weeks.' },
-      { key: 'email', cols: 12, alt: 'Send email: recipients, subject, a message editor and Cancel and Send buttons.' },
-      { key: 'import', cols: 7, alt: 'Import YouTube Channels File: a CSV uploading with a progress bar.' },
-      { key: 'comments', cols: 5, rows: 2, alt: 'Comments with the “No messages” empty state and a field to add a comment.' },
-      { key: 'empty', cols: 7, alt: 'The “Report is not generated yet” empty state with an illustration.' },
-      { key: 'filters', cols: 12, alt: 'Three range filters: recent videos, YT shorts ratio and average videos per month.' },
-      { key: 'table', cols: 12, alt: 'Find influencers: a search, filters and a table of 100 influencers with their numbers.' },
+    title: 'From shortlist to report, in one place.',
+    groups: [
+      {
+        title: 'Discover',
+        caption: 'Find influencers table · Range filters · Channel card with scores',
+        span: 12,
+        tiles: [
+          { key: 'table', cols: 12, alt: 'Find influencers: a search, filters and a table of 100 influencers with their numbers.' },
+          { key: 'filters', cols: 12, alt: 'Three range filters: recent videos, YT shorts ratio and average videos per month.' },
+          { key: 'channel', cols: 12, alt: 'A YouTube channel card: subscribers, total videos, views and likes, and three channel scores.' },
+        ],
+      },
+      {
+        title: 'Reach out',
+        caption: 'Send email · Import channels from CSV',
+        span: 7,
+        tiles: [
+          { key: 'email', cols: 12, alt: 'Send email: recipients, subject, a message editor and Cancel and Send buttons.' },
+          { key: 'import', cols: 12, alt: 'Import YouTube Channels File: a CSV uploading with a progress bar.' },
+        ],
+      },
+      {
+        title: 'Collaborate',
+        caption: 'Comments',
+        span: 5,
+        tiles: [{ key: 'comments', cols: 12, alt: 'Comments with the “No messages” empty state and a field to add a comment.' }],
+      },
+      {
+        title: 'Report',
+        caption: 'Key numbers and performance · Views by creator · Report building and empty states',
+        span: 12,
+        tiles: [
+          { key: 'performance', cols: 12, alt: 'Campaign key numbers and a line chart of video views over four weeks.' },
+          { key: 'views', cols: 3, alt: 'A views donut chart by influencer, with a legend of their numbers.' },
+          { key: 'building', cols: 6, alt: 'The “Building Your Report” loading state with a report illustration.' },
+          { key: 'empty', cols: 3, alt: 'The “Report is not generated yet” empty state with an illustration.' },
+        ],
+      },
     ],
   },
 };

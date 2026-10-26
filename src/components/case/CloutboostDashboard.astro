@@ -1,0 +1,318 @@
+---
+import { Image } from 'astro:assets';
+import header from '../../assets/images/cb-dash-header.png';
+import sidebar from '../../assets/images/cb-dash-sidebar.png';
+import tabs from '../../assets/images/cb-dash-tabs.png';
+import page from '../../assets/images/cb-dash-page.png';
+
+/*
+ * The campaign report as a window you can scroll: the top bar, the tabs and the side menu stay, the report scrolls
+ * under them. While the window is on screen it glides down to the table and back by itself, until the visitor scrolls it.
+ * Everything is placed in the design's own pixels (the 1272 x 898 window of the Figma, the report 2100 tall).
+ */
+interface Props {
+  alt: string;
+  /** A short line over the bottom edge until the visitor first scrolls */
+  hint?: string;
+}
+
+const { alt, hint } = Astro.props;
+
+const W = 1272;
+const VIEW_H = 898;
+const PAGE_H = 2100;
+const x = (v: number) => `${((v / W) * 100).toFixed(3)}%`;
+const y = (v: number) => `${((v / PAGE_H) * 100).toFixed(3)}%`;
+const box = ([l, t, w, h]: readonly number[]) => `left:${x(l)};top:${y(t)};width:${x(w)};height:${y(h)}`;
+// a mark's box as a share of the chart area it sits in
+const pct = (v: number, of: number) => `${((v / of) * 100).toFixed(3)}%`;
+const inner = ([l, t, w, h]: readonly number[], [al, at, aw, ah]: readonly number[]) =>
+  `left:${pct(l - al, aw)};top:${pct(t - at, ah)};width:${pct(w, aw)};height:${pct(h, ah)}`;
+
+/*
+ * The charts come alive when they scroll into the window: a plate in the card's own white lies over each mark and
+ * slides off it (bars grow from their start, lines draw from the left, the ring fills round). Boxes are the marks'
+ * bounds in the Figma, a pixel or two wider so no edge peeks out.
+ */
+const bars = (left: number, tops: readonly number[], widths: readonly number[], h = 11) =>
+  tops.map((t, i) => [left - 1, t - 1, widths[i] + 3, h + 2] as const);
+const charts = [
+  // the sparklines of the six numbers at the top
+  { kind: 'line', area: [700, 230, 560, 200], marks: [[718, 250, 70, 20], [934, 245, 70, 30], [1179, 245, 57, 32], [727, 392, 60, 15], [943, 385, 61, 20], [1165, 395, 70, 21]] },
+  // campaign performance over time: both lines
+  { kind: 'line', area: [270, 660, 980, 200], marks: [[283, 676, 954, 158]], slow: true },
+  { kind: 'bars', area: [700, 980, 520, 260], marks: bars(725.2, [999.1, 1043.2, 1087.4, 1131.6, 1175.7, 1219.9], [378.1, 338.3, 286.2, 256.2, 228.8, 202.3]) }, // true reach
+  { kind: 'bars', area: [370, 1380, 340, 250], marks: bars(383, [1392, 1436, 1480, 1525, 1569, 1613], [188, 260, 266, 162, 217, 310]) }, // engagement
+  { kind: 'bars', area: [880, 1380, 340, 250], marks: bars(894.8, [1392.1, 1436.3, 1480.5, 1524.6, 1568.8, 1613], [271.2, 159.9, 318, 227, 95.4, 67.1]) }, // CPM
+] as const;
+// the Views ring: centre and radius, and the tag above it that comes in once the ring is full
+const ring = { cx: 409.5, cy: 1023.5, r: 70 };
+const ringTag = [337, 911, 141, 60];
+---
+
+<div class="cbd" data-view={VIEW_H} data-page={PAGE_H} data-width={W}>
+  <div class="cbd__scroll" role="region" aria-label={`${alt} Scroll to see the whole report.`} tabindex="0">
+    <div class="cbd__page" style={`aspect-ratio: ${W} / ${PAGE_H}`}>
+      <Image class="cbd__piece" src={page} alt={alt} style={`left:${x(222)};top:0;width:${x(1050)}`} widths={[1050, 1575, 2100]} sizes="(max-width: 1023px) 83vw, 1050px" quality={85} loading="eager" />
+      {charts.map((chart) => (
+        <div class:list={['cbd__chart', `cbd__chart--${chart.kind}`, { 'cbd__chart--slow': 'slow' in chart }]} style={box(chart.area)} data-chart aria-hidden="true">
+          {chart.marks.map((mark, i) => (
+            <span class="cbd__cover" style={`${inner(mark, chart.area)};--i:${i}`}></span>
+          ))}
+        </div>
+      ))}
+      <div class="cbd__chart cbd__chart--ring" style={box([ring.cx - ring.r, ring.cy - ring.r, ring.r * 2, ring.r * 2])} data-chart aria-hidden="true">
+        <span class="cbd__ring"></span>
+      </div>
+      <div class="cbd__chart cbd__chart--tag" style={box(ringTag)} data-chart aria-hidden="true">
+        <span class="cbd__tagcover"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="cbd__stay" aria-hidden="true">
+    <span class="cbd__plate" style={`left:${x(222)};top:${(64 / VIEW_H) * 100}%;width:${x(1050)};height:${(52 / VIEW_H) * 100}%`}></span>
+    <Image class="cbd__piece" src={tabs} alt="" style={`left:${x(222)};top:${(64 / VIEW_H) * 100}%;width:${x(1050)}`} widths={[1050, 2100]} sizes="(max-width: 1023px) 83vw, 1050px" quality={90} loading="eager" />
+    <Image class="cbd__piece" src={sidebar} alt="" style={`left:0;top:${(64 / VIEW_H) * 100}%;width:${x(264)}`} widths={[264, 528]} sizes="(max-width: 1023px) 21vw, 264px" quality={90} loading="eager" />
+    <Image class="cbd__piece" src={header} alt="" style={`left:0;top:0;width:100%`} widths={[1272, 2544]} sizes="(max-width: 1023px) 100vw, 1272px" quality={90} loading="eager" />
+  </div>
+
+  {hint && <p class="cbd__hint" aria-hidden="true">{hint}</p>}
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.cbd').forEach((dash) => {
+    const scroller = dash.querySelector<HTMLElement>('.cbd__scroll')!;
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    // the hint goes with the first scroll
+    scroller.addEventListener('scroll', () => dash.setAttribute('data-scrolled', ''), { passive: true, once: true });
+
+    if (calm.matches || !('IntersectionObserver' in window)) return;
+
+    // Each chart draws itself when most of it is inside the window, and is undrawn again once it has left, so it plays
+    // on every pass. The plates exist only from here on: without the script the charts are simply there.
+    dash.classList.add('cbd--live');
+    const charts = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((entry) => {
+          if (entry.intersectionRatio >= 0.6) entry.target.classList.add('is-drawn');
+          else if (!entry.isIntersecting) entry.target.classList.remove('is-drawn');
+        }),
+      { root: scroller, threshold: [0, 0.6] },
+    );
+    dash.querySelectorAll('[data-chart]').forEach((chart) => charts.observe(chart));
+
+    // Down to the charts, on to the table at the bottom, a pause, and back to the top; again and again while it is on screen
+    const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    const end = () => scroller.scrollHeight - scroller.clientHeight;
+    const stops = [() => end() * 0.47, () => end()];
+    let timers: number[] = [];
+    let frame = 0;
+    let running = false;
+    let handedOver = false;
+
+    const glide = (to: number, ms: number) => {
+      const from = scroller.scrollTop;
+      const start = performance.now();
+      const step = (now: number) => {
+        const t = Math.min(1, (now - start) / ms);
+        scroller.scrollTop = from + (to - from) * ease(t);
+        if (t < 1) frame = requestAnimationFrame(step);
+      };
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(step);
+    };
+    const later = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms));
+    const stop = () => {
+      running = false;
+      timers.forEach(window.clearTimeout);
+      timers = [];
+      cancelAnimationFrame(frame);
+    };
+    const tour = () => {
+      if (!running || handedOver) return;
+      let at = 1800;
+      for (const to of stops) {
+        later(at, () => glide(to(), 2200));
+        at += 2200 + 2000;
+      }
+      later(at, () => glide(0, 2600));
+      at += 2600 + 600;
+      later(at, tour);
+    };
+
+    ['wheel', 'touchstart', 'pointerdown', 'keydown'].forEach((type) =>
+      scroller.addEventListener(
+        type,
+        () => {
+          handedOver = true;
+          stop();
+        },
+        { passive: true },
+      ),
+    );
+    new IntersectionObserver(
+      ([entry]) => {
+        if (handedOver) return;
+        if (entry.isIntersecting && !running) {
+          running = true;
+          tour();
+        } else if (!entry.isIntersecting && running) {
+          stop();
+          scroller.scrollTop = 0;
+        }
+      },
+      { threshold: 0.5 },
+    ).observe(dash);
+  });
+</script>
+
+<style>
+  .cbd {
+    position: relative;
+    aspect-ratio: 1272 / 898;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    background: #f7f7f7;
+  }
+
+  .cbd__scroll {
+    position: absolute;
+    inset: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+
+  .cbd__scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cbd__scroll:focus-visible {
+    outline: var(--focus-width) solid var(--color-focus);
+    outline-offset: calc(-1 * var(--focus-width));
+  }
+
+  .cbd__page {
+    position: relative;
+    width: 100%;
+  }
+
+  .cbd__stay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none; /* wheel and touch go through to the report underneath */
+  }
+
+  /* ---------- The charts drawing themselves ---------- */
+  .cbd__chart {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .cbd__cover,
+  .cbd__ring,
+  .cbd__tagcover {
+    position: absolute;
+    display: none;
+    background: #fff; /* the cards' own white */
+  }
+
+  .cbd--live .cbd__cover,
+  .cbd--live .cbd__ring,
+  .cbd--live .cbd__tagcover {
+    display: block;
+  }
+
+  /* The plate slides off towards the end of the mark, so bars grow and lines draw from their start.
+     Only the way in is animated: when a chart leaves the window it is covered again at once, ready for the next pass. */
+  .cbd__cover {
+    transform-origin: right center;
+  }
+
+  .is-drawn .cbd__cover {
+    transform: scaleX(0);
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i) * 70ms + 0.1s);
+  }
+
+  .cbd__chart--line.is-drawn .cbd__cover {
+    transition: transform 1.3s cubic-bezier(0.45, 0, 0.2, 1) calc(var(--i) * 90ms + 0.1s);
+  }
+
+  .cbd__chart--slow.is-drawn .cbd__cover {
+    transition-duration: 2s;
+  }
+
+  /* The ring fills round from the top: the plate is a wedge that narrows to nothing */
+  @property --sweep {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+  }
+
+  .cbd__ring {
+    inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(transparent 0deg var(--sweep), #fff var(--sweep) 360deg);
+  }
+
+  .is-drawn .cbd__ring {
+    --sweep: 360deg;
+    transition: --sweep 1.4s cubic-bezier(0.45, 0, 0.2, 1) 0.1s;
+  }
+
+  /* The name tag over the ring comes in once the ring is full */
+  .cbd__tagcover {
+    inset: 0;
+  }
+
+  .is-drawn .cbd__tagcover {
+    opacity: 0;
+    transition: opacity 0.4s ease-out 1.5s;
+  }
+
+  /* the tabs sit on the report's own grey, which has to cover what scrolls under them */
+  .cbd__plate {
+    position: absolute;
+    background: #f7f7f7;
+  }
+
+  .cbd :global(.cbd__piece) {
+    position: absolute;
+    display: block;
+    max-width: none;
+    height: auto;
+  }
+
+  /* a pill over the bottom edge: scrolling is possible here */
+  .cbd__hint {
+    position: absolute;
+    bottom: var(--space-16);
+    left: calc(50% + 222 / 1272 * 50%); /* centred under the report, not the whole window */
+    z-index: 2;
+    padding: var(--space-8) var(--space-16);
+    border-radius: var(--radius-pill);
+    background: var(--cb-purple);
+    font-size: var(--fs-14);
+    line-height: var(--lh-ui);
+    color: var(--color-white);
+    white-space: nowrap;
+    transform: translateX(-50%);
+    pointer-events: none;
+    transition:
+      opacity 0.3s ease-out,
+      transform 0.4s var(--ease-out);
+  }
+
+  .cbd[data-scrolled] .cbd__hint {
+    opacity: 0;
+    transform: translate(-50%, var(--space-8));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cbd__hint {
+      transition: none;
+    }
+  }
+</style>
