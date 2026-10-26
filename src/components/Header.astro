@@ -13,7 +13,7 @@ const { current } = Astro.props;
 const links = [
   { label: 'About', href: '/#' },
   { label: 'Cases', href: '/#work', id: 'work' },
-  { label: 'Experience', href: '/#experience' },
+  { label: 'How I work', href: '/#how-i-work' },
 ];
 ---
 
@@ -38,6 +38,7 @@ const links = [
 </header>
 
 <div id="menu" class="menu" role="dialog" aria-modal="true" aria-label="Menu" hidden data-state="closed">
+  <div class="menu__card">
   <button class="menu__close" type="button" aria-label="Close menu">
     <CloseIcon aria-hidden="true" />
   </button>
@@ -45,9 +46,10 @@ const links = [
     <li><a class="menu__link" href="/#">Home</a></li>
     <li><a class="menu__link" href="/#">About</a></li>
     <li><a class="menu__link" href="/#work" aria-current={current === 'work' ? 'page' : undefined}>Cases</a></li>
-    <li><a class="menu__link" href="/#experience">Experience</a></li>
+    <li><a class="menu__link" href="/#how-i-work">How I work</a></li>
     <li><a class="menu__link" href="#contact">Contact</a></li>
   </ul>
+  </div>
 </div>
 
 <style>
@@ -228,17 +230,12 @@ const links = [
   }
 
   /* Full-screen menu overlay (phones). */
+  /* The phone menu: the whole screen in the black of the contact card ("Let's talk"), its rows centred in the middle */
   .menu {
     position: fixed;
     inset: 0;
     z-index: var(--z-menu);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-menu-bg);
-    -webkit-backdrop-filter: blur(var(--menu-blur));
-    backdrop-filter: blur(var(--menu-blur));
+    background: var(--contact-bg);
     opacity: 0;
     transition: opacity var(--menu-fade) ease;
   }
@@ -251,6 +248,24 @@ const links = [
     opacity: 1;
   }
 
+  .menu__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-24);
+    min-height: 100%;
+    padding: var(--contact-pad-top) var(--contact-pad) var(--contact-pad);
+    color: var(--contact-fg);
+    text-align: center;
+    transform: translateY(calc(-1 * var(--space-8)));
+    transition: transform var(--menu-fade) ease;
+  }
+
+  .menu[data-state='open'] .menu__card {
+    transform: none;
+  }
+
   .menu__close {
     position: absolute;
     top: var(--menu-close-inset);
@@ -258,14 +273,19 @@ const links = [
     display: flex;
     align-items: center;
     justify-content: center;
-    width: var(--menu-close);
-    height: var(--menu-close);
+    width: var(--contact-close);
+    height: var(--contact-close);
     padding: 0;
     border: 0;
     border-radius: 50%;
-    background: var(--color-white);
-    color: var(--color-black);
+    background: var(--contact-close-bg);
+    color: var(--contact-fg-strong);
     cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+
+  .menu__close:hover {
+    background: var(--contact-close-hover-bg);
   }
 
   .menu__close :global(svg) {
@@ -273,33 +293,47 @@ const links = [
     height: var(--space-20);
   }
 
+
+  /* One column as wide as the longest item, so every pill has the same width */
   .menu__list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--menu-gap);
+    display: grid;
+    gap: var(--space-8);
+    width: max-content;
   }
 
+  /* The rows of the contact card as pills of one width: cream under the finger, yellow for the section in view */
   .menu__link {
     display: block;
-    font-family: var(--font-display);
-    font-size: var(--menu-fs);
-    line-height: var(--lh-tight);
-    font-weight: var(--weight-regular);
-    color: var(--color-white);
+    padding: var(--space-16) var(--space-44);
+    border-radius: var(--contact-row-radius);
+    background: var(--contact-row-bg);
+    font-size: var(--fs-18);
+    line-height: var(--lh-ui);
+    color: var(--contact-fg);
+    transition:
+      background-color 0.2s ease-out,
+      color 0.2s ease-out;
+  }
+
+  .menu__link:hover {
+    background: var(--contact-row-hover-bg);
+    color: var(--contact-row-hover-fg);
   }
 
   .menu__link[aria-current] {
-    color: var(--color-nav-active);
+    background: var(--color-nav-active);
+    color: var(--color-black);
   }
 
   .menu__link:focus-visible,
   .menu__close:focus-visible {
-    outline-color: var(--color-white);
+    outline-color: var(--contact-focus);
   }
 
   @media (prefers-reduced-motion: reduce) {
     .menu,
+    .menu__card,
+    .menu__link,
     .site-header__logo,
     .site-header :global(.site-header__contact) {
       transition: none;
@@ -348,8 +382,9 @@ const links = [
     toggle.addEventListener('click', () => (isOpen() ? close() : open()));
     closeButton.addEventListener('click', () => close());
     menu.addEventListener('click', (event) => {
-      // Any link closes the menu; the page then scrolls to it, or opens the contact card.
+      // Any link closes the menu; the page then scrolls to it, or opens the contact card. A tap on the empty black around the rows closes it too.
       if ((event.target as Element).closest('a')) close(false);
+      else if (event.target === menu || event.target === menu.querySelector('.menu__card')) close();
     });
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && isOpen()) close();

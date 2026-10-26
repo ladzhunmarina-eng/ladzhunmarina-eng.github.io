@@ -1,6 +1,6 @@
 import card1 from '../assets/images/card1.png';
 import card2 from '../assets/images/card2-cloutboost.png';
-import card3 from '../assets/images/card3.png';
+import card3 from '../assets/images/card3-baby-sleep.png';
 import card4 from '../assets/images/card4.png';
 import review1 from '../assets/images/review-1.png';
 import review2 from '../assets/images/review-2.png';
@@ -65,12 +65,12 @@ export const work = [
       'A mobile app for tracking baby sleep that connects parents with sleep experts, offering routine analysis, record keeping, and easy communication to improve sleep quality.',
     image: card3,
     alt: 'Baby Sleep Expert app: a sign-up screen for parents and consultants, and a baby profile with a sleep diary.',
-    place: { left: '25.21%', top: '0%', width: '53.45%', height: '100%' },
+    place: { left: '22.46%', top: '0%', width: '53.45%', height: '100%' },
   },
   {
     number: '04',
     theme: 'mint',
-    category: 'SaaS',
+    category: 'B2B SaaS',
     title: 'Post-Storm Power Restoration Platform',
     href: '/work/erma',
     description:

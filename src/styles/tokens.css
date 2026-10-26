@@ -136,16 +136,16 @@
   --cert-cream-bg: #f4f3ed;
 
   /* ---------- Color: contact card ---------- */
-  --contact-bg: #242424;
-  --contact-row-bg: #2a2828;
+  --contact-bg: var(--color-black); /* black, like the solid buttons */
+  --contact-row-bg: #1a1a1a;
   --contact-fg: #f5f5f5;
   --contact-fg-strong: #fafafa;
   --contact-muted: #999;
   --contact-divider: rgb(51 51 51 / 0.4);
   --contact-row-hover-bg: #fefcf3;
   --contact-row-hover-fg: #121212;
-  --contact-close-bg: rgb(36 36 36 / 0.95);
-  --contact-close-hover-bg: #2a2828;
+  --contact-close-bg: rgb(0 0 0 / 0.95);
+  --contact-close-hover-bg: #1a1a1a;
   --contact-focus: #ccc;
   --contact-shadow: 0 2px 8px -2px rgb(0 0 0 / 0.25), 0 10px 40px -8px rgb(0 0 0 / 0.35), 0 24px 60px -16px rgb(0 0 0 / 0.35);
 

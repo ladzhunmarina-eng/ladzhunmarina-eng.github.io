@@ -3,7 +3,6 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Marquee from '../components/Marquee.astro';
 import WorkCard from '../components/WorkCard.astro';
-import Experience from '../components/Experience.astro';
 import Reviews from '../components/Reviews.astro';
 import Stack from '../components/Stack.astro';
 import { work } from '../data/content';
@@ -19,9 +18,11 @@ const description =
   <section class="work-list" id="work" aria-label="Featured work">
     {work.map((item, index) => <WorkCard {...item} index={index} />)}
   </section>
-  <Stack />
-  <Reviews />
-  <Experience />
+  <!-- The tools and the testimonials share one nav item, "How I work"; the wrapper has no look of its own -->
+  <div class="how-i-work" id="how-i-work">
+    <Stack />
+    <Reviews />
+  </div>
 </Layout>
 
 <style>
@@ -30,6 +31,10 @@ const description =
     flex-direction: column;
     gap: var(--space-92);
     margin-top: var(--space-134);
+    scroll-margin-top: var(--header-h);
+  }
+
+  .how-i-work {
     scroll-margin-top: var(--header-h);
   }
 
