@@ -33,7 +33,8 @@ export const cloutboostCase = {
 
   nav: [
     { id: 'goal', label: 'Goal' },
-    { id: 'persona', label: 'Persona' },
+    { id: 'persona', label: 'Personas' },
+    { id: 'flow', label: 'Key flow' },
     { id: 'visuals', label: 'Visuals' },
   ],
 
@@ -61,8 +62,8 @@ export const cloutboostCase = {
   },
 
   persona: {
-    eyebrow: 'User persona',
-    title: 'The marketer who recruits creators and has to prove they work.',
+    eyebrow: 'User personas',
+    title: 'Two sides of every campaign: the marketer who pays for reach, and the creator who brings it.',
     cards: [
       {
         photo: 'anna',
@@ -87,8 +88,40 @@ export const cloutboostCase = {
         quote: '“I need to quickly find the right influencers who match my game’s audience and prove their impact with clear data.”',
         photoAlt: 'Anna Williams, influencer marketing manager, smiling in front of an orange wall and a window',
       },
+      {
+        // the photo is src/assets/images/cb-persona-creator.png; without it the card falls back to the initials
+        photo: 'creator',
+        initials: 'JM',
+        name: 'Jake Morrison',
+        role: 'Gaming creator, YouTube + Twitch',
+        facts: [
+          { label: 'Age', value: '23' },
+          { label: 'Location', value: 'Manchester, UK' },
+        ],
+        biography:
+          'Jake streams indie roguelikes and shooters to about 40k subscribers. Publishers send him keys every week, mostly through email threads he reads on his phone between streams. He tries most of what lands in his inbox and makes videos about the games he enjoys.',
+        groups: [
+          {
+            title: 'Goals',
+            items: ['Get a key in a few taps, right from the email or DM', 'Know upfront whether a video is expected in return', 'Find the key again when he’s ready to play'],
+          },
+          {
+            title: 'Pain points',
+            items: ['Has to reply to an email and wait days for the actual key', '“Free key” offers that quietly turn into content obligations', 'Console codes that won’t activate on his account region'],
+          },
+        ],
+        quote: '“If it’s a gift, just give me the key. Don’t make me write emails for it.”',
+        photoAlt: 'Jake Morrison, gaming creator, at his streaming desk',
+      },
     ],
-    alsoUsedBy: 'Cloutboost campaign managers, who run outreach and prepare reports for clients.',
+  },
+
+  // Finding influencers, played by itself in a desktop window (FindInfluencersDemo)
+  flow: {
+    eyebrow: 'Key flow',
+    title: 'From a hundred channels to a shortlist in a few clicks.',
+    lead: 'Search by name with suggestions as you type, pick creators straight from the results and add them to a list or a campaign, then narrow the database with filters built for gaming channels.',
+    alt: 'Find influencers: a table of a hundred creators with their subscribers, views, engagement, true reach, language and country.',
   },
 
   /*

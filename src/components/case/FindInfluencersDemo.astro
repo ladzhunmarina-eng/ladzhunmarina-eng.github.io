@@ -1,0 +1,38 @@
+---
+import PhoneTour from './PhoneTour.astro';
+import type { Step } from './PhoneTour.astro';
+import list from '../../assets/images/cb-flow-1-list.png';
+import search from '../../assets/images/cb-flow-2-search.png';
+import suggest from '../../assets/images/cb-flow-3-suggest.png';
+import results from '../../assets/images/cb-flow-4-results.png';
+import menu from '../../assets/images/cb-flow-menu.png';
+import filters from '../../assets/images/cb-flow-5-filters.png';
+
+/*
+ * Finding influencers, played by itself: the list of a hundred channels, a search by name with suggestions, the six
+ * results with two picked, the Action menu, then the advanced filters. Coordinates are in the Figma's own 1440 x 1024.
+ */
+interface Props {
+  alt: string;
+}
+
+const { alt } = Astro.props;
+
+const screens = [
+  { src: list, alt },
+  { src: search, alt: 'The search field in focus, searching by influencer name.', fields: [{ id: 'q', box: [561, 156, 300, 24] as const, bare: true }] },
+  { src: suggest, alt: 'Suggestions for “Joh”: five creators with their photos and a line to show all results.' },
+  { src: results, pops: [{ id: 'menu', src: menu, box: [760, 250, 182, 168] as const, alt: 'The Action menu: add to saved list, add to campaign.' }], alt: 'Six influencers found, two of them picked.' },
+  { src: filters, alt: 'Advanced search: agency, gaming platform, categories, genre, gender, recently played games and more.' },
+];
+
+const tour = [
+  [{ move: [520, 420] }, { wait: 500 }, { tap: [720, 168] }], // into the search
+  [{ type: 'q', text: 'Joh' }, { wait: 500 }], // the name, letter by letter
+  [{ wait: 700 }, { tap: [720, 548] }], // show all results
+  [{ wait: 900 }, { tap: [863, 271] }, { pop: 'menu', for: 1600 }, { wait: 300 }, { tap: [1311, 168] }], // Action, then more filters
+  [{ move: [1250, 560] }, { wait: 2400 }], // the advanced filters
+] satisfies Step[][];
+---
+
+<PhoneTour screens={screens} tour={tour} start={[640, 600]} size={[1440, 1024]} variant="window" />

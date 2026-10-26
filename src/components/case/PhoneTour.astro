@@ -25,7 +25,7 @@ interface Screen {
   /** Small pictures that pop in for a moment (a "Copied!" tag): where they sit, in design pixels */
   pops?: readonly { id: string; src: ImageMetadata; box: readonly [number, number, number, number]; alt?: string }[];
   alt: string;
-  fields?: readonly { id: string; box: readonly [number, number, number, number]; multiline?: boolean; timer?: boolean; fontSize?: number }[];
+  fields?: readonly { id: string; box: readonly [number, number, number, number]; multiline?: boolean; timer?: boolean; fontSize?: number; /** no plate behind the text, for a field that is already empty */ bare?: boolean }[];
 }
 interface Props {
   screens: readonly Screen[];
@@ -38,8 +38,8 @@ interface Props {
   head?: ImageMetadata;
   /** The screen's size in design pixels */
   size?: [number, number];
-  /** 'plain' has no frame at all, for a screen that sits inside a mockup picture */
-  variant?: 'phone' | 'watch' | 'plain';
+  /** 'plain' has no frame at all, for a screen that sits inside a mockup picture; 'window' is a desktop screen in a rounded card */
+  variant?: 'phone' | 'watch' | 'plain' | 'window';
   /** The step dots under the device */
   dots?: boolean;
 }
@@ -47,18 +47,22 @@ interface Props {
 const { screens, tour, start = [260, 330], dock, head, size = [390, 844], variant = 'phone', dots = true } = Astro.props;
 
 const [W, H] = size;
+// The pictures' sizes: a phone is shown about 280px wide, a desktop window across the content column
+const wide = variant === 'window';
+const shot = wide ? { widths: [720, 1008, 1512, 2016], sizes: '(max-width: 1023px) 100vw, 1008px' } : { widths: [280, 390, 546], sizes: '280px' };
+const popShot = wide ? { widths: [182, 364], sizes: '128px' } : { widths: [96, 192, 288], sizes: '96px' };
 const x = (v: number) => `${(v / W) * 100}%`;
 const y = (v: number) => `${(v / H) * 100}%`;
 ---
 
 
 <figure class="onb" data-onboarding data-tour={JSON.stringify(tour)} data-start={JSON.stringify(start)} data-w={W} data-h={H} style={`--w: ${W}; --h: ${H}`}>
-  <div class:list={['onb__phone', { 'onb__phone--watch': variant === 'watch', 'onb__phone--plain': variant === 'plain' }]}>
+  <div class:list={['onb__phone', { 'onb__phone--watch': variant === 'watch', 'onb__phone--plain': variant === 'plain', 'onb__phone--window': variant === 'window' }]}>
     {screens.map((screen, i) => (
       <div class:list={['onb__screen', { 'is-on': i === 0 }]} data-screen={i}>
         <div class:list={['onb__page', { 'onb__page--tall': screen.tall }]} data-page>
           {(Array.isArray(screen.src) ? screen.src : [screen.src]).map((src) => (
-            <Image src={src} alt={i === 0 || !screen.tall ? screen.alt : ''} widths={[280, 390, 546]} sizes="280px" quality={85} loading={i === 0 ? 'eager' : 'lazy'} />
+            <Image src={src} alt={i === 0 || !screen.tall ? screen.alt : ''} widths={shot.widths} sizes={shot.sizes} quality={85} loading={i === 0 ? 'eager' : 'lazy'} />
           ))}
         </div>
         {screen.head && (
@@ -67,11 +71,11 @@ const y = (v: number) => `${(v / H) * 100}%`;
           </div>
         )}
         {screen.pops?.map((pop) => (
-          <Image class="onb__pop" src={pop.src} alt={pop.alt ?? ''} data-pop={pop.id} widths={[96, 192, 288]} sizes="96px" quality={90} style={`left:${x(pop.box[0])};top:${y(pop.box[1])};width:${x(pop.box[2])}`} />
+          <Image class="onb__pop" src={pop.src} alt={pop.alt ?? ''} data-pop={pop.id} widths={popShot.widths} sizes={popShot.sizes} quality={90} style={`left:${x(pop.box[0])};top:${y(pop.box[1])};width:${x(pop.box[2])}`} />
         ))}
         <slot name={`screen-${i}`} />
         {screen.fields?.map((field) => (
-          <span class:list={['onb__type', { 'onb__type--multiline': field.multiline, 'onb__type--timer': field.timer }]} data-type={field.id} style={`left:${x(field.box[0])};top:${y(field.box[1])};width:${x(field.box[2])};height:${y(field.box[3])}${field.fontSize ? `;font-size:calc(${field.fontSize} / var(--w) * 100cqw)` : ''}`}></span>
+          <span class:list={['onb__type', { 'onb__type--multiline': field.multiline, 'onb__type--timer': field.timer, 'onb__type--bare': field.bare }]} data-type={field.id} style={`left:${x(field.box[0])};top:${y(field.box[1])};width:${x(field.box[2])};height:${y(field.box[3])}${field.fontSize ? `;font-size:calc(${field.fontSize} / var(--w) * 100cqw)` : ''}`}></span>
         ))}
       </div>
     ))}
@@ -124,6 +128,13 @@ const y = (v: number) => `${(v / H) * 100}%`;
     border-radius: 0;
     background: #000;
     box-shadow: none;
+  }
+
+  /* A desktop screen: the shared card radius and a hairline, and a smaller finger for the wide design (1440 across) */
+  .onb__phone--window {
+    --finger: 26;
+    border: 1px solid var(--case-line);
+    border-radius: var(--radius-card);
   }
 
   .onb__screen {
@@ -236,6 +247,10 @@ const y = (v: number) => `${(v / H) * 100}%`;
     font-size: 0.5em;
     font-weight: 500;
     opacity: 0.7;
+  }
+
+  .onb__type--bare {
+    background: none;
   }
 
   .onb__type--multiline {

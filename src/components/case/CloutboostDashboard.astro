@@ -90,18 +90,26 @@ const ringTag = [337, 911, 141, 60];
 
     if (calm.matches || !('IntersectionObserver' in window)) return;
 
-    // Each chart draws itself when most of it is inside the window, and is undrawn again once it has left, so it plays
-    // on every pass. The plates exist only from here on: without the script the charts are simply there.
+    // Each chart draws itself when most of it is inside the window and the window itself is on screen, so nothing plays
+    // before the visitor has scrolled down to the dashboard. A chart that leaves the window, or the window leaving the
+    // screen, undraws it again, so it plays on every pass. The plates exist only from here on: without the script the
+    // charts are simply there.
     dash.classList.add('cbd--live');
+    const chartEls = [...dash.querySelectorAll<HTMLElement>('[data-chart]')];
+    const inWindow = new Set<Element>();
+    let onScreen = false;
+    const draw = () => chartEls.forEach((chart) => chart.classList.toggle('is-drawn', onScreen && inWindow.has(chart)));
     const charts = new IntersectionObserver(
-      (entries) =>
+      (entries) => {
         entries.forEach((entry) => {
-          if (entry.intersectionRatio >= 0.6) entry.target.classList.add('is-drawn');
-          else if (!entry.isIntersecting) entry.target.classList.remove('is-drawn');
-        }),
+          if (entry.intersectionRatio >= 0.6) inWindow.add(entry.target);
+          else if (!entry.isIntersecting) inWindow.delete(entry.target);
+        });
+        draw();
+      },
       { root: scroller, threshold: [0, 0.6] },
     );
-    dash.querySelectorAll('[data-chart]').forEach((chart) => charts.observe(chart));
+    chartEls.forEach((chart) => charts.observe(chart));
 
     // Down to the charts, on to the table at the bottom, a pause, and back to the top; again and again while it is on screen
     const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -154,6 +162,8 @@ const ringTag = [337, 911, 141, 60];
     );
     new IntersectionObserver(
       ([entry]) => {
+        onScreen = entry.isIntersecting;
+        draw();
         if (handedOver) return;
         if (entry.isIntersecting && !running) {
           running = true;

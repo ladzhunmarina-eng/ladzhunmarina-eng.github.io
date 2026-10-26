@@ -2,7 +2,9 @@
 import { Image } from 'astro:assets';
 
 interface Persona {
-  photo: ImageMetadata;
+  /** Without a photo the card shows the initials in the same square */
+  photo?: ImageMetadata;
+  initials?: string;
   name: string;
   role: string;
   facts: readonly { label: string; value: string }[];
@@ -22,7 +24,11 @@ const { personas } = Astro.props;
   {personas.map((persona) => (
     <article class="persona" aria-label={persona.name}>
       <header class="persona__head">
-        <Image class="persona__photo" src={persona.photo} alt={persona.photoAlt} widths={[96, 192]} sizes="96px" quality={80} />
+        {persona.photo ? (
+          <Image class="persona__photo" src={persona.photo} alt={persona.photoAlt} widths={[96, 192]} sizes="96px" quality={80} />
+        ) : (
+          <span class="persona__photo persona__initials" aria-hidden="true">{persona.initials}</span>
+        )}
         <div class="persona__who">
           <h3 class="persona__name">{persona.name}</h3>
           <p class="persona__role">{persona.role}</p>
@@ -78,7 +84,8 @@ const { personas } = Astro.props;
     gap: var(--space-16);
   }
 
-  .persona__head :global(.persona__photo) {
+  .persona__head :global(.persona__photo),
+  .persona__head .persona__initials {
     flex: none;
     width: 96px;
     height: 96px;
@@ -86,6 +93,19 @@ const { personas } = Astro.props;
     object-fit: cover;
     object-position: 50% 15%;
     background: var(--color-icon-bg);
+  }
+
+  /* The stand-in for a photo that is not there yet: the case's icon colours */
+  .persona__head .persona__initials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--case-icon-bg, var(--color-icon-bg));
+    font-family: var(--font-display);
+    font-size: var(--fs-32);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--ls-heading);
+    color: var(--case-icon-fg, var(--case-accent));
   }
 
   .persona__who {

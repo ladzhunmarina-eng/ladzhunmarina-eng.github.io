@@ -7,6 +7,7 @@ import Section from '../../components/case/Section.astro';
 import NoteCards from '../../components/case/NoteCards.astro';
 import PersonaPair from '../../components/case/PersonaPair.astro';
 import VisualGrid from '../../components/case/VisualGrid.astro';
+import FindInfluencersDemo from '../../components/case/FindInfluencersDemo.astro';
 import NextCase from '../../components/case/NextCase.astro';
 import CloutboostDashboard from '../../components/case/CloutboostDashboard.astro';
 import anna from '../../assets/images/cb-persona.png';
@@ -22,13 +23,15 @@ import filters from '../../assets/images/cb-v09-filters.png';
 import table from '../../assets/images/cb-v10-table.png';
 import { cloutboostCase as study } from '../../data/cases/cloutboost';
 
-const { goal, persona, visuals } = study;
+const { goal, persona, flow, visuals } = study;
 const shots = { channel, building, views, performance, email, import: importFile, comments, empty, filters, table };
 const groups = visuals.groups.map((group) => ({
   ...group,
   tiles: group.tiles.map((tile) => ({ src: shots[tile.key as keyof typeof shots], alt: tile.alt, cols: tile.cols })),
 }));
-const personas = persona.cards.map((card) => ({ ...card, photo: anna }));
+// Jake's photo, picked up if the file is there; without it his card shows his initials
+const creatorPhoto = Object.values(import.meta.glob<ImageMetadata>('../../assets/images/cb-persona-creator.png', { eager: true, import: 'default' }))[0];
+const personas = persona.cards.map((card) => ({ ...card, photo: card.photo === 'creator' ? creatorPhoto : anna }));
 ---
 
 <Layout title={study.seo.title} description={study.seo.description} current="work">
@@ -51,7 +54,10 @@ const personas = persona.cards.map((card) => ({ ...card, photo: anna }));
 
         <Section id="persona" eyebrow={persona.eyebrow} title={persona.title}>
           <PersonaPair personas={personas} />
-          <p class="also"><span class="also__label">Also used by:</span> {persona.alsoUsedBy}</p>
+        </Section>
+
+        <Section id="flow" eyebrow={flow.eyebrow} title={flow.title} lead={flow.lead}>
+          <FindInfluencersDemo alt={flow.alt} />
         </Section>
 
         <Section id="visuals" eyebrow={visuals.eyebrow} title={visuals.title}>
@@ -120,17 +126,6 @@ const personas = persona.cards.map((card) => ({ ...card, photo: anna }));
     padding-left: calc(var(--gutter) + var(--case-nav-w) + var(--case-gap));
   }
 
-  .also {
-    max-width: var(--case-measure);
-    font-size: var(--fs-16);
-    line-height: var(--lh-body);
-    color: var(--color-muted);
-  }
-
-  .also__label {
-    font-weight: var(--weight-bold);
-    color: var(--color-ink);
-  }
 
   /* The screens grouped by the step of the work; Reach out and Collaborate share a row */
   .groups {
