@@ -12,7 +12,7 @@ export const babySleepCase = {
   seo: {
     title: 'Baby Sleep Tracking Mobile App — Marina, Product Designer',
     description:
-      'A mobile app for tracking baby sleep that connects parents with sleep experts: routine analysis, record keeping and easy communication.',
+      'A mobile app where parents keep their baby’s sleep diary and share it with a sleep consultant, who sees every client and their sleep data in one place.',
   },
 
   hero: {
@@ -20,7 +20,7 @@ export const babySleepCase = {
     areasLabel: 'My scope',
     eyebrow: 'Parenting · Sleep consulting',
     title: 'Baby Sleep Tracking\nMobile App',
-    lead: 'A mobile app for tracking baby sleep that connects parents with sleep experts, offering routine analysis, record keeping, and easy communication to improve sleep quality.',
+    lead: 'A mobile app where parents keep their baby’s sleep diary and share it with a sleep consultant, who gets every client, their plan and their sleep data in one place instead of screenshots, spreadsheets and Telegram folders.',
     meta: [
       { label: 'Client', value: 'Sleep Consultant' },
       { label: 'Industry', value: 'B2C' },
@@ -37,6 +37,7 @@ export const babySleepCase = {
     { id: 'persona', label: 'Persona' },
     { id: 'decisions', label: 'Decisions' },
     { id: 'theme', label: 'Light and dark' },
+    { id: 'outcome', label: 'Outcome' },
     { id: 'feedback', label: 'Feedback' },
     { id: 'screens', label: 'Screens' },
   ],
@@ -44,7 +45,7 @@ export const babySleepCase = {
   goal: {
     eyebrow: 'Goal and challenge',
     title: 'One app for the parent who tracks and the expert who advises.',
-    lead: 'The app starts from two roles with different needs, so the first decision was to build for both at once.',
+    lead: 'Parents logged sleep in general baby apps and copied it into their consultant’s spreadsheet; consultants retyped screenshots into Excel and ran clients from Telegram folders. Both sides needed the same data, so the app was built for both at once.',
     cards: [
       {
         icon: 'target' as const,
@@ -53,13 +54,13 @@ export const babySleepCase = {
       },
       {
         icon: 'scale' as const,
-        title: 'Challenges',
-        text: 'Balancing the needs of parents and consultants, ensuring accurate data tracking, and creating a simple way to share insights and progress.',
+        title: 'Problem',
+        text: 'Consultants moved data from screenshots and reports of other diary apps into their Excel master files, chased parents to fill them in on time and read them on a phone; clients lived in Telegram folders and notebooks, so consultations got forgotten or overbooked. Parents copied the same data across, and the general baby apps they used gave no sleep totals or charts to read it by.',
       },
       {
         icon: 'check' as const,
         title: 'Solution',
-        text: 'A collaborative mobile platform with sleep tracking, notes, and direct communication tools that connect parents and experts to build healthier sleep habits for babies.',
+        text: 'A sleep diary built for sleep, with daily totals and clear charts, that a parent shares with their consultant in a tap. For the consultant it works as a CRM: every client, the dates and format of the work, and the child’s sleep seen from several angles.',
       },
     ],
   },
@@ -80,7 +81,7 @@ export const babySleepCase = {
         biography: 'Wants a simple way to track her baby’s sleep and get advice from someone she can trust.',
         groups: [
           { title: 'Goals', items: ['Understand her baby’s sleep patterns', 'Get recommendations she can act on'] },
-          { title: 'Pain points', items: ['Doesn’t understand sleep cycles', 'Hard to find a reliable expert'] },
+          { title: 'Pain points', items: ['Copies sleep from a tracking app into the consultant’s spreadsheet', 'General baby apps give no sleep totals or charts'] },
         ],
         quote: '“I just want to help my baby sleep better and feel less stressed myself.”',
         photoAlt: 'A young mother in a white dress holding her smiling baby',
@@ -96,7 +97,7 @@ export const babySleepCase = {
         biography: 'Enters every family’s sleep data into an Excel sheet by hand to spot trends and write summaries.',
         groups: [
           { title: 'Goals', items: ['See trends and summaries without building them by hand', 'Give recommendations faster'] },
-          { title: 'Pain points', items: ['Manual data entry into Excel for every client', 'Trends and summaries take hours to put together'] },
+          { title: 'Pain points', items: ['Retypes screenshots from other apps into Excel for every client', 'Chases parents to fill in the sheet on time', 'Clients in Telegram folders: consultations forgotten or overbooked'] },
         ],
         quote: '“Give me a clean diary, and I can help a family in one session.”',
         photoAlt: 'Olena Kovalenko, sleep consultant',
@@ -198,6 +199,22 @@ export const babySleepCase = {
       light: 'The update screen in the light theme: a bottle-shaped rocket over clouds, “A fresh update is ready” and an Update now button.',
       dark: 'The same update screen in the dark theme, on a dark blue-grey sky.',
     },
+  },
+
+  // What the app changed, from the founder's own account
+  outcome: {
+    eyebrow: 'Outcome',
+    title: 'Twice the clients per consultant, and parents who stay.',
+    lead: 'Live in the App Store and Google Play since February 2025. Parents ask to keep the app after their consultation ends, because of what it shows them.',
+    impact: [
+      { value: '2×', label: 'more clients per consultant, with every client’s data a tap away' },
+      { value: '500', label: 'clients worked through in the app by the founder and her colleagues' },
+    ],
+    stats: [
+      { value: '~400', label: 'daily active users' },
+      { value: '2K', label: 'user profiles created' },
+      { value: 'Feb 2025', label: 'first release on the App Store and Google Play' },
+    ],
   },
 
   feedback: {

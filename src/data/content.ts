@@ -46,7 +46,7 @@ export const work = [
     title: 'Baby Sleep Tracking\nMobile App',
     href: '/work/baby-sleep',
     description:
-      'A mobile app for tracking baby sleep that connects parents with sleep experts, offering routine analysis, record keeping, and easy communication to improve sleep quality.',
+      'A mobile app where parents keep their baby’s sleep diary and share it with a sleep consultant, who gets every client, their plan and their sleep data in one place instead of screenshots, spreadsheets and Telegram folders.',
     image: card3,
     alt: 'Baby Sleep Expert app: a sign-up screen for parents and consultants, and a baby profile with a sleep diary.',
     place: { left: '22.46%', top: '0%', width: '53.45%', height: '100%' },

@@ -7,15 +7,18 @@ interface Props {
   title?: string;
   lead?: string;
   verify?: boolean;
+  /** "01", "02": the number of a feature, above the eyebrow, as the decisions are numbered on the other cases */
+  index?: string;
 }
 
-const { id, eyebrow, title, lead, verify = false } = Astro.props;
+const { id, eyebrow, title, lead, verify = false, index } = Astro.props;
 const titleId = id && title ? `${id}-title` : undefined;
 ---
 
 <section class="section" id={id} aria-labelledby={titleId} aria-label={titleId ? undefined : eyebrow}>
   <div class="section__head">
     <div class="section__heading">
+      {index && <p class="section__index">{index}</p>}
       <p class="section__eyebrow">{eyebrow}</p>
       {title && <h2 class="section__title" id={titleId}>{title}{verify && <Verify />}</h2>}
       {lead && <p class="section__lead">{lead}</p>}
@@ -40,6 +43,15 @@ const titleId = id && title ? `${id}-title` : undefined;
 
   .section__heading {
     min-width: 0;
+  }
+
+  .section__index {
+    margin-bottom: var(--space-8);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-snug);
+    letter-spacing: var(--ls-eyebrow);
+    color: var(--case-accent);
   }
 
   .section__art:empty {

@@ -685,9 +685,9 @@
   --case-line: var(--sleep-line);
   --case-track: var(--sleep-mist);
   --case-bar: var(--sleep-ink);
-  --case-strip-bg: var(--sleep-ink);
-  --case-strip-fg: var(--color-white);
-  --case-strip-value: var(--sleep-accent);
+  --case-strip-bg: var(--sleep-pill-blue); /* the Outcome strip: the soft blue of the At a glance card */
+  --case-strip-fg: var(--sleep-ink);
+  --case-strip-value: var(--sleep-accent-text);
   --case-on-bg: var(--sleep-ink);
   --case-chip-text: var(--sleep-ink);
   --case-glass: var(--sleep-pill-blue); /* the At a glance card: the same blue as the first tag of a decision */

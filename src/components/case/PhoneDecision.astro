@@ -23,6 +23,7 @@ const { index, tags, title, description, phones = [] } = Astro.props;
   </div>
 
   <div class="decision__text">
+    <p class="decision__index">{String(index).padStart(2, '0')}</p>
     <ul class="decision__tags">
       {tags.map((tag) => <li>{tag}</li>)}
     </ul>
@@ -63,6 +64,15 @@ const { index, tags, title, description, phones = [] } = Astro.props;
     flex-direction: column;
     gap: var(--space-12);
     min-width: 0;
+  }
+
+  /* the decision's number, as on the other cases: 01, 02 */
+  .decision__index {
+    font-size: var(--fs-14);
+    font-weight: var(--weight-bold);
+    line-height: var(--lh-snug);
+    letter-spacing: var(--ls-eyebrow);
+    color: var(--case-accent);
   }
 
   .decision__tags {

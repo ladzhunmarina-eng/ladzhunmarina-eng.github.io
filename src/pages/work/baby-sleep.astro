@@ -18,6 +18,8 @@ import ClientsDemo from '../../components/case/ClientsDemo.astro';
 import ThemeShowcase from '../../components/case/ThemeShowcase.astro';
 import Reviews from '../../components/case/Reviews.astro';
 import NextCase from '../../components/case/NextCase.astro';
+import MetricStrip from '../../components/case/MetricStrip.astro';
+import StatGrid from '../../components/case/StatGrid.astro';
 import heroImage from '../../assets/images/sleep-hero-flat.png';
 import personaPhoto from '../../assets/images/sleep-persona.png';
 import expertPhoto from '../../assets/images/persona-expert.webp';
@@ -34,7 +36,7 @@ import trendB from '../../assets/images/car-09.png';
 import tracker from '../../assets/images/car-10.png';
 import { babySleepCase as study } from '../../data/cases/baby-sleep';
 
-const { goal, persona, process, screens, decisions, theme, feedback } = study;
+const { goal, persona, process, screens, decisions, theme, feedback, outcome } = study;
 const shots = { signup, settings, plan, empty, child, trendA, share, archived, calendar, trendB, tracker };
 const gallery = screens.items.map((item) => ({ src: shots[item.key as keyof typeof shots], alt: item.alt }));
 const alts: Record<string, string> = {
@@ -115,6 +117,11 @@ const blocks = decisions.items.map((item) => ({
         </Section>
 
         <ThemeShowcase id="theme" eyebrow={theme.eyebrow} tags={theme.tags} title={theme.title} lead={theme.lead} alts={theme.alts} />
+
+        <Section id="outcome" eyebrow={outcome.eyebrow} title={outcome.title} lead={outcome.lead}>
+          <MetricStrip metrics={outcome.impact} />
+          <StatGrid stats={outcome.stats} />
+        </Section>
 
         <Section id="feedback" eyebrow={feedback.eyebrow} title={feedback.title}>
           <Reviews rating={feedback.rating} reviews={feedback.reviews} />
