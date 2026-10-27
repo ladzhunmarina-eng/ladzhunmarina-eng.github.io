@@ -67,11 +67,11 @@ export const work = [
   {
     number: '04',
     theme: 'cream',
-    category: 'Web app',
+    category: 'B2B SaaS',
     title: 'Gaming Influencer\nMarketing Platform',
     href: '/work/cloutboost',
     description:
-      'A web platform where game publishers and Cloutboost’s campaign team find the right YouTube and Twitch creators, run outreach, and see what each creator delivered for the money.',
+      'A web platform where game publishers and Cloutboost’s campaign team find gaming creators by the games they actually play, reach them at scale from one place, and see what each creator delivered for the money.',
     image: card2,
     alt: 'Cloutboost campaign report dashboard with key numbers and a performance chart, next to an empty-state card saying no report has been generated.',
     place: { left: '14.6%', top: '16.4%', width: '64%', height: '83.6%' },
