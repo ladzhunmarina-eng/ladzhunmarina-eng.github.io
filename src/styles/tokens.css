@@ -655,9 +655,9 @@
   --case-line: var(--cb-line);
   --case-track: var(--cb-tint);
   --case-bar: var(--cb-purple);
-  --case-strip-bg: var(--cb-ink);
-  --case-strip-fg: var(--color-white);
-  --case-strip-value: var(--cb-orange);
+  --case-strip-bg: linear-gradient(110deg, var(--cb-purple) 0%, #9a2fb4 55%, var(--cb-coral) 100%); /* the brand gradient of the app's top bar */
+  --case-strip-fg: rgb(255 255 255 / 0.88);
+  --case-strip-value: var(--color-white);
   --case-on-bg: var(--cb-ink);
   --case-chip-text: var(--cb-ink);
   --case-glass: var(--cb-tint);

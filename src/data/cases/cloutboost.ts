@@ -12,7 +12,7 @@ export const cloutboostCase = {
   seo: {
     title: 'Gaming Influencer Marketing Platform — Marina, Product Designer',
     description:
-      'A web platform where game publishers and Cloutboost’s campaign team find the right YouTube and Twitch creators, run outreach, and see what each creator delivered for the money.',
+      'A web platform where game publishers and Cloutboost’s campaign team find gaming creators by the games they actually play, reach them at scale from one place, and see what each creator delivered for the money.',
   },
 
   hero: {
@@ -20,7 +20,7 @@ export const cloutboostCase = {
     areasLabel: 'My scope',
     eyebrow: 'Influencer marketing · Gaming',
     title: 'Gaming Influencer\nMarketing Platform',
-    lead: 'A web platform where game publishers and Cloutboost’s campaign team find the right YouTube and Twitch creators, run outreach, and see what each creator delivered for the money.',
+    lead: 'A web platform where game publishers and Cloutboost’s campaign team find gaming creators by the games they actually play, reach them at scale from one place, and see what each creator delivered for the money.',
     meta: [
       { label: 'Industry', value: 'Influencer marketing · Gaming' },
       { label: 'Model', value: 'B2B SaaS' },
@@ -31,6 +31,12 @@ export const cloutboostCase = {
     image: 'The Cloutboost campaign report: general info, key numbers, campaign performance over time, views and true reach by creator, engagement and CPM, and a table of every video with its price and views.',
   },
 
+  // The impact, on a dark strip that opens the Outcome: time back and campaigns per manager
+  impact: [
+    { value: '~30 h', label: 'a week back for every campaign manager, once searching and copy-pasting moved into the platform' },
+    { value: '1 → 2–4', label: 'campaigns a manager runs at once, up from one before the platform' },
+  ],
+
   nav: [
     { id: 'goal', label: 'Goal' },
     { id: 'persona', label: 'Personas' },
@@ -39,13 +45,14 @@ export const cloutboostCase = {
     { id: 'selected', label: 'Selected' },
     { id: 'engagement', label: 'Engagement' },
     { id: 'reports', label: 'Reports' },
+    { id: 'outcome', label: 'Outcome' },
     { id: 'system', label: 'Design system' },
   ],
 
   goal: {
     eyebrow: 'Goal and challenge',
-    title: 'Finding the right creators, and proving what they delivered.',
-    lead: 'Game publishers pay creators for reach. Before a campaign they need channels that fit their game; after it, numbers that justify the spend. Without a tool, both live in spreadsheets, inboxes and chats.',
+    title: 'How do you find the right gaming creators and reach them at scale without losing relevance?',
+    lead: 'For a gaming campaign it matters less who a creator is than which games they actually play, and whether a given game will land with their audience. General influencer platforms treat “gaming” as one category, yet a horror streamer and a Minecraft YouTuber are two different worlds for a survival horror game.',
     // the audience the campaigns reach (src/assets/images/cb-gamers.jpg), under the cards
     image: 'Three gamers in Cloutboost’s colours: one at a keyboard with a headset, one in a VR headset, one with a controller.',
     cards: [
@@ -57,12 +64,12 @@ export const cloutboostCase = {
       {
         icon: 'scale' as const,
         title: 'Problem',
-        text: 'Follower counts don’t show whether a channel fits a game. Outreach to dozens of creators runs through personal inboxes. Results are collected by hand across YouTube and Twitch, and reports go stale soon after launch.',
+        text: 'Before the platform it was all by hand: scouring YouTube, Twitch and TikTok for what each channel had played in recent months, building spreadsheets, hunting down emails, sending from Gmail, handing out keys and tracking replies and links, each in a different place. A manager could run one campaign at a time, most of the day lost to searching and copy-pasting.',
       },
       {
         icon: 'check' as const,
         title: 'Solution',
-        text: 'Discovery built on gaming-specific signals: shorts ratio, upload frequency, recent activity and channel scores. Outreach sent from the platform, with every thread tied to its campaign. A campaign report that refreshes from platform data and shows views, true reach, engagement, CPM and cost per video.',
+        text: 'One system: a database of 1.5M+ gaming creators refreshed daily, search by the games they’ve actually played alongside signals like upload frequency and channel scores, outreach sequences from several mailboxes, and keys handed out and tracked in the same place, down to a campaign report built from platform data.',
       },
     ],
   },
@@ -126,7 +133,7 @@ export const cloutboostCase = {
   flow: {
     eyebrow: 'Key flow',
     title: 'From a hundred channels to a shortlist in a few clicks.',
-    lead: 'Search by name with suggestions as you type, pick creators straight from the results and add them to a list or a campaign, then narrow the database with filters built for gaming channels.',
+    lead: 'Search creators by name, keyword or the games they play, with suggestions as you type, pick them straight from the results and add them to a list or a campaign, then narrow the database with filters built for gaming channels.',
     alt: 'Find influencers: a table of a hundred creators with their subscribers, views, engagement, true reach, language and country.',
   },
 
@@ -150,7 +157,7 @@ export const cloutboostCase = {
   engagement: {
     eyebrow: 'Engagement',
     title: 'Email the creators you pick, now or on schedule.',
-    lead: 'Tick creators in the campaign’s engagement table and write to all of them at once from a connected mailbox. Creators without an address are skipped and counted, and the send can go out straight away or start at a set time.',
+    lead: 'Tick creators in the campaign’s engagement table and write to all of them at once from a connected mailbox, while the table keeps where each contract, email and key stands. Creators without an address are skipped and counted, and the send can go out straight away or start at a set time.',
     alt: 'Engagement (34): the campaign’s creators with their contract status, email status, key sent, key sent date and sequence.',
   },
 
@@ -160,6 +167,17 @@ export const cloutboostCase = {
     title: 'A campaign report that builds itself.',
     lead: 'The Report tab gathers the campaign’s numbers from YouTube and Twitch while you wait a few seconds, then lays them out: reach and views, performance over time, true reach, engagement and CPM per creator, and what each video cost.',
     alt: 'Engagement (34): the campaign’s creators with their contract status, email status, key sent, key sent date and sequence, and the Report tab.',
+  },
+
+  // What the platform changed, in the client's own numbers
+  outcome: {
+    eyebrow: 'Outcome',
+    title: 'Less searching and copy-pasting, more time with creators.',
+    lead: 'What the platform changed for Cloutboost’s campaign managers, as the client tells it.',
+    stats: [
+      { value: '1.5M+', label: 'gaming creators in one database, refreshed daily' },
+      { value: '1 place', label: 'for search, outreach, keys and tracking, instead of YouTube, Twitch, TikTok, spreadsheets and Gmail' },
+    ],
   },
 
   // The design system the screens are built from, as a collage of its Figma pages (DesignSystemCollage)
