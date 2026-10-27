@@ -8,8 +8,25 @@ import actions from '../../assets/images/dash/actions.png';
 import search from '../../assets/images/dash/search.png';
 import overview from '../../assets/images/dash/overview.png';
 import timeline from '../../assets/images/dash/timeline.png';
-import summary from '../../assets/images/dash/summary.png';
-import map from '../../assets/images/dash/map.png';
+import summary from '../../assets/images/dash/summary-blank.png';
+import gaugeGreen from '../../assets/images/dash/gauge-green.png';
+import gaugeRed from '../../assets/images/dash/gauge-red.png';
+import gaugeGrey from '../../assets/images/dash/gauge-grey.png';
+import barRed from '../../assets/images/dash/bar-red.png';
+import barGreen from '../../assets/images/dash/bar-green.png';
+import barOrange from '../../assets/images/dash/bar-orange.png';
+import '@fontsource/poppins/400.css';
+import '@fontsource/poppins/500.css';
+import map from '../../assets/images/dash/map-blank.png';
+import c1Arc0 from '../../assets/images/dash/map-c1-arc0.png';
+import c1Arc1 from '../../assets/images/dash/map-c1-arc1.png';
+import c2Arc0 from '../../assets/images/dash/map-c2-arc0.png';
+import c2Arc1 from '../../assets/images/dash/map-c2-arc1.png';
+import c3Arc0 from '../../assets/images/dash/map-c3-arc0.png';
+import c3Arc1 from '../../assets/images/dash/map-c3-arc1.png';
+import c4Arc0 from '../../assets/images/dash/map-c4-arc0.png';
+import c4Arc1 from '../../assets/images/dash/map-c4-arc1.png';
+import c5Arc0 from '../../assets/images/dash/map-c5-arc0.png';
 import documents from '../../assets/images/dash/documents.png';
 import LogoShield from './LogoShield.astro';
 
@@ -59,6 +76,69 @@ const scrolls = [
   { src: map, x: 275, y: 1293, w: 1138 },
   { src: documents, x: 275, y: 1792, w: 1141 },
 ];
+/*
+ * The parts of the summary that come alive once the window is on screen and they are in view: the gauge fills round,
+ * the timesheet bar grows, the numbers count up. The summary picture has them cleared; they sit here where the Figma
+ * has them (page coordinates), the numbers set as in the design (Poppins 34px, 44px for the gauge's).
+ */
+const gauge = {
+  box: { x: 464, y: 753.55, w: 217.72, h: 121.26 },
+  centre: { x: 572.86, y: 862.4 }, // the circle the arcs belong to
+  arcs: [
+    { src: gaugeGreen, x: 464, y: 753.55, w: 158.2, h: 121.26 },
+    { src: gaugeRed, x: 623.93, y: 779.87, w: 45.75, h: 52.42 },
+    { src: gaugeGrey, x: 653.1, y: 832.49, w: 28.62, h: 41.45 },
+  ],
+};
+const bar = {
+  box: { x: 899, y: 1089, w: 493, h: 24 },
+  parts: [
+    { src: barRed, x: 899, w: 79 },
+    { src: barGreen, x: 983, w: 294 },
+    { src: barOrange, x: 1282, w: 110 },
+  ],
+};
+// value, where the Figma's text box sits (x, y, width) and how it is aligned; the gauge's number is larger
+const numbers = [
+  { value: 150, x: 887, y: 621, w: 54, align: 'center' },
+  { value: 50, x: 1159.6, y: 621, w: 43, align: 'center' },
+  { value: 1200, x: 887, y: 754, w: 74, align: 'center' },
+  { value: 120000, x: 1159.6, y: 754, w: 144, align: 'left', prefix: '$', commas: true },
+  { value: 12000, x: 887, y: 885, w: 116, align: 'center', prefix: '$' },
+  { value: 120, x: 902, y: 1031, w: 52, align: 'left' },
+  { value: 40, x: 311, y: 1029, w: 45, align: 'left' },
+  { value: 8, x: 587, y: 1029, w: 40, align: 'center' },
+  { value: 20, x: 311, y: 1162, w: 42, align: 'center' },
+  { value: 12, x: 587, y: 1162, w: 33, align: 'center' },
+  { value: 40, x: 546, y: 817.2, w: 56, align: 'center', size: 44 },
+] as const;
+/*
+ * The vehicles map: each cluster pops in (its glass and black disc), its ring draws round from the bottom left (the
+ * green share, then the orange), its number counts up; the chips' numbers count too. The map picture has them cleared;
+ * boxes are the Figma's render bounds (with the shadows), in page coordinates, and the disc's centre the ring turns on.
+ * The glass is drawn as in the Figma, white at 10% blurring the map under it (its background blur) with a soft shadow,
+ * so it is a live element rather than a picture: a picture of it would have nothing under it to blur.
+ */
+const mapClusters = [
+  { glass: { x: 803, y: 1480, w: 64, h: 64, blur: 4 }, disc: { x: 811, y: 1488, w: 48, h: 48 }, box: { x: 799, y: 1480, w: 72, h: 72 }, centre: { x: 835, y: 1512 }, arcs: [{ src: c1Arc0, x: 809, y: 1486, w: 53, h: 45.23 }, { src: c1Arc1, x: 817.67, y: 1527.57, w: 36.52, h: 10.43 }], value: 45, text: { x: 826, y: 1503, w: 18, size: 14, weight: 400 } },
+  { glass: { x: 996, y: 1496, w: 57, h: 57, blur: 4 }, disc: { x: 1003.1, y: 1503.1, w: 42.8, h: 42.8 }, box: { x: 992, y: 1496, w: 65, h: 65 }, centre: { x: 1024.5, y: 1524.5 }, arcs: [{ src: c2Arc0, x: 1003.04, y: 1503, w: 43.81, h: 37.41 }, { src: c2Arc1, x: 1010.21, y: 1536.88, w: 30.19, h: 9.12 }], value: 34, text: { x: 1015.5, y: 1515.5, w: 18, size: 14, weight: 400 } },
+  { glass: { x: 954, y: 1637, w: 38, h: 38, blur: 2.67 }, disc: { x: 958.8, y: 1641.8, w: 28.5, h: 28.5 }, box: { x: 951.33, y: 1637, w: 43.33, h: 43.33 }, centre: { x: 973.05, y: 1656.05 }, arcs: [{ src: c3Arc0, x: 958.69, y: 1641.67, w: 29.21, h: 24.94 }, { src: c3Arc1, x: 963.47, y: 1664.25, w: 20.13, h: 6.08 }], value: 23, text: { x: 965.5, y: 1648, w: 15, size: 12, weight: 500 } },
+  { glass: { x: 587, y: 1564, w: 86, h: 86, blur: 4.53 }, disc: { x: 597.8, y: 1574.8, w: 64.5, h: 64.5 }, box: { x: 582.47, y: 1564, w: 95.05, h: 95.05 }, centre: { x: 630.05, y: 1607.05 }, arcs: [{ src: c4Arc0, x: 596.74, y: 1574.74, w: 66.53, h: 55.96 }, { src: c4Arc1, x: 596.74, y: 1583.3, w: 66.53, h: 55.96 }], value: 56, text: { x: 621, y: 1598, w: 18, size: 14, weight: 400 } },
+  { glass: { x: 594, y: 1418, w: 64, h: 64, blur: 4 }, disc: { x: 602, y: 1426, w: 48, h: 48 }, box: { x: 590, y: 1418, w: 72, h: 72 }, centre: { x: 626, y: 1450 }, arcs: [{ src: c5Arc0, x: 601, y: 1424, w: 51, h: 51 }], value: 45, text: { x: 617, y: 1441, w: 18, size: 14, weight: 400 } },
+];
+// the chips over the map: the label stays, the number counts (Poppins 14px on a 24px line)
+const mapChips = [
+  { label: 'In Total ', value: 23, x: 1066, y: 1364, w: 71 },
+  { label: 'Available ', value: 10, x: 1169, y: 1364, w: 82 },
+  { label: 'In use ', value: 13, x: 1302, y: 1364, w: 58 },
+];
+
+const show = (value: number, prefix = '', commas = false) => prefix + (commas ? value.toLocaleString('en-US') : String(value));
+const at = (x: number, y: number, w: number, h: number) =>
+  `left:${((x / W) * 100).toFixed(3)}%;top:${((y / PAGE_H) * 100).toFixed(3)}%;width:${((w / W) * 100).toFixed(3)}%;height:${((h / PAGE_H) * 100).toFixed(3)}%;`;
+const within = (inner: { x: number; y: number; w: number; h: number }, outer: { x: number; y: number; w: number; h: number }) =>
+  `left:${(((inner.x - outer.x) / outer.w) * 100).toFixed(3)}%;top:${(((inner.y - outer.y) / outer.h) * 100).toFixed(3)}%;width:${((inner.w / outer.w) * 100).toFixed(3)}%;height:${((inner.h / outer.h) * 100).toFixed(3)}%;`;
+
 const pos = (item: { x: number; y: number; w: number }, height: number) =>
   `left:${((item.x / W) * 100).toFixed(3)}%;top:${((item.y / height) * 100).toFixed(3)}%;width:${((item.w / W) * 100).toFixed(3)}%;`;
 ---
@@ -70,6 +150,40 @@ const pos = (item: { x: number; y: number; w: number }, height: number) =>
       <div class="dash__page" style={`--page-ratio: ${W} / ${PAGE_H}`}>
         {scrolls.map((item) => (
           <Image class="dash__piece" src={item.src} alt="" style={pos(item, PAGE_H)} widths={[720, 1080, 1568]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} loading={eager ? 'eager' : 'lazy'} />
+        ))}
+        <div class="dash__live dash__gauge" data-live style={`${at(gauge.box.x, gauge.box.y, gauge.box.w, gauge.box.h)}--cx:${(((gauge.centre.x - gauge.box.x) / gauge.box.w) * 100).toFixed(2)}%;--cy:${(((gauge.centre.y - gauge.box.y) / gauge.box.h) * 100).toFixed(2)}%`} aria-hidden="true">
+          {gauge.arcs.map((arc) => (
+            <Image class="dash__part" src={arc.src} alt="" style={within({ x: arc.x, y: arc.y, w: arc.w, h: arc.h }, gauge.box)} widths={[Math.round(arc.w * 2)]} sizes={`${Math.round(arc.w * 0.7)}px`} quality={90} />
+          ))}
+        </div>
+        <div class="dash__live dash__bar" data-live style={at(bar.box.x, bar.box.y, bar.box.w, bar.box.h)} aria-hidden="true">
+          <div class="dash__bar-fill">
+            {bar.parts.map((part) => (
+              <Image class="dash__part" src={part.src} alt="" style={within({ x: part.x, y: bar.box.y, w: part.w, h: bar.box.h }, bar.box)} widths={[Math.round(part.w * 2)]} sizes={`${Math.round(part.w * 0.7)}px`} quality={90} />
+            ))}
+          </div>
+        </div>
+        {mapClusters.map((c, i) => (
+          <div class="dash__live dash__cluster" data-live style={`${at(c.box.x, c.box.y, c.box.w, c.box.h)}--i:${i}`} aria-hidden="true">
+            <div class="dash__cluster-pop">
+              <span class="dash__glass" style={`${within(c.glass, c.box)}--blur:${c.glass.blur}`}></span>
+              <span class="dash__disc" style={within(c.disc, c.box)}></span>
+              <div class="dash__ring" style={`--cx:${(((c.centre.x - c.box.x) / c.box.w) * 100).toFixed(2)}%;--cy:${(((c.centre.y - c.box.y) / c.box.h) * 100).toFixed(2)}%`}>
+                {c.arcs.map((a) => (
+                  <Image class="dash__part" src={a.src} alt="" style={within({ x: a.x, y: a.y, w: a.w, h: a.h }, c.box)} widths={[Math.round(a.w * 2)]} sizes={`${Math.round(a.w * 0.7)}px`} quality={90} />
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+        {mapClusters.map((c, i) => (
+          <span class="dash__live dash__number dash__number--center dash__number--on-dark" data-live data-count={c.value} data-prefix="" style={`${at(c.text.x, c.text.y, c.text.w, c.text.size * 1.3)}--size:${c.text.size};--weight:${c.text.weight};--i:${i}`}>{c.value}</span>
+        ))}
+        {mapChips.map((chip) => (
+          <span class="dash__live dash__number dash__number--chip" data-live data-count={chip.value} data-prefix={chip.label} style={`${at(chip.x, chip.y, chip.w, 24)}--size:14`}>{chip.label}{chip.value}</span>
+        ))}
+        {numbers.map((n) => (
+          <span class:list={['dash__live', 'dash__number', `dash__number--${n.align}`]} data-live data-count={n.value} data-prefix={'prefix' in n ? n.prefix : ''} data-commas={'commas' in n ? '' : undefined} style={`${at(n.x, n.y, n.w, 44)}--size:${'size' in n ? n.size : 34}`}>{show(n.value, 'prefix' in n ? n.prefix : '', 'commas' in n)}</span>
         ))}
       </div>
     </div>
@@ -141,6 +255,63 @@ const pos = (item: { x: number; y: number; w: number }, height: number) =>
     scroller.addEventListener('scroll', sync, { passive: true });
     window.addEventListener('resize', sync);
     sync();
+
+    // The gauge, the timesheet bar and the numbers come alive when the window is on screen and they are in view in it,
+    // and are reset once either is no longer true, so they play on every pass. Without this script, or with reduced
+    // motion, they simply show their final state.
+    if (!calm.matches && 'IntersectionObserver' in window) {
+      dash.classList.add('dash--live');
+      const lives = [...dash.querySelectorAll<HTMLElement>('[data-live]')];
+      const inView = new Set<Element>();
+      const frames = new Map<Element, number>();
+      let onScreen = false;
+      const write = (el: HTMLElement, value: number) => {
+        const shown = el.hasAttribute('data-commas') ? Math.round(value).toLocaleString('en-US') : String(Math.round(value));
+        el.textContent = (el.dataset.prefix ?? '') + shown;
+      };
+      const count = (el: HTMLElement) => {
+        const to = Number(el.dataset.count);
+        const start = performance.now();
+        const step = (now: number) => {
+          const t = Math.min(1, (now - start) / 1400);
+          write(el, to * (1 - Math.pow(1 - t, 3)));
+          if (t < 1) frames.set(el, requestAnimationFrame(step));
+        };
+        cancelAnimationFrame(frames.get(el) ?? 0);
+        frames.set(el, requestAnimationFrame(step));
+      };
+      const draw = () =>
+        lives.forEach((el) => {
+          const on = onScreen && inView.has(el);
+          if (on === el.classList.contains('is-drawn')) return;
+          el.classList.toggle('is-drawn', on);
+          if (el.dataset.count === undefined) return;
+          if (on) count(el);
+          else {
+            cancelAnimationFrame(frames.get(el) ?? 0);
+            write(el, 0);
+          }
+        });
+      lives.forEach((el) => el.dataset.count !== undefined && write(el, 0));
+      const inWindow = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.intersectionRatio >= 0.6) inView.add(entry.target);
+            else if (!entry.isIntersecting) inView.delete(entry.target);
+          });
+          draw();
+        },
+        { root: scroller, threshold: [0, 0.6] },
+      );
+      lives.forEach((el) => inWindow.observe(el));
+      new IntersectionObserver(
+        ([entry]) => {
+          onScreen = entry.isIntersecting;
+          draw();
+        },
+        { threshold: 0.4 },
+      ).observe(dash);
+    }
 
     // The page scrolls itself from block to block while the window is on screen, and stops for good as soon as the visitor touches it.
     if (dash.hasAttribute('data-auto') && !calm.matches && 'IntersectionObserver' in window) {
@@ -281,6 +452,142 @@ const pos = (item: { x: number; y: number; w: number }, height: number) =>
     position: absolute;
     display: block;
     height: auto;
+  }
+
+  /* ---------- The live parts of the summary ---------- */
+  .dash__page {
+    container-type: inline-size; /* the numbers are sized against the page, like the pictures */
+  }
+
+  .dash__live {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .dash__part {
+    position: absolute;
+    display: block;
+    max-width: none;
+    height: auto;
+  }
+
+  .dash__number {
+    font-family: 'Poppins', var(--font-body);
+    font-size: calc(var(--size) / 1440 * 100cqw);
+    font-weight: 400;
+    line-height: 1.3;
+    color: #1e1e1e;
+    white-space: nowrap;
+  }
+
+  /* The map: the clusters' numbers sit on their black discs and come in with them; the chips' on a 24px line */
+  .dash__number--on-dark {
+    color: #fff;
+    font-weight: var(--weight, 400);
+    opacity: 1;
+  }
+
+  .dash--live .dash__number--on-dark {
+    opacity: 0;
+  }
+
+  .dash--live .dash__number--on-dark.is-drawn {
+    opacity: 1;
+    transition: opacity 0.3s ease-out calc(var(--i) * 120ms + 0.15s);
+  }
+
+  .dash__number--chip {
+    line-height: calc(24 / 1440 * 100cqw);
+  }
+
+  .dash__cluster-pop {
+    position: absolute;
+    inset: 0;
+  }
+
+  .dash__ring {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* The Figma's glass: white at 10%, a background blur of its radius and a drop shadow as deep */
+  .dash__glass {
+    position: absolute;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.1);
+    -webkit-backdrop-filter: blur(calc(var(--blur) / 1440 * 100cqw));
+    backdrop-filter: blur(calc(var(--blur) / 1440 * 100cqw));
+    box-shadow: 0 calc(var(--blur) / 1440 * 100cqw) calc(var(--blur) / 1440 * 100cqw) rgb(0 0 0 / 0.15);
+  }
+
+  .dash__disc {
+    position: absolute;
+    border-radius: 50%;
+    background: #000;
+  }
+
+  /* A cluster pops in with a little stagger; the transform sits on the inner box, the watched box stays put */
+  .dash--live .dash__cluster-pop {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  .dash--live .dash__cluster.is-drawn .dash__cluster-pop {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.35s ease-out calc(var(--i) * 120ms),
+      transform 0.5s cubic-bezier(0.25, 1, 0.5, 1) calc(var(--i) * 120ms);
+  }
+
+  /* Its ring draws round from the bottom left, where the orange share ends: the green, then the orange */
+  .dash--live .dash__ring {
+    --sweep: 0deg;
+    -webkit-mask-image: conic-gradient(from 225deg at var(--cx) var(--cy), #000 0deg var(--sweep), transparent var(--sweep));
+    mask-image: conic-gradient(from 225deg at var(--cx) var(--cy), #000 0deg var(--sweep), transparent var(--sweep));
+  }
+
+  .dash--live .dash__cluster.is-drawn .dash__ring {
+    --sweep: 360deg;
+    transition: --sweep 1s cubic-bezier(0.45, 0, 0.2, 1) calc(var(--i) * 120ms + 0.25s);
+  }
+
+  .dash__number--center {
+    text-align: center;
+  }
+
+  /* The gauge fills round from its left end: a wedge of the mask opens clockwise about the arcs' centre */
+  @property --sweep {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+  }
+
+  .dash--live .dash__gauge {
+    --sweep: 0deg;
+    -webkit-mask-image: conic-gradient(from 255deg at var(--cx) var(--cy), #000 0deg var(--sweep), transparent var(--sweep));
+    mask-image: conic-gradient(from 255deg at var(--cx) var(--cy), #000 0deg var(--sweep), transparent var(--sweep));
+  }
+
+  .dash--live .dash__gauge.is-drawn {
+    --sweep: 230deg;
+    transition: --sweep 1.4s cubic-bezier(0.45, 0, 0.2, 1) 0.1s;
+  }
+
+  /* The timesheet bar grows from the left. The clip sits on an inner box: a clip on the watched box itself would make it
+     count as unseen, and it would never start */
+  .dash__bar-fill {
+    position: absolute;
+    inset: 0;
+  }
+
+  .dash--live .dash__bar-fill {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  .dash--live .dash__bar.is-drawn .dash__bar-fill {
+    clip-path: inset(0);
+    transition: clip-path 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
   }
 
   /* the part buttons: a number and what the block shows */

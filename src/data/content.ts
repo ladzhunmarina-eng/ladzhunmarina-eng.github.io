@@ -44,19 +44,6 @@ export const work = [
   },
   {
     number: '02',
-    theme: 'cream',
-    category: 'Web app',
-    title: 'Gaming Influencer Marketing Platform',
-    href: '/work/cloutboost',
-    description:
-      'A web platform where game publishers and Cloutboost’s campaign team find the right YouTube and Twitch creators, run outreach, and see what each creator delivered for the money.',
-    image: card2,
-    alt: 'Cloutboost campaign report dashboard with key numbers and a performance chart, next to an empty-state card saying no report has been generated.',
-    place: { left: '14.6%', top: '16.4%', width: '64%', height: '83.6%' },
-    bleed: true, // the screenshot runs off the bottom of the panel
-  },
-  {
-    number: '03',
     theme: 'lilac',
     category: 'B2C',
     title: 'Baby Sleep Tracking Mobile App',
@@ -68,7 +55,7 @@ export const work = [
     place: { left: '22.46%', top: '0%', width: '53.45%', height: '100%' },
   },
   {
-    number: '04',
+    number: '03',
     theme: 'mint',
     category: 'B2B SaaS',
     title: 'Post-Storm Power Restoration Platform',
@@ -79,6 +66,19 @@ export const work = [
     alt: 'Storm event dashboard with a timeline, summary gauges and rosters, and a small card showing an empty fleet state.',
     place: { left: '17.63%', top: '14.55%', width: '64.77%', height: '85.43%' },
     bleed: true,
+  },
+  {
+    number: '04',
+    theme: 'cream',
+    category: 'Web app',
+    title: 'Gaming Influencer Marketing Platform',
+    href: '/work/cloutboost',
+    description:
+      'A web platform where game publishers and Cloutboost’s campaign team find the right YouTube and Twitch creators, run outreach, and see what each creator delivered for the money.',
+    image: card2,
+    alt: 'Cloutboost campaign report dashboard with key numbers and a performance chart, next to an empty-state card saying no report has been generated.',
+    place: { left: '14.6%', top: '16.4%', width: '64%', height: '83.6%' },
+    bleed: true, // the screenshot runs off the bottom of the panel
   },
 ];
 

@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import avatar from '../assets/images/avatar.png';
 import Button from './Button.astro';
 import SocialLinks from './SocialLinks.astro';
+import ArrowIcon from '../assets/icons/arrow-up-right.svg';
 ---
 
 <section class="hero" aria-labelledby="hero-title">
@@ -19,7 +20,7 @@ import SocialLinks from './SocialLinks.astro';
   </h1>
   <div class="hero__actions">
     <Button href="#work">View cases</Button>
-    <Button class="hero__cv" href="https://drive.google.com/file/d/1SqfWYm8hNObC8nspdcoS9fSNVktEpuc-/view?usp=share_link" variant="outline" external>CV</Button>
+    <Button class="hero__cv" href="https://drive.google.com/file/d/1SqfWYm8hNObC8nspdcoS9fSNVktEpuc-/view?usp=share_link" variant="outline" external>CV <ArrowIcon class="hero__cv-arrow" aria-hidden="true" /></Button>
     <Button class="hero__contact" href="#contact" variant="outline-strong">Contact me</Button>
   </div>
   <SocialLinks class="hero__rail" direction="column" />
@@ -115,7 +116,27 @@ import SocialLinks from './SocialLinks.astro';
   }
 
   .hero :global(.hero__cv) {
+    gap: var(--space-4);
     min-width: var(--button-width-cv);
+  }
+
+  /* The CV opens in a new tab: an arrow out, nudged further out on hover, as on the Next case links */
+  .hero :global(.hero__cv-arrow) {
+    width: var(--space-16);
+    height: var(--space-16);
+    stroke-width: 1.5;
+    transition: transform 0.3s var(--ease-out);
+  }
+
+  .hero :global(.hero__cv:hover .hero__cv-arrow),
+  .hero :global(.hero__cv:focus-visible .hero__cv-arrow) {
+    transform: translate(2px, -2px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero :global(.hero__cv-arrow) {
+      transition: none;
+    }
   }
 
   /* Contact me is in the header from 940px; below that the hero carries it. */
