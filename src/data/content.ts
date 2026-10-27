@@ -58,7 +58,7 @@ export const work = [
     number: '03',
     theme: 'mint',
     category: 'B2B SaaS',
-    title: 'Post-Storm Power Restoration Platform',
+    title: 'Post-Storm Power\nRestoration Platform',
     href: '/work/erma',
     description:
       'A digital platform that helps U.S. utility and emergency teams restore power after storms by improving coordination, resource allocation, and communication.',
@@ -71,7 +71,7 @@ export const work = [
     number: '04',
     theme: 'cream',
     category: 'Web app',
-    title: 'Gaming Influencer Marketing Platform',
+    title: 'Gaming Influencer\nMarketing Platform',
     href: '/work/cloutboost',
     description:
       'A web platform where game publishers and Cloutboost’s campaign team find the right YouTube and Twitch creators, run outreach, and see what each creator delivered for the money.',
