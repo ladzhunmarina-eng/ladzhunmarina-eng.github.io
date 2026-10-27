@@ -14,8 +14,10 @@ const shots: Record<string, ImageMetadata> = { A: shotA, B: shotB, C: shotC };
 
 <!--
   Three phones on a tinted panel, each under a label card, with a hand pointing at where the basket lives.
-  Everything is positioned as a share of the panel, so it scales as one picture.
+  Everything is positioned as a share of the panel, so it scales as one picture. On a narrow screen the cards keep only
+  their letters and the names are listed under the picture, since a whole name no longer fits a card that small.
 -->
+<div class="entry-wrap">
 <div class="entry">
   <div class="entry__stage">
     {variants.map((variant) => (
@@ -32,8 +34,21 @@ const shots: Record<string, ImageMetadata> = { A: shotA, B: shotB, C: shotC };
     <span class="entry__hand entry__hand--c" aria-hidden="true">☝️</span>
   </div>
 </div>
+<ul class="entry__legend" aria-hidden="true">
+  {variants.map((variant) => (
+    <li class="entry__key" style={`--mark: var(--case-variant-${variant.id.toLowerCase()})`}>
+      <span class={`entry__mark entry__mark--${variant.id.toLowerCase()}`}>{variant.id}</span>
+      {variant.name}
+    </li>
+  ))}
+</ul>
+</div>
 
 <style>
+  .entry-wrap {
+    container-type: inline-size;
+  }
+
   .entry {
     container-type: inline-size;
     position: relative;
@@ -102,7 +117,8 @@ const shots: Record<string, ImageMetadata> = { A: shotA, B: shotB, C: shotC };
   }
 
   /* C is the softer circle in the design; only the circle fades, the letter keeps its full colour */
-  .entry__variant--c .entry__mark {
+  .entry__variant--c .entry__mark,
+  .entry__mark--c {
     background: color-mix(in srgb, var(--mark) 50%, transparent);
   }
 
@@ -144,5 +160,48 @@ const shots: Record<string, ImageMetadata> = { A: shotA, B: shotB, C: shotC };
     left: 93.2%; /* 734.5 / 788 */
     top: 86.6%; /* 518 / 598 */
     transform: translate(-50%, -50%) rotate(-49.8deg);
+  }
+
+  /* The names under the picture, for a narrow screen only */
+  .entry__legend {
+    display: none;
+  }
+
+  @container (max-width: 600px) {
+    .entry__label {
+      justify-content: center;
+      padding-inline: 0;
+    }
+
+    /* the name stays for screen readers; the eye reads it in the list below */
+    .entry__name {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    .entry__legend {
+      display: grid;
+      gap: var(--space-12);
+      margin-top: var(--space-16);
+      font-size: var(--fs-14);
+      line-height: var(--lh-snug);
+      color: var(--color-ink);
+    }
+
+    .entry__key {
+      display: flex;
+      align-items: center;
+      gap: var(--space-12);
+    }
+
+    .entry__key .entry__mark {
+      width: 28px;
+      height: 28px;
+      font-size: var(--fs-14);
+    }
   }
 </style>
