@@ -8,21 +8,18 @@ import review3 from '../assets/images/review-3.png';
 import projectorLogo from '../assets/images/projector-logo.png';
 import robotDreamsLogo from '../assets/images/robot-dreams-logo.png';
 
+// The skills that run under the hero: each once, each with an icon of its own
 export const marquee = [
-  { icon: 'grid', label: 'product thinking' },
+  { icon: 'bulb', label: 'product thinking' },
   { icon: 'pen', label: 'illustrations' },
-  { icon: 'globe', label: 'research' },
-  { icon: 'sparkle', label: 'hypothesis' },
-  { icon: 'arrow', label: 'metrics' },
-  { icon: 'grid', label: 'A/B testings' },
+  { icon: 'book', label: 'research' },
+  { icon: 'flask', label: 'hypothesis' },
+  { icon: 'chart', label: 'metrics' },
+  { icon: 'split', label: 'A/B testings' },
   { icon: 'search', label: 'discovery' },
-  { icon: 'sparkle', label: 'ai-driven workflow' },
+  { icon: 'sparkle', label: 'ai-assisted workflow' },
   { icon: 'grid', label: 'design systems' },
-  { icon: 'pen', label: 'illustrations' },
   { icon: 'globe', label: 'websites' },
-  { icon: 'globe', label: 'research' },
-  { icon: 'arrow', label: 'metrics' },
-  { icon: 'grid', label: 'design systems' },
 ] as const;
 
 /*

@@ -89,3 +89,10 @@ a {
     scroll-behavior: auto;
   }
 }
+
+/* A block rising into place as it first comes on screen (held back and let in from the layout) */
+[data-rise='in'] {
+  transition:
+    opacity 0.8s var(--ease-out) var(--rise-delay, 0ms),
+    translate 0.9s var(--ease-out) var(--rise-delay, 0ms);
+}

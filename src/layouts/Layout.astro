@@ -16,6 +16,23 @@ interface Props {
 
 const { title, description, current } = Astro.props;
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+
+/*
+ * The blocks that rise into place as they first come on screen: a soft fade and a 16px lift, neighbours a beat apart.
+ * Parts that already move by themselves (the stack's chips, the reviews, the footer, the design system collage) are
+ * left out. One list for the style that holds them back and the script that lets them in.
+ */
+const RISE = [
+  '.hero__title',
+  '.hero__actions',
+  '.hero__social',
+  '.work',
+  '.case__intro > :not(script, style)',
+  '.case__top > :not(.case__intro)',
+  '.section__head',
+  '.section__body > :not(.dsc, script, style)',
+  '.case__after',
+].join(', ');
 ---
 
 <!doctype html>
@@ -31,6 +48,11 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : un
     <meta property="og:description" content={description} />
     {canonical && <link rel="canonical" href={canonical} />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <!-- Only with motion allowed and the script able to run are the blocks held back, so nothing is ever left hidden -->
+    <script is:inline>
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) document.documentElement.classList.add('rise');
+    </script>
+    <style is:inline set:html={`.rise :is(${RISE}):not([data-rise]){opacity:0;translate:0 16px}`}></style>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -42,3 +64,28 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : un
     <ContactCard />
   </body>
 </html>
+
+<script define:vars={{ RISE }}>
+  // Each block rises when it first comes on screen; those that arrive together go a beat apart. Once it has settled
+  // it is let go ("done"), so its own transitions (a card's hover) are its own again.
+  if (document.documentElement.classList.contains('rise')) {
+    const seen = new IntersectionObserver(
+      (entries) => {
+        entries
+          .filter((entry) => entry.isIntersecting)
+          .forEach((entry, i) => {
+            const el = entry.target;
+            seen.unobserve(el);
+            el.style.setProperty('--rise-delay', `${Math.min(i, 5) * 60}ms`);
+            el.dataset.rise = 'in';
+            setTimeout(() => {
+              el.dataset.rise = 'done';
+              el.style.removeProperty('--rise-delay');
+            }, 1300 + Math.min(i, 5) * 60);
+          });
+      },
+      { rootMargin: '0px 0px -6% 0px' },
+    );
+    document.querySelectorAll(RISE).forEach((el) => seen.observe(el));
+  }
+</script>
