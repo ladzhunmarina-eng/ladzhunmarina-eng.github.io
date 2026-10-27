@@ -176,16 +176,16 @@ export const reviews = {
   ],
 };
 
-import toolNotebookLm from '../assets/tools/notebooklm-v2.png';
-import toolClaude from '../assets/tools/claude-v2.png';
-import toolFigma from '../assets/tools/figma-v2.png';
-import toolCodex from '../assets/tools/codex-v2.png';
-import toolEnterpret from '../assets/tools/enterpret-v2.png';
-import toolLovable from '../assets/tools/lovable-v2.png';
-import toolMaze from '../assets/tools/maze-v2.png';
-import toolRive from '../assets/tools/rive-v2.png';
-import toolGithub from '../assets/tools/github-v2.png';
-import toolAzure from '../assets/tools/azure-devops-v2.png';
+import toolNotebookLm from '../assets/tools/notebooklm.svg';
+import toolClaude from '../assets/tools/claude.svg';
+import toolFigma from '../assets/tools/figma.svg';
+import toolCodex from '../assets/tools/codex.svg';
+import toolEnterpret from '../assets/tools/enterpret.svg';
+import toolLovable from '../assets/tools/lovable.svg';
+import toolMaze from '../assets/tools/maze.svg';
+import toolRive from '../assets/tools/rive.svg';
+import toolGithub from '../assets/tools/github.svg';
+import toolAzure from '../assets/tools/azure-devops.svg';
 
 /*
  * "Design stack and craft": one sentence in which every tool is a chip with its logo (files exported

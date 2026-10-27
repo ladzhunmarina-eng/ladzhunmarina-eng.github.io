@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import { stack, tools } from '../data/content';
 
 // Each line becomes a list of pieces: text, or a chip that carries the comma or full stop after it, so a
@@ -38,11 +37,12 @@ let chipIndex = 0;
         {line.map((piece) => {
           if ('text' in piece) return piece.text;
           const tool = tools[piece.tool];
+          const Logo = tool.logo; // the Figma's vector, drawn inline so it stays sharp at any size
           const index = chipIndex++;
           return (
             <span class="unit">
               <span class="tool" style={`--i: ${index}`}>
-                <Image class="tool__logo" src={tool.logo} alt="" width={64} height={64} widths={[32, 64, 96]} sizes="1.15em" />
+                <Logo class="tool__logo" aria-hidden="true" />
                 {tool.name}
               </span>
               {piece.after}
