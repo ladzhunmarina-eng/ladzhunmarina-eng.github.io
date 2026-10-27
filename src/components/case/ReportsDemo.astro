@@ -1,0 +1,201 @@
+---
+import PhoneTour from './PhoneTour.astro';
+import type { Step } from './PhoneTour.astro';
+import engagement from '../../assets/images/cb-rep-1-engagement.png';
+import building from '../../assets/images/cb-rep-2-building.png';
+import spinner from '../../assets/images/cb-rep-spinner.png';
+import ring from '../../assets/images/cb-rep-spinner-ring.png';
+import page from '../../assets/images/cb-rep-3-page-v2.png';
+import frame from '../../assets/images/cb-rep-3-frame.png';
+
+/*
+ * The campaign report, played by itself: from the Engagement table the Report tab opens Building Your Report while the
+ * numbers come in, then the report itself scrolls by under the fixed top bar, side menu and tabs (the frame).
+ * Coordinates are in the Figma's own 1440 x 1024; the report is 2353 tall.
+ *
+ * The loader is the Figma's own: a purple ring (58 x 58) the component turns a quarter every 0.3s, anticlockwise, with a
+ * soft grey ring over its hole that stays put.
+ */
+interface Props {
+  alt: string;
+}
+
+const { alt } = Astro.props;
+
+const W = 1440;
+const PAGE_H = 2353;
+
+const screens = [
+  { src: engagement, alt },
+  {
+    src: building,
+    layers: [
+      { src: spinner, box: [810, 431, 58, 58] as const, spin: -1200 },
+      { src: ring, box: [827, 448, 24, 24] as const },
+    ],
+    alt: 'Building Your Report: a moment while the report is generated.',
+  },
+  {
+    src: page,
+    tall: true,
+    frame,
+    alt: 'The campaign report: general info and key numbers, performance over time, views and true reach by creator, engagement and CPM, and every video with its price and views.',
+  },
+];
+
+const tour = [
+  [{ move: [760, 560] }, { wait: 500 }, { tap: [741, 109] }], // the Report tab
+  [{ move: [1180, 820] }, { wait: 2600 }], // the report builds
+  [{ wait: 1400 }, { scroll: 560 }, { wait: 2200 }, { scroll: PAGE_H - 1024 }, { wait: 2600 }], // down to the videos
+] satisfies Step[][];
+
+/*
+ * Once the report is in, its charts draw themselves as on the report at the top of the case: a plate in the cards' white
+ * lies over each mark and slides off it (bars grow from their start, lines draw from the left, the ring fills round, the
+ * name tag over it comes in last). Boxes are the marks' bounds in the Figma's report, a pixel or two wider.
+ */
+const px = (v: number, of: number) => `${((v / of) * 100).toFixed(3)}%`;
+const box = ([l, t, w, h]: readonly number[]) => `left:${px(l, W)};top:${px(t, PAGE_H)};width:${px(w, W)};height:${px(h, PAGE_H)}`;
+const inner = ([l, t, w, h]: readonly number[], [al, at, aw, ah]: readonly number[]) =>
+  `left:${px(l - al, aw)};top:${px(t - at, ah)};width:${px(w, aw)};height:${px(h, ah)}`;
+// a chart's bars: their left edge, and each bar's top and width, 12 tall
+const bars = (left: number, rows: readonly (readonly [number, number])[]) => rows.map(([t, w]) => [left - 1, t - 1, w + 3, 14] as const);
+const charts = [
+  // the sparklines of the six numbers at the top
+  { kind: 'line', area: [800, 270, 610, 200], marks: [[813, 285, 78, 21], [1058, 279, 78, 32], [1335, 279, 63, 34], [823, 444, 68, 17], [1068, 437, 68, 21], [1319, 448, 78, 23]] },
+  // campaign performance over time: both lines
+  { kind: 'line', area: [300, 760, 1110, 200], marks: [[320, 772, 1077, 170]], slow: true },
+  { kind: 'bars', area: [810, 1120, 450, 280], marks: bars(821, [[1131, 428], [1181, 383], [1231, 324], [1281, 290], [1331, 259], [1381, 229]]) }, // true reach
+  { kind: 'bars', area: [420, 1565, 390, 280], marks: bars(434, [[1576, 307], [1626, 181], [1676, 298], [1726, 257], [1776, 230], [1826, 360]]) }, // engagement
+  { kind: 'bars', area: [1000, 1565, 390, 280], marks: bars(1013, [[1576, 154], [1626, 307], [1676, 360], [1726, 257], [1776, 108], [1826, 76]]) }, // CPM
+] as const;
+// the Views ring (its pieces span 389 to 539 across, 1084 to 1234 down), and the name tag above it
+const donut = { cx: 464, cy: 1159, r: 77 };
+const donutTag = [370, 1030, 183, 84];
+---
+
+<div class="rpt">
+  <PhoneTour screens={screens} tour={tour} start={[760, 560]} size={[W, 1024]} variant="window">
+    <!-- page-2: laid over the report's page (the third screen), so the plates scroll with it -->
+    <div slot="page-2" class="rpt__charts" aria-hidden="true">
+      {charts.map((chart) => (
+        <div class:list={['rpt__chart', `rpt__chart--${chart.kind}`, { 'rpt__chart--slow': 'slow' in chart }]} style={box(chart.area)} data-chart>
+          {chart.marks.map((mark, i) => (
+            <span class="rpt__cover" style={`${inner(mark, chart.area)};--i:${i}`}></span>
+          ))}
+        </div>
+      ))}
+      <div class="rpt__chart rpt__chart--ring" style={box([donut.cx - donut.r, donut.cy - donut.r, donut.r * 2, donut.r * 2])} data-chart>
+        <span class="rpt__ring"></span>
+      </div>
+      <div class="rpt__chart rpt__chart--tag" style={box(donutTag)} data-chart>
+        <span class="rpt__tagcover"></span>
+      </div>
+    </div>
+  </PhoneTour>
+</div>
+
+<script>
+  // Each chart draws itself while the report is the screen on show and most of the chart is inside the window; the
+  // report leaving (the tour starting over) or a chart scrolling out covers it again, so it plays on every pass. The
+  // plates exist only from here on: without the script, or with reduced motion, the charts are simply there.
+  document.querySelectorAll<HTMLElement>('.rpt').forEach((rpt) => {
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const charts = rpt.querySelector<HTMLElement>('.rpt__charts');
+    const screen = charts?.closest<HTMLElement>('.onb__screen');
+    const phone = charts?.closest<HTMLElement>('.onb__phone');
+    if (!charts || !screen || !phone || calm.matches || !('IntersectionObserver' in window)) return;
+
+    rpt.classList.add('rpt--live');
+    const chartEls = [...charts.querySelectorAll<HTMLElement>('[data-chart]')];
+    const inWindow = new Set<Element>();
+    const draw = () => {
+      const shown = screen.classList.contains('is-on');
+      chartEls.forEach((chart) => chart.classList.toggle('is-drawn', shown && inWindow.has(chart)));
+    };
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.intersectionRatio >= 0.6) inWindow.add(entry.target);
+          else if (!entry.isIntersecting) inWindow.delete(entry.target);
+        });
+        draw();
+      },
+      { root: phone, threshold: [0, 0.6] },
+    );
+    chartEls.forEach((chart) => io.observe(chart));
+    new MutationObserver(draw).observe(screen, { attributes: true, attributeFilter: ['class'] });
+  });
+</script>
+
+<style>
+  .rpt__charts {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .rpt__chart {
+    position: absolute;
+  }
+
+  .rpt__cover,
+  .rpt__ring,
+  .rpt__tagcover {
+    position: absolute;
+    display: none;
+    background: #fff; /* the cards' own white */
+  }
+
+  .rpt--live .rpt__cover,
+  .rpt--live .rpt__ring,
+  .rpt--live .rpt__tagcover {
+    display: block;
+  }
+
+  /* The plate slides off towards the end of the mark; only the way in is animated, the way out is at once */
+  .rpt__cover {
+    transform-origin: right center;
+  }
+
+  .is-drawn .rpt__cover {
+    transform: scaleX(0);
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i) * 70ms + 0.1s);
+  }
+
+  .rpt__chart--line.is-drawn .rpt__cover {
+    transition: transform 1.3s cubic-bezier(0.45, 0, 0.2, 1) calc(var(--i) * 90ms + 0.1s);
+  }
+
+  .rpt__chart--slow.is-drawn .rpt__cover {
+    transition-duration: 2s;
+  }
+
+  /* The ring fills round from the top: the plate is a wedge that narrows to nothing */
+  @property --rpt-sweep {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+  }
+
+  .rpt__ring {
+    inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(transparent 0deg var(--rpt-sweep), #fff var(--rpt-sweep) 360deg);
+  }
+
+  .is-drawn .rpt__ring {
+    --rpt-sweep: 360deg;
+    transition: --rpt-sweep 1.4s cubic-bezier(0.45, 0, 0.2, 1) 0.1s;
+  }
+
+  /* The name tag over the ring comes in once the ring is full */
+  .rpt__tagcover {
+    inset: 0;
+  }
+
+  .is-drawn .rpt__tagcover {
+    opacity: 0;
+    transition: opacity 0.4s ease-out 1.5s;
+  }
+</style>

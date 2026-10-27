@@ -13,8 +13,24 @@ export type Step =
   | { count: string; from: [number, number, number]; secs: number; compact?: boolean; format?: 'ms' }
   | { scroll: number; show?: number }
   | { pop: string; for: number }
+  /** a pop that stays until it is closed (a drop-down open while an option is picked) */
+  | { open: string }
+  | { close: string }
+  /** a field takes a value at once, as when it is picked from a drop-down rather than typed */
+  | { fill: string; text: string }
   | { wait: number };
 
+interface Field {
+  id: string;
+  box: readonly [number, number, number, number];
+  multiline?: boolean;
+  timer?: boolean;
+  fontSize?: number;
+  /** no plate behind the text, for a field that is already empty */
+  bare?: boolean;
+  /** the text's inset from the box's left edge, in design pixels (19 by default) */
+  pad?: number;
+}
 interface Screen {
   /** One picture, or several stacked one above the other for a long screen */
   src: ImageMetadata | readonly ImageMetadata[];
@@ -22,10 +38,39 @@ interface Screen {
   tall?: boolean;
   /** The top of this screen stays fixed while it scrolls: a picture and the height in design pixels to keep */
   head?: { src: ImageMetadata; height: number };
+  /** A picture the size of the screen, see-through where the page shows, laid over it and not scrolling (a desktop app's top bar and side menu) */
+  frame?: ImageMetadata;
+  /**
+   * Small pictures laid over the screen in design pixels, in order. One with `spin` turns round and round, a turn every
+   * `spin` milliseconds, anticlockwise when negative (a loader).
+   */
+  layers?: readonly { src: ImageMetadata; box: readonly [number, number, number, number]; spin?: number }[];
+  /** A panel over the screen that scrolls by itself (a filters drop-down): its picture and the window it shows through, in design pixels */
+  sheet?: {
+    src: ImageMetadata;
+    box: readonly [number, number, number, number];
+    /** the top of the panel that stays put while the rest scrolls, in design pixels */
+    head?: number;
+    /** the bottom of the panel that stays put (its actions), in design pixels */
+    foot?: number;
+    /** the window's corner radius, in design pixels */
+    radius?: number;
+    /** fields inside the panel, which scroll with it: boxes in design pixels from the panel picture's top left, at the size it is shown */
+    fields?: readonly Field[];
+    /** pops inside the panel (its drop-downs), which scroll with it: boxes as for its fields */
+    pops?: readonly { id: string; src: ImageMetadata; box: readonly [number, number, number, number] }[];
+  };
   /** Small pictures that pop in for a moment (a "Copied!" tag): where they sit, in design pixels */
-  pops?: readonly { id: string; src: ImageMetadata; box: readonly [number, number, number, number]; alt?: string }[];
+  pops?: readonly {
+    id: string;
+    src: ImageMetadata;
+    box: readonly [number, number, number, number];
+    alt?: string;
+    /** the point it grows from, in design pixels inside its picture (a button it carries in its pressed state stays put) */
+    origin?: readonly [number, number];
+  }[];
   alt: string;
-  fields?: readonly { id: string; box: readonly [number, number, number, number]; multiline?: boolean; timer?: boolean; fontSize?: number; /** no plate behind the text, for a field that is already empty */ bare?: boolean }[];
+  fields?: readonly Field[];
 }
 interface Props {
   screens: readonly Screen[];
@@ -50,6 +95,14 @@ const [W, H] = size;
 // The pictures' sizes: a phone is shown about 280px wide, a desktop window across the content column
 const wide = variant === 'window';
 const shot = wide ? { widths: [720, 1008, 1512, 2016], sizes: '(max-width: 1023px) 100vw, 1008px' } : { widths: [280, 390, 546], sizes: '280px' };
+// A typed field's class and place; its box as shares of what it sits in (the screen, or a scrolling panel's picture)
+const fieldClass = (field: Field) => ['onb__type', { 'onb__type--multiline': field.multiline, 'onb__type--timer': field.timer, 'onb__type--bare': field.bare }];
+const fieldStyle = (field: Field, w: number, h: number) =>
+  `left:${(field.box[0] / w) * 100}%;top:${(field.box[1] / h) * 100}%;width:${(field.box[2] / w) * 100}%;height:${(field.box[3] / h) * 100}%` +
+  (field.fontSize ? `;font-size:calc(${field.fontSize} / var(--w) * 100cqw)` : '') +
+  (field.pad !== undefined ? `;padding-left:calc(${field.pad} / var(--w) * 100cqw)` : '');
+// a scrolling panel's picture height, in design pixels, at the width it is shown
+const sheetHeight = (sheet: NonNullable<Screen['sheet']>) => (sheet.box[2] * sheet.src.height) / sheet.src.width;
 const popShot = wide ? { widths: [182, 364], sizes: '128px' } : { widths: [96, 192, 288], sizes: '96px' };
 const x = (v: number) => `${(v / W) * 100}%`;
 const y = (v: number) => `${(v / H) * 100}%`;
@@ -64,18 +117,57 @@ const y = (v: number) => `${(v / H) * 100}%`;
           {(Array.isArray(screen.src) ? screen.src : [screen.src]).map((src) => (
             <Image src={src} alt={i === 0 || !screen.tall ? screen.alt : ''} widths={shot.widths} sizes={shot.sizes} quality={85} loading={i === 0 ? 'eager' : 'lazy'} />
           ))}
+          <slot name={`page-${i}`} />
         </div>
         {screen.head && (
           <div class="onb__head onb__head--screen" aria-hidden="true" style={`height: calc(${screen.head.height} / var(--w) * 100cqw)`}>
             <Image src={screen.head.src} alt="" widths={[280, 560]} sizes="280px" quality={90} />
           </div>
         )}
+        {screen.frame && <Image class="onb__frame" src={screen.frame} alt="" widths={shot.widths} sizes={shot.sizes} quality={85} loading="lazy" />}
+        {screen.layers?.map((layer) => (
+          <Image
+            class:list={['onb__layer', { 'onb__layer--spin': layer.spin }]}
+            src={layer.src}
+            alt=""
+            widths={[Math.round(layer.box[2]), Math.round(layer.box[2] * 2)]}
+            sizes={wide ? `${Math.round((layer.box[2] / W) * 1008)}px` : `${Math.round((layer.box[2] / W) * 280)}px`}
+            quality={90}
+            style={`left:${x(layer.box[0])};top:${y(layer.box[1])};width:${x(layer.box[2])}${layer.spin ? `;--spin:${Math.abs(layer.spin)}ms;--spin-dir:${layer.spin < 0 ? 'reverse' : 'normal'}` : ''}`}
+          />
+        ))}
+        {screen.sheet && (
+          <div class="onb__sheet" aria-hidden="true" style={`left:${x(screen.sheet.box[0])};top:${y(screen.sheet.box[1])};width:${x(screen.sheet.box[2])};height:${y(screen.sheet.box[3])}${screen.sheet.radius ? `;border-radius:calc(${screen.sheet.radius} / var(--w) * 100cqw)` : ''}`}>
+            <div class="onb__sheet-page" data-sheet>
+              <Image src={screen.sheet.src} alt="" widths={[Math.round(screen.sheet.box[2]), Math.round(screen.sheet.box[2] * 2)]} sizes={wide ? `${Math.round((screen.sheet.box[2] / W) * 1008)}px` : '280px'} quality={85} loading="lazy" />
+              {screen.sheet.fields?.map((field) => (
+                <span class:list={fieldClass(field)} data-type={field.id} style={fieldStyle(field, screen.sheet!.box[2], sheetHeight(screen.sheet!))}></span>
+              ))}
+              {screen.sheet.pops?.map((pop) => {
+                const [pw, ph] = [screen.sheet!.box[2], sheetHeight(screen.sheet!)];
+                return (
+                  <Image class="onb__pop onb__pop--down" src={pop.src} alt="" data-pop={pop.id} widths={[Math.round(pop.box[2]), Math.round(pop.box[2] * 2)]} sizes={wide ? `${Math.round((pop.box[2] / W) * 1008)}px` : '200px'} quality={90} style={`left:${(pop.box[0] / pw) * 100}%;top:${(pop.box[1] / ph) * 100}%;width:${(pop.box[2] / pw) * 100}%`} />
+                );
+              })}
+            </div>
+            {screen.sheet.head && (
+              <div class="onb__sheet-head" style={`height:${((screen.sheet.head / screen.sheet.box[3]) * 100).toFixed(3)}%`}>
+                <Image src={screen.sheet.src} alt="" widths={[Math.round(screen.sheet.box[2]), Math.round(screen.sheet.box[2] * 2)]} sizes={wide ? `${Math.round((screen.sheet.box[2] / W) * 1008)}px` : '280px'} quality={85} loading="lazy" />
+              </div>
+            )}
+            {screen.sheet.foot && (
+              <div class="onb__sheet-foot" style={`height:${((screen.sheet.foot / screen.sheet.box[3]) * 100).toFixed(3)}%`}>
+                <Image src={screen.sheet.src} alt="" widths={[Math.round(screen.sheet.box[2]), Math.round(screen.sheet.box[2] * 2)]} sizes={wide ? `${Math.round((screen.sheet.box[2] / W) * 1008)}px` : '280px'} quality={85} loading="lazy" />
+              </div>
+            )}
+          </div>
+        )}
         {screen.pops?.map((pop) => (
-          <Image class="onb__pop" src={pop.src} alt={pop.alt ?? ''} data-pop={pop.id} widths={popShot.widths} sizes={popShot.sizes} quality={90} style={`left:${x(pop.box[0])};top:${y(pop.box[1])};width:${x(pop.box[2])}`} />
+          <Image class="onb__pop" src={pop.src} alt={pop.alt ?? ''} data-pop={pop.id} widths={popShot.widths} sizes={popShot.sizes} quality={90} style={`left:${x(pop.box[0])};top:${y(pop.box[1])};width:${x(pop.box[2])}${pop.origin ? `;transform-origin:${(pop.origin[0] / pop.box[2]) * 100}% ${(pop.origin[1] / pop.box[3]) * 100}%` : ''}`} />
         ))}
         <slot name={`screen-${i}`} />
         {screen.fields?.map((field) => (
-          <span class:list={['onb__type', { 'onb__type--multiline': field.multiline, 'onb__type--timer': field.timer, 'onb__type--bare': field.bare }]} data-type={field.id} style={`left:${x(field.box[0])};top:${y(field.box[1])};width:${x(field.box[2])};height:${y(field.box[3])}${field.fontSize ? `;font-size:calc(${field.fontSize} / var(--w) * 100cqw)` : ''}`}></span>
+          <span class:list={fieldClass(field)} data-type={field.id} style={fieldStyle(field, W, H)}></span>
         ))}
       </div>
     ))}
@@ -137,18 +229,32 @@ const y = (v: number) => `${(v / H) * 100}%`;
     border-radius: var(--radius-card);
   }
 
+  /*
+   * The next screen fades in on top of the one before, which stays fully shown until it is covered and only then
+   * goes: fading both at once would let the background show through halfway, a flash on every click.
+   */
   .onb__screen {
     position: absolute;
     inset: 0;
     opacity: 0;
-    transition: opacity 0.35s ease;
+    transition: opacity 0s linear 0.35s;
   }
 
   .onb__screen.is-on {
+    z-index: 1;
     opacity: 1;
+    transition: opacity 0.35s ease;
+  }
+
+  /* the status bar, the dock and the finger stay over every screen */
+  .onb__phone > .onb__head,
+  .onb__phone > :global(.onb__dock),
+  .onb__finger {
+    z-index: 2;
   }
 
   .onb__page {
+    position: relative; /* what a page slot lays over its picture scrolls with it */
     width: 100%;
     height: 100%;
     will-change: transform;
@@ -195,6 +301,44 @@ const y = (v: number) => `${(v / H) * 100}%`;
     height: auto;
   }
 
+  /* The panel's window: its picture is taller than the window and scrolls inside it, the screen below stays */
+  .onb__sheet {
+    position: absolute;
+    overflow: hidden;
+  }
+
+  .onb__sheet-page {
+    position: relative; /* its fields are placed on its picture */
+    will-change: transform;
+  }
+
+  /* The panel's header: the top of the same picture, laid over the scrolling part and not moving */
+  .onb__sheet-head {
+    position: absolute;
+    inset: 0 0 auto 0;
+    overflow: hidden;
+  }
+
+  /* The panel's actions: the bottom of the same picture, pinned to the bottom of the window, with a hairline over what scrolls under it */
+  .onb__sheet-foot {
+    position: absolute;
+    inset: auto 0 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    border-top: 1px solid rgb(0 0 0 / 0.08);
+  }
+
+  .onb__sheet-foot :global(img) {
+    flex-shrink: 0;
+  }
+
+  .onb__screen .onb__sheet :global(img) {
+    height: auto;
+    object-fit: fill;
+  }
+
   .onb__page--tall :global(img) {
     height: auto;
     object-fit: fill;
@@ -217,6 +361,36 @@ const y = (v: number) => `${(v / H) * 100}%`;
 
   /* A running clock drawn over the one in the picture, in the same dark plate */
   /* A tag that pops in, stays a moment, and fades */
+  .onb__screen :global(.onb__frame) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .onb__screen :global(.onb__layer) {
+    position: absolute;
+    height: auto;
+    pointer-events: none;
+  }
+
+  .onb__screen :global(.onb__layer--spin) {
+    animation: onb-spin var(--spin) linear infinite var(--spin-dir);
+  }
+
+  @keyframes onb-spin {
+    to {
+      rotate: 360deg;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .onb__screen :global(.onb__layer--spin) {
+      animation: none;
+    }
+  }
+
   .onb__screen :global(.onb__pop) {
     position: absolute;
     height: auto;
@@ -224,6 +398,12 @@ const y = (v: number) => `${(v / H) * 100}%`;
     transform: translateY(4px) scale(0.9);
     transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
     pointer-events: none;
+  }
+
+  /* a drop-down unfolds from its top edge, without the shrink */
+  .onb__screen :global(.onb__pop--down) {
+    transform: translateY(-6px);
+    transform-origin: top;
   }
 
   .onb__screen :global(.onb__pop.is-on) {
@@ -349,6 +529,9 @@ const y = (v: number) => `${(v / H) * 100}%`;
     | { count: string; from: [number, number, number]; secs: number; compact?: boolean; format?: 'ms' }
     | { scroll: number; show?: number }
     | { pop: string; for: number }
+    | { open: string }
+    | { close: string }
+    | { fill: string; text: string }
     | { wait: number };
 
   const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -386,12 +569,11 @@ const y = (v: number) => `${(v / H) * 100}%`;
     };
 
     const show = (i: number) => {
-      pages.forEach((page, n) => {
-        if (n === i) {
-          page.style.transition = 'none';
-          page.style.transform = 'translate3d(0, 0, 0)';
-          page.dataset.at = '0';
-        }
+      [pages[i], screens[i]?.querySelector<HTMLElement>('[data-sheet]')].forEach((page) => {
+        if (!page) return;
+        page.style.transition = 'none';
+        page.style.transform = 'translate3d(0, 0, 0)';
+        page.dataset.at = '0';
       });
       screens.forEach((s, n) => s.classList.toggle('is-on', n === i));
       dots.forEach((d, n) => d.classList.toggle('is-on', n === i));
@@ -453,8 +635,20 @@ const y = (v: number) => `${(v / H) * 100}%`;
               await sleep(step.for);
               tag.classList.remove('is-on');
               await sleep(250);
+            } else if ('open' in step) {
+              root.querySelector<HTMLElement>(`[data-pop="${step.open}"]`)!.classList.add('is-on');
+              await sleep(300);
+            } else if ('close' in step) {
+              root.querySelector<HTMLElement>(`[data-pop="${step.close}"]`)!.classList.remove('is-on');
+              await sleep(150);
+            } else if ('fill' in step) {
+              const field = root.querySelector<HTMLElement>(`[data-type="${step.fill}"]`)!;
+              field.textContent = step.text;
+              field.classList.add('is-on');
+              await sleep(250);
             } else if ('scroll' in step) {
-              await scrollTo(pages[i], step.scroll, step.show);
+              // a screen with a panel scrolls the panel, otherwise the screen itself
+              await scrollTo(screens[i].querySelector<HTMLElement>('[data-sheet]') ?? pages[i], step.scroll, step.show);
             } else if ('count' in step) {
               // seconds tick on a clock: h:mm:ss
               const clock = root.querySelector<HTMLElement>(`[data-type="${step.count}"]`)!;

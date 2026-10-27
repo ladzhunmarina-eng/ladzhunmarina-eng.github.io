@@ -1,0 +1,51 @@
+---
+import PhoneTour from './PhoneTour.astro';
+import type { Step } from './PhoneTour.astro';
+import list from '../../assets/images/cb-sel-1-list-v2.png';
+import page from '../../assets/images/cb-sel-2-page.png';
+import frame from '../../assets/images/cb-sel-2-frame.png';
+import tip from '../../assets/images/cb-sel-tip.png';
+
+/*
+ * The creators picked for a campaign, played by itself: the Selected table, then a click on a name opens the channel's
+ * page, which scrolls under the fixed top bar, side menu and tabs (the frame, see-through over the page), stopping at the
+ * YouTube numbers for a tooltip. Coordinates are in the Figma's own 1440 x 1024; the channel page is 2296 tall.
+ */
+interface Props {
+  alt: string;
+}
+
+const { alt } = Astro.props;
+
+const at = 1000; // where the page stops for the tooltip
+// the tooltip's picture, shadow included, sits at 475, 1371 on the page
+const tipBox = [475, 1371 - at, 274, 64] as const;
+
+const screens = [
+  { src: list, alt },
+  {
+    src: page,
+    tall: true,
+    frame,
+    pops: [{ id: 'tip', src: tip, box: tipBox, origin: [136, 60] as const, alt: 'Total videos: a short description.' }],
+    alt: 'PixelFox7’s channel: description and contacts, interests, favourite games and genres, a cloud of tags, and YouTube and Twitch numbers with channel scores.',
+  },
+];
+
+const tour = [
+  [{ move: [700, 640] }, { wait: 500 }, { move: [420, 560] }, { wait: 300 }, { tap: [328, 504] }], // PixelFox7
+  [
+    { wait: 900 },
+    { scroll: 520 }, // interests and the tag cloud
+    { wait: 900 },
+    { scroll: at }, // the YouTube numbers
+    { move: [688, 1446 - at] },
+    { pop: 'tip', for: 1600 },
+    { wait: 300 },
+    { scroll: 2296 - 1024 }, // down to Twitch
+    { wait: 1500 },
+  ],
+] satisfies Step[][];
+---
+
+<PhoneTour screens={screens} tour={tour} start={[700, 640]} size={[1440, 1024]} variant="window" />

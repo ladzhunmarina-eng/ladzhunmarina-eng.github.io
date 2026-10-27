@@ -1,0 +1,139 @@
+---
+import PhoneTour from './PhoneTour.astro';
+import type { Step } from './PhoneTour.astro';
+import list from '../../assets/images/cb-campaign-1-list.png';
+import dimmed from '../../assets/images/cb-campaign-2-dimmed.png';
+import dialog from '../../assets/images/cb-campaign-dialog-empty.png';
+import tagMaryna from '../../assets/images/cb-chip-maryna.png';
+import tagPolina from '../../assets/images/cb-chip-polina.png';
+import chipShare from '../../assets/images/cb-chip-share.png';
+import platformOff from '../../assets/images/cb-dd-platform-off.png';
+import platformOn from '../../assets/images/cb-dd-platform-on.png';
+import typeMenu from '../../assets/images/cb-dd-type-card.png';
+import calOff from '../../assets/images/cb-dd-cal-off.png';
+import calOn from '../../assets/images/cb-dd-cal-on.png';
+import shareMenu from '../../assets/images/cb-dd-share.png';
+
+/*
+ * Creating a campaign, played by itself: the campaigns list, then the Create new campaign dialog over the dimmed list,
+ * filled in, scrolled down and saved. Coordinates are in the Figma's own 1440 x 1024.
+ *
+ * The dialog (582 x 1036 in the Figma) is shown at 90% in a window 720px tall, centred, so it scrolls: the names are
+ * typed and the platform picked first, then it scrolls to the type, launch date and sharing, each picked from its
+ * drop-down, and Save (pinned to the bottom) is tapped. Its fields live in the scrolling panel and move with it.
+ */
+interface Props {
+  alt: string;
+}
+
+const { alt } = Astro.props;
+
+const K = 0.9; // the dialog's scale
+const D = { w: 582 * K, h: 1036 * K }; // the dialog as shown
+const win = { x: (1440 - D.w) / 2, y: 152, h: 1024 - 2 * 152 };
+const scrollEnd = Math.round(D.h - win.h); // to the bottom of the dialog
+
+// a field in the dialog's own coordinates (its placeholder starts 46px into the dialog), at the dialog's scale
+const field = (id: string, y: number) => ({ id, box: [36 * K, y * K, 400 * K, 24 * K] as const, pad: 10 * K, fontSize: 14 * K });
+// a point in the dialog, on the screen, with the dialog scrolled by `scroll`
+const inDialog = (x: number, y: number, scroll = 0): [number, number] => [Math.round(win.x + x * K), Math.round(win.y + y * K - scroll)];
+
+/*
+ * The drop-downs, in the dialog's own coordinates: each opens 4px off its field (fields are 514 wide from x 34). Near the
+ * bottom of the window they open upwards, as a real one would. Platform, type and sharing carry 14px of shadow at the
+ * sides and 4 above, the calendar 17 and 3.
+ */
+const pop = (id: string, src: ImageMetadata, x: number, y: number) => ({ id, src, box: [x * K, y * K, (src.width / 2) * K, (src.height / 2) * K] as const });
+const menus = [
+  pop('platform-off', platformOff, 34 - 14, 574 - 4), // under SM Platform (524 to 570)
+  pop('platform-on', platformOn, 34 - 14, 574 - 4),
+  pop('type', typeMenu, 34 - 14, 673 - 4), // under Campaign Type (621 to 669)
+  pop('cal-off', calOff, 548 - 306 - 17, 720 - 4 - 318 - 3), // above Launch date (720 to 767), at its calendar icon
+  pop('cal-on', calOn, 548 - 306 - 17, 720 - 4 - 318 - 3),
+  pop('share', shareMenu, 34 - 14, 818 - 4 - 200 - 4), // above Share with (818 to 866)
+  // Client email address picks from the same list of people, opening under its field (324 to 370)
+  pop('people', shareMenu, 34 - 14, 374 - 4),
+  // the tags a picked person turns into, from the Figma's own chips: 164 wide, 10 apart
+  pop('email-1', tagMaryna, 41, 335),
+  pop('email-2', tagPolina, 41 + 164 + 10, 335),
+  pop('share-tag', chipShare, 41, 335 + 490), // Share with sits 490 below Client email address
+];
+
+const screens = [
+  { src: list, alt },
+  {
+    src: dimmed,
+    // The title and close (the dialog's top 100px, down to just above Campaign name at 117) and Cancel and Save (its
+    // last 96px) stay pinned while the form scrolls between them
+    sheet: { src: dialog, box: [win.x, win.y, D.w, win.h] as const, radius: 4, head: 100 * K, foot: 96 * K, fields: [
+      field('campaign', 152),
+      field('company', 242),
+      field('product', 438),
+      field('platform', 537),
+      field('type', 636),
+      field('date', 734),
+    ], pops: menus },
+    alt: 'Create new campaign: campaign, company and product names, client emails, platform, type, launch date, sharing, and Save.',
+  },
+];
+
+const tour = [
+  [{ move: [900, 520] }, { wait: 500 }, { tap: [1305, 250] }], // + Create new campaign
+  [
+    { wait: 400 },
+    { tap: inDialog(211, 164) },
+    { type: 'campaign', text: 'Spring Launch' },
+    { tap: inDialog(211, 254) },
+    { type: 'company', text: 'Potion Craft Studio' },
+    // Client email address: two people from the list, each turning into a tag
+    { tap: inDialog(211, 352) },
+    { open: 'people' },
+    { tap: inDialog(130, 402) }, // Ladzhun Maryna
+    { close: 'people' },
+    { open: 'email-1' },
+    { tap: inDialog(360, 352) },
+    { open: 'people' },
+    { tap: inDialog(130, 474) }, // Polina Haryacha
+    { close: 'people' },
+    { open: 'email-2' },
+    { tap: inDialog(211, 450) },
+    { type: 'product', text: 'Potion Craft' },
+    // SM Platform: tick YouTube
+    { tap: inDialog(211, 549) },
+    { open: 'platform-off' },
+    { tap: inDialog(62, 638) },
+    { open: 'platform-on' },
+    { wait: 400 },
+    { close: 'platform-off' },
+    { close: 'platform-on' },
+    { fill: 'platform', text: 'YouTube' },
+    { scroll: scrollEnd }, // down to the rest and Save
+    // Campaign Type: Paid
+    { tap: inDialog(211, 648, scrollEnd) },
+    { open: 'type' },
+    { tap: inDialog(80, 739, scrollEnd) },
+    { close: 'type' },
+    { fill: 'type', text: '💰 Paid' },
+    // Launch date: the 12th on the calendar
+    { tap: inDialog(523, 744, scrollEnd) },
+    { open: 'cal-off' },
+    { tap: inDialog(433, 566, scrollEnd) },
+    { open: 'cal-on' },
+    { wait: 400 },
+    { close: 'cal-off' },
+    { close: 'cal-on' },
+    { fill: 'date', text: '12 Sept 2021' },
+    // Share with: Ivan
+    { tap: inDialog(211, 844, scrollEnd) },
+    { open: 'share' },
+    { tap: inDialog(130, 678, scrollEnd) },
+    { close: 'share' },
+    { open: 'share-tag' },
+    { wait: 500 },
+    { tap: inDialog(427, 977, scrollEnd) }, // Save
+    { wait: 1200 },
+  ],
+] satisfies Step[][];
+---
+
+<PhoneTour screens={screens} tour={tour} start={[1000, 600]} size={[1440, 1024]} variant="window" />

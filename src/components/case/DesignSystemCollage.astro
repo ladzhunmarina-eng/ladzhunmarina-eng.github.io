@@ -1,0 +1,91 @@
+---
+import { Image } from 'astro:assets';
+import layoutTokens from '../../assets/images/cb-ds-layout-tokens-clear.png';
+import colorTokens from '../../assets/images/cb-ds-color-tokens-clear.png';
+import selectFields from '../../assets/images/cb-ds-select-fields-clear.png';
+import buttonStates from '../../assets/images/cb-ds-button-states-clear.png';
+import buttonPanel from '../../assets/images/cb-ds-button-panel-v2.png';
+
+/*
+ * The design system as the Figma lays it out: token tables, the select and date fields and the button's states, with
+ * the Button's properties panel over them. Each piece sits where it does in the Figma (its box with any shadow, in the
+ * collage's own 709 x 629), straight on the page: the four under the panel have see-through backgrounds (their white
+ * turned to transparency), the panel keeps its white and shadow. They settle into place one after another the first
+ * time the collage scrolls into view; without the script, or with reduced motion, they are simply there.
+ */
+interface Props {
+  alt: string;
+}
+
+const { alt } = Astro.props;
+
+const W = 709;
+const H = 629;
+const at = ([x, y, w]: readonly number[]) =>
+  `left:${((x / W) * 100).toFixed(3)}%;top:${((y / H) * 100).toFixed(3)}%;width:${((w / W) * 100).toFixed(3)}%`;
+// boxes from the Figma's section, less the collage's own top left (305, 121); bottom to top
+const pieces = [
+  { src: layoutTokens, box: [0, 2, 229] },
+  { src: colorTokens, box: [0, 379, 236] },
+  { src: selectFields, box: [399, 0, 310] },
+  { src: buttonStates, box: [265, 351, 444] },
+  { src: buttonPanel, box: [130.8, 21, 378] },
+] as const;
+---
+
+<figure class="dsc" role="img" aria-label={alt}>
+  <div class="dsc__stage" style={`aspect-ratio: ${W} / ${H}`}>
+    {pieces.map((piece, i) => (
+      <Image
+        class="dsc__piece"
+        src={piece.src}
+        alt=""
+        widths={[Math.round(piece.box[2] * 1.5), Math.round(piece.box[2] * 3)]}
+        sizes={`(max-width: 1023px) ${Math.round((piece.box[2] / W) * 100)}vw, ${Math.round((piece.box[2] / W) * 860)}px`}
+        quality={90}
+        style={`${at(piece.box)};--i:${i}`}
+      />
+    ))}
+  </div>
+</figure>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.dsc').forEach((dsc) => {
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (calm.matches || !('IntersectionObserver' in window)) return;
+    dsc.dataset.reveal = 'ready';
+    const seen = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        seen.disconnect();
+        dsc.dataset.reveal = 'go';
+      },
+      { threshold: 0.35 },
+    );
+    seen.observe(dsc);
+  });
+</script>
+
+<style>
+  .dsc__stage {
+    position: relative;
+    width: 100%;
+  }
+
+  .dsc :global(.dsc__piece) {
+    position: absolute;
+    height: auto;
+  }
+
+  /* The settle-in: each piece rises a little and fades up, a beat after the one under it; the panel comes last */
+  .dsc[data-reveal='ready'] :global(.dsc__piece) {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  .dsc[data-reveal='go'] :global(.dsc__piece) {
+    transition:
+      opacity 0.7s var(--ease-out) calc(var(--i) * 120ms),
+      transform 0.9s var(--ease-out) calc(var(--i) * 120ms);
+  }
+</style>

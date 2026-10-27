@@ -99,6 +99,7 @@
   --cb-page: #f9f9f9;
   --cb-purple: #4319ee;
   --cb-orange: #fa4a21;
+  --cb-coral: #f14b4c; /* the warm end of the brand gradient: the footer's "Hi!" and back-to-top on this case */
   --cb-tint: #ece8fd;
   --cb-line: rgb(0 0 0 / 0.1);
   --cb-muted: #666666;
@@ -717,7 +718,7 @@
 
 :root:has([data-case-palette='cloutboost']) {
   --header-backing: var(--cb-page);
-  --color-footer-accent: var(--cb-purple);
+  --color-footer-accent: var(--cb-coral);
 }
 
 :root:has([data-case-palette='sleep']) {

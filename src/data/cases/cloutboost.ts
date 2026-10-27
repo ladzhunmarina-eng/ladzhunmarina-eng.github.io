@@ -2,7 +2,7 @@
  * Cloutboost case study: content only, no layout.
  * Lives in src/data/cases/cloutboost.ts and is rendered by src/pages/work/cloutboost.astro.
  *
- * The copy follows the "Cloutboost" page of the Figma file (node 76:101673): About, Objective / Challenges / Solution, the persona and the Visuals.
+ * The copy follows the "Cloutboost" page of the Figma file (node 76:101673): About, Objective / Challenges / Solution and the persona; the flows after it are played from the Figma's prototype screens.
  */
 
 export const cloutboostCase = {
@@ -23,7 +23,7 @@ export const cloutboostCase = {
     lead: 'A web platform where game publishers and Cloutboost’s campaign team find the right YouTube and Twitch creators, run outreach, and see what each creator delivered for the money.',
     meta: [
       { label: 'Industry', value: 'Influencer marketing · Gaming' },
-      { label: 'Model', value: 'B2B SaaS + managed service' },
+      { label: 'Model', value: 'B2B SaaS' },
       { label: 'Country', value: 'USA' },
       { label: 'Year', value: '2021' },
     ],
@@ -35,13 +35,19 @@ export const cloutboostCase = {
     { id: 'goal', label: 'Goal' },
     { id: 'persona', label: 'Personas' },
     { id: 'flow', label: 'Key flow' },
-    { id: 'visuals', label: 'Visuals' },
+    { id: 'campaign', label: 'Campaigns' },
+    { id: 'selected', label: 'Selected' },
+    { id: 'engagement', label: 'Engagement' },
+    { id: 'reports', label: 'Reports' },
+    { id: 'system', label: 'Design system' },
   ],
 
   goal: {
     eyebrow: 'Goal and challenge',
     title: 'Finding the right creators, and proving what they delivered.',
     lead: 'Game publishers pay creators for reach. Before a campaign they need channels that fit their game; after it, numbers that justify the spend. Without a tool, both live in spreadsheets, inboxes and chats.',
+    // the audience the campaigns reach (src/assets/images/cb-gamers.jpg), under the cards
+    image: 'Three gamers in Cloutboost’s colours: one at a keyboard with a headset, one in a VR headset, one with a controller.',
     cards: [
       {
         icon: 'target' as const,
@@ -110,7 +116,7 @@ export const cloutboostCase = {
             items: ['Has to reply to an email and wait days for the actual key', '“Free key” offers that quietly turn into content obligations', 'Console codes that won’t activate on his account region'],
           },
         ],
-        quote: '“If it’s a gift, just give me the key. Don’t make me write emails for it.”',
+        quote: '“Write to me like you’ve seen my channel, put the key in that first email, and tell me upfront if you expect a video.”',
         photoAlt: 'Jake Morrison, gaming creator, at his streaming desk',
       },
     ],
@@ -124,50 +130,43 @@ export const cloutboostCase = {
     alt: 'Find influencers: a table of a hundred creators with their subscribers, views, engagement, true reach, language and country.',
   },
 
-  /*
-   * The screens in the order of the work: find creators, reach out, talk it over, report. Each group spans part of a
-   * 12-column row (Reach out and Collaborate share one), and its tiles span part of the group's own 12 columns.
-   */
-  visuals: {
-    eyebrow: 'Visuals',
-    title: 'From shortlist to report, in one place.',
-    groups: [
-      {
-        title: 'Discover',
-        caption: 'Find influencers table · Range filters · Channel card with scores',
-        span: 12,
-        tiles: [
-          { key: 'table', cols: 12, alt: 'Find influencers: a search, filters and a table of 100 influencers with their numbers.' },
-          { key: 'filters', cols: 12, alt: 'Three range filters: recent videos, YT shorts ratio and average videos per month.' },
-          { key: 'channel', cols: 12, alt: 'A YouTube channel card: subscribers, total videos, views and likes, and three channel scores.' },
-        ],
-      },
-      {
-        title: 'Reach out',
-        caption: 'Send email · Import channels from CSV',
-        span: 7,
-        tiles: [
-          { key: 'email', cols: 12, alt: 'Send email: recipients, subject, a message editor and Cancel and Send buttons.' },
-          { key: 'import', cols: 12, alt: 'Import YouTube Channels File: a CSV uploading with a progress bar.' },
-        ],
-      },
-      {
-        title: 'Collaborate',
-        caption: 'Comments',
-        span: 5,
-        tiles: [{ key: 'comments', cols: 12, alt: 'Comments with the “No messages” empty state and a field to add a comment.' }],
-      },
-      {
-        title: 'Report',
-        caption: 'Key numbers and performance · Views by creator · Report building and empty states',
-        span: 12,
-        tiles: [
-          { key: 'performance', cols: 12, alt: 'Campaign key numbers and a line chart of video views over four weeks.' },
-          { key: 'views', cols: 3, alt: 'A views donut chart by influencer, with a legend of their numbers.' },
-          { key: 'building', cols: 6, alt: 'The “Building Your Report” loading state with a report illustration.' },
-          { key: 'empty', cols: 3, alt: 'The “Report is not generated yet” empty state with an illustration.' },
-        ],
-      },
-    ],
+  // Creating a campaign, played by itself in a desktop window (CreateCampaignDemo)
+  campaign: {
+    eyebrow: 'Campaigns',
+    title: 'A new campaign in one dialog.',
+    lead: 'From the campaigns list, one button opens everything a campaign needs: its name, the client and their emails, the product, platform, type and launch date, and who it is shared with.',
+    alt: 'Campaigns: a list of campaigns with their client, product, manager, platform, launch date, type and status, and a button to create a new one.',
+  },
+
+  // The creators picked for a campaign and one creator's channel, played by itself in a desktop window (SelectedInfluencersDemo)
+  selected: {
+    eyebrow: 'Selected creators',
+    title: 'Every creator in the campaign, one click from their channel.',
+    lead: 'The campaign’s shortlist keeps approval, content format, price and CPM in one table. A name opens the channel: what it is about, the games and genres it covers, its tags, and the YouTube and Twitch numbers with their scores.',
+    alt: 'Selected (40): the campaign’s creators with their approval, content format, internal price, price, internal CPM and CPM, and totals.',
+  },
+
+  // Emailing the creators picked in the campaign, played by itself in a desktop window (EngagementDemo)
+  engagement: {
+    eyebrow: 'Engagement',
+    title: 'Email the creators you pick, now or on schedule.',
+    lead: 'Tick creators in the campaign’s engagement table and write to all of them at once from a connected mailbox. Creators without an address are skipped and counted, and the send can go out straight away or start at a set time.',
+    alt: 'Engagement (34): the campaign’s creators with their contract status, email status, key sent, key sent date and sequence.',
+  },
+
+  // The campaign report, from building to the numbers, played by itself in a desktop window (ReportsDemo)
+  reports: {
+    eyebrow: 'Reports',
+    title: 'A campaign report that builds itself.',
+    lead: 'The Report tab gathers the campaign’s numbers from YouTube and Twitch while you wait a few seconds, then lays them out: reach and views, performance over time, true reach, engagement and CPM per creator, and what each video cost.',
+    alt: 'Engagement (34): the campaign’s creators with their contract status, email status, key sent, key sent date and sequence, and the Report tab.',
+  },
+
+  // The design system the screens are built from, as a collage of its Figma pages (DesignSystemCollage)
+  system: {
+    eyebrow: 'Design system',
+    title: 'One set of parts behind every screen.',
+    lead: 'Tokens for space, radius and colour, and components built on them: a button with every emphasis, size and state, and select and date fields that share one input architecture. The flows above are put together from these parts.',
+    alt: 'The design system: layout and colour token tables, select and date fields in their states, a grid of button states, and the Button’s properties panel with emphasis, size, state, label and icons.',
   },
 };

@@ -1,16 +1,19 @@
 ---
 import PhoneTour from './PhoneTour.astro';
 import type { Step } from './PhoneTour.astro';
-import list from '../../assets/images/cb-flow-1-list.png';
-import search from '../../assets/images/cb-flow-2-search.png';
-import suggest from '../../assets/images/cb-flow-3-suggest.png';
-import results from '../../assets/images/cb-flow-4-results.png';
-import menu from '../../assets/images/cb-flow-menu.png';
-import filters from '../../assets/images/cb-flow-5-filters.png';
+import list from '../../assets/images/cb-flow2-1-list-v2.png';
+import search from '../../assets/images/cb-flow2-2-search-v2.png';
+import suggest from '../../assets/images/cb-flow2-3-suggest.png';
+import resultsNone from '../../assets/images/cb-flow2-4-results-none.png';
+import resultsOne from '../../assets/images/cb-flow2-4-results-one.png';
+import results from '../../assets/images/cb-flow2-4-results.png';
+import filtersOpen from '../../assets/images/cb-flow2-5-filters-open.png';
+import menu from '../../assets/images/cb-flow2-menu.png';
+import panel from '../../assets/images/cb-flow2-panel-card.png';
 
 /*
  * Finding influencers, played by itself: the list of a hundred channels, a search by name with suggestions, the six
- * results with two picked, the Action menu, then the advanced filters. Coordinates are in the Figma's own 1440 x 1024.
+ * results, two of them picked one checkbox at a time, the Action menu, then the advanced filters. Coordinates are in the Figma's own 1440 x 1024.
  */
 interface Props {
   alt: string;
@@ -22,16 +25,25 @@ const screens = [
   { src: list, alt },
   { src: search, alt: 'The search field in focus, searching by influencer name.', fields: [{ id: 'q', box: [561, 156, 300, 24] as const, bare: true }] },
   { src: suggest, alt: 'Suggestions for “Joh”: five creators with their photos and a line to show all results.' },
-  { src: results, pops: [{ id: 'menu', src: menu, box: [760, 250, 182, 168] as const, alt: 'The Action menu: add to saved list, add to campaign.' }], alt: 'Six influencers found, two of them picked.' },
-  { src: filters, alt: 'Advanced search: agency, gaming platform, categories, genre, gender, recently played games and more.' },
+  { src: resultsNone, alt: 'Six influencers found for “John”, none picked yet.' },
+  { src: resultsOne, alt: '' },
+  { src: results, pops: [{ id: 'menu', src: menu, box: [760, 250, 182, 168] as const, origin: [117, 21] as const, alt: 'The Action menu: add to saved list, add to campaign.' }], alt: 'Six influencers found, two of them picked.' },
+  // Advanced search drops from the filter icon at the end of the search bar. On this frame the icon turns purple: the
+  // panel's own copy (centre 735.5, 25 into its picture) replaces the grey one (centre 1386.75, 166.75). The white card
+  // starts 33px under the panel's top and scrolls inside its window down to the screen's bottom edge, under its fixed
+  // header (Advances search, Reset: the card's top 72px); the picture
+  // carries 14px of shadow on each side.
+  { src: filtersOpen, sheet: { src: panel, box: [1019, 187, 394, 837] as const, head: 72 }, alt: 'Advanced search drops down from the filter icon: agency, gaming platform, categories, genre, gender, recently played games, video and views ranges, and Apply search.' },
 ];
 
 const tour = [
   [{ move: [520, 420] }, { wait: 500 }, { tap: [720, 168] }], // into the search
   [{ type: 'q', text: 'Joh' }, { wait: 500 }], // the name, letter by letter
   [{ wait: 700 }, { tap: [720, 548] }], // show all results
-  [{ wait: 900 }, { tap: [863, 271] }, { pop: 'menu', for: 1600 }, { wait: 300 }, { tap: [1311, 168] }], // Action, then more filters
-  [{ move: [1250, 560] }, { wait: 2400 }], // the advanced filters
+  [{ wait: 900 }, { tap: [300.75, 552.75] }], // pick John Nicol
+  [{ wait: 400 }, { tap: [300.75, 609.75] }], // and John Phillips
+  [{ wait: 700 }, { tap: [877, 271] }, { pop: 'menu', for: 1600 }, { wait: 300 }, { tap: [1386.75, 166.75] }], // Action, then the filter icon
+  [{ move: [1200, 520] }, { wait: 600 }, { scroll: 600 }, { wait: 800 }, { scroll: 1207 }, { wait: 1500 }], // the filters scroll down to Apply search
 ] satisfies Step[][];
 ---
 

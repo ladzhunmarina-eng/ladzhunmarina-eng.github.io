@@ -6,31 +6,22 @@ import CaseNav from '../../components/case/CaseNav.astro';
 import Section from '../../components/case/Section.astro';
 import NoteCards from '../../components/case/NoteCards.astro';
 import PersonaPair from '../../components/case/PersonaPair.astro';
-import VisualGrid from '../../components/case/VisualGrid.astro';
 import FindInfluencersDemo from '../../components/case/FindInfluencersDemo.astro';
+import CreateCampaignDemo from '../../components/case/CreateCampaignDemo.astro';
+import SelectedInfluencersDemo from '../../components/case/SelectedInfluencersDemo.astro';
+import EngagementDemo from '../../components/case/EngagementDemo.astro';
+import ReportsDemo from '../../components/case/ReportsDemo.astro';
+import DesignSystemCollage from '../../components/case/DesignSystemCollage.astro';
 import NextCase from '../../components/case/NextCase.astro';
 import CloutboostDashboard from '../../components/case/CloutboostDashboard.astro';
+import { Image } from 'astro:assets';
 import anna from '../../assets/images/cb-persona.png';
-import channel from '../../assets/images/cb-v01-channel.png';
-import building from '../../assets/images/cb-v02-building.png';
-import views from '../../assets/images/cb-v03-views.png';
-import performance from '../../assets/images/cb-v04-performance.png';
-import email from '../../assets/images/cb-v05-email.png';
-import importFile from '../../assets/images/cb-v06-import.png';
-import comments from '../../assets/images/cb-v07-comments.png';
-import empty from '../../assets/images/cb-v08-empty.png';
-import filters from '../../assets/images/cb-v09-filters.png';
-import table from '../../assets/images/cb-v10-table.png';
+import gamers from '../../assets/images/cb-gamers.jpg';
 import { cloutboostCase as study } from '../../data/cases/cloutboost';
 
-const { goal, persona, flow, visuals } = study;
-const shots = { channel, building, views, performance, email, import: importFile, comments, empty, filters, table };
-const groups = visuals.groups.map((group) => ({
-  ...group,
-  tiles: group.tiles.map((tile) => ({ src: shots[tile.key as keyof typeof shots], alt: tile.alt, cols: tile.cols })),
-}));
+const { goal, persona, flow, campaign, selected, engagement, reports, system } = study;
 // Jake's photo, picked up if the file is there; without it his card shows his initials
-const creatorPhoto = Object.values(import.meta.glob<ImageMetadata>('../../assets/images/cb-persona-creator.png', { eager: true, import: 'default' }))[0];
+const creatorPhoto =Object.values(import.meta.glob<ImageMetadata>('../../assets/images/cb-persona-creator.png', { eager: true, import: 'default' }))[0];
 const personas = persona.cards.map((card) => ({ ...card, photo: card.photo === 'creator' ? creatorPhoto : anna }));
 ---
 
@@ -50,6 +41,7 @@ const personas = persona.cards.map((card) => ({ ...card, photo: card.photo === '
       <div class="case__sections">
         <Section id="goal" eyebrow={goal.eyebrow} title={goal.title} lead={goal.lead}>
           <NoteCards cards={goal.cards} />
+          <Image class="case__photo" src={gamers} alt={goal.image} widths={[720, 1008, 1512, 2016]} sizes="(max-width: 1023px) 100vw, 1008px" quality={85} />
         </Section>
 
         <Section id="persona" eyebrow={persona.eyebrow} title={persona.title}>
@@ -60,18 +52,24 @@ const personas = persona.cards.map((card) => ({ ...card, photo: card.photo === '
           <FindInfluencersDemo alt={flow.alt} />
         </Section>
 
-        <Section id="visuals" eyebrow={visuals.eyebrow} title={visuals.title}>
-          <div class="groups">
-            {groups.map((group) => (
-              <section class="group" style={`--span: ${group.span}`} aria-labelledby={`visuals-${group.title.toLowerCase().replace(/\s+/g, '-')}`}>
-                <header class="group__head">
-                  <h3 class="group__title" id={`visuals-${group.title.toLowerCase().replace(/\s+/g, '-')}`}>{group.title}</h3>
-                  <p class="group__caption">{group.caption}</p>
-                </header>
-                <VisualGrid tiles={group.tiles} />
-              </section>
-            ))}
-          </div>
+        <Section id="campaign" eyebrow={campaign.eyebrow} title={campaign.title} lead={campaign.lead}>
+          <CreateCampaignDemo alt={campaign.alt} />
+        </Section>
+
+        <Section id="selected" eyebrow={selected.eyebrow} title={selected.title} lead={selected.lead}>
+          <SelectedInfluencersDemo alt={selected.alt} />
+        </Section>
+
+        <Section id="engagement" eyebrow={engagement.eyebrow} title={engagement.title} lead={engagement.lead}>
+          <EngagementDemo alt={engagement.alt} />
+        </Section>
+
+        <Section id="reports" eyebrow={reports.eyebrow} title={reports.title} lead={reports.lead}>
+          <ReportsDemo alt={reports.alt} />
+        </Section>
+
+        <Section id="system" eyebrow={system.eyebrow} title={system.title} lead={system.lead}>
+          <DesignSystemCollage alt={system.alt} />
         </Section>
       </div>
     </div>
@@ -120,45 +118,18 @@ const personas = persona.cards.map((card) => ({ ...card, photo: card.photo === '
     min-width: 0;
   }
 
+  /* A picture across the content column, with the cards' corners */
+  .case :global(.case__photo) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-block);
+  }
+
   /* The next case sits under the content column */
   .case__after {
     padding-block: 0 var(--space-144);
     padding-left: calc(var(--gutter) + var(--case-nav-w) + var(--case-gap));
-  }
-
-
-  /* The screens grouped by the step of the work; Reach out and Collaborate share a row */
-  .groups {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: var(--space-56) var(--space-16);
-  }
-
-  .group {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-16);
-    grid-column: span var(--span);
-    min-width: 0;
-  }
-
-  .group__head {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-  }
-
-  .group__title {
-    font-size: var(--fs-20);
-    font-weight: var(--weight-bold);
-    line-height: var(--lh-snug);
-    color: var(--color-ink);
-  }
-
-  .group__caption {
-    font-size: var(--fs-14);
-    line-height: var(--lh-body);
-    color: var(--color-muted);
   }
 
   @media (max-width: 1023px) {
@@ -175,10 +146,6 @@ const personas = persona.cards.map((card) => ({ ...card, photo: card.photo === '
     .case__after {
       padding-block: 0 var(--space-92);
       padding-left: var(--gutter);
-    }
-
-    .group {
-      grid-column: 1 / -1;
     }
   }
 </style>

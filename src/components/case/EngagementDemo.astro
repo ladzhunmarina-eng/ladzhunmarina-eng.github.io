@@ -1,0 +1,44 @@
+---
+import PhoneTour from './PhoneTour.astro';
+import type { Step } from './PhoneTour.astro';
+import none from '../../assets/images/cb-eng-1-none-v3.png';
+import one from '../../assets/images/cb-eng-2-one-v3.png';
+import two from '../../assets/images/cb-eng-3-two-v3.png';
+import three from '../../assets/images/cb-eng-4-three-v3.png';
+import send from '../../assets/images/cb-eng-5-send-v2.png';
+import schedule from '../../assets/images/cb-eng-6-schedule-v2.png';
+
+/*
+ * Emailing creators, played by itself: the campaign's Engagement table, three creators ticked one at a time, Send email
+ * opens the new email with them as recipients, Schedule opens Schedule send (over the page dimmed as on the Campaigns
+ * dialog), and Save. Coordinates are in the Figma's own 1440 x 1024. The in-between frames (one and two ticked) are the
+ * three-ticked frame with the other boxes taken from the empty one.
+ */
+interface Props {
+  alt: string;
+}
+
+const { alt } = Astro.props;
+
+const box = (y: number): [number, number] => [304, y]; // a row's checkbox
+
+const screens = [
+  { src: none, alt },
+  { src: one, alt: '' },
+  { src: two, alt: '' },
+  { src: three, alt: 'Three creators selected, and Send email.' },
+  { src: send, alt: 'A new email to the three creators: from, to, subject, the message with its first-name and sender variables and a press kit attached, delivery timezone, follow-ups, Send email and Schedule.' },
+  { src: schedule, alt: 'Schedule send: date, time and timezone, and how many emails start when and at what daily rate.' },
+];
+
+const tour = [
+  [{ move: [760, 620] }, { wait: 500 }, { tap: box(450) }], // SkyDrift
+  [{ tap: box(506) }], // EchoAce
+  [{ tap: box(621) }], // PixelPaw
+  [{ wait: 400 }, { tap: [1358, 258] }], // Send email
+  [{ wait: 1200 }, { tap: [1290, 641] }], // Schedule
+  [{ wait: 1200 }, { tap: [835, 683] }, { wait: 1200 }], // Save
+] satisfies Step[][];
+---
+
+<PhoneTour screens={screens} tour={tour} start={[760, 620]} size={[1440, 1024]} variant="window" />
