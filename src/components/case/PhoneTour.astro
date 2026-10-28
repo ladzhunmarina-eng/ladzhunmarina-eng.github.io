@@ -203,6 +203,7 @@ const y = (v: number) => `${(v / H) * 100}%`;
     overflow: hidden;
     border-radius: 32px;
     background: var(--color-white);
+    box-shadow: var(--phone-frame);
   }
 
   /* A watch: a black glass with a ring around it */
@@ -227,6 +228,7 @@ const y = (v: number) => `${(v / H) * 100}%`;
     --finger: 26;
     border: 1px solid var(--case-line);
     border-radius: var(--radius-card);
+    box-shadow: none; /* a desktop window keeps its hairline, not the phone's rim */
   }
 
   /*

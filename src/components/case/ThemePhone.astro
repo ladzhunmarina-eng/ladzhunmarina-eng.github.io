@@ -81,14 +81,18 @@ const stars = [
     overflow: hidden;
     border-radius: 32px;
     background: var(--color-white);
+    box-shadow: var(--phone-frame);
   }
 
+  /* A phone cut in two (light | dark): the halves keep the shadow but not the rim, which would run down the cut */
   .theme--left {
     border-radius: 32px 0 0 32px;
+    box-shadow: var(--phone-shadow);
   }
 
   .theme--right {
     border-radius: 0 32px 32px 0;
+    box-shadow: var(--phone-shadow);
   }
 
   .theme :global(.theme__screen) {

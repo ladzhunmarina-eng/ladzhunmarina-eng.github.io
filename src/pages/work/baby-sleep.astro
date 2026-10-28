@@ -20,6 +20,7 @@ import Reviews from '../../components/case/Reviews.astro';
 import NextCase from '../../components/case/NextCase.astro';
 import MetricStrip from '../../components/case/MetricStrip.astro';
 import StatGrid from '../../components/case/StatGrid.astro';
+import NextBanner from '../../components/case/NextBanner.astro';
 import heroImage from '../../assets/images/sleep-hero-flat.png';
 import personaPhoto from '../../assets/images/sleep-persona.png';
 import expertPhoto from '../../assets/images/persona-expert.webp';
@@ -121,6 +122,7 @@ const blocks = decisions.items.map((item) => ({
         <Section id="outcome" eyebrow={outcome.eyebrow} title={outcome.title} lead={outcome.lead}>
           <MetricStrip metrics={outcome.impact} />
           <StatGrid stats={outcome.stats} />
+          <NextBanner>{outcome.next}</NextBanner>
         </Section>
 
         <Section id="feedback" eyebrow={feedback.eyebrow} title={feedback.title}>

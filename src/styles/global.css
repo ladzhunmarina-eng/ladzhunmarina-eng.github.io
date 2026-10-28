@@ -96,3 +96,20 @@ a {
     opacity 0.8s var(--ease-out) var(--rise-delay, 0ms),
     translate 0.9s var(--ease-out) var(--rise-delay, 0ms);
 }
+
+/* No word left hanging on a line of its own: headings share their words out evenly across their lines, running text
+   only re-flows its last lines so they never end on a single word */
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+
+h1,
+p,
+li,
+dd,
+blockquote,
+figcaption {
+  text-wrap: pretty;
+}

@@ -13,7 +13,7 @@ const { featured, others, linkedin } = reviews;
     <figure class="feature">
       <figcaption class="author">
         <Image class="author__photo" src={featured.photo} alt={featured.alt} width={96} height={96} widths={[48, 96, 144]} sizes="48px" />
-        <span class="author__line"><span class="author__name">{featured.name}</span><span class="author__dot" aria-hidden="true">✳</span>{featured.role}</span>
+        <span class="author__line"><span class="author__name">{featured.name}</span><span class="author__dot" aria-hidden="true"></span>{featured.role}</span>
       </figcaption>
       <blockquote class="feature__quote">
         <p>{featured.quote}</p>
@@ -26,7 +26,7 @@ const { featured, others, linkedin } = reviews;
           <figure class="note">
             <figcaption class="author">
               <Image class="author__photo" src={review.photo} alt={review.alt} width={96} height={96} widths={[48, 96, 144]} sizes="48px" />
-              <span class="author__line"><span class="author__name">{review.name}</span><span class="author__dot" aria-hidden="true">✳</span>{review.role}</span>
+              <span class="author__line"><span class="author__name">{review.name}</span><span class="author__dot" aria-hidden="true"></span>{review.role}</span>
             </figcaption>
             <blockquote class="note__quote">
               {review.quote.map((paragraph) => <p>{paragraph}</p>)}
@@ -56,7 +56,7 @@ const { featured, others, linkedin } = reviews;
   }
 
 
-  /* "Name ✳ Role" above each quote */
+  /* "Name · Role" above each quote */
   .author {
     display: flex;
     align-items: center;
@@ -77,10 +77,14 @@ const { featured, others, linkedin } = reviews;
     color: var(--color-ink);
   }
 
+  /* a small round dot between name and role */
   .author__dot {
-    margin-inline: var(--space-8);
-    font-size: var(--fs-14);
-    color: var(--color-nav-active);
+    width: 4px;
+    height: 4px;
+    margin-inline: var(--space-12);
+    border-radius: 50%;
+    background: var(--color-muted);
+    vertical-align: middle;
   }
 
   /* In the narrower columns the role goes under the name, so the two lines match each other. */
@@ -136,7 +140,7 @@ const { featured, others, linkedin } = reviews;
     }
   }
 
-  /* The asterisk between name and role turns slowly, and a photo leans a little when pointed at. */
+  /* A photo leans a little when pointed at. */
   .author__dot {
     display: inline-block;
   }
@@ -150,10 +154,6 @@ const { featured, others, linkedin } = reviews;
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    [data-motion='go'] .feature .author__dot {
-      animation: reviews-spin 9s linear infinite;
-    }
-
     /* Before the section is seen the pieces wait just below their places; then they come up one after another:
        the author, the headline word by word (with "priceless" highlighted), the two notes, the button. */
     [data-motion='ready'] :global(.w),
@@ -216,12 +216,6 @@ const { featured, others, linkedin } = reviews;
         opacity 0.6s ease-out,
         transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
         background-size 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1s;
-    }
-  }
-
-  @keyframes reviews-spin {
-    to {
-      transform: rotate(360deg);
     }
   }
 </style>

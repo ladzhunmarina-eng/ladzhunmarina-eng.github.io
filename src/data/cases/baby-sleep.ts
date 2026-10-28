@@ -215,6 +215,8 @@ export const babySleepCase = {
       { value: '2K', label: 'user profiles created' },
       { value: 'Feb 2025', label: 'first release on the App Store and Google Play' },
     ],
+    // what comes next, and why: the drop from profiles to daily users
+    next: 'Next: feeding, diapers and the rest of a baby’s day alongside sleep. Of 2K profiles about 400 stay active: many parents used the app only while working with a consultant, then went back to the all‑in‑one trackers they had before, because parents want everything in one place.',
   },
 
   feedback: {
