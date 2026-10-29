@@ -48,7 +48,7 @@ const stars = [
 ];
 ---
 
-<div class:list={['theme', 'phone-island', `theme--${theme}`, { 'theme--left': side === 'left', 'theme--right': side === 'right' }]}>
+<div class:list={['theme', `theme--${theme}`, { 'theme--left': side === 'left', 'theme--right': side === 'right' }]}>
   <Image class="theme__screen" src={screen} alt={alt} widths={[280, 390, 546]} sizes="260px" quality={85} />
 
   <div class="sky" aria-hidden="true">
@@ -84,17 +84,17 @@ const stars = [
     box-shadow: var(--phone-frame);
   }
 
-  /* A phone cut in two (light | dark): the halves keep the shadow but not the rim, which would run down the cut */
+  /* A phone cut in two (light | dark): the halves keep the shadow but not the rim, which would run down the cut (nor the
+     case's iPhone bezel: the pair stays the plain cut it always was) */
   .theme--left {
     border-radius: 32px 0 0 32px;
-    box-shadow: var(--phone-shadow);
+    box-shadow: var(--phone-soft-shadow);
   }
 
   .theme--right {
     border-radius: 0 32px 32px 0;
-    box-shadow: var(--phone-shadow);
+    box-shadow: var(--phone-soft-shadow);
   }
-
 
   .theme :global(.theme__screen) {
     display: block;

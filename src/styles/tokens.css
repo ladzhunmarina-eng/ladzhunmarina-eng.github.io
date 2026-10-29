@@ -212,7 +212,8 @@
   /* ---------- Motion ---------- */
   --ease-out: cubic-bezier(0.25, 1, 0.5, 1); /* ease-out-quart: things settle, they do not bounce */
   /* A phone mockup's frame, from the Figma (Client Profile_Survey): a 6px white rim outside the screen and a wide soft shadow */
-  --phone-shadow: 0 4px 94px #e6e6ed;
+  --phone-soft-shadow: 0 4px 94px #e6e6ed;
+  --phone-shadow: var(--phone-soft-shadow);
   --phone-rim: 0 0 0 6px rgb(255 255 255 / 0.9);
   --phone-frame: var(--phone-rim), var(--phone-shadow);
   --phone-bezel: 0px;
