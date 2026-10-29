@@ -97,6 +97,26 @@ a {
     translate 0.9s var(--ease-out) var(--rise-delay, 0ms);
 }
 
+/* The Dynamic Island of a phone mockup, from the Figma's 402 x 874 screen: 126 x 37, 11px from the top. Shown only
+   where the case turns it on (--phone-island). */
+.phone-island {
+  position: relative;
+}
+
+.phone-island::after {
+  content: '';
+  display: var(--phone-island, none);
+  position: absolute;
+  top: 1.26%;
+  left: 34.33%;
+  z-index: 3;
+  width: 31.34%;
+  height: 4.23%;
+  border-radius: 999px;
+  background: #000;
+  pointer-events: none;
+}
+
 /* No word left hanging on a line of its own: headings share their words out evenly across their lines, running text
    only re-flows its last lines so they never end on a single word */
 h2,

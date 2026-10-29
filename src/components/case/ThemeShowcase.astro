@@ -18,8 +18,8 @@ const { id, eyebrow, tags, title, lead, alts } = Astro.props;
 
 <section class="theme-block" id={id} aria-labelledby={id ? `${id}-title` : undefined}>
   <div class="theme-block__stage">
-    <div class="theme-block__phone"><ThemePhone theme="light" side="left" alt={alts.light} /></div>
-    <div class="theme-block__phone"><ThemePhone theme="dark" side="right" alt={alts.dark} /></div>
+    <div class="theme-block__phone"><ThemePhone theme="light" alt={alts.light} /></div>
+    <div class="theme-block__phone"><ThemePhone theme="dark" alt={alts.dark} /></div>
   </div>
 
   <div class="theme-block__side">
@@ -47,7 +47,7 @@ const { id, eyebrow, tags, title, lead, alts } = Astro.props;
 
   .theme-block__stage {
     display: flex;
-    gap: var(--space-12);
+    gap: var(--space-32);
     order: 2;
   }
 

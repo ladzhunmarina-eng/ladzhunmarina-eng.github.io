@@ -13,7 +13,7 @@ const { src, alt, sizes = '(max-width: 1023px) 70vw, 260px' } = Astro.props;
 const short = src.width / src.height > 390 / 844;
 ---
 
-<div class="phone">
+<div class="phone phone-island">
   <Image class:list={['phone__screen', { 'phone__screen--short': short }]} src={src} alt={alt} widths={[260, 390, 546]} sizes={sizes} quality={85} />
 </div>
 

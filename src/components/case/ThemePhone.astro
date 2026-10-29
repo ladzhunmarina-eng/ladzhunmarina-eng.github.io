@@ -48,7 +48,7 @@ const stars = [
 ];
 ---
 
-<div class:list={['theme', `theme--${theme}`, { 'theme--left': side === 'left', 'theme--right': side === 'right' }]}>
+<div class:list={['theme', 'phone-island', `theme--${theme}`, { 'theme--left': side === 'left', 'theme--right': side === 'right' }]}>
   <Image class="theme__screen" src={screen} alt={alt} widths={[280, 390, 546]} sizes="260px" quality={85} />
 
   <div class="sky" aria-hidden="true">
@@ -94,6 +94,7 @@ const stars = [
     border-radius: 0 32px 32px 0;
     box-shadow: var(--phone-shadow);
   }
+
 
   .theme :global(.theme__screen) {
     display: block;

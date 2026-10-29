@@ -110,7 +110,7 @@ const y = (v: number) => `${(v / H) * 100}%`;
 
 
 <figure class="onb" data-onboarding data-tour={JSON.stringify(tour)} data-start={JSON.stringify(start)} data-w={W} data-h={H} style={`--w: ${W}; --h: ${H}`}>
-  <div class:list={['onb__phone', { 'onb__phone--watch': variant === 'watch', 'onb__phone--plain': variant === 'plain', 'onb__phone--window': variant === 'window' }]}>
+  <div class:list={['onb__phone', { 'phone-island': variant === 'phone', 'onb__phone--watch': variant === 'watch', 'onb__phone--plain': variant === 'plain', 'onb__phone--window': variant === 'window' }]}>
     {screens.map((screen, i) => (
       <div class:list={['onb__screen', { 'is-on': i === 0 }]} data-screen={i}>
         <div class:list={['onb__page', { 'onb__page--tall': screen.tall }]} data-page>

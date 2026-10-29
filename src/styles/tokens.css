@@ -215,6 +215,8 @@
   --phone-shadow: 0 4px 94px #e6e6ed;
   --phone-rim: 0 0 0 6px rgb(255 255 255 / 0.9);
   --phone-frame: var(--phone-rim), var(--phone-shadow);
+  --phone-bezel: 0px;
+  --phone-island: none; /* a case whose screens sit in a real iPhone frame turns on its Dynamic Island */
 
   /* ---------- Spacing ---------- */
   --space-2: 2px;
@@ -692,6 +694,13 @@
   --case-strip-bg: var(--sleep-pill-blue); /* the Outcome strip: the soft blue of the At a glance card */
   --case-strip-fg: var(--sleep-ink);
   --case-strip-value: var(--sleep-accent-text);
+  /* Its phones wear the app's own iPhone frame (Baby Sleep Expert, iPhone · UA): a dark bezel and the Dynamic Island,
+     no shadow */
+  --phone-bezel: 9px;
+  --phone-shadow: 0 0 0 transparent;
+  --phone-rim: 0 0 0 var(--phone-bezel) #1c1c1e;
+  --phone-frame: var(--phone-rim);
+  --phone-island: block;
   --case-on-bg: var(--sleep-ink);
   --case-chip-text: var(--sleep-ink);
   --case-glass: var(--sleep-pill-blue); /* the At a glance card: the same blue as the first tag of a decision */
